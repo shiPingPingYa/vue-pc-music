@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-  这是主体区域
+    <router-view></router-view>
   </div>
 </template>
 <script>
@@ -12,6 +12,7 @@ export default {
 .main{
 width: 75%;
 height: 100%;
-background-color: yellow;
+background-color: #16181c;
+// background-color: #fff;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="logo">
-      <i class="el-icon-platform-eleme"></i>
+      <i class="el-icon-platform-eleme" style="color:red"></i>
      <div class="title">慧慧音乐</div>
     </div>
     <div class="buttons">
@@ -14,7 +14,7 @@
     <!-- 用户登录 -->
     <div class="userlogin">
       <div class="user-img">
-        <img src="">
+        <img src="../../../assets/img/userimg.png">
       </div>
       <div class="user-id">乱了浮华了</div>
     </div>
@@ -105,6 +105,7 @@ export default {
       height: 100%;
       border-radius: 50%;
       background-size: 100%,100%;
+      background-color: #fff;
     }
   }
   > .user-id{
@@ -113,5 +114,9 @@ export default {
       color: #96959a;
       font-size: 14px;
   }
+}
+
+.el-icon-platform-eleme{
+    color: red;
 }
 </style>
