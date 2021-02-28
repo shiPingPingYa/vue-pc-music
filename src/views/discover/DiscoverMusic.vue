@@ -1,7 +1,9 @@
 <template>
   <div class="discover">
     <nav-bar :list="list" ref="nav"></nav-bar>
-    <div class="content"></div>
+    <div class="content">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 <script>

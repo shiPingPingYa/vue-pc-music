@@ -70,12 +70,13 @@ export default {
   width: 10%;
   height: 100%;
   line-height: 54px;
+  z-index: 1;
   > button{
   display: inline-block;
   width: 50%;
   height: 26px;
   border: 1px solid #18171c;
-  color: #47464b;
+  color: #fff;
   background-color: #212025;
   }
 }

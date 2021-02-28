@@ -3,10 +3,11 @@
     <!-- 搜索框 -->
     <div class="search-item">
         <el-input size="mini" suffix-icon="el-icon-zoom-in" v-model="keywords"
-        @focus="focus()"></el-input>
+        @focus="focus()"
+        @change="keyEnter"></el-input>
     </div>
     <!-- 热搜榜 -->
-    <hot-search :searchList='searchList' v-show="isShow"></hot-search>
+    <hot-search @del="del" :searchList='searchList' v-show="isShow"></hot-search>
     <!-- 搜索内容 -->
     <div class="suggest" v-show="isSuggest">
       <div class="top">
@@ -54,6 +55,20 @@ export default {
     // 鼠标聚焦input，显示热搜
     focus () {
       this.isShow = true
+    },
+    // 点击删除图标清除热搜内容
+    del () {
+      this.searchList = []
+    },
+    // 添加热搜记录
+    async keyEnter () {
+      if (this.keywords === '' || this.keywords == null) return
+      const search = await this.$http.get('http://localhost:3000/search/suggest/?keywords=' + this.keywords).then(re => re)
+      console.log(search)
+      this.searchList.unshift(this.keywords)
+      this.keywords = ''
+      this.isSuggest = false
+      this.isShow = false
     }
   },
   watch: {
@@ -96,6 +111,7 @@ export default {
   top: 54px;
   width: 400px;
   color: #828385;
+  z-index: 10;
   background-color: #2d2f33;
 
 }

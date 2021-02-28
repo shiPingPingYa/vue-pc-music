@@ -5,7 +5,7 @@
       <!-- 搜索历史头 -->
       <h3>搜索历史
         <div class="icon">
-        <i class="el-icon-delete"></i>
+        <i class="el-icon-delete" @click="del()"></i>
       </div>
       </h3>
     <!-- 搜索历史内容 -->
@@ -48,6 +48,11 @@ export default {
       dufault () {
         return []
       }
+    }
+  },
+  methods: {
+    del () {
+      this.$emit('del')
     }
   }
 }
