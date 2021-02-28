@@ -5,8 +5,8 @@
      <div class="title">慧慧音乐</div>
     </div>
     <div class="buttons">
-      <button class="el-icon-arrow-left"></button>
-      <button class="el-icon-arrow-right"></button>
+      <button class="el-icon-arrow-left" @click="preRouter()"></button>
+      <button class="el-icon-arrow-right" @click="nextRouter()"></button>
 
     </div>
     <!-- 音乐搜索 -->
@@ -26,6 +26,14 @@ export default {
   name: 'TabBar',
   components: {
     MusicSearch
+  },
+  methods: {
+    preRouter () {
+      this.$router.go(-1)
+    },
+    nextRouter () {
+      this.$router.go(+1)
+    }
   }
 }
 </script>
