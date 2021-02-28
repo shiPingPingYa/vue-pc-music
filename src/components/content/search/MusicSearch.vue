@@ -15,31 +15,38 @@
         <span>"{{keywords}}"</span>相关的结果>
       </div>
       <dl>
+        <!-- 搜索歌曲-->
         <dt>
           <div class="icon"><i class="el-icon-user-solid"></i></div>
           <div class="title">单曲</div>
         </dt>
-        <dd>
-          aa
+        <dd v-for="(item,index ) in this.sugSongs" :key="index+'song'">
+          {{item.name}}——{{item.artists[0].name}}
         </dd>
+      <!-- 搜索歌手 -->
         <dt>
           <div class="icon"><i class="el-icon-bell"></i></div>
-          <div class="title">单曲</div>
+          <div class="title">歌手</div>
         </dt>
-        <dd>aa</dd>
+        <dd v-for="(item,index) in sugArtist" :key="index">{{item.name}}</dd>
       </dl>
     </div>
   </div>
 </template>
 <script>
+// 热搜榜
 import HotSearch from './Hotsearch'
+// 请求数据
+import { _Suggest } from '../../../network/search'
 export default {
   data () {
     return {
       searchList: ['海底', '世间美好与你环环相扣', '灰狼'],
       keywords: '',
       isShow: false,
-      isSuggest: false
+      isSuggest: false,
+      sugSongs: [],
+      sugArtist: []
     }
   },
   name: 'MusicSearch',
@@ -61,14 +68,20 @@ export default {
       this.searchList = []
     },
     // 添加热搜记录
-    async keyEnter () {
+    keyEnter () {
       if (this.keywords === '' || this.keywords == null) return
-      const search = await this.$http.get('http://localhost:3000/search/suggest/?keywords=' + this.keywords).then(re => re)
-      console.log(search)
       this.searchList.unshift(this.keywords)
       this.keywords = ''
       this.isSuggest = false
       this.isShow = false
+    },
+    // input输入内容后，发送请求
+    suggest () {
+      _Suggest(this.keywords).then(res => {
+        this.sugSongs = res.data.result.songs
+        this.sugArtist = res.data.result.artists
+      })
+      console.log(this.sugSongs)
     }
   },
   watch: {
@@ -77,6 +90,7 @@ export default {
       if (this.keywords !== '') {
         this.isShow = false
         this.isSuggest = true
+        this.suggest()
       }
     }
   }

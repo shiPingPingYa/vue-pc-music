@@ -22,16 +22,19 @@
       <h3>热搜榜</h3>
       <!-- 热搜列表 -->
       <table>
-        <tr>
+        <tr v-for="(item,index) in hotList" :key="index">
           <!-- 热搜列表排名 -->
-          <td class="red">01</td>
+          <td :class="{red:index<=2}">{{index+1}}</td>
           <!-- 热搜列表上面的名字，次数，以及下面的内容 -->
           <td>
             <div class="top">
-              <div class="top-name">永不失联的爱</div>
-              <div class="top-score">234243234</div>
+              <div class="top-name">{{item.searchWord}}</div>
+              <div class="top-score">{{item.score}}</div>
+              <div class="top-img">
+                <img :src="item.iconUrl" alt="">
+              </div>
             </div>
-              <div class="bottom">你是我这一辈子都不想逝去的爱</div>
+              <div class="bottom">{{item.content}}</div>
           </td>
         </tr>
 
@@ -40,6 +43,8 @@
   </div>
 </template>
 <script>
+// 请求数据
+import { _hotSearchDetail } from '../../../network/search'
 export default {
   name: 'HotSearch',
   props: {
@@ -50,7 +55,19 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      hotList: [],
+      isImg: 2
+    }
+  },
+  created () {
+    _hotSearchDetail().then(res => {
+      this.hotList = res.data.data
+    })
+  },
   methods: {
+    // 点击热搜小图标，删除数据
     del () {
       this.$emit('del')
     }
@@ -67,6 +84,8 @@ export default {
   background-color: #2d2f33;
   color: #828385;
   z-index: 10;
+  overflow: hidden;
+
 }
 
 .record > h3{
@@ -123,8 +142,14 @@ tr:hover{
 .top div{
   margin-right: 5px;
 }
+
+.top-img img{
+  height: 16px;
+}
+
 .top-name{
   color: #dcdde4;
   font-weight: 500;
 }
+
 </style>
