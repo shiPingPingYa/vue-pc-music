@@ -61,6 +61,7 @@ export default {
   height: 530px;
   background-color: #2d2f33;
   color: #828385;
+  z-index: 10;
 }
 
 .record > h3{
