@@ -6,7 +6,7 @@
 </template>
 <script>
 import LeftMenu from '../LeftMenu'
-import RightMain from '../RightMain.vue'
+import RightMain from '../RightMain'
 export default {
   name: 'CenterContent.',
   components: {

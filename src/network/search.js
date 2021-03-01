@@ -1,10 +1,12 @@
 import { request } from './request'
+// 热搜内容
 export function _hotSearchDetail () {
   return request({
     url: '/search/hot/detail'
   })
 }
 
+// 输入的搜索内容
 export function _Search (key) {
   return request({
     url: '/search',

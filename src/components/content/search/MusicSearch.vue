@@ -2,12 +2,11 @@
   <div class="music-search" @mouseleave="leave()">
     <!-- 搜索框 -->
     <div class="search-item">
-        <el-input size="mini" suffix-icon="el-icon-zoom-in" v-model="keywords"
-        @focus="focus()"
-        @change="keyEnter"></el-input>
+        <input type="text" class="mess" v-model="keywords" @focus="focus()" @keydown.enter="keyEnter()">
+      <div class="icon el-icon-zoom-in" @click="keyEnter()"></div>
     </div>
     <!-- 热搜榜 -->
-    <hot-search @del="del" :searchList='searchList' v-show="isShow"></hot-search>
+    <hot-search @del="del" :searchList='searchList' v-show="isShow" @recordClick='recordClick($event)'></hot-search>
     <!-- 搜索内容 -->
     <div class="suggest" v-show="isSuggest">
       <div class="top">
@@ -20,7 +19,7 @@
           <div class="icon"><i class="el-icon-user-solid"></i></div>
           <div class="title">单曲</div>
         </dt>
-        <dd v-for="(item,index ) in this.sugSongs" :key="index+'song'">
+        <dd v-for="(item,index ) in this.sugSongs" :key="index+'song'" @click="enterSongs(item.name)">
           {{item.name}}——{{item.artists[0].name}}
         </dd>
       <!-- 搜索歌手 -->
@@ -28,7 +27,7 @@
           <div class="icon"><i class="el-icon-bell"></i></div>
           <div class="title">歌手</div>
         </dt>
-        <dd v-for="(item,index) in sugArtist" :key="index">{{item.name}}</dd>
+        <dd v-for="(item,index) in sugArtist" :key="index" @click="enterArtists(item)">{{item.name}}</dd>
       </dl>
     </div>
   </div>
@@ -53,7 +52,24 @@ export default {
   components: {
     HotSearch
   },
+  watch: {
+    // 监听keywords的值
+    keywords () {
+      if (this.keywords !== '') {
+        this.isShow = false
+        this.isSuggest = true
+        this.suggest()
+      }
+    }
+  },
   methods: {
+    // input输入内容后，发送请求
+    suggest () {
+      _Suggest(this.keywords).then(res => {
+        this.sugSongs = res.data.result.songs
+        this.sugArtist = res.data.result.artists
+      })
+    },
     // 鼠标离开input，隐藏热搜
     leave () {
       this.isShow = false
@@ -67,31 +83,32 @@ export default {
     del () {
       this.searchList = []
     },
-    // 添加热搜记录
+    // 添加热搜记录,并跳转搜索的内容
     keyEnter () {
       if (this.keywords === '' || this.keywords == null) return
       this.searchList.unshift(this.keywords)
+      this.$router.push('/search/' + this.keywords)
       this.keywords = ''
       this.isSuggest = false
       this.isShow = false
     },
-    // input输入内容后，发送请求
-    suggest () {
-      _Suggest(this.keywords).then(res => {
-        this.sugSongs = res.data.result.songs
-        this.sugArtist = res.data.result.artists
+    // 热搜历史记录的跳转
+    recordClick (i) {
+      this.$router.push('/search/' + this.searchList[i])
+      this.isShow = false
+    },
+    // 搜索内容歌曲点击跳转
+    enterSongs (song) {
+      this.$router.push('/search/' + song)
+      this.isSuggest = false
+    },
+    enterArtists (artist) {
+      this.$router.push({
+        path: '/artist',
+        query: {
+          artist: artist
+        }
       })
-      console.log(this.sugSongs)
-    }
-  },
-  watch: {
-    // 监听keywords的值
-    keywords () {
-      if (this.keywords !== '') {
-        this.isShow = false
-        this.isSuggest = true
-        this.suggest()
-      }
     }
   }
 }
@@ -105,11 +122,46 @@ export default {
   height: 100%;
   line-height: 54px;
 }
-
 .search-item{
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  line-height: 54px;
   width: 100%;
-  height: 100%;
+  height: 50%;
+  background-color: #fff;
+  border-radius: 10px;
 }
+.mess{
+  position: absolute;
+  width: 80%;
+  height: 100%;
+  padding: 0 10px;
+  border: #f6f6f6;
+  border-radius: 10px;
+  line-height: 16px;
+  color: #333;
+  background-color: transparent;
+  outline-style: none;
+}
+
+.icon{
+  position: absolute;
+  right: 6px;
+  bottom: 3px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 20px;
+}
+
+.el-icon-zoom-in{
+  width: 20px;
+  height: 20px;
+}
+
 .el-input{
   width: 100%;
   height: 30px;
@@ -157,21 +209,11 @@ dl dt{
 dl dd{
   padding: 5px 31px;
   line-height: 20px;
+  cursor: pointer;
 }
 
 dd:hover{
   background-color: #2a2c30;
-}
-
-.icon{
-  margin-right: 6px;
-  width: 16px;
-  height: 16px;
-  > i{
-    width: 100%;
-    height: 100%;
-    background-size: 100%,100%;
-  }
 }
 
 title{

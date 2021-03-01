@@ -13,6 +13,8 @@ const MusicListRank = () => import('../views/discover/childRouter/MusicListRank'
 const ArtistCategory = () => import('../views/discover/childRouter/ArtistCategory')
 // 最新音乐
 const NewSongs = () => import('../views/discover/childRouter/NewSongs')
+// 搜索内容
+const SearchList = () => import('../views/search/SearchList')
 // MV
 Vue.use(VueRouter)
 const routes = [
@@ -27,9 +29,9 @@ const routes = [
       { path: '/discover/ranklist', component: MusicListRank },
       { path: '/discover/artist', component: ArtistCategory },
       { path: '/discover/newsongs', component: NewSongs }
-
     ]
-  }
+  },
+  { path: '/search/:id', component: SearchList }
 ]
 
 const router = new VueRouter({

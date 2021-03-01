@@ -10,7 +10,7 @@
       </h3>
     <!-- 搜索历史内容 -->
     <div class="record-content">
-      <div class="search-item" v-for="(item, index) in searchList" :key="index">
+      <div class="search-item" v-for="(item, index) in searchList" :key="index" @click="recordClick(index)">
         {{item}}
       </div>
     </div>
@@ -22,7 +22,7 @@
       <h3>热搜榜</h3>
       <!-- 热搜列表 -->
       <table>
-        <tr v-for="(item,index) in hotList" :key="index">
+        <tr v-for="(item,index) in hotList" :key="index" @click="searchSongDetail(index)">
           <!-- 热搜列表排名 -->
           <td :class="{red:index<=2}">{{index+1}}</td>
           <!-- 热搜列表上面的名字，次数，以及下面的内容 -->
@@ -41,6 +41,10 @@
       </table>
     </div>
   </div>
+
+    <!-- <el-input size="mini" suffix-icon="el-icon-zoom-in" v-model="keywords"
+        @focus="focus()"
+        @change="keyEnter"></el-input> -->
 </template>
 <script>
 // 请求数据
@@ -70,6 +74,15 @@ export default {
     // 点击热搜小图标，删除数据
     del () {
       this.$emit('del')
+    },
+    // 点击热搜记录，触发父组件recordClick方法
+    recordClick (i) {
+      this.$emit('recordClick', i)
+    },
+    // 热搜榜的跳转
+    searchSongDetail (i) {
+      this.$router.push('/search/' + this.hotList[i].searchWord)
+      this.$parent.isShow = false
     }
   }
 }
@@ -104,6 +117,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   line-height: 32px;
+  cursor: pointer;
 }
 
 .search-item{
@@ -123,6 +137,7 @@ table{
 
 table tr{
   line-height: 30px;
+  cursor: pointer;
 }
 tr td:nth-child(1){
   width: 40px;
