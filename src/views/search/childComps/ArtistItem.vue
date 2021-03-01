@@ -54,10 +54,15 @@ export default {
   line-height: 50px;
 }
 
+.artist{
+  cursor: pointer;
+}
+
 .artist-img{
   margin: 0 20px 0 0;
   width: 50px;
   height: 50px;
+  cursor: pointer;
   > img{
     width: 100%;
     height: 100%;
