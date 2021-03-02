@@ -56,7 +56,6 @@ export default {
   created () {
     // 获取input输入的值key(id的值是在router上面动态绑定的)
     this.key = this.$route.params.id
-    console.log(this.key)
     // 根据key获取搜索结果
     if (this.key !== null && this.key !== '') {
       _Search(this.key).then(res => {

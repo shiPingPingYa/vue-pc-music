@@ -38,7 +38,12 @@ export default {
       return false
     },
     enterArtistDetail (i) {
-      console.log(this.artistsList[i].name)
+      this.$router.push({
+        path: '/artist',
+        query: {
+          artist: this.artistsList[i]
+        }
+      })
     }
   }
 }
