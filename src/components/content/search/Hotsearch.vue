@@ -1,6 +1,7 @@
 <template>
   <div class="hot">
- <!-- 搜索历史 -->
+    <scroll class="hot-scroll">
+       <!-- 搜索历史 -->
     <div class="record">
       <!-- 搜索历史头 -->
       <h3>搜索历史
@@ -40,15 +41,14 @@
 
       </table>
     </div>
+    </scroll>
   </div>
-
-    <!-- <el-input size="mini" suffix-icon="el-icon-zoom-in" v-model="keywords"
-        @focus="focus()"
-        @change="keyEnter"></el-input> -->
 </template>
 <script>
 // 请求数据
 import { _hotSearchDetail } from '../../../network/search'
+// 封装好的scroll
+import Scroll from '../../common/scroll/Scroll'
 export default {
   name: 'HotSearch',
   props: {
@@ -58,6 +58,9 @@ export default {
         return []
       }
     }
+  },
+  components: {
+    Scroll
   },
   data () {
     return {
@@ -97,10 +100,12 @@ export default {
   background-color: #2d2f33;
   color: #828385;
   z-index: 10;
-  overflow: hidden;
-
 }
 
+.hot-scroll{
+  height: 100%;
+  overflow: hidden;
+}
 .record > h3{
   line-height: 40px;
   line-height: 40px;

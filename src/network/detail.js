@@ -1,4 +1,4 @@
-import request from './request'
+import { request } from './request'
 
 // 工具函数
 import { formDate } from '../assets/common/tool'
@@ -7,7 +7,9 @@ import { formDate } from '../assets/common/tool'
 export function _getSongsDetail (arr) {
   return request({
     url: '/song/detail',
-    ids: arr
+    params: {
+      ids: arr
+    }
   })
 }
 

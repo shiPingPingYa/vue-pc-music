@@ -12,7 +12,10 @@
         v-for="(item, index) in list" :key="index"
         @click="barClick(index)">{{item}}</div>
       </div>
+      <!-- //歌手条目 -->
       <artist-item :artistsList='artistsList' v-show="isShow == 'artist'"></artist-item>
+      <!-- 音乐条目 -->
+      <music-item :musicList='musicList' v-show="isShow =='music'"></music-item>
     </scroll>
   </div>
 </template>
@@ -21,9 +24,11 @@
 import Scroll from '../../components/common/scroll/Scroll'
 // 导入歌手条目
 import ArtistItem from '../search/childComps/ArtistItem'
+// 导入音乐条目
+import MusicItem from '../musicListDetail/childComps/MusicItem'
 // 导入数据请求，获取根据input输入的内容，拿到的音乐
 import { _Search } from '../../network/search'
-// 获取根据音乐id获取音乐详细对象
+// 获取根据音乐id获取音乐详细对象,SongDetail处理音乐对象(返回需要的数据id，标题，歌手，专辑名，时间)
 import { _getSongsDetail, SongDetail } from '../../network/detail'
 // 导入工具函数，处理相同歌曲标题名
 import { distinct } from '../../assets/common/tool'
@@ -39,12 +44,14 @@ export default {
       musicListId: [],
       musicList: [],
       // input输入框的值
-      key: ''
+      key: '',
+      newkey: ''
     }
   },
   components: {
     Scroll,
-    ArtistItem
+    ArtistItem,
+    MusicItem
   },
   created () {
     // 获取input输入的值key(id的值是在router上面动态绑定的)
@@ -54,26 +61,23 @@ export default {
     if (this.key !== null && this.key !== '') {
       _Search(this.key).then(res => {
         var list = res.data.result.songs
-
         // 遍历响应的的数据
         for (var i in list) {
           // 获取响应数据里面的歌手对象
           this.artistsList.push(list[i].artists[0])
-
           // 获取遍历数据的id
           this.musicListId.push(list[i].id)
-
+          // 处理歌曲相同标题名
+          this.artistsList = distinct(this.artistsList)
           // 遍历结束后
-          if (i === list.length - 1) {
-            // 根据遍历数据的音乐id,来获取歌曲对象
+          if (i === '49') {
+            // 根据遍历数据的音乐id, 来获取歌曲对象
             for (var j of this.musicListId) {
               _getSongsDetail(j).then(res => {
                 var song = new SongDetail(res.data.songs)
                 this.musicList.push(song)
               })
             }
-            // 处理相同歌曲标题名
-            this.artistsList = distinct(this.artistsList)
           }
         }
       })
