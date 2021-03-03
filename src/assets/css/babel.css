@@ -12,3 +12,26 @@ body{
   background-image: url('../img/maskbar.jpeg');
   background-size: 100% 100%;
 }
+
+/* 显示小喇叭 */
+.curPlay{
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 1;
+}
+
+/* 显示字体 */
+.curFont{
+color: transparent  !important;
+}
+
+/* 音乐列表的隔行变色 */
+.backColor{
+  background-color: #1a1c20;
+}

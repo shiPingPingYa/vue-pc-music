@@ -86,6 +86,8 @@ export default {
   border: 1px solid #18171c;
   color: #fff;
   background-color: #212025;
+  outline:none; ;
+
   }
 }
 

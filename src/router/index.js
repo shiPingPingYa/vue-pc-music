@@ -1,6 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+// 关于路由重复问题
+const originalPush = VueRouter.prototype.push
+
+VueRouter.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 // 首页
 // 左边导航菜单
 const DiscoverMusic = () => import('../views/discover/DiscoverMusic')
@@ -46,6 +53,7 @@ const routes = [
       { path: '/discover/newsongs', component: NewSongs }
     ]
   },
+  // input输入框搜索信息
   { path: '/search/:id', component: SearchList },
   // 歌手信息
   {
@@ -54,7 +62,7 @@ const routes = [
     children: [
       { path: '/', redirect: '/artist/album' },
       { path: '/artist/album', component: ArtistAlbum },
-      { path: '/artist/mv', component: ArtistMv },
+      { path: '/artist/artistmv', component: ArtistMv },
       { path: '/artist/desc', component: ArtistDescDetail },
       { path: '/artist/similar', component: ArtistSimilar }
 

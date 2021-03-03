@@ -17,7 +17,7 @@
         <tr v-for="(item,index) in musicList" :key="index"
         :class="{backColor:setBackColor(index)}"
         @dblclick="musicItemClick(index)">
-          <td :class="{curtFont:playIndex==index}">{{setSerial(index)}}
+          <td :class="{curFont:playIndex==index}">{{setSerial(index)}}
             <div class="curPlay" v-show="playIndex == index">
               <img src="../../../assets/img/playmusic/currentplay.svg" alt="">
             </div>
@@ -37,6 +37,10 @@
   </div>
 </template>
 <script>
+// 处理音乐列表的背景和序号
+import { tableMixin } from '../tableMixin'
+// 音乐的显示与否playIndex
+// import { palyMixin } from '../playMixin'
 export default {
   name: 'MusicItem',
   props: {
@@ -53,19 +57,11 @@ export default {
     }
   },
   methods: {
-    setBackColor (i) {
-      if (i % 2 !== 0) {
-        return true
-      }
-      return false
-    },
-    setSerial (index) {
-      return (index = (index + 1) <= 9 ? '0' + (index + 1) : index + 1)
-    },
     musicItemClick (i) {
       this.playIndex = i
     }
-  }
+  },
+  mixins: [tableMixin]
 }
 </script>
 <style lang="less" scoped>
@@ -109,6 +105,7 @@ export default {
 .music tr td:nth-child(1){
   width: 10%;
   text-align: center;
+  color: rgb(36, 199, 240);
 }
 
 .music tr td:nth-child(2){
@@ -151,12 +148,4 @@ export default {
     width: 16%;
 }
 
-.backColor{
-  background-color: #1a1c20;
-}
-
-.curtFont{
-  color: transparent;
-  height: 24px !important;
-}
 </style>

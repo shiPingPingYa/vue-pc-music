@@ -44,6 +44,7 @@ export default {
           artist: this.artistsList[i]
         }
       })
+      this.$store.commit('addArtist', this.artistsList[i])
     }
   }
 }
