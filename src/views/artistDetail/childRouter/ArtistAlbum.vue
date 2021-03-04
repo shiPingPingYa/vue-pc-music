@@ -1,7 +1,7 @@
 <template>
   <div class="artist-album" v-if="artist !==null">
   <artist-hot-50 :musicList="musicList"></artist-hot-50>
-  <artist-album-list></artist-album-list>
+  <artist-album-list v-for="(item,index) in albumList" :key="index" :album="item"></artist-album-list>
   </div>
 </template>
 <script>

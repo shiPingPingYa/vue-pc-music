@@ -66,8 +66,6 @@ export default {
           this.artistsList.push(list[i].artists[0])
           // 获取遍历数据的id
           this.musicListId.push(list[i].id)
-          // 处理歌曲相同标题名
-          this.artistsList = distinct(this.artistsList)
           // 遍历结束后
           if (i === '49') {
             // 根据遍历数据的音乐id, 来获取歌曲对象
@@ -77,6 +75,8 @@ export default {
                 this.musicList.push(song)
               })
             }
+            // 处理歌曲相同标题名
+            this.artistsList = distinct(this.artistsList)
           }
         }
       })

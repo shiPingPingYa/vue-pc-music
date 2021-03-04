@@ -93,7 +93,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .left-menu{
-  width: 25%;
+  width: 18%;
   height: 100%;
   background-color: #191b1f;
   // background-color: #fff;

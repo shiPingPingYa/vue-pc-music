@@ -109,6 +109,7 @@ export default {
           artist: artist
         }
       })
+      this.$store.commit('addArtist', artist)
     }
   }
 }

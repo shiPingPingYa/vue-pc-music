@@ -38,6 +38,8 @@ const ArtistSimilar = () => import('../views/artistDetail/childRouter/ArtistSimi
 // 歌手详细信息结束
 
 // MV
+// 播放mv
+const PlayMv = () => import('../views/mv/PlayMv')
 Vue.use(VueRouter)
 const routes = [
   { path: '/', redirect: '/discover' },
@@ -53,8 +55,6 @@ const routes = [
       { path: '/discover/newsongs', component: NewSongs }
     ]
   },
-  // input输入框搜索信息
-  { path: '/search/:id', component: SearchList },
   // 歌手信息
   {
     path: '/artist',
@@ -67,7 +67,10 @@ const routes = [
       { path: '/artist/similar', component: ArtistSimilar }
 
     ]
-  }
+  },
+  // input输入框搜索信息
+  { path: '/search/:id', component: SearchList },
+  { path: '/playmv/:id', component: PlayMv }
 ]
 
 const router = new VueRouter({

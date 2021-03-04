@@ -1,7 +1,8 @@
 <template>
   <div class="base" v-if="baseInfo!== null">
     <div class="title">
-      <img :src="baseInfo.picUrl"  >
+      <img v-if="baseInfo.picUrl!== null" :src="baseInfo.picUrl"  >
+      <img v-if="baseInfo.picUrl == null " src="../../../assets/img/userimg.png" alt="">
     </div>
     <div class="content">
       <div class="top">
@@ -45,7 +46,6 @@ export default {
       }
     }
   }
-
 }
 </script>
 <style lang="less" scoped>
@@ -56,12 +56,13 @@ export default {
 }
 
 .title{
+  margin-right: 18px;
   width: 200px;
   height: 100%;
   >img{
     width: 100%;
     height: 100%;
-    opacity: 0;
+    opacity: 0.8;
     background-size: 100%,100%;
   }
 }

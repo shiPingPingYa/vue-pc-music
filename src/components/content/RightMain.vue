@@ -10,7 +10,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .main{
-width: 75%;
+width: 82%;
 height: 100%;
 background-color: #16181c;
 }

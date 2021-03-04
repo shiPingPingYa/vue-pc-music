@@ -25,7 +25,7 @@ export default {
       }
     },
     // 滚动条
-    scorllbar: {
+    scrollbar: {
       type: [Boolean, Object],
       dafault () {
         return false
@@ -43,8 +43,8 @@ export default {
       click: true,
       probeType: this.probeType,
       pullUpLoad: this.pullUpLoad,
-      scorllbar: this.scorllbar,
-      // 设置pc端的鼠标滚动事件
+      scrollbar: this.scrollbar,
+      // 设置pc端鼠标事件
       mouseWheel: {
         speed: 20,
         invert: false,
@@ -63,12 +63,15 @@ export default {
   methods: {
     // better-scroll内置方法滚动到指定位置
     scrollTo (x, y, timer = 500) {
-      this.scroll.scrollTo(x, y, timer)
+      this.scroll.scrollTo(x, y, timer) // better-scroll内置方法，回到指定位置
     },
-    // 上拉调用refresh方法，重新获取x，y
+    // 下拉调用refresh方法，重新获取x，y
     finishPullUp () {
       this.scroll.finishPullUp()
       this.refresh()
+    },
+    refresh () {
+      this.scroll.refresh()
     },
     // 获取y的坐标
     getScrollY () {
