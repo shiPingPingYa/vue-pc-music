@@ -17,7 +17,7 @@ export default {
         return 0
       }
     },
-    // 配置上拉功能
+    // 配置下拉功能
     pullUpLoad: {
       type: Boolean,
       default () {
@@ -55,7 +55,7 @@ export default {
     this.scroll.on('scroll', (position) => {
       this.$emit('scroll', position)
     })
-    // 是否派发上拉加载事件
+    // 是否派发下拉加载事件
     this.scroll.on('pullingUp', () => {
       this.$emit('pullingUp')
     })

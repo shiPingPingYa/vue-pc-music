@@ -22,10 +22,26 @@
     <!-- 右边内容布局 -->
     <div class="right">
       <!-- mv介绍 -->
-      <div class="desc"></div>
+      <div class="desc">
+        <p class="p">MV介绍</p>
+        <div class="base">
+          <div class="data">发布时间:{{detail.publishTime}} </div>
+          <div class="playCount">播放次数:{{detail.playCount}}次 </div>
+          <div class="clear"></div>
+        </div>
+         <div class="mv-desc" v-if="detail.desc !== null">
+           <!-- 防止鼠标下滑的时候，重新调用方法，mv会重复 -->
+           <scroll class="desc-scroll" ref="descScroll"
+           @mouseenter="enter()" @mouseleave="leave()">
+              <span>简介:</span>
+            {{detail.desc}}
+           </scroll>
+          </div>
+      </div>
       <!-- 相关视频推荐 -->
       <div class="alia">
-        <simi-mv-item></simi-mv-item>
+        <p class="p">相关推荐</p>
+        <simi-mv-item :mvList='simiMv'></simi-mv-item>
       </div>
     </div>
     </scroll>
@@ -92,21 +108,32 @@ export default {
       })
     },
     async getBaseInfo () {
+      // 分别是mv的详情，地址，评论，相似mv
       await Promise.all([_getMvDetail(this.id), _getMvUrl(this.id), _getMvComment(this.id, this.limit), _getSimiMv(this.id)]).then(res => {
         this.detail = res[0].data.data
         this.url = res[1].data.data.url
         this.recommends = res[2].data.comments
         this.notSimiMv = res[3].data.mvs
       })
+      // 处理相似mv，获取新的mv对象(id，名字，标题,url,播放数量)
       for (var i of this.notSimiMv) {
         var mv = new MV(i.id, i.cover, i.name, i.artistName, i.playCount)
         this.simiMv.push(mv)
       }
+    },
+    enter () {
+      this.$refs.scroll.disable()
+    },
+    leave () {
+      this.$refs.scroll.enable()
     }
   }
 }
 </script>
 <style lang="less" scoped>
+.clear{
+  clear: both;
+}
 .play-mv{
   padding: 0 5%;
   width: 100%;
@@ -166,7 +193,7 @@ export default {
   padding-left: 16px;
   float: right;
   width: 30%;
-  background-color: black;
+  color: #828384;
 }
 
 .p{
@@ -174,4 +201,24 @@ export default {
   font-size: 18px;
   color: #dcdde4;
 }
+
+.base{
+  > .playCount{
+  float: right;
+  }
+  > .data{
+    margin-bottom: 6px;
+  }
+}
+
+.mv-desc{
+  margin-bottom: 15px;
+  max-height: 288px;
+  width: 100%;
+  overflow: hidden;
+    > span{
+      color: #2e6bb0;
+      font-size: 14px;
+    }
+  }
 </style>

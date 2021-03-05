@@ -37,12 +37,20 @@ const ArtistDescDetail = () => import('../views/artistDetail/childRouter/ArtistD
 const ArtistSimilar = () => import('../views/artistDetail/childRouter/ArtistSimilar')
 // 歌手详细信息结束
 
-// MV
+// mv开始
+// MV首页
+const MV = () => import('../views/mv/Mv')
+// 所有mv
+const AllMv = () => import('../views/mv/AllMv')
 // 播放mv
 const PlayMv = () => import('../views/mv/PlayMv')
+
+// mv结束
+
 Vue.use(VueRouter)
 const routes = [
   { path: '/', redirect: '/discover' },
+  // 首页
   {
     path: '/discover',
     component: DiscoverMusic,
@@ -52,7 +60,8 @@ const routes = [
       { path: '/discover/category', component: MusicListCategory },
       { path: '/discover/ranklist', component: MusicListRank },
       { path: '/discover/artist', component: ArtistCategory },
-      { path: '/discover/newsongs', component: NewSongs }
+      { path: '/discover/newsongs', component: NewSongs },
+      { path: '/discover/mv', component: MV }
     ]
   },
   // 歌手信息
@@ -70,7 +79,10 @@ const routes = [
   },
   // input输入框搜索信息
   { path: '/search/:id', component: SearchList },
-  { path: '/playmv/:id', component: PlayMv }
+  // mv播放跳转
+  { path: '/playmv/:id', component: PlayMv },
+  // 所有mv
+  { path: '/allmv', component: AllMv }
 ]
 
 const router = new VueRouter({
