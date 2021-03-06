@@ -10,6 +10,9 @@
 import NavBar from './childComps/NavBar'
 export default {
   name: 'DisoverMusic',
+  components: {
+    NavBar
+  },
   data () {
     return {
       list: [
@@ -22,8 +25,17 @@ export default {
       ]
     }
   },
-  components: {
-    NavBar
+  created () {
+    var that = this
+    for (var i in this.list) {
+      (function (e) {
+        if (that.list[e].link === that.$route.path) {
+          setTimeout(() => {
+            that.$refs.nav.barClick(e)
+          }, 100)
+        }
+      })(i)
+    }
   }
 }
 </script>
@@ -35,9 +47,9 @@ export default {
 
 .content{
   margin-top: 10px;
-  padding: 10px 155px;
+  padding: 10px 20px;
   width: 100%;
-  height: calc(100% -49px);
+  height: calc(100% - 49px);
   overflow: hidden;
   > p{
     font-size: 20px;

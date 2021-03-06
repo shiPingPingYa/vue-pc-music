@@ -1,5 +1,4 @@
 import { request } from './request'
-
 export class MV {
   constructor (id, cover, name, artist, count) {
     this.id = id
@@ -12,7 +11,7 @@ export class MV {
 
 // 最新 mv
 // 说明 : 调用此接口 , 可获取最新 mv,取出数量 , 默认为 30
-export function _getNewMv (limit) {
+export function _getNewMV (limit) {
   return request({
     url: '/mv/first',
     params: {

@@ -11,7 +11,7 @@ export default {
 <style lang="less" scoped>
 .main{
 width: 82%;
-height: 100%;
+height:100% ;
 background-color: #16181c;
 }
 </style>

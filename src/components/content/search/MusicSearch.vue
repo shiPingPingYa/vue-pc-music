@@ -156,6 +156,7 @@ export default {
   text-align: center;
   line-height: 20px;
   font-size: 20px;
+  cursor: pointer;
 }
 
 .el-icon-zoom-in{

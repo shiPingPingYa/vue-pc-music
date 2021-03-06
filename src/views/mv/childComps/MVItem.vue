@@ -18,7 +18,7 @@
 </template>
 <script>
 export default {
-  name: 'MVItem',
+  name: 'MvItem',
   props: {
     mvList: {
       type: Array,
@@ -57,10 +57,12 @@ export default {
 
 .mv-item{
   position: relative;
-  margin-top: 4px;
+  margin-top: 8px;
   width: 230px;
+  font-size: 14px;
   > img{
     width: 230px;
+    height: 130px;
     background-size: 100%,100%;
   }
 }
@@ -72,12 +74,11 @@ export default {
   top: 0;
   right: 0;
   width: 80px;
-  height: 20px;
+  height: 30px;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, alpha)0.25;
+  background-color: rgba(160, 60, 60, 0.25);
   color: #fff;
-
   > img{
     width: 100%;
     height: 100%;
