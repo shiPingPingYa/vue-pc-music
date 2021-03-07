@@ -29,9 +29,9 @@ export default {
           transform: false
         },
         {
-          link: '/privateFW',
-          class: 'el-icon-magic-stick',
-          title: '私人FW',
+          link: '/allmv',
+          class: 'el-icon-video-camera-solid',
+          title: '全部MV',
           icon: false,
           transform: false
         },

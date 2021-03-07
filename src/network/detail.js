@@ -13,6 +13,16 @@ export function _getSongsDetail (arr) {
   })
 }
 
+// 调用后可获取歌单详情动态部分,如评论数,是否收藏,播放数
+export function _getMusicListDetail (id) {
+  return request({
+    url: '/playlist/detail',
+    params: {
+      id: id
+    }
+  })
+}
+
 // 将获取的歌曲对象进行封装
 export class SongDetail {
   constructor (songs) {

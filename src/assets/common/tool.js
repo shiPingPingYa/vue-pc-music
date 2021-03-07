@@ -7,6 +7,10 @@ export function formDate (date, str) {
     m = m < 10 ? '0' + m : m
     s = s < 10 ? '0' + s : s
     return `${m}:${s}`
+  } else if (str === 'mm月dd日') {
+    var Mm = date.getMonth() + 1
+    var Dd = date.getDate()
+    return `${Mm}月${Dd}日`
   } else {
     var F = date.getFullYear()
     var M = date.getMonth() + 1
