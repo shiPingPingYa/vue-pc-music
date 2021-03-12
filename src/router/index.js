@@ -44,8 +44,10 @@ const MV = () => import('../views/mv/Mv')
 const AllMv = () => import('../views/mv/AllMv')
 // 播放mv
 const PlayMv = () => import('../views/mv/PlayMv')
-
 // mv结束
+
+// 音乐歌单
+const MusicListDetail = () => import('../views/musicListDetail/MusicListDetail')
 
 Vue.use(VueRouter)
 const routes = [
@@ -82,7 +84,9 @@ const routes = [
   // mv播放跳转
   { path: '/playmv/:id', component: PlayMv },
   // 所有mv
-  { path: '/allmv', component: AllMv }
+  { path: '/allmv', component: AllMv },
+  // 歌单详情页面
+  { path: '/musicListDetail/:id/:time', component: MusicListDetail }
 ]
 
 const router = new VueRouter({

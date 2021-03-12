@@ -15,6 +15,7 @@ body{
 
 /* 显示小喇叭 */
 .curPlay{
+  margin: auto;
   position: absolute;
   width: 16px;
   height: 16px;
@@ -22,7 +23,6 @@ body{
   bottom: 0;
   left: 0;
   right: 0;
-  margin: auto;
   z-index: 1;
 }
 
@@ -33,5 +33,5 @@ color: transparent  !important;
 
 /* 音乐列表的隔行变色 */
 .backColor{
-  background-color: #0d0e0f;
+  background-color: #1a1c20;
 }
