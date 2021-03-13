@@ -29,3 +29,41 @@ export function _getRankList () {
     url: '/toplist'
   })
 }
+
+// 说明 : 调用此接口 , 可获取 banner( 轮播图 ) 数据
+export function _getBanner () {
+  return request({
+    url: '/banner'
+  })
+}
+
+// 推荐歌单
+export function _getPersonalized (config) {
+  return request({
+    url: '/personalized',
+    params: {
+      limit: config
+    }
+  })
+}
+
+// 独家放送(入口列表)
+export function _getPrivateContent () {
+  return request({
+    url: '/personalized/privatecontent'
+  })
+}
+
+// 推荐新音乐
+export function _getNewSong () {
+  return request({
+    url: '/personalized/newsong'
+  })
+}
+
+// 推荐 mv
+export function _getPrivateMv () {
+  return request({
+    url: '/personalized/mv'
+  })
+}

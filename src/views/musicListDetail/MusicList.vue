@@ -61,11 +61,11 @@ export default {
 .music-lsit{
   width: 100%;
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
 }
 
 .song-item{
-    margin: 5px 6px;
     padding-bottom: 10px;
     position: relative;
     width: 150px;

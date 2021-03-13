@@ -3,7 +3,6 @@
     <scroll ref="scroll" class="scroll" :pull-up-load="true" @pullingUp="pullingUp()">
      <div class="title">
          这是全部mv
-        <div class="title-boder"></div>
      </div>
    <div class="content">
       <mv-bar></mv-bar>
@@ -78,6 +77,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .all-mv{
+  padding: 0 20px;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -89,7 +89,7 @@ export default {
 
 .title{
   margin-top: 10px;
-  padding: 0 10%;
+  padding: 0 20px;
   font-size: 18px;
   color: #fff;
   > .title-boder{

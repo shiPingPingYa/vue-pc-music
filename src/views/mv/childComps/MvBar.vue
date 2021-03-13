@@ -50,7 +50,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .mv-bar{
-  margin: 0 10%;
+  margin: 0 20px;
   font-size: 14px;
   color: #828385;
   padding-bottom: 8px;

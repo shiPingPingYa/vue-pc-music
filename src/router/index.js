@@ -46,9 +46,12 @@ const AllMv = () => import('../views/mv/AllMv')
 const PlayMv = () => import('../views/mv/PlayMv')
 // mv结束
 
-// 音乐歌单
+// 音乐歌单详情
 const MusicListDetail = () => import('../views/musicListDetail/MusicListDetail')
 
+// 所有视频
+const AllVideoDetail = () => import('../views/allVideo/AllVideoDetail')
+const AllVideo = () => import('../views/allVideo/childComps/AllVideo')
 Vue.use(VueRouter)
 const routes = [
   { path: '/', redirect: '/discover' },
@@ -86,7 +89,17 @@ const routes = [
   // 所有mv
   { path: '/allmv', component: AllMv },
   // 歌单详情页面
-  { path: '/musicListDetail/:id/:time', component: MusicListDetail }
+  { path: '/musicListDetail/:id/:time', component: MusicListDetail },
+  // 所有视频
+  {
+    path: '/video',
+    component: AllVideoDetail,
+    children: [
+      { path: '/', redirect: '/video/allvideo' },
+      { path: '/video/allvideo', component: AllVideo },
+      { path: '/video/allmv', component: AllMv }
+    ]
+  }
 ]
 
 const router = new VueRouter({

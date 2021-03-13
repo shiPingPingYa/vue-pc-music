@@ -1,5 +1,5 @@
 <template>
-  <div class="left-menu">
+  <div class="left-menu" v-if="list !== null">
     <dl>
       <router-link :to="item.link" v-for="(item, index) in list" :key="index">
         <dd :class="{title:item.icon,action:currentIndex == index}"
@@ -81,6 +81,18 @@ export default {
         { link: '/allmv', class: '', title: '我的歌单', icon: true, transform: false }
 
       ]
+    }
+  },
+  created () {
+    var that = this
+    for (var i in this.list) {
+      (function (e) {
+        if (that.list[e].link === that.$route.path) {
+          setTimeout(() => {
+            that.checkClick(e)
+          }, 100)
+        }
+      })(i)
     }
   },
   methods: {

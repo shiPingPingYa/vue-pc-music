@@ -47,8 +47,7 @@ export default {
 }
 
 .mv-list {
-    margin-left: 10%;
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
