@@ -103,6 +103,7 @@ export default {
   height: 100%;
   justify-content: flex-end;
   align-items: center;
+  cursor: pointer;
   > .user-img{
     padding: 1px;
     width: 32px;
