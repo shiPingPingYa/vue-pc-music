@@ -13,6 +13,8 @@ import '../src/plugins/element'
 Vue.config.productionTip = false
 // 挂载axios
 Vue.prototype.$http = axios
+// 创建事件中心
+Vue.prototype.$bus = new Vue()
 new Vue({
   router,
   render: h => h(App),

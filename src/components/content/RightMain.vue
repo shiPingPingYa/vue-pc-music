@@ -10,8 +10,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .main{
-width: 82%;
-height:100% ;
-background-color: #16181c;
+  position: relative;
+  width: 82%;
+  height:100% ;
+  background-color: #16181c;
 }
 </style>

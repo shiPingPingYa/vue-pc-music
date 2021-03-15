@@ -45,6 +45,17 @@ export function _getRecommends (id, limit) {
   })
 }
 
+// 音乐评论内容
+export function _musicRecommend (id, limit) {
+  return request({
+    url: '/comment/music',
+    params: {
+      id: id,
+      limit: limit
+    }
+  })
+}
+
 // 热门歌单分类
 export function _getMusicListHot () {
   return request({
@@ -76,6 +87,16 @@ export class SongDetail {
   }
 }
 
+// 获取歌词
+// 说明 : 调用此接口 , 传入音乐 id 可获得对应音乐的歌词 ( 不需要登录 )
+export function _getLyric (id) {
+  return request({
+    url: '/lyric',
+    params: {
+      id: id
+    }
+  })
+}
 // 封装歌单对象
 export class BaseInfo {
   constructor (playlist) {
