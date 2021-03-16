@@ -1,9 +1,10 @@
 <template>
-  <div class="play-music" v-if="playList !== null">
+  <div class="play-music" v-if="playList !== null" >
     <!-- 播放条上面的内容区域 -->
-    <div class="top">
+    <div class="top" >
       <!-- 播放内容图片 -->
-      <div class="music-top-icon" v-if="playList[currentIndex] != null"
+      <div class="music-top-icon"
+      v-if="playList[currentIndex] !== null"
       @mouseenter="isShade = true"
       @mouseleave="isShade = false"
       @click="playerShow()">
@@ -13,7 +14,7 @@
       </div>
       </div>
       <!-- 播放内容 -->
-      <div class="music-top-center" v-if="playList[currentIndex] !=null">
+      <div class="music-top-center"  v-if="playList[currentIndex] !== null">
         <div class="music-title">{{playList[currentIndex].title}} </div>
         <div class="music-artist">{{playList[currentIndex].artist}}</div>
       </div>
@@ -33,7 +34,7 @@
       </div>
     </div>
     <!-- 播放条右边区域 -->
-    <div class="play-music-right" v-if="playList[currentIndex] !=null">
+    <div class="play-music-right" v-if="playList[currentIndex] !== null" >
       <!-- audio音频标签 -->
       <audio :src="playList[currentIndex].src"
       autoplay
@@ -46,11 +47,48 @@
       @error="musicErr()"
       ></audio>
       <!-- 进度条 -->
-      <div class="music-progress"></div>
+      <div class="music-progress">
+        <music-progress ref="music-pro" class="music-progress-children"></music-progress>
+        <div class="music-currtTime">{{currentTime}}/{{duration}} </div>
+      </div>
       <!-- 音量 -->
-      <div class="volumn"></div>
+      <div class="volumn">
+        <div class="volumb-icon">
+          <img src="../../../assets/img/playmusic/volumn.svg" alt="" v-show="!isVolumn">
+          <img src="../../../assets/img/playmusic/novolumn.svg" alt="" v-show="isVolumn">
+        </div>
+        <music-progress ref="volumn-pro" @childClickScale="setVolumn"></music-progress>
+      </div>
       <!-- 歌词,歌曲列表,播放顺序 -->
-      <div class="music-icon"></div>
+      <div class="music-icon">
+        <!-- 播放顺序按钮 -->
+        <div class="schema" @click="toggleSchema()">
+          <a href="#" title="顺序播放" v-show="schemaIndex==0">
+            <img src="../../../assets/img/playmusic/sunxubofang.svg" />
+          </a>
+          <a href="#" title="随机播放" v-show="schemaIndex==1">
+            <img src="../../../assets/img/playmusic/suijibofang.svg" />
+          </a>
+          <a href="#" title="单曲循环" v-show="schemaIndex==2">
+            <img src="../../../assets/img/playmusic/danquxunhuan.svg" />
+          </a>
+        </div>
+        <!-- 歌词按钮 -->
+        <div class="music-lyric" @click="toggleLyric()">
+          <a href="#" title="歌词">
+            <img src="../../../assets/img/playmusic/lyric.svg" v-show="!isLyric" />
+          </a>
+          <a href="#" title="歌词">
+            <img src="../../../assets/img/playmusic/lyric-click.svg" v-show="isLyric" />
+          </a>
+        </div>
+        <!-- 音乐列表按钮 -->
+        <div class="music-list" @click="toggleMusicList()">
+           <a href="#" title="歌单">
+            <img src="../../../assets/img/playmusic/list.svg" alt />
+          </a>
+        </div>
+      </div>
     </div>
     <!-- 播放音乐列表 -->
   </div>
@@ -62,10 +100,13 @@ import Player from './Player'
 import { formDate } from '../../../assets/common/tool'
 // 导入歌曲网络请求
 import { _getLyric } from '../../../network/detail'
+// 导入进度条
+import MusicProgress from './Progress'
 export default {
   name: 'PlayMusic',
   components: {
-    Player
+    Player,
+    MusicProgress
   },
   data () {
     return {
@@ -74,6 +115,12 @@ export default {
       // 歌曲歌词组件是否显示
       isPlayerShow: false,
       isPlayer: false,
+      // 音量小图标是否显示
+      isVolumn: false,
+      // 是否显示歌词
+      isLyric: false,
+      // 是否显示音乐列表
+      isMusicList: false,
       schemaIndex: 0,
       currentIndex: 0,
       // 剩余播放时间
@@ -92,7 +139,7 @@ export default {
           id: 1818690420,
           lrc: '',
           src:
-            'http://m701.music.126.net/20210316010850/57847cd6cb0f758b1bf7769b3c257e00/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/7354163734/999a/1cdf/5b29/77e0ceef7990395739432c4d77e3edf7.mp3',
+            'http://m801.music.126.net/20210316222127/1b449b49e78e60ae7f7c9b82545620a7/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/7354163734/999a/1cdf/5b29/77e0ceef7990395739432c4d77e3edf7.mp3',
           pic:
             'https://p1.music.126.net/J94zxjSMe5IjNABnpdOPew==/109951165670275788.jpg'
         }
@@ -128,7 +175,6 @@ export default {
         // this.$refs.music_pro.setProgress(scale)
         // 判断歌曲是否正在播放
       }
-      console.log(this.currentTime + '------' + this.duration)
     },
     // 音乐停止了
     musicPause () {
@@ -150,7 +196,7 @@ export default {
     musicEnded () {
       switch (this.schemaIndex) {
         case 0:
-          this.currentIndex = this.currentIndex >= this.playList.length - 1 ? 0 : this.currentIndex++
+          this.currentIndex = (this.currentIndex >= this.playList.length - 1 ? 0 : this.currentIndex++)
           break
         case 1:
           this.currentIndex = Math.floor(Math.random() * this.playList.length)
@@ -165,13 +211,28 @@ export default {
       await _getLyric(this.playList[this.currentIndex].id).then(res => {
         this.lyric = res.data.lrc.lyric
       })
-      console.log(this.lyric)
     },
     // 音乐获取失败
     musicErr () {
-      console.log('error')
       this.$message.error('当前音频不可用')
-      this.currentIndex++
+      // this.currentIndex++
+    },
+    // 通过改变schema的值来实现音乐播放顺序设置
+    toggleSchema () {
+      if (this.schemaIndex >= 2) this.schemaIndex = 0
+      else { this.schemaIndex++ }
+    },
+    // 是否在首页显示歌词
+    toggleLyric () {
+      this.isLyric = !this.isLyric
+    },
+    // 是否在首页显示音乐列表
+    toggleMusicList () {
+      this.isMusicList = !this.isMusicList
+    },
+    // 设置歌曲播放的声音
+    setVolumn (scale) {
+      console.log(scale)
     }
   }
 }
@@ -195,6 +256,7 @@ export default {
     z-index: 1;
   }
   > .play-music-left{
+    float: left;
     width: 15%;
     height: 100%;
     display: flex;
@@ -211,6 +273,76 @@ export default {
         height: 100%;
       }
     }
+  }
+  > .play-music-right{
+    float: right;
+    width: 85%;
+    height: 100%;
+    > .music-progress{
+    float: left;;
+    width: 70%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    > .music-currtTime{
+      width: 100px;
+      color: #fff;
+    }
+    > .music-progress-children{
+      flex: 1;
+    }
+    }
+    > .volumn{
+      float: left;
+      width: 10%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+    > .music-icon{
+      float: left;
+      padding: 0 20px;
+      margin-left: 1%;
+      width: 19%;
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+  }
+}
+
+.volumb-icon{
+  > img{
+  margin-right: 10px;
+  width: 16px;
+  }
+}
+
+.schema{
+  width: 30px;
+  img{
+   width: 20px;
+   height: 20px;
+  }
+}
+
+.music-lyric{
+  width: 20px;
+  img{
+    width: 20px;
+    height: 20px;
+    background-size: 100%,100%;
+  }
+}
+
+.music-list{
+  width: 20px;
+  img{
+    width: 20px;
+    height: 20px;
+    background-size: 100%,100%;
   }
 }
 
@@ -233,7 +365,7 @@ export default {
 .music-top-center {
   position: relative;
   left: 5px;
-  width: 100px;
+  width: 120px;
   font-size: 12px;
   color: #fff;
   white-space: nowrap;
