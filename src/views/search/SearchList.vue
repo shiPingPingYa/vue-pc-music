@@ -15,7 +15,7 @@
       <!-- //歌手条目 -->
       <artist-item :artistsList='artistsList' v-show="isShow == 'artist'"></artist-item>
       <!-- 音乐条目 -->
-      <music-item :musicList='musicList' v-show="isShow =='music'"></music-item>
+      <music-item :musicList='musicList' @musicItemClick="musicItemClick" v-show="isShow =='music'"></music-item>
     </scroll>
   </div>
 </template>
@@ -32,6 +32,8 @@ import { _Search } from '../../network/search'
 import { _getSongsDetail, SongDetail } from '../../network/detail'
 // 导入工具函数，处理相同歌曲标题名
 import { distinct } from '../../assets/common/tool'
+// 导入混入，使能获取音乐列表
+import { indexMixin } from '../musicListDetail/indexMixin'
 export default {
   name: 'SearchList',
   data () {
@@ -53,6 +55,7 @@ export default {
     ArtistItem,
     MusicItem
   },
+  mixins: [indexMixin],
   async created () {
     // 获取input输入的值key(id的值是在router上面动态绑定的)
     this.key = this.$route.params.id
@@ -93,8 +96,11 @@ export default {
           this.isShow = 'artist'
           break
       }
+    },
+    // 子组件触发传递下标
+    musicItemClick (index) {
+      this.playMusic(index)
     }
-
   }
 }
 </script>

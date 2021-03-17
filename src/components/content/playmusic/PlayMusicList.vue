@@ -1,5 +1,5 @@
 <template>
-  <div class="play-music-list" v-if="musicList.length !== null">
+  <div class="play-music-list" v-if="musicList.length !== 0">
     <!-- 头部区域 -->
     <div class="top">
       <div class="title">音乐播放列表</div>

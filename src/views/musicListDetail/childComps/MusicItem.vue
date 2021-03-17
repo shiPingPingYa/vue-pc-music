@@ -40,7 +40,7 @@
 // 处理音乐列表的背景和序号
 import { tableMixin } from '../tableMixin'
 // 音乐的显示与否playIndex
-// import { palyMixin } from '../playMixin'
+import { playMinxin } from '../playMixin'
 export default {
   name: 'MusicItem',
   props: {
@@ -51,17 +51,7 @@ export default {
       }
     }
   },
-  data () {
-    return {
-      playIndex: 0.5
-    }
-  },
-  methods: {
-    musicItemClick (i) {
-      this.playIndex = i
-    }
-  },
-  mixins: [tableMixin]
+  mixins: [tableMixin, playMinxin]
 }
 </script>
 <style lang="less" scoped>

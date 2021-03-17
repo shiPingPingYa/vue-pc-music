@@ -75,6 +75,29 @@ export default {
         return a.time - b.time
       })
       this.length = this.lyricArray.length
+    },
+    // 首页歌词滚动
+    scrollLyric (time = 0) {
+      // 最后保留一组歌词
+      if (this.lyricArray > this.length - 2) return true
+      // 滚动
+      if (time >= this.lyricArray[this.lyricIndex + 1].time) {
+        this.lyricIndex++
+        this.$refs.scroll.scrollTo(0, -30 * this.lyricIndex, 2000)
+      }
+    },
+    // 歌词滚动
+    maxScroll (time = 0) {
+      // 最后保留一组歌词
+      if (this.lyricArray > this.length - 2) return true
+      // 滚动
+      if (time >= this.lyricArray[this.lyricIndex + 1].time) {
+        this.lyricIndex++
+        // 播放页面保留五组歌词再滚动
+        if (this.lyricIndex < 5 || this.lyricIndex >= this.length - 5) return
+        this.maxIndex++
+        this.$refs.scroll.scrollTo(0, -30 * this.maxIndex, 2000)
+      }
     }
   }
 }

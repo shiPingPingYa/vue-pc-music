@@ -93,7 +93,7 @@
     <!-- 播放音乐列表 -->
     <play-music-list class="play-music-list" v-show="isMusicList" :musicList="musicList"></play-music-list>
     <!-- 首页歌词 -->
-    <Lyric class="play-music-lyric" :lyric="lyric" v-show="isLyric"></Lyric>
+    <Lyric ref="lyric" class="play-music-lyric" :lyric="lyric" v-show="isLyric"></Lyric>
   </div>
 </template>
 <script>
@@ -145,9 +145,8 @@ export default {
         {
           title: '说散就散(抖音完整版)',
           artist: 'yasenjan',
-          index: '0',
+          index: 0,
           id: 1818690420,
-          lrc: '',
           src:
             'http://m701.music.126.net/20210317152808/61a9701a820d92611241b8c55c207108/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/7354163734/999a/1cdf/5b29/77e0ceef7990395739432c4d77e3edf7.mp3',
           pic:
@@ -156,7 +155,43 @@ export default {
       ]
     }
   },
+  watch: {
+    music () {
+      if (this.$refs.audio != null) {
+        this.$refs.audio.load()
+      }
+    }
+  },
+  mounted () {
+    // 音乐数据
+    this.$bus.$on('PlayMusic', (index, path, musicList, playList) => {
+      this.playList = []
+      this.path = path
+      this.musicList = musicList
+      this.playList = playList
+
+      // 排序(升序)
+      this.playList.sort((a, b) => {
+        return a.index - b.index
+      })
+      // 设置index
+      this.setCurrentIndex(index)
+    })
+    // 监听歌曲列表的点击,设置index
+    this.$bus.$on('playMusicListItem', (index) => {
+      this.setCurrentIndex(index)
+    })
+  },
   methods: {
+    // 改变currentindex,重新设置播放音乐
+    setCurrentIndex (index) {
+      for (var i in this.playList) {
+        if (this.playList[i].index === index) {
+          this.currentIndex = i
+        }
+        break
+      }
+    },
     // 显示歌词组件
     playerShow () {
       this.isPlayerShow = !this.isPlayerShow
@@ -185,7 +220,14 @@ export default {
         var scale = this.$refs.audio.currentTime / this.$refs.audio.duration
         // 设置比例
         this.$refs.music_pro.setAudioProgress(scale)
-        // 判断歌曲是否正在播放
+
+        // 滚动歌词,播放时间不能为空
+        if (this.$refs.audio.currentTime !== null) {
+          // 首页歌词
+          this.$refs.lyric.scrollLyric(this.$refs.audio.currentTime)
+          // 播放页面歌词
+          this.$refs.player.$refs.playerLyric.maxScroll(this.$refs.audio.currentTime)
+        }
       }
     },
     // 音乐停止了
@@ -197,6 +239,8 @@ export default {
     // 音乐因缓存停止,或停止后已就绪时触发。
     musicPlaying () {
       this.isPlayer = true
+
+      // 触发播放方法，把下标传递过去
       this.$bus.$emit(
         'Playing',
         this.playList[this.currentIndex].index,
@@ -208,12 +252,14 @@ export default {
     musicEnded () {
       switch (this.schemaIndex) {
         case 0:
-          this.currentIndex = (this.currentIndex >= this.playList.length - 1 ? 0 : this.currentIndex++)
+          this.currentIndex = this.currentIndex >= this.playList.length - 1
+            ? 0
+            : this.currentIndex++
           break
         case 1:
           this.currentIndex = Math.floor(Math.random() * this.playList.length)
           break
-        case 3:
+        case 2:
           break
       }
     },

@@ -3,6 +3,15 @@ import { request } from './request'
 // 工具函数
 import { formDate } from '../assets/common/tool'
 
+// 获取音乐URL
+export function _getMusicUrl (id) {
+  return request({
+    url: '/song/url',
+    params: {
+      id: id
+    }
+  })
+}
 // 获取歌曲详情，传入ids(可以传入多个id)
 export function _getSongsDetail (arr) {
   return request({
