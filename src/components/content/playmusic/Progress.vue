@@ -23,11 +23,10 @@ export default {
     // 获取鼠标与进度条的比例
     proClick (e) {
       // 获取鼠标点击位置
-      this.setProgress((e.clientX - 280) - this.$refs.progress.offsetLeft)
+      this.setProgress(e, (e.clientX - 280) - this.$refs.progress.offsetLeft)
       // 获取鼠标点击后的比例
       this.scale = parseFloat((this.proLine / this.$refs.progress.offsetWidth).toFixed(2))
       // 触发父组件监听的方法,将比例传递出去
-      console.log(this.scale)
       this.$emit('childClickScale', this.scale)
     },
     // 根据audio的播放比例,重新设置小圆点和线条的位置
@@ -35,7 +34,8 @@ export default {
       this.proLine = scale * this.$refs.progress.offsetWidth
       this.proLoad = scale * this.$refs.progress.offsetWidth
     },
-    setProgress (width) {
+    // 设置播放进度条的前进
+    setProgress (e, width) {
       this.proLine = width
       this.proLoad = width
     }

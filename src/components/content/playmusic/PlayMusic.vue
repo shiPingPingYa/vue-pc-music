@@ -48,16 +48,16 @@
       ></audio>
       <!-- 进度条 -->
       <div class="music-progress">
-        <music-progress ref="music-pro" class="music-progress-children"></music-progress>
+        <music-progress ref="music_pro" class="music-progress-children" @childClickScale="setMusicProgress"></music-progress>
         <div class="music-currtTime">{{currentTime}}/{{duration}} </div>
       </div>
       <!-- 音量 -->
       <div class="volumn">
-        <div class="volumb-icon">
+        <div class="volumb-icon" @click="toggleVolumn">
           <img src="../../../assets/img/playmusic/volumn.svg" alt="" v-show="!isVolumn">
           <img src="../../../assets/img/playmusic/novolumn.svg" alt="" v-show="isVolumn">
         </div>
-        <music-progress ref="volumn-pro" @childClickScale="setVolumn"></music-progress>
+        <music-progress ref="music_volumn" @childClickScale="setVolumn"></music-progress>
       </div>
       <!-- 歌词,歌曲列表,播放顺序 -->
       <div class="music-icon">
@@ -91,6 +91,9 @@
       </div>
     </div>
     <!-- 播放音乐列表 -->
+    <play-music-list class="play-music-list" v-show="isMusicList" :musicList="musicList"></play-music-list>
+    <!-- 首页歌词 -->
+    <Lyric class="play-music-lyric" :lyric="lyric" v-show="isLyric"></Lyric>
   </div>
 </template>
 <script>
@@ -102,11 +105,17 @@ import { formDate } from '../../../assets/common/tool'
 import { _getLyric } from '../../../network/detail'
 // 导入进度条
 import MusicProgress from './Progress'
+// 导入歌词组件
+import Lyric from './Lyric.vue'
+// 导入播放音乐列表
+import PlayMusicList from './PlayMusicList'
 export default {
   name: 'PlayMusic',
   components: {
     Player,
-    MusicProgress
+    MusicProgress,
+    Lyric,
+    PlayMusicList
   },
   data () {
     return {
@@ -130,6 +139,7 @@ export default {
       path: '',
       // 歌词
       lyric: '',
+      // 处理好的歌曲信息
       musicList: [],
       playList: [
         {
@@ -139,7 +149,7 @@ export default {
           id: 1818690420,
           lrc: '',
           src:
-            'http://m801.music.126.net/20210316222127/1b449b49e78e60ae7f7c9b82545620a7/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/7354163734/999a/1cdf/5b29/77e0ceef7990395739432c4d77e3edf7.mp3',
+            'http://m701.music.126.net/20210317152808/61a9701a820d92611241b8c55c207108/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/7354163734/999a/1cdf/5b29/77e0ceef7990395739432c4d77e3edf7.mp3',
           pic:
             'https://p1.music.126.net/J94zxjSMe5IjNABnpdOPew==/109951165670275788.jpg'
         }
@@ -153,6 +163,8 @@ export default {
     },
     // 播放音乐
     toggle () {
+      // 设置音量进度条
+      this.$refs.music_volumn.setAudioProgress(0.8)
       // 替换图片
       this.isPlayer = !this.isPlayer
       // 判断当前音乐的状态
@@ -170,9 +182,9 @@ export default {
         // 获取总时长
         this.duration = formDate(new Date(this.$refs.audio.duration * 1000), 'mm:ss')
         // 获取比例
-        // var scale = this.$refs.audio.currentTime / this.$refs.audio.duration
+        var scale = this.$refs.audio.currentTime / this.$refs.audio.duration
         // 设置比例
-        // this.$refs.music_pro.setProgress(scale)
+        this.$refs.music_pro.setAudioProgress(scale)
         // 判断歌曲是否正在播放
       }
     },
@@ -232,9 +244,35 @@ export default {
     },
     // 设置歌曲播放的声音
     setVolumn (scale) {
-      console.log(scale)
+      this.$refs.audio.volumn = scale
+    },
+    // 设置进度条的点击，歌曲时间对应跳转
+    setMusicProgress (scale) {
+      this.$refs.audio.currentTime = scale * this.$refs.audio.duration
+      console.log(this.$refs.audio.currentTime + '----' + scale)
+    },
+    // 设置音乐音量
+    toggleVolumn () {
+      this.isVolumn = !this.isVolumn
+      // 音量 == 0
+      if (this.isVolumn) {
+        this.$refs.audio.volume = 0.0
+        this.$refs.music_volumn && this.$refs.music_volumn.setAudioProgress(0.0)
+      } else {
+        // 音量不为 == 0
+        this.$refs.audio.volume = 0.8
+        this.$refs.music_volumn && this.$refs.music_volumn.setAudioProgress(0.8)
+      }
+    },
+    // 切换下一首音乐
+    nextMusic () {
+      // 判断播放音乐是否存在
+      if (this.currentIndex >= this.playList.length - 1) this.currentIndex = 0
+      else this.currentIndex++
+      this.$refs.audio.src = this.playList[this.currentIndex].src
     }
   }
+
 }
 </script>
 <style lang="less" scoped>
@@ -299,6 +337,7 @@ export default {
       height: 100%;
       display: flex;
       align-items: center;
+      user-select: none;
     }
     > .music-icon{
       float: left;
@@ -311,9 +350,26 @@ export default {
       align-items: center;
     }
   }
+  > .play-music-lyric{
+    position: absolute;
+    margin: auto;
+    bottom: 60px;
+    left: 50%;
+    right: 50%;
+    width: 460px;
+    height: 30px;
+    z-index: 100;
+
+  }
+  > .play-music-list{
+    position: absolute;
+    bottom: 58px;
+    right: 0;
+  }
 }
 
 .volumb-icon{
+  cursor: pointer;
   > img{
   margin-right: 10px;
   width: 16px;
