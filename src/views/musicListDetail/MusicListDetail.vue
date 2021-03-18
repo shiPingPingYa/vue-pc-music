@@ -6,7 +6,7 @@
   <!-- 音乐榜单导航条 -->
     <music-bar :bar="bar" @mlBarClick="mlBarClick"></music-bar>
   <!-- 音乐榜单列表 -->
-    <music-item :musicList="musicList" v-show="isShow == 'music'"></music-item>
+    <music-item @musicItemClick="musicItemClick" :musicList="musicList" v-show="isShow == 'music'"></music-item>
   <!-- 音乐榜单评论信息 -->
     <recommends :recommends="recommends" v-show="isShow == 'recommends'"></recommends>
   <!-- 音乐榜单收藏者 -->
@@ -28,6 +28,9 @@ import MusicItem from './childComps/MusicItem'
 import MusicListLike from './childComps/MusicListLike'
 // 导入数据请求
 import { _getMusicListDetail, BaseInfo, _getSongsDetail, SongDetail, _getSub, _getRecommends } from '../../network/detail'
+// 混入
+import { indexMixin } from './indexMixin'
+// 混入
 export default {
   name: 'MusicListDetail',
   components: {
@@ -56,11 +59,13 @@ export default {
       subs: null
     }
   },
-  created () {
+  // 音乐混入
+  mixins: [indexMixin],
+  async created () {
     // 获取歌单Id
     this.id = this.$route.params.id
     // 获取歌单数据
-    _getMusicListDetail(this.id).then(res => {
+    await _getMusicListDetail(this.id).then(res => {
       this.musicListDetail = res.data
       // 通过封装的baseinfo方法，获取需要的默认信息
       this.baseInfo = new BaseInfo(this.musicListDetail.playlist)
@@ -91,8 +96,13 @@ export default {
   methods: {
     mlBarClick (str) {
       this.isShow = str
+    },
+    // 子组件上面的歌曲点击事件传递音乐下标
+    musicItemClick (index) {
+      this.playMusic(index)
     }
   }
+
 }
 </script>
 <style lang="less" scoped>

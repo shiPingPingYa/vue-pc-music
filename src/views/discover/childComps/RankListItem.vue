@@ -6,7 +6,7 @@
       :style="{background:'linear-gradient(to right,'+bgColor[0]+','+bgColor[1]+')'}"
       @click="enterDetail()"
     >
-      <div class="left">
+      <div class="left"  >
         <div class="left-itemF">
           <i>{{title[0]}}</i>
         </div>
@@ -19,7 +19,7 @@
           </div>
           <div class="update">{{getUpdateTime}}</div>
         </div>
-        <div class="right">
+        <div class="right"  @click="rankItemClick()">
           <img src="../../../assets/img/playmusic/xibofang.svg" alt />
         </div>
       </div>
@@ -45,6 +45,8 @@ import { _getMusicListDetail, _getSongsDetail, SongDetail } from '../../../netwo
 import { formDate } from '../../../assets/common/tool'
 // // 处理隔行变色
 import { tableMixin } from '../../musicListDetail/tableMixin'
+// 音乐混入
+import { indexMixin } from '../../musicListDetail/indexMixin'
 export default {
   name: 'RankListItem',
   props: {
@@ -97,6 +99,7 @@ export default {
       musicListDetail: null
     }
   },
+  mixins: [tableMixin, indexMixin],
   computed: {
     getUpdateTime () {
       var time = this.musicListDetail.playlist.updateTime
@@ -120,9 +123,12 @@ export default {
     enterDetail () {
       this.$router.push('/musiclistdetail/' + (this.rankId ||
        this.newSongId || this.artistId || this.hotId || this.originalId) + '/' + new Date().getTime())
+    },
+    // 混入音乐
+    rankItemClick () {
+      this.playMusic()
     }
-  },
-  mixins: [tableMixin]
+  }
 
 }
 </script>

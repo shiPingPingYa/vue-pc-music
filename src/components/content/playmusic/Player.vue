@@ -100,7 +100,7 @@ export default {
     musicRecommends () {
       this.page++
       _musicRecommend(this.music.id, this.limit * this.page).then(res => {
-        this.recommends = res.data.commentsthis
+        this.recommends = res.data.comments
         this.$refs.scroll.finishPullUp()
       })
     }

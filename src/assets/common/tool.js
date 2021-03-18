@@ -23,7 +23,7 @@ export function formDate (date, str) {
 
 // 把传递进来的歌曲标题名进行处理(前后两首歌，标题名不能一样)
 export function distinct (arr) {
-  const newArr = []
+  var newArr = []
   let isExist = false
   for (let i = 0, length = arr.length; i < length; i++) {
     for (let j = i + 1; j < length; j++) {

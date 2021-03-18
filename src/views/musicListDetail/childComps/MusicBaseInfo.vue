@@ -32,7 +32,7 @@
         </div>
         <!-- 中间三按钮 -->
         <div class="center">
-          <div class="play">
+          <div class="play" @click="palyAllMusic()">
             <img src="../../../assets/img/playmusic/bofang.svg" alt="">
             播放全部
           </div>
@@ -63,6 +63,14 @@ export default {
       default () {
         return {}
       }
+    }
+  },
+  methods: {
+    // 播放全部音乐
+    palyAllMusic () {
+      // this.$parent.musicItemClick()
+      this.$parent.$parent.musicItemClick()
+      // console.log(this.$parent.$parent.musicItemClick())
     }
   }
 }

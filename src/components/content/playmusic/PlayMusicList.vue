@@ -12,7 +12,7 @@
     <!-- 音乐列表区域 -->
     <scroll class="play-music-list-scroll">
       <div class="list">
-        <music-item :musicList="musicList"></music-item>
+        <music-item @musicItemClick="musicItemClick" :musicList="musicList"></music-item>
       </div>
     </scroll>
   </div>
@@ -36,6 +36,11 @@ export default {
     cancel () {
       this.$parent.isMusicList = false
       console.log(this.$parent.isMusicList)
+    },
+    // 音乐列表的点击事件传递了一个下标
+    musicItemClick (index) {
+      console.log(index)
+      this.$bus.$emit('playMusicListItem', index)
     }
   }
 }
@@ -77,6 +82,11 @@ export default {
 .play-music-list-scroll{
   height: calc(100% - 24px);
   overflow: hidden;
+}
+
+.list{
+  width: 100%;
+  height: 100%;
 }
 
 </style>

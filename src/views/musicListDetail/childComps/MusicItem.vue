@@ -28,7 +28,7 @@
           </td>
           <td>{{item.name}}</td>
           <td>{{item.song}} </td>
-          <td>{{item.ablum}} </td>
+          <td>{{item.album}} </td>
           <td>{{item.time}} </td>
 
         </tr>
@@ -119,6 +119,7 @@ export default {
 }
 .music tbody tr td:nth-child(3){
     width: 26%;
+    max-width: 190px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -127,12 +128,17 @@ export default {
 
 .music tr td:nth-child(4){
     width: 16%;
-     white-space: nowrap;
+    white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 }
 .music tr td:nth-child(5){
     width: 16%;
+    line-height: 30px;
+    max-width: 162px  ;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .music tr td:nth-child(6){
     width: 16%;

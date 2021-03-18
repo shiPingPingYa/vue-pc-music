@@ -185,11 +185,13 @@ export default {
   methods: {
     // 改变currentindex,重新设置播放音乐
     setCurrentIndex (index) {
+      var that = this
       for (var i in this.playList) {
-        if (this.playList[i].index === index) {
-          this.currentIndex = i
-        }
-        break
+        (function (e) {
+          if (that.playList[e].index === index) {
+            that.currentIndex = e
+          }
+        })(i)
       }
     },
     // 显示歌词组件
@@ -250,17 +252,20 @@ export default {
     },
     // 音乐播放完毕
     musicEnded () {
-      switch (this.schemaIndex) {
-        case 0:
-          this.currentIndex = this.currentIndex >= this.playList.length - 1
-            ? 0
-            : this.currentIndex++
-          break
-        case 1:
-          this.currentIndex = Math.floor(Math.random() * this.playList.length)
-          break
-        case 2:
-          break
+      // 判断播放音乐是否存在
+      if (this.currentIndex >= this.playList.length - 1) {
+        this.currentIndex = 0
+      } else {
+        switch (this.schemaIndex) {
+          case 0: this.currentIndex++
+            break
+          case 1:
+            this.currentIndex = Math.floor(Math.random() * this.playList.length)
+            break
+          case 2:
+            break
+        }
+        this.$refs.audio.src = this.playList[this.currentIndex].src
       }
     },
     // 加载播放音频
@@ -295,7 +300,6 @@ export default {
     // 设置进度条的点击，歌曲时间对应跳转
     setMusicProgress (scale) {
       this.$refs.audio.currentTime = scale * this.$refs.audio.duration
-      console.log(this.$refs.audio.currentTime + '----' + scale)
     },
     // 设置音乐音量
     toggleVolumn () {
@@ -313,12 +317,22 @@ export default {
     // 切换下一首音乐
     nextMusic () {
       // 判断播放音乐是否存在
-      if (this.currentIndex >= this.playList.length - 1) this.currentIndex = 0
-      else this.currentIndex++
-      this.$refs.audio.src = this.playList[this.currentIndex].src
+      if (this.currentIndex >= this.playList.length - 1) {
+        this.currentIndex = 0
+      } else {
+        switch (this.schemaIndex) {
+          case 0: this.currentIndex++
+            break
+          case 1:
+            this.currentIndex = Math.floor(Math.random() * this.playList.length)
+            break
+          case 2:
+            break
+        }
+        this.$refs.audio.src = this.playList[this.currentIndex].src
+      }
     }
   }
-
 }
 </script>
 <style lang="less" scoped>

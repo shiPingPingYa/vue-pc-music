@@ -10,7 +10,7 @@
     <scroll ref="scroll" class="new-scroll" :pull-up-load="true" @pullingUp='pullingUp'>
       <div class="content">
         <!-- 播放按钮 -->
-        <div class="play">
+        <div class="play"  @click="playAllMusic()">
           <img src="../../../assets/img/playmusic/rebofang.svg" alt="">
           播放全部
         </div>
@@ -18,7 +18,8 @@
           <table>
             <tbody>
               <tr v-for="(item,index) in musicList" :key="index"
-              :class="{backColor:setBackColor(index)}">
+              :class="{backColor:setBackColor(index)}"
+              @click="newSongItem(index)">
                 <td>{{setSerial(index)}}</td>
                 <td>
                   <div class="backMask">
@@ -45,6 +46,8 @@ import { SongDetail, _getSongsDetail } from '../../../network/detail'
 // 导入新歌速递接口，type: 地区类型 id
 import { _getTopSongs } from '../../../network/discover'
 import { tableMixin } from '../../musicListDetail/tableMixin'
+// 混入
+import { indexMixin } from '../../musicListDetail/indexMixin'
 export default {
   name: 'NewSongs',
   components: {
@@ -66,7 +69,7 @@ export default {
       musicList: []
     }
   },
-  mixins: [tableMixin],
+  mixins: [tableMixin, indexMixin],
   created () {
     this.getTopSongs()
   },
@@ -94,6 +97,14 @@ export default {
         }
         this.$refs.scroll.finishPullUp()
       })
+    },
+    // 播放全部音乐
+    playAllMusic () {
+      this.playMusic()
+    },
+    // 播放选中音乐
+    newSongItem (index) {
+      this.$bus.$emit('playMusicListItem', index)
     }
   }
 }
@@ -130,6 +141,7 @@ export default {
     width: 100%;
     font-size: 14px;
     color: #fff;
+    cursor: pointer;
     > img{
       width: 24px;
       height: 24px;
