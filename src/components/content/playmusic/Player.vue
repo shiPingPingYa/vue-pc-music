@@ -7,7 +7,7 @@
           <!-- 左边图标区域 -->
           <div class="left">
             <div class="play-bar-support">
-          <img src="../../../assets/img/playmusic/play-bar-support.png" alt />
+              <img src="../../../assets/img/playmusic/play-bar-support.png" alt />
             </div>
             <div class="play-bar" :class="{bar:!isPlayer}">
             <img class="play-bar"  src="../../../assets/img/playmusic/play-bar.png" alt />
