@@ -35,11 +35,9 @@ export default {
   methods: {
     cancel () {
       this.$parent.isMusicList = false
-      console.log(this.$parent.isMusicList)
     },
     // 音乐列表的点击事件传递了一个下标
     musicItemClick (index) {
-      console.log(index)
       this.$bus.$emit('playMusicListItem', index)
     }
   }
