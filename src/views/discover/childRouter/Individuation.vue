@@ -9,7 +9,7 @@
     <!-- 私人派送区域 -->
     <private-content :privateContent='privateContent'></private-content>
     <!-- 最新音乐区域 -->
-    <new-songs :songList="songList"></new-songs>
+    <new-songs :songList="songList" @playMusic="playNewsong()"></new-songs>
     <!-- 推荐mv区域 -->
     <p class="pri-mv">推荐MV</p>
     <mv-item :mvList="mvList"></mv-item>
@@ -28,10 +28,14 @@ import PrivateContent from '../childComps/PrivateContent'
 import NewSongs from '../childComps/NewSongs'
 // 导入首页数据请求
 import { _getBanner, _getPersonalized, _getPrivateContent, _getNewSong, _getPrivateMv } from '../../../network/discover'
+// 歌曲请求
+import { _getSongsDetail, SongDetail } from '../../../network/detail'
 // 导入封装的mv处理函数
 import { MV } from '../../../network/mv'
 // 导入mv组件
 import MvItem from '../../mv/childComps/MVItem'
+// 导入音乐混入
+import { indexMixin } from '../../musicListDetail/indexMixin'
 export default {
   name: 'Individuation',
   data () {
@@ -54,6 +58,7 @@ export default {
     NewSongs,
     MvItem
   },
+  mixins: [indexMixin],
   async created () {
     // 获取首页轮播图
     // _getBanner().then(res => {
@@ -72,6 +77,22 @@ export default {
       this.mvList.push(mv)
     }
     this.mvList.slice(0, 3)
+  },
+  methods: {
+    // 最新音乐的点击
+    async playNewsong (index) {
+      // 先清空音乐列表
+      this.musicList = []
+      // 根据歌曲的id获取音乐详细信息
+      for (var i in this.songList) {
+        // 获取音乐详细信息
+        await _getSongsDetail(this.songList[i].id).then(res => {
+          var song = new SongDetail(res.data.songs)
+          this.musicList.push(song)
+        })
+      }
+      this.playMusic(index)
+    }
   }
 }
 </script>

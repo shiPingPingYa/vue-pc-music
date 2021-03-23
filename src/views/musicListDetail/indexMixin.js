@@ -10,7 +10,7 @@ export const indexMixin = {
       var musicList
       var url = null
       var playList = []
-      // 音乐只显示50条
+      // 音乐只显示100条
       if (this.musicList.length >= 200) {
         musicList = this.musicList.slice(0, 100)
       } else { musicList = this.musicList }
@@ -29,8 +29,9 @@ export const indexMixin = {
         })
       }
     },
-    play () {
+    play (index) {
       console.log(this.musicList)
+      console.log(index)
     }
   }
 }

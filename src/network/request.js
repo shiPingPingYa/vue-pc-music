@@ -2,7 +2,8 @@ import axios from 'axios'
 export function request (config) {
 // 设置默认url
   const install = axios.create({
-    baseURL: 'http://localhost:3000',
+    // 请求地址设置为远程ip
+    baseURL: 'http://81.69.232.192:3000',
     timeout: 5000
   })
   // 配置请求头

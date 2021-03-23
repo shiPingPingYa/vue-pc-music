@@ -2,7 +2,7 @@
   <div class="new-songs">
     <div class="top">最新音乐</div>
     <div class="content">
-      <div class="item" v-for="(item, index) in songList" :key="index">
+      <div class="item" v-for="(item, index) in songList" :key="index"  @dblclick="playMusic(index)">
         <div class="number">{{index+1}} </div>
       <div class="title">
         <img :src="item.picUrl" alt="">
@@ -29,6 +29,12 @@ export default {
       default () {
         return []
       }
+    }
+  },
+  methods: {
+    // 触发父组件上面的方法，传递播放的音乐
+    playMusic (index) {
+      this.$emit('playMusic', index)
     }
   }
 }
