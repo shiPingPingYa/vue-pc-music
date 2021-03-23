@@ -29,7 +29,7 @@ export default {
   },
   data () {
     return {
-      limit: 12,
+      limit: 24,
       offset: 1,
       mvList: [],
       area: null,

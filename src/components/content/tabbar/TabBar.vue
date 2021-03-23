@@ -2,7 +2,7 @@
   <div class="header">
     <div class="logo">
       <i class="el-icon-platform-eleme" style="color:red"></i>
-     <div class="title">慧慧音乐</div>
+     <div class="title">覃覃音乐</div>
     </div>
     <div class="buttons">
       <button class="el-icon-arrow-left" @click="preRouter()"></button>

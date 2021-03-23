@@ -26,7 +26,7 @@ export default {
     return {
       tags: null,
       currentIndex: 0,
-      limit: 24,
+      limit: 30,
       page: 1,
       musicList: []
     }
@@ -49,8 +49,8 @@ export default {
     // 获取热门标签下面的精品歌单
     getHighquality () {
       _getHighquality(this.tags[this.currentIndex].name, this.limit * this.page).then(res => {
-        this.musicList = res.data.playlists
         this.page++
+        this.musicList = res.data.playlists
         this.$refs.scroll.finishPullUp()
       })
     },
