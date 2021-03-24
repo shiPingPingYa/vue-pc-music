@@ -79,7 +79,7 @@ export default {
     // 首页歌词滚动
     scrollLyric (time = 0) {
       // 最后保留一组歌词
-      if (this.lyricArray > this.length - 2) return true
+      if (this.lyricIndex > this.length - 2) return true
       // 滚动
       if (time >= this.lyricArray[this.lyricIndex + 1].time) {
         this.lyricIndex++
@@ -89,7 +89,7 @@ export default {
     // 歌词滚动
     maxScroll (time = 0) {
       // 最后保留一组歌词
-      if (this.lyricArray > this.length - 2) return true
+      if (this.lyricIndex > this.length - 2) return true
       // 滚动
       if (time >= this.lyricArray[this.lyricIndex + 1].time) {
         this.lyricIndex++

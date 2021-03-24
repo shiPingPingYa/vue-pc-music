@@ -183,6 +183,7 @@ export default {
     })
   },
   methods: {
+    //
     // 改变currentindex,重新设置播放音乐
     setCurrentIndex (index) {
       var that = this
