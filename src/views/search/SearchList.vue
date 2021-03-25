@@ -56,11 +56,42 @@ export default {
     MusicItem
   },
   mixins: [indexMixin],
-  async created () {
+  watch: {
+    $route (oldkey, newkey) {
+      this.key = oldkey.params.id
+      this.searchMusic()
+    }
+
+  },
+  created () {
     // 获取input输入的值key(id的值是在router上面动态绑定的)
     this.key = this.$route.params.id
     // 根据key获取搜索结果
     if (this.key !== null && this.key !== '') {
+      this.searchMusic()
+    }
+  },
+  methods: {
+    barClick (index) {
+      this.currentIndex = index
+      switch (index) {
+        case 0:
+          this.isShow = 'music'
+          break
+        case 1:
+          this.isShow = 'artist'
+          break
+      }
+    },
+    // 子组件触发传递下标
+    musicItemClick (index) {
+      this.playMusic(index)
+    },
+    // 获取数据
+    async searchMusic () {
+      this.musicList = []
+      this.artistsList = []
+      this.musicListId = []
       await _Search(this.key).then(res => {
         var list = res.data.result.songs
         // 遍历响应的的数据
@@ -83,23 +114,6 @@ export default {
           }
         }
       })
-    }
-  },
-  methods: {
-    barClick (index) {
-      this.currentIndex = index
-      switch (index) {
-        case 0:
-          this.isShow = 'music'
-          break
-        case 1:
-          this.isShow = 'artist'
-          break
-      }
-    },
-    // 子组件触发传递下标
-    musicItemClick (index) {
-      this.playMusic(index)
     }
   }
 }

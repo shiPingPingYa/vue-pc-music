@@ -109,11 +109,13 @@ export default {
     },
     async getBaseInfo () {
       // 分别是mv的详情，地址，评论，相似mv
+      console.log(this.id)
       await Promise.all([_getMvDetail(this.id), _getMvUrl(this.id), _getMvComment(this.id, this.limit), _getSimiMv(this.id)]).then(res => {
         this.detail = res[0].data.data
         this.url = res[1].data.data.url
         this.recommends = res[2].data.comments
         this.notSimiMv = res[3].data.mvs
+        return res[2].data.comments
       })
       // 处理相似mv，获取新的mv对象(id，名字，标题,url,播放数量)
       for (var i of this.notSimiMv) {

@@ -1,6 +1,6 @@
 <template>
   <div class="music-list-detail">
- <scroll class="musiclist-detail">
+ <scroll class="musiclist-detail" >
     <!-- 音乐榜单默认信息 -->
     <music-base-info :baseInfo="baseInfo"></music-base-info>
   <!-- 音乐榜单导航条 -->
@@ -85,6 +85,7 @@ export default {
       // 获取评论内容
       _getRecommends(this.id, this.limit).then(res => {
         this.recommends = res.data.comments
+        return res.data.comments
       })
 
       // 获取歌单收藏者
@@ -92,6 +93,7 @@ export default {
         this.subs = res.data.subscribers
       })
     })
+    // 把歌单评论内容传递给首页评论组件
   },
   methods: {
     mlBarClick (str) {
@@ -100,6 +102,10 @@ export default {
     // 子组件上面的歌曲点击事件传递音乐下标
     musicItemClick (index) {
       this.playMusic(index)
+    },
+    // 评论下拉
+    pullingUp () {
+      console.log('aa')
     }
   }
 

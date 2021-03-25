@@ -3,6 +3,7 @@
     <tab-bar></tab-bar>
     <center-content></center-content>
     <play-music></play-music>
+    <home-page-recommends></home-page-recommends>
   </div>
 </template>
 
@@ -13,19 +14,22 @@ import TabBar from '../src/components/content/tabbar/TabBar'
 import CenterContent from '../src/components/content/conter/CenterContent'
 // 底部区域
 import PlayMusic from '../src/components/content/playmusic/PlayMusic'
+// 导入首页评论组件
+import HomePageRecommends from '../src/components/HomePageRecommends'
 export default {
   name: 'app',
   components: {
     TabBar,
     CenterContent,
-    PlayMusic
+    PlayMusic,
+    HomePageRecommends
   }
 }
 </script>
 
 <style>
 #app {
-  margin: 0 2% 0 18%;
+  margin: 0 0 0 20%;
   width: 80%;
   height: 100%;
   opacity: 0.9;

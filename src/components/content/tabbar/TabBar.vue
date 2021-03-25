@@ -16,7 +16,7 @@
       <div class="user-img">
         <img src="../../../assets/img/userimg.png">
       </div>
-      <div class="user-id">乱了浮华了</div>
+      <div class="user-id">覃覃</div>
     </div>
   </div>
 </template>
