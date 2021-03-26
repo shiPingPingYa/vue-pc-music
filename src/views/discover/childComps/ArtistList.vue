@@ -2,12 +2,13 @@
   <div class="music-list">
     <div class="music-item" v-for="(item,index) in artistList" :key="index"
     @click="enterArtistDetail(item)">
-      <img :src="setImgUrl(item)" alt="">
+      <img :src="setImgUrl(item)" alt="" @load="artistImgLoad">
       <div class="name">{{item.name}} </div>
     </div>
   </div>
 </template>
 <script>
+import { imgLoad } from '../../../assets/common/mixin'
 export default {
   name: 'ArtistList',
   props: {
@@ -18,6 +19,7 @@ export default {
       }
     }
   },
+  mixins: [imgLoad],
   methods: {
     // 设置背景图片url
     setImgUrl (item) {
@@ -31,6 +33,10 @@ export default {
         }
       })
       this.$store.commit('addArtist', artist)
+    },
+    artistImgLoad () {
+      if (this.count === this.artistList.length) this.$emit('artistImgLoad')
+      this.count++
     }
   }
 }

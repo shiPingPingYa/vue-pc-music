@@ -61,7 +61,8 @@ export function _musicRecommend (id, limit) {
     params: {
       id: id,
       limit: limit
-    }
+    },
+    isClose: true
   })
 }
 

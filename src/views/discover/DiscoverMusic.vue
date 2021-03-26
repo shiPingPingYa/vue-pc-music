@@ -2,7 +2,9 @@
   <div class="discover">
     <nav-bar :list="list" ref="nav"></nav-bar>
     <div class="content">
+      <keep-alive>
       <router-view></router-view>
+      </keep-alive>
     </div>
   </div>
 </template>

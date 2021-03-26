@@ -21,7 +21,8 @@
     <scroll ref="scroll" class="scroll-artist" :pull-up-load="true"
     @pullingUp="pullingUp">
     <!-- 歌手列表 -->
-    <artist-list :artistList='artistList'></artist-list></scroll>
+    <artist-list :artistList='artistList'></artist-list>
+    </scroll>
   </div>
 </template>
 <script>
@@ -67,7 +68,6 @@ export default {
   methods: {
     // scroll下拉刷新
     async pullingUp () {
-      this.page++
       var artistList = []
       await _getArtist(
         this.area[this.areaIndex].value,
@@ -75,6 +75,7 @@ export default {
         this.limit * this.page
       ).then(res => {
         artistList = res.data.artists
+        this.page++
       })
       this.artistList = artistList
     },

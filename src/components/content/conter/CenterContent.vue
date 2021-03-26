@@ -2,6 +2,7 @@
   <div class="content">
     <left-menu></left-menu>
     <right-main></right-main>
+
   </div>
 </template>
 <script>

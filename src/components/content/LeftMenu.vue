@@ -78,21 +78,9 @@ export default {
           icon: false,
           transform: false
         },
-        { link: '/allmv', class: '', title: '我的歌单', icon: true, transform: false }
+        { link: '/mysong', class: '', title: '我的歌单', icon: true, transform: false }
 
       ]
-    }
-  },
-  created () {
-    var that = this
-    for (var i in this.list) {
-      (function (e) {
-        if (that.list[e].link === that.$route.path) {
-          setTimeout(() => {
-            that.checkClick(e)
-          }, 100)
-        }
-      })(i)
     }
   },
   methods: {

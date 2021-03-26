@@ -31,3 +31,11 @@ export const detailMixin = {
     }
   }
 }
+
+export const imgLoad = {
+  data () {
+    return {
+      imgCount: 1
+    }
+  }
+}

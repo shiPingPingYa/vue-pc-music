@@ -89,7 +89,7 @@ export default {
 }
 
 .title{
-  margin: 0 98px;
+  width: 100%;
   padding: 5px 0;
   color: #dcdde4;
   font-size: 20px;
