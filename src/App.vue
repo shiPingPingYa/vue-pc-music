@@ -23,6 +23,14 @@ export default {
     CenterContent,
     PlayMusic,
     HomePageRecommends
+  },
+  created () {
+    // 获取localstorage里面的obj对象
+    if (window.localStorage.getItem('obj')) {
+      var obj = window.localStorage.getItem('obj')
+      obj = JSON.parse(obj)
+      this.$store.commit('addUser', obj)
+    }
   }
 }
 </script>

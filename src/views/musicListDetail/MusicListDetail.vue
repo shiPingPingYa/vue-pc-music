@@ -59,41 +59,22 @@ export default {
       subs: null
     }
   },
+  watch: {
+    $route (oldkey) {
+      if (oldkey.params.id !== undefined && oldkey.params.id !== '') {
+        this.id = oldkey.params.id
+        this.musicListDetailInit()
+      }
+    }
+  },
   // 音乐混入
   mixins: [indexMixin],
-  async created () {
+  created () {
     // 获取歌单Id
-    this.id = this.$route.params.id
-    // 获取歌单数据
-    await _getMusicListDetail(this.id).then(res => {
-      this.musicListDetail = res.data
-      // 通过封装的baseinfo方法，获取需要的默认信息
-      this.baseInfo = new BaseInfo(this.musicListDetail.playlist)
-      var str = '评论(' + this.musicListDetail.playlist.commentCount + ')'
-      this.bar = ['歌曲列表', str, '收藏者']
-
-      // 遍历歌单对象里面的id，获取歌曲信息
-      for (var i of this.musicListDetail.playlist.trackIds) {
-        // 获取歌曲信息
-        _getSongsDetail(i.id).then(res => {
-          // 通过封装SongDetail方法，获取需要的歌曲信息
-          var song = new SongDetail(res.data.songs)
-          this.musicList.push(song)
-        })
-      }
-
-      // 获取评论内容
-      _getRecommends(this.id, this.limit).then(res => {
-        this.recommends = res.data.comments
-        return res.data.comments
-      })
-
-      // 获取歌单收藏者
-      _getSub(this.id).then(res => {
-        this.subs = res.data.subscribers
-      })
-    })
-    // 把歌单评论内容传递给首页评论组件
+    if (this.$route.params.id !== null && this.$route.params.id !== '') {
+      this.id = this.$route.params.id
+      this.musicListDetailInit()
+    }
   },
   methods: {
     mlBarClick (str) {
@@ -103,9 +84,38 @@ export default {
     musicItemClick (index) {
       this.playMusic(index)
     },
-    // 评论下拉
-    pullingUp () {
-      console.log('aa')
+    // 初始化音乐列表
+    async musicListDetailInit () {
+      // 获取歌单数据
+      await _getMusicListDetail(this.id).then(res => {
+        this.musicListDetail = res.data
+        // 通过封装的baseinfo方法，获取需要的默认信息
+        this.baseInfo = new BaseInfo(this.musicListDetail.playlist)
+        var str = '评论(' + this.musicListDetail.playlist.commentCount + ')'
+        this.bar = ['歌曲列表', str, '收藏者']
+
+        // 遍历歌单对象里面的id，获取歌曲信息
+        for (var i of this.musicListDetail.playlist.trackIds) {
+        // 获取歌曲信息
+          _getSongsDetail(i.id).then(res => {
+          // 通过封装SongDetail方法，获取需要的歌曲信息
+            var song = new SongDetail(res.data.songs)
+            this.musicList.push(song)
+          })
+        }
+
+        // 获取评论内容
+        _getRecommends(this.id, this.limit).then(res => {
+          this.recommends = res.data.comments
+          return res.data.comments
+        })
+
+        // 获取歌单收藏者
+        _getSub(this.id).then(res => {
+          this.subs = res.data.subscribers
+        })
+      })
+    // 把歌单评论内容传递给首页评论组件
     }
   }
 

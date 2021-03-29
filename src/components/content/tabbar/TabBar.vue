@@ -13,19 +13,23 @@
     <music-search></music-search>
     <!-- 用户登录 -->
     <div class="userlogin">
-      <div class="user-img">
-        <img src="../../../assets/img/userimg.png">
+      <div class="user-img" @click="showLogin()">
+        <img :src="image">
       </div>
-      <div class="user-id">覃覃</div>
+      <div class="user-id">{{userName}}</div>
     </div>
   </div>
 </template>
 <script>
 import MusicSearch from '../search/MusicSearch'
+import { mapState } from 'vuex'
 export default {
   name: 'TabBar',
   components: {
     MusicSearch
+  },
+  computed: {
+    ...mapState(['image', 'userName'])
   },
   methods: {
     preRouter () {
@@ -33,6 +37,10 @@ export default {
     },
     nextRouter () {
       this.$router.go(+1)
+    },
+    // 隐藏登录页面
+    showLogin () {
+      this.$store.commit('showLogin', !this.$store.state.isShowLogin)
     }
   }
 }

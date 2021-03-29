@@ -10,15 +10,26 @@
           </div>
         </dd>
       </router-link>
+      <div class="title" @click.stop="isMML(isSongList)">
+        <div class="icon">我的歌单 <i v-show="$store.state.user !== null" :class="{ 'el-icon-bottom':icon, 'el-icon-right':!icon}"></i></div>
+
+        <keep-alive>
+      <my-song-list class="my-song-list" v-show="isSongList"></my-song-list>
+        </keep-alive>
+      </div>
     </dl>
   </div>
 </template>
 <script>
+import MySongList from './user/MySongList'
+import { mapState } from 'vuex'
 export default {
   name: 'LeftMenu',
+  components: { MySongList },
   data () {
     return {
       currentIndex: 1,
+      icon: true,
       list: [
         { link: '', class: '', title: '推荐', icon: true, transform: false },
         {
@@ -77,16 +88,23 @@ export default {
           title: '我的音乐云盘',
           icon: false,
           transform: false
-        },
-        { link: '/mysong', class: '', title: '我的歌单', icon: true, transform: false }
+        }
 
       ]
     }
+  },
+  computed: {
+    ...mapState(['isSongList'])
   },
   methods: {
     checkClick (index) {
       if (this.list[index].icon) return
       this.currentIndex = index
+    },
+    // 显示喜欢歌单
+    isMML (flag) {
+      this.icon = !this.icon
+      this.$store.commit('userSongList', !flag)
     }
   }
 }
@@ -97,8 +115,8 @@ export default {
   height: 100%;
   background-color: #191b1f;
   // background-color: #fff;
-
   color: #fff;
+  user-select: none;
 }
 
 dl{
@@ -115,7 +133,28 @@ dl a{
   margin-top: 10px;
   padding-left: 10px;
   font-size: 14px;
-  opacity: 0.6;
+  color: rgba(241, 232, 232, 0.8);
+  cursor: pointer;
+  div{
+    display: block;
+    width: 100%;
+    height: 30px;
+  }
+  > .icon{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
+    i{
+      position: absolute;
+      right: 40%;
+      vertical-align: -4px;
+    }
+  }
+}
+
+.my-song-list{
+  height: 180px  !important;
 }
 
 dd{
