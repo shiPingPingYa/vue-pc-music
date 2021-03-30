@@ -116,11 +116,16 @@ export default {
   > ul{
     text-align: center;
     list-style-type: none;
+    width: 100%;
   }
 }
 ul li{
+      width: 100%;
       padding: 8px 0;
       height: 30px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       color: #fff;
       font-size: 14px ;
 }

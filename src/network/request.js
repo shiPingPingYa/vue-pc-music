@@ -6,7 +6,7 @@ export function request (config) {
   const install = axios.create({
     // 请求地址设置为远程ip
     baseURL: 'http://81.69.232.192:3000',
-    timeout: 5000
+    timeout: 7000
   })
 
   // 配置请求头

@@ -8,96 +8,67 @@ VueRouter.prototype.push = function push (location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
-// 首页
-// 左边导航菜单
-const DiscoverMusic = () => import('../views/discover/DiscoverMusic')
-// 个性推荐
-const Individuation = () => import('../views/discover/childRouter/Individuation')
-// 歌单
-const MusicListCategory = () => import('../views/discover/childRouter/MusicListCategory')
-// 排行榜
-const MusicListRank = () => import('../views/discover/childRouter/MusicListRank')
-// 歌手
-const ArtistCategory = () => import('../views/discover/childRouter/ArtistCategory')
-// 最新音乐
-const NewSongs = () => import('../views/discover/childRouter/NewSongs')
-// 搜索内容
-const SearchList = () => import('../views/search/SearchList')
-// 首页结束
-
-// 歌手详细信息开始
-const ArtistDetail = () => import('../views/artistDetail/ArtistDetail')
-// 歌手专辑
-const ArtistAlbum = () => import('../views/artistDetail/childRouter/ArtistAlbum')
-// 歌手mv
-const ArtistMv = () => import('../views/artistDetail/childRouter/ArtistMv')
-// 歌手描述
-const ArtistDescDetail = () => import('../views/artistDetail/childRouter/ArtistDescDetail')
-// 相似 歌手
-const ArtistSimilar = () => import('../views/artistDetail/childRouter/ArtistSimilar')
-// 歌手详细信息结束
-
-// mv开始
-// MV首页
-const MV = () => import('../views/mv/Mv')
-// 所有mv
-const AllMv = () => import('../views/mv/AllMv')
-// 播放mv
-const PlayMv = () => import('../views/mv/PlayMv')
-// mv结束
-
-// 音乐歌单详情
-const MusicListDetail = () => import('../views/musicListDetail/MusicListDetail')
-
-// 所有视频
-const AllVideoDetail = () => import('../views/allVideo/AllVideoDetail')
-const AllVideo = () => import('../views/allVideo/childComps/AllVideo')
 Vue.use(VueRouter)
 const routes = [
   { path: '/', redirect: '/discover' },
   // 首页
   {
     path: '/discover',
-    component: DiscoverMusic,
+    // 首页
+    component: () => import('../views/discover/DiscoverMusic'),
     children: [
       { path: '/', redirect: '/discover/individ' },
-      { path: '/discover/individ', component: Individuation },
-      { path: '/discover/category', component: MusicListCategory },
-      { path: '/discover/ranklist', component: MusicListRank },
-      { path: '/discover/artist', component: ArtistCategory },
-      { path: '/discover/newsongs', component: NewSongs },
-      { path: '/discover/mv', component: MV }
+      // 个性推荐
+      { path: '/discover/individ', component: () => import('../views/discover/childRouter/Individuation') },
+      // 歌单
+      { path: '/discover/category', component: () => import('../views/discover/childRouter/MusicListCategory') },
+      // 排行榜
+      { path: '/discover/ranklist', component: () => import('../views/discover/childRouter/MusicListRank') },
+      // 歌手
+      { path: '/discover/artist', component: () => import('../views/discover/childRouter/ArtistCategory') },
+      // 最新音乐
+      { path: '/discover/newsongs', component: () => import('../views/discover/childRouter/NewSongs') },
+      // MV首页
+      { path: '/discover/mv', component: () => import('../views/mv/Mv') }
     ]
   },
   // 歌手信息
   {
     path: '/artist',
-    component: ArtistDetail,
+    // 歌手详细信息开始
+    component: () => import('../views/artistDetail/ArtistDetail'),
     children: [
       { path: '/', redirect: '/artist/album' },
-      { path: '/artist/album', component: ArtistAlbum },
-      { path: '/artist/artistmv', component: ArtistMv },
-      { path: '/artist/desc', component: ArtistDescDetail },
-      { path: '/artist/similar', component: ArtistSimilar }
+      // 歌手专辑
+      { path: '/artist/album', component: () => import('../views/artistDetail/childRouter/ArtistAlbum') },
+      // 歌手mv
+      { path: '/artist/artistmv', component: () => import('../views/artistDetail/childRouter/ArtistMv') },
+      // 歌手详情
+      { path: '/artist/desc', component: () => import('../views/artistDetail/childRouter/ArtistDescDetail') },
+      // 相似歌手
+      { path: '/artist/similar', component: () => import('../views/artistDetail/childRouter/ArtistSimilar') }
 
     ]
   },
-  // input输入框搜索信息
-  { path: '/search/:id', component: SearchList },
-  // mv播放跳转
-  { path: '/playmv/:id', component: PlayMv },
+  // input输入框搜索信息，搜索内容
+  { path: '/search/:id', component: () => import('../views/search/SearchList') },
+  // mv播放跳转,
+  { path: '/playmv/:id', component: () => import('../views/mv/PlayMv') },
   // 所有mv
-  { path: '/allmv', component: AllMv },
+  { path: '/allmv', component: () => import('../views/mv/AllMv') },
   // 歌单详情页面
-  { path: '/musicListDetail/:id/:time', component: MusicListDetail },
+  { path: '/musicListDetail/:id/:time', component: () => import('../views/musicListDetail/MusicListDetail') },
   // 所有视频
   {
     path: '/video',
-    component: AllVideoDetail,
+    // 播放视频详情页面
+    component: () => import('../views/allVideo/AllVideoDetail'),
     children: [
       { path: '/', redirect: '/video/allvideo' },
-      { path: '/video/allvideo', component: AllVideo },
-      { path: '/video/allmv', component: AllMv }
+      // 所有视频
+      { path: '/video/allvideo', component: () => import('../views/allVideo/childComps/AllVideo') },
+      // 所有mv
+      { path: '/video/allmv', component: () => import('../views/mv/AllMv') }
     ]
   }
 ]

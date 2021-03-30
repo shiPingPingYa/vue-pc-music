@@ -1,7 +1,7 @@
 <template>
   <div class="home-page-recommends"   v-if="this.recommends.length !== 0">
-    <scroll  ref="scroll" :pull-up-load="true" @pullingUp="pullingUp()" class="hp-recommends">
-    <div class="content" :style="{top:-scroolTop + 'px'}"  ref="scrollContent">
+    <scroll  ref="scroll"    class="hp-recommends">
+    <div class="content">
         <!-- 图片区域 -->
       <div class="item" v-for="(item,index) in this.recommends" :key="index">
         <!-- 评论人 -->
@@ -37,47 +37,36 @@ export default {
     return {
       recommends: [],
       id: null,
-      limit: 14,
-      page: 1,
-      notRecommends: [],
-      index: 0,
-      scroolTop: 0
+      limit: 100,
+      index: 0
     }
   },
+  created () {
+    this.$bus.$on('changeRecommends', id => {
+      this.recommends = []
+      this.getRecommends(id)
+    })
+  },
   methods: {
-    // 一下拉就请求数据
-    async pullingUp () {
-      this.notRecommends = []
-      await _musicRecommend(this.id, this.limit * this.page).then(res => {
-        this.notRecommends = res.data.comments
-        this.page++
-      })
-      for (var i in this.notRecommends) {
-        this.recommends.push(this.notRecommends[i])
-      }
-    },
     // 处理日期
     formatDate (data) {
       return formDate(new Date(data), 'mmmm--yy-dd')
+    },
+    async getRecommends (id) {
+      await _musicRecommend(id, this.limit).then(res => {
+        this.recommends = res.data.comments
+      })
     }
   },
   updated () {
     if (this.$refs.scroll !== undefined) {
       // 判断是否无了
-      this.index += 88
-      if (this.index > this.recommends.length - 13) this.pullingUp()
-      this.$refs.scroll.scrollTo(0, -80 * 88, 800000)
+      this.index++
+      if (this.index !== this.recommends.length - 13) {
+        this.$refs.scroll.scrollTo(0, -60 * 88, 980000)
+        this.$refs.scroll.finishPullUp()
+      }
     }
-  },
-  mounted () {
-    this.$bus.$on('changeRecommends', id => {
-      this.notRecommends = []
-      this.recommends = []
-      this.index = 0
-      this.id = id
-      this.page = 1
-      this.pullingUp()
-    })
   }
 
 }
