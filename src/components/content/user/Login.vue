@@ -100,14 +100,17 @@ export default {
         if (res.data.code !== 200) {
           this.passwordMessage = '密码错误'
         } else {
-          // 获取响应数据(cookie，uname,token)
-          const obj = JSON.stringify(res.data)
-          window.localStorage.setItem('obj', obj)
-          this.$store.commit('addUser', res.data)
+          // 获取响应数据(cookie，uname,image,uid)
+          const obj = {
+            uid: res.data.profile.userId,
+            cookie: res.data.cookie,
+            nickname: res.data.profile.nickname,
+            image: res.data.profile.avatarUrl
+          }
+          window.localStorage.setItem('obj', JSON.stringify(obj))
+          this.$store.commit('addUser', obj)
           // 隐藏登录页面
           this.hiddenLogin()
-          // 获取cookie
-          // this.$store.commit('pullResource', res.data.cookie)
         }
       })
     }

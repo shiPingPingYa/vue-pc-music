@@ -45,12 +45,12 @@ export default new Vuex.Store({
     async addUser (state, obj) {
       state.user = obj
       // 用户id
-      state.uid = state.user.profile.userId
+      state.uid = obj.uid
       state.cookie = obj.cookie
       // 用户背景图
-      state.image = obj.profile.avatarUrl
+      state.image = obj.avatarUrl
       // 用户名字
-      state.userName = obj.profile.nickname
+      state.userName = obj.nickname
       // 获取用户歌单
       await _getSongList(state.uid).then(res => {
         state.userSongList = res.data.playlist
