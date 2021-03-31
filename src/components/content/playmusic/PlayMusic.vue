@@ -276,7 +276,11 @@ export default {
     async playLoad () {
     // 获取歌词
       await _getLyric(this.playList[this.currentIndex].id).then(res => {
-        this.lyric = res.data.lrc.lyric
+        try {
+          this.lyric = res.data.lrc.lyric
+        } catch (e) {
+          console.log(e)
+        }
       })
     },
     // 音乐获取失败
