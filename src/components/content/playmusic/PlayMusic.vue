@@ -247,8 +247,7 @@ export default {
       // 触发播放方法，把下标传递过去
       this.$bus.$emit(
         'Playing',
-        this.playList[this.currentIndex].index,
-        this.path
+        this.playList[this.currentIndex].index
       )
       // 触发评论内容方法
       this.$bus.$emit('changeRecommends', this.playList[this.currentIndex].id)

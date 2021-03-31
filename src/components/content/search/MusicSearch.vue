@@ -37,6 +37,8 @@
 import HotSearch from './Hotsearch'
 // 请求数据
 import { _Suggest } from '../../../network/search'
+// 防抖
+import { debounce } from '../../../assets/common/tool'
 export default {
   data () {
     return {
@@ -55,21 +57,24 @@ export default {
   watch: {
     // 监听keywords的值
     keywords () {
-      if (this.keywords !== '') {
+      if (this.keywords !== '' && this.keywords !== null) {
         this.isShow = false
         this.isSuggest = true
-        this.suggest()
+        this.suggest(this)
       }
     }
   },
   methods: {
-    // input输入内容后，发送请求
-    suggest () {
-      _Suggest(this.keywords).then(res => {
-        this.sugSongs = res.data.result.songs
-        this.sugArtist = res.data.result.artists
-      })
-    },
+    // input输入内容后，发送请求,防抖输入值的时候多次向服务器请求数据
+    suggest: debounce(async function (e) {
+      if (e.keywords !== '') {
+        await _Suggest(e.keywords).then(res => {
+          e.sugSongs = res.data.result.songs
+          e.sugArtist = res.data.result.artists
+        })
+        e.isSuggest = true
+      }
+    }, 900),
     // 鼠标离开input，隐藏热搜
     leave () {
       this.isShow = false
@@ -77,7 +82,10 @@ export default {
     },
     // 鼠标聚焦input，显示热搜
     focus () {
-      this.isShow = true
+      if (this.keywords !== '') {
+        this.isSuggest = true
+        this.isShow = false
+      } else { this.isShow = true }
     },
     // 点击删除图标清除热搜内容
     del () {

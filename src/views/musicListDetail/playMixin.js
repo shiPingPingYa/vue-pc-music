@@ -6,7 +6,7 @@ export const playMinxin = {
   },
   created () {
     // 设置下标
-    this.$bus.$on('Playing', (index, path) => {
+    this.$bus.$on('Playing', (index) => {
       this.playIndex = index
     })
   }

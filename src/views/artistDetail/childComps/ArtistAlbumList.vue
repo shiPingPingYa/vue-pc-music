@@ -46,6 +46,10 @@ import { tableMixin } from '../../musicListDetail/tableMixin'
 import { _getAlbum } from '../../../network/artist'
 // 导入获取歌曲信息接口
 import { _getSongsDetail, SongDetail } from '../../../network/detail'
+// 音乐混入
+import { indexMixin } from '../../musicListDetail/indexMixin'
+// 列表下标
+import { playMinxin } from '../../musicListDetail/playMixin'
 export default {
   name: 'ArtistAlbumList',
   props: {
@@ -59,11 +63,10 @@ export default {
   data: function () {
     return {
       musicList: [],
-      fold: true,
-      playIndex: 0.6
+      fold: true
     }
   },
-  mixins: [tableMixin],
+  mixins: [tableMixin, indexMixin, playMinxin],
   async created () {
     // 判断专辑是否为空
     if (this.album !== null) {
@@ -82,7 +85,7 @@ export default {
   },
   methods: {
     albumClick (i) {
-      this.playIndex = i
+      this.playMusic(i)
     }
   }
 }

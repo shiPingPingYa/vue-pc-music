@@ -46,6 +46,8 @@
 </template>
 <script>
 import { tableMixin } from '../../musicListDetail/tableMixin'
+import { playMinxin } from '../../musicListDetail/playMixin'
+import { indexMixin } from '../../musicListDetail/indexMixin'
 export default {
   name: 'ArtistHot',
   props: {
@@ -58,11 +60,10 @@ export default {
   },
   data () {
     return {
-      fold: true,
-      playIndex: 0.6
+      fold: true
     }
   },
-  mixins: [tableMixin],
+  mixins: [tableMixin, playMinxin, indexMixin],
   methods: {
     // 动态处理fold
     handleFold () {
@@ -70,7 +71,7 @@ export default {
     },
     // 处理音乐小喇叭
     handleCurrentIndex (i) {
-      this.playIndex = i
+      this.playMusic(i)
     }
   }
 }

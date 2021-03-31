@@ -34,7 +34,7 @@ export default {
   },
 
   created () {
-    this.artist = this.getArtist()
+    this.artist = this.$store.state.artist
   },
   watch: {
     // 监听用户信息，如果发生变化，就重新获取用户详细信息
