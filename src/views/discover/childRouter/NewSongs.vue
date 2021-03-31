@@ -98,7 +98,6 @@ export default {
         })
       }
       this.$refs.scroll.finishPullUp()
-      console.log(this.page)
     },
     // 播放全部音乐
     playAllMusic () {
