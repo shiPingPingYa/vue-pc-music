@@ -64,7 +64,7 @@ export default {
         { value: 16, name: '韩国' },
         { value: 8, name: '日本' }
       ],
-      page: 1,
+      page: 0,
       list: [],
       musicList: []
     }
@@ -77,6 +77,7 @@ export default {
     // 头部导航条点击
     areaClick (index) {
       this.areaIndex = index
+      this.page = 0
       this.getTopSongs(true)
     },
     // scroll的下拉 事件
@@ -88,15 +89,16 @@ export default {
       if (clear) this.musicList = []
       this.page++
       await _getTopSongs(this.area[this.areaIndex].value).then(res => {
-        this.list = res.data.data.slice(0, this.page * 30)
-        for (var i of this.list) {
-          _getSongsDetail(i.id).then(res => {
-            var song = new SongDetail(res.data.songs)
-            this.musicList.push(song)
-          })
-        }
-        this.$refs.scroll.finishPullUp()
+        this.list = res.data.data.slice(0, this.page * 10)
       })
+      for (var i of this.list) {
+        _getSongsDetail(i.id).then(res => {
+          var song = new SongDetail(res.data.songs)
+          this.musicList.push(song)
+        })
+      }
+      this.$refs.scroll.finishPullUp()
+      console.log(this.page)
     },
     // 播放全部音乐
     playAllMusic () {
