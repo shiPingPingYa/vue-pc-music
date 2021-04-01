@@ -1,4 +1,5 @@
 <template>
+  <transition name="log">
   <div class="login">
       <!-- 登录背景 -->
       <div class="login-back">
@@ -33,6 +34,7 @@
        </div>
       </div>
   </div>
+  </transition>
 </template>
 <script>
 // 导入数据请求
@@ -219,4 +221,13 @@ export default {
   cursor: pointer;
 }
 
+.log-enter,
+.log-leave-to{
+  opacity: 0;
+}
+
+.log-enter-active,
+.log-leave-active{
+  transition: all 2s ease;
+}
 </style>
