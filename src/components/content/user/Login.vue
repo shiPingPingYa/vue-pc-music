@@ -6,7 +6,7 @@
           <img src="../../../assets/img/user/x.svg" alt="">
         </div>
         <div class="back">
-          <img src="../../../assets/img/user/phone.svg" alt />
+          <img src="../../../assets/img/login.jpg" alt />
         </div>
       </div>
       <!-- 登录信息 -->
@@ -147,15 +147,17 @@ export default {
     }
     > .back{
       position: absolute;
-      width: 58px;
-      height: 58px;
+      width: 88px;
+      height: 88px;
       top: 60px;
       left: 50%;
       transform: translateX(-50%);
+      border-radius: 50%;
       img{
         width: 100%;
         height: 100%;
         background-size: 100%,100%;
+        border-radius: 50%;
       }
     }
   }
@@ -167,6 +169,7 @@ export default {
 }
 
 .form-item{
+      position: relative;
       width: 60%;
       margin: 0 auto;
       padding: 0px 0px 10px 10px;
@@ -181,7 +184,15 @@ export default {
         margin-top: 6px;
       }
       .register{
+        position: absolute;
+        margin-left: 50%;
+        width: 60%;
+        height: 30px;
         font-size: 14px;
+        text-align: center;
+        color: rgb(68, 155, 226);
+        transform: translateX(-50%);
+        border-radius: 8px;
         cursor: pointer;
       }
 }

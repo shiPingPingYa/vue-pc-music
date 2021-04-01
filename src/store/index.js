@@ -22,7 +22,7 @@ const state = {
   // 用户背景图片
   image: null,
   // 用户id
-  userName: '未登录',
+  userName: '覃覃音乐',
   isSongList: true
 }
 
