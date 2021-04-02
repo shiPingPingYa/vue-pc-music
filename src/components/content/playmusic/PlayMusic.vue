@@ -75,7 +75,7 @@
         </div>
         <!-- 歌词按钮 -->
         <div class="music-lyric" @click="toggleLyric()">
-          <a href="#" title="歌词">
+          <a href="javascript:;" title="歌词">
             <img src="../../../assets/img/playmusic/lyric.svg" v-show="!isLyric" />
           </a>
           <a href="#" title="歌词">
@@ -84,7 +84,7 @@
         </div>
         <!-- 音乐列表按钮 -->
         <div class="music-list" @click="toggleMusicList()">
-           <a href="#" title="歌单">
+           <a href="javascript:;" title="歌单">
             <img src="../../../assets/img/playmusic/list.svg" alt />
           </a>
         </div>
@@ -102,13 +102,14 @@ import Player from './Player'
 // 导入封装的处理时间函数
 import { formDate } from '../../../assets/common/tool'
 // 导入歌曲网络请求
-import { _getLyric } from '../../../network/detail'
+import { _getLyric, _getMusicUrl } from '../../../network/detail'
 // 导入进度条
 import MusicProgress from './Progress'
 // 导入歌词组件
 import Lyric from './Lyric.vue'
 // 导入播放音乐列表
 import PlayMusicList from './PlayMusicList'
+// 导入歌曲播放地址请求
 export default {
   name: 'PlayMusic',
   components: {
@@ -162,6 +163,14 @@ export default {
       }
     }
   },
+  created () {
+    // 播放默认的歌曲
+    if (this.playList.length === 1) {
+      _getMusicUrl(this.playList[this.currentIndex].id).then(res => {
+        this.playList[this.currentIndex].src = res.data.data[0].url
+      })
+    }
+  },
   mounted () {
     // 音乐数据
     this.$bus.$on('PlayMusic', (index, path, musicList, playList) => {
@@ -184,7 +193,6 @@ export default {
     })
   },
   methods: {
-    //
     // 改变currentindex,重新设置播放音乐
     setCurrentIndex (index) {
       var that = this
