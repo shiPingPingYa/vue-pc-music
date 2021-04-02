@@ -123,9 +123,9 @@ export default {
 .login{
   position: absolute;
   width: 400px;
-  height: 460px;
+  height: 360px;
   left: -16%;
-  top: 16%;
+  top: 8%;
   margin: auto;
   z-index: 10;
   transform: translateX(50%);
