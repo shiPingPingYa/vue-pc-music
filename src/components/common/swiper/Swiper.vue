@@ -71,7 +71,7 @@ export default {
 .swiper{
   margin: 0 auto;
   position: relative;
-  width: 960px;
+  width: 100%;
   height: 214px;
   overflow: hidden;
   cursor: pointer;
@@ -107,7 +107,7 @@ export default {
     list-style-type: none;
     > li{
       position: absolute;
-      width: 460px;
+      width: 50%;
       > img{
         width: 100%;
       }
@@ -118,7 +118,7 @@ export default {
 .left {
   position: relative;
   float: left;
-  width: 250px;
+  width: 25%;
   height: 100%;
   z-index: 1;
   color: #fff;
@@ -127,7 +127,7 @@ export default {
 .right{
   position: relative;
   float: right;
-  width: 250px;
+  width: 25%;
   height: 100%;
   z-index: 1;
   color: #fff;
@@ -171,34 +171,34 @@ export default {
 }
 
 .list2 {
-  transform: translateX(250px);
+  transform: translateX(50%);
   z-index: 2;
   opacity: 1;
 }
 
 .list3 {
-  transform: translateX(710px) scale(0.9);
+  transform: translateX(150%) scale(0.9);
   transform-origin: 0% 100%;
   z-index: 0;
   opacity: 0.9;
 }
 
 .list4 {
-  transform: translateX(960px) scale(0.9);
+  transform: translateX(220%) scale(0.9);
   transform-origin: 0% 100%;
   z-index: 0;
   opacity: 0.5;
 }
 
 .list5 {
-  transform: translateX(1210px) scale(0.9);
+  transform: translateX(250%) scale(0.9);
   transform-origin: 0% 100%;
   z-index: 0;
   opacity: 0.5;
 }
 
 .list6 {
-  transform: translateX(1460px) scale(0.9);
+  transform: translateX(300%) scale(0.9);
   transform-origin: 0% 100%;
   z-index: 0;
   opacity: 0.5;
