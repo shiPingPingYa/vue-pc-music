@@ -11,8 +11,8 @@
       <div class="content">
         <!-- 播放按钮 -->
         <div class="play"  @click="playAllMusic()">
-          <img src="../../../assets/img/playmusic/rebofang.svg" alt="">
-          播放全部
+           <i class="el-icon-video-play"></i>
+          <span> 播放全部</span>
         </div>
         <div class="music">
           <table>
@@ -25,7 +25,7 @@
                   <div class="backMask">
                     <img :src="item.pic" alt="">
                   <div class="icon">
-                       <img src="../../../assets/img/playmusic/bofang.svg" alt="" >
+                       <i class="el-icon-video-play"></i>
                   </div>
                   </div>
                 </td>
@@ -140,15 +140,16 @@ export default {
   > .play{
     padding: 10px 0;
     width: 100%;
-    font-size: 14px;
+    font-size: 24px;
     color: #fff;
     cursor: pointer;
-    > img{
-      width: 24px;
-      height: 24px;
-      vertical-align: -6px;
-      background-size: 100%,100%;
-    }
+   > span{
+     font-size: 14px  !important;
+   }
+   > i{
+     vertical-align: -4px;
+     color: red;
+   }
   }
 }
 
@@ -212,10 +213,10 @@ export default {
       top: 0;
       right: 0;
       bottom: 0;
-      > img{
-        width: 100%;
-        height: 100%;
-        background-size: 100%,100%;
+      > i{
+        font-size: 24px;
+        color: #fff;
+        opacity: 0.8;
       }
     }
 }

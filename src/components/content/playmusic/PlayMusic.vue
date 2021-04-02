@@ -25,12 +25,12 @@
     <div class="play-music-left">
       <!-- 开始按钮 -->
       <div class="play" @click="toggle()">
-         <img src="../../../assets/img/playmusic/play.png" alt v-show="!isPlayer" />
-        <img src="../../../assets/img/playmusic/play2.png" alt v-show="isPlayer" />
+       <i class="el-icon-video-play" v-show="!isPlayer"></i>
+       <i class="el-icon-video-pause" v-show="isPlayer"></i>
       </div>
       <!-- 下一首按钮 -->
       <div class="next" @click="nextMusic()">
-         <img src="../../../assets/img/playmusic/next.png" alt />
+         <i class="el-icon-caret-right"></i>
       </div>
     </div>
     <!-- 播放条右边区域 -->
@@ -350,6 +350,7 @@ export default {
   background-color: #212124;
   z-index: 3;
   bottom: 0;
+  user-select: none;
   >  .top{
     position: absolute;
     left: 0;
@@ -367,16 +368,15 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    color: rgb(185, 185, 185);
     > div{
+      font-size: 46px;
       cursor: pointer;
     }
     > .play{
       width: 50px;
       height: 50px;
-      > img{
-        width: 100%;
-        height: 100%;
-      }
+      font-size: 38px  !important;
     }
   }
   > .play-music-right{

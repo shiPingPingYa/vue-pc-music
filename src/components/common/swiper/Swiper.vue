@@ -3,12 +3,12 @@
     <!-- 左右按钮 -->
     <div class="left">
       <div class="pre">
-        <img src="../../../assets/img/swiper/prev.svg" alt="">
+        <i class="el-icon-arrow-left"></i>
       </div>
     </div>
     <div class="right">
       <div class="next">
-         <img src="../../../assets/img/swiper/next.svg" alt />
+         <i class="el-icon-arrow-right"></i>
       </div>
     </div>
     <!-- 图片区域 -->
@@ -121,6 +121,7 @@ export default {
   width: 250px;
   height: 100%;
   z-index: 1;
+  color: #fff;
 }
 
 .right{
@@ -129,6 +130,7 @@ export default {
   width: 250px;
   height: 100%;
   z-index: 1;
+  color: #fff;
 }
 
 .pre{
@@ -140,6 +142,7 @@ export default {
   width: 24px;
   height: 24px;
   display: none;
+  font-size: 24px;
   z-index: 999;
 }
 
@@ -152,11 +155,8 @@ export default {
   width: 24px;
   height: 24px;
   display: none;
+  font-size: 24px;
   z-index: 999;
-}
-
-.pre img, .next img{
-  width: 100%;
 }
 
 .lineBar .action {

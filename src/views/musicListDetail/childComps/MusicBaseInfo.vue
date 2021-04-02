@@ -33,7 +33,7 @@
         <!-- 中间三按钮 -->
         <div class="center">
           <div class="play" @click="palyAllMusic()">
-            <img src="../../../assets/img/playmusic/bofang.svg" alt="">
+            <i class="el-icon-video-play"></i>
             播放全部
           </div>
            <div class="collect">
@@ -151,11 +151,6 @@ export default {
   }
   > .play{
     background-color: #CD2929;
-    img{
-    width: 14px;
-    height: 14px;
-    vertical-align: -2px;
-    }
   }
 
 }

@@ -38,11 +38,11 @@ export default {
       this.$parent.$parent.allMv(this.area[this.areaIndex], this.type[this.typeIndex], this.order[this.orderIndex])
     },
     typeClick (index) {
-      this.areaIndex = index
+      this.typeIndex = index
       this.$parent.$parent.allMv(this.area[this.areaIndex], this.type[this.typeIndex], this.order[this.orderIndex])
     },
     orderClick (index) {
-      this.areaIndex = index
+      this.orderIndex = index
       this.$parent.$parent.allMv(this.area[this.areaIndex], this.type[this.typeIndex], this.order[this.orderIndex])
     }
   }

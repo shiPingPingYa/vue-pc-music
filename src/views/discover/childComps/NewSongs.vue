@@ -7,7 +7,7 @@
       <div class="title">
         <img :src="item.picUrl" alt="">
         <div class="icon">
-          <img src="../../../assets/img/playmusic/bofang.svg" alt />
+          <i class="el-icon-video-play"></i>
         </div>
       </div>
       <div class="mess">
@@ -87,10 +87,9 @@ export default {
       right: 0;
       width: 18px;
       height: 18px;
+      font-size: 24px;
       background-color: rgba(0, 0, 0, 0.3);
-      > img{
-        width: 100%;
-      }
+      color: #ffff;
     }
   }
   > .mess{
