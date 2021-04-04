@@ -50,3 +50,15 @@ export function debounce (fn, delay) {
     }, delay)
   }
 }
+
+// 节流
+export function throttled (fn, delay) {
+  var preTime = Date.now()
+  return function (...args) {
+    var newTime = Date.now()
+    if (newTime - preTime > delay) {
+      fn && fn.apply(this, args)
+      preTime = Date.now()
+    }
+  }
+}

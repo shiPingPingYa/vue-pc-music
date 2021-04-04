@@ -67,8 +67,8 @@ export default {
     },
     // 下拉调用refresh方法，重新获取x，y
     finishPullUp () {
-      this.scroll.finishPullUp()
       this.refresh()
+      this.scroll.finishPullUp()
     },
     refresh () {
       this.scroll.refresh()

@@ -1,6 +1,6 @@
 <template>
    <div class="video-list " v-if="videoList.length !=0">
-    <div class="video-item" v-for="(item,index) in videoList" :key="index" @click="playMv(item.id)">
+    <div class="video-item" v-for="(item,index) in videoList" :key="index" @click="playVideo(item.id)">
       <div class="count">
         <img src="../../../assets/img/leftmenu/shiping.svg" alt="">
         <div class="play-count">{{item.count}} </div>
@@ -8,7 +8,6 @@
       <img :src="item.cover" alt="">
       <div class="desc">
         <p>{{item.name}} </p>
-        <span>{{item.artist}} </span>
       </div>
     </div>
     <div class="no-video-list" v-if="videoList.length == null">
@@ -28,7 +27,7 @@ export default {
     }
   },
   methods: {
-    playMV (id) {
+    playVideo (id) {
       this.$router.push('/playvideo/' + id)
     }
   }

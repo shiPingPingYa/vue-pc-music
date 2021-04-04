@@ -48,8 +48,8 @@ export default {
         },
         {
           link: '/directSeeding',
-          class: 'el-icon-collection-tag',
-          title: 'LOOK直播',
+          class: 'el-icon-bell',
+          title: '电台',
           icon: false,
           transform: 'rotate'
         },
@@ -66,30 +66,7 @@ export default {
           title: '朋友',
           icon: false,
           transform: false
-        },
-        { link: '/mymusic', class: '', title: '我的音乐', icon: true, transform: false },
-        {
-          link: '/localmusic',
-          class: 'el-icon-question',
-          title: '本地音乐',
-          icon: false,
-          transform: false
-        },
-        {
-          link: '/downloadmusic',
-          class: 'el-icon-download',
-          title: '下载音乐',
-          icon: false,
-          transform: false
-        },
-        {
-          link: '/musicclouddisk',
-          class: 'el-icon-upload',
-          title: '我的音乐云盘',
-          icon: false,
-          transform: false
         }
-
       ]
     }
   },

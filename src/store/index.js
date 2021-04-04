@@ -23,6 +23,7 @@ const state = {
   image: null,
   // 用户id
   userName: '覃覃音乐',
+  // 用户登录的手机号码
   isSongList: true
 }
 

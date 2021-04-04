@@ -14,7 +14,7 @@
     <!-- 用户登录 -->
     <div class="userlogin">
       <div class="user-img" @click="showLogin()">
-        <img :src="image">
+        <img :src="userImage()">
       </div>
       <div class="user-id">{{userName}}</div>
     </div>
@@ -23,14 +23,16 @@
 <script>
 import MusicSearch from '../search/MusicSearch'
 import { mapState } from 'vuex'
+import { mixins } from '../user/mixins'
 export default {
   name: 'TabBar',
   components: {
     MusicSearch
   },
   computed: {
-    ...mapState(['image', 'userName'])
+    ...mapState(['userName'])
   },
+  mixins: [mixins],
   methods: {
     preRouter () {
       this.$router.go(-1)
@@ -113,14 +115,12 @@ export default {
   align-items: center;
   cursor: pointer;
   > .user-img{
-    padding: 1px;
     width: 32px;
     height: 32px;
     background-color: #fff;
     border-radius: 50%;
     line-height: 54px;
     > img{
-      display: inline-block;
       width: 100%;
       height: 100%;
       border-radius: 50%;

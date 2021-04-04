@@ -26,10 +26,13 @@ export default {
     }
   },
   computed: {
+    ...mapState(['userName']),
     getUserList () {
       return this.$store.state.userSongList
-    },
-    ...mapState(['userName'])
+    }
+  },
+  created () {
+
   },
   methods: {
     // 跳转到音乐详情页面

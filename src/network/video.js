@@ -1,5 +1,15 @@
 import { request } from './request'
 
+// 将视频对象结构
+export class Video {
+  constructor (obj) {
+    this.id = obj.vid
+    this.cover = obj.coverUrl
+    this.title = obj.title
+    this.count = obj.commentCount
+  }
+}
+
 // 获取视频分类列表
 export function _getVideoCategory () {
   return request({
@@ -15,11 +25,13 @@ export function _getGroupList () {
 }
 
 // 获取视频标签/分类下的视频
-export function _getGroupVideo (id) {
+export function _getGroupVideo (id, cookie, page) {
   return request({
     url: '/video/group',
     params: {
-      id: id
+      id: id,
+      cookie: cookie,
+      page: page
     }
   })
 }

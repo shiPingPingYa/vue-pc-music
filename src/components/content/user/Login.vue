@@ -7,7 +7,7 @@
           <img src="../../../assets/img/user/x.svg" alt="">
         </div>
         <div class="back">
-          <img src="../../../assets/img/login.jpg" alt />
+          <img :src="userImage()" alt />
         </div>
       </div>
       <!-- 登录信息 -->
@@ -39,10 +39,12 @@
 <script>
 // 导入数据请求
 import { _login, _VerifyPhone } from '../../../network/user'
+import { mixins } from './mixins'
 export default {
   name: 'Login',
   data () {
     return {
+      normal: '../../../assets/img/login.jpg',
       isPhone: false,
       isPassword: false,
       phone: '',
@@ -55,6 +57,7 @@ export default {
       passwordExec: /(?!^(\d+|[a-zA-Z]+|[~!@#$%^&*?]+)$)^[\w~!@#$%^&*?]{8,18}$/
     }
   },
+  mixins: [mixins],
   methods: {
     // 鼠标一聚焦验证手机号
     verifyPhone () {

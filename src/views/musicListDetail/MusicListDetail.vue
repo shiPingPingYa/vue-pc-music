@@ -59,14 +59,6 @@ export default {
       subs: null
     }
   },
-  watch: {
-    $route (oldkey) {
-      if (oldkey.params.id !== undefined && oldkey.params.id !== '') {
-        this.id = oldkey.params.id
-        this.musicListDetailInit()
-      }
-    }
-  },
   // 音乐混入
   mixins: [indexMixin],
   created () {
@@ -86,7 +78,9 @@ export default {
     },
     // 初始化音乐列表
     async musicListDetailInit () {
-      // 获取歌单数据
+      // 歌曲id清空
+      this.musicListDetailInit = null
+      // 获取歌单id,获取歌单数据
       await _getMusicListDetail(this.id).then(res => {
         this.musicListDetail = res.data
         // 通过封装的baseinfo方法，获取需要的默认信息

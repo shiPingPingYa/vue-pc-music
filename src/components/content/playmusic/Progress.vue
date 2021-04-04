@@ -16,24 +16,18 @@ export default {
       proLoad: 0,
       width: 0,
       offsetLeft: 0,
-      scale: 0,
-      setLeft: 0,
-      setWidth: 0
+      scale: 0
     }
   },
   methods: {
     // 获取鼠标与进度条的比例
     proClick (e) {
-      // 获取鼠标点击位置
-      this.setLeft = this.$refs.progress.offsetLeft
-      this.setWidth = this.$refs.progress.offsetWidth
-      if (308 + this.setLeft <= e.clientX <= 300 + this.setLeft + this.setWidth) {
-        this.setProgress((e.clientX - 308) - this.$refs.progress.offsetLeft)
-        // 获取鼠标点击后的比例
-        this.scale = parseFloat((this.proLine / this.$refs.progress.offsetWidth).toFixed(2))
-        // 触发父组件监听的方法,将比例传递出去
-        this.$emit('childClickScale', this.scale)
-      }
+      // 获取鼠标点击位置,e.offsetx是相对div的位置来定义
+      this.setProgress(e.offsetX)
+      // 获取鼠标点击后的比例
+      this.scale = parseFloat((this.proLine / this.$refs.progress.offsetWidth).toFixed(2))
+      // 触发父组件监听的方法,将比例传递出去
+      this.$emit('childClickScale', this.scale)
     },
     // 根据audio的播放比例,重新设置小圆点和线条的位置
     setAudioProgress (scale) {
