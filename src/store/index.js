@@ -48,7 +48,7 @@ export default new Vuex.Store({
       state.uid = obj.uid
       state.cookie = obj.cookie
       // 用户背景图
-      state.image = obj.avatarUrl
+      state.image = obj.image
       // 用户名字
       state.userName = obj.nickname
       // 获取用户歌单

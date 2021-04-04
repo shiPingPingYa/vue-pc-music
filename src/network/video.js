@@ -23,3 +23,34 @@ export function _getGroupVideo (id) {
     }
   })
 }
+
+// 获取视频播放地址
+export function _getVideoUrl (id) {
+  return request({
+    url: ' /video/url',
+    params: {
+      id: id
+    }
+  })
+}
+
+// 获取视频详情页面
+export function _getVideoDetail (id) {
+  return request({
+    url: '/video/detail',
+    params: {
+      id: id
+    }
+  })
+}
+
+// 获取视频评论
+export function _getVideoComment (id, limit) {
+  return request({
+    url: '/comment/video',
+    params: {
+      id: id,
+      limit: limit
+    }
+  })
+}

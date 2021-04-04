@@ -58,6 +58,8 @@ const routes = [
   { path: '/allmv', component: () => import('../views/mv/AllMv') },
   // 歌单详情页面
   { path: '/musicListDetail/:id/:time', component: () => import('../views/musicListDetail/MusicListDetail') },
+  // 播放视频
+  { path: '/playvideo/:id', component: () => import('../views/allVideo/childComps/PlayVideo') },
   // 所有视频
   {
     path: '/video',
