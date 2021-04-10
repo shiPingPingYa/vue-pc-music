@@ -47,14 +47,14 @@ export default {
           transform: false
         },
         {
-          link: '/directSeeding',
+          link: '/transceiver',
           class: 'el-icon-bell',
           title: '电台',
           icon: false,
           transform: 'rotate'
         },
         {
-          link: '/video',
+          link: '/video/allvideo',
           class: 'el-icon-video-camera',
           title: '视频',
           icon: false,

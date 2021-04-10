@@ -20,6 +20,8 @@ import MvBar from './childComps/MvBar'
 import MvItem from './childComps/MVItem'
 // 导入mv数据请求
 import { _AllMv, MV } from '../../network/mv'
+// mv刷新节流
+import { throttled } from '../../assets/common/tool'
 export default {
   name: 'AllMv',
   components: {
@@ -41,20 +43,20 @@ export default {
     this.allMv()
   },
   methods: {
-    pullingUp () {
+    pullingUp: throttled(function () {
       this.loadMv()
-    },
+    }, 800),
     async loadMv () {
       this.offset++
       var mvList = []
       await _AllMv(this.area, this.type, this.order, this.offset * this.limit).then(res => {
         for (var i of res.data.data) {
-          var mv = new MV(i.id, i.cover, i.name, i.artistName, i.playCount)
+          var mv = new MV(i)
           mvList.push(mv)
         }
         this.mvList = mvList
-        this.$refs.scroll.finishPullUp()
       })
+      this.$refs.scroll.finishPullUp()
     },
     async allMv (area = '全部', type = '全部', order = '上升最快', limit = this.limit * this.offset) {
       // 值变了，就将mv数组清空
@@ -66,7 +68,7 @@ export default {
       // 调用接口获取数据
       await _AllMv(area, type, order, limit).then(res => {
         for (var i of res.data.data) {
-          var mv = new MV(i.id, i.cover, i.name, i.artistName, i.playCount)
+          var mv = new MV(i)
           this.mvList.push(mv)
         }
       }

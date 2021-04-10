@@ -25,11 +25,14 @@
          </div>
         <!-- 登录 -->
          <div class="form-item" >
-          <input ref="btn" @click="userLogin()" type="button" :disabled="!(isPhone && isPassword)" value="登陆" :class="{'btn-login':isPhone&&isPassword,'disabled-btn':!(isPhone && isPassword)}" >
+          <input ref="btn" @click="userLogin()" type="button" :disabled="!btnDisabled()" value="登陆" :class="{'btn-login':btnDisabled(),'disabled-btn':!btnDisabled()}" >
          </div>
          <!-- 注册 -->
           <div class="form-item">
             <div class="register">注册</div>
+         </div>
+         <div class="form-item">
+           <span>手机号登陆</span><span>二维码登录</span>
          </div>
        </div>
       </div>
@@ -66,7 +69,7 @@ export default {
         this.phoneMessage = '手机号不能为空'
       } else {
         // 验证手机号格式是否正确
-        if (this.phoneExec.exec(this.phone) === null) {
+        if (this.phoneExec.test(this.phone) === null) {
           this.phoneMessage = '手机号码的格式有误'
         } else {
           // 检测手机号是否存在
@@ -83,11 +86,11 @@ export default {
     },
     verifyPassword () {
       // 判断密码是否为空
-      if (this.password === '') {
+      if (this.password.trim().length <= 0) {
         this.passwordMessage = '密码不能为空'
       } else {
         // 验证密码是否符合格式
-        if (this.passwordExec.exec(this.password) === null) {
+        if (this.passwordExec.test(this.password) === null) {
           this.passwordMessage = '密码格式有误'
         } else {
           this.passwordMessage = ''
@@ -118,6 +121,10 @@ export default {
           this.hiddenLogin()
         }
       })
+    },
+    // 判断是否禁用按钮
+    btnDisabled () {
+      return (this.isPhone && this.isPassword)
     }
   }
 }
@@ -198,6 +205,14 @@ export default {
         color: rgb(68, 155, 226);
         transform: translateX(-50%);
         border-radius: 8px;
+        cursor: pointer;
+      }
+      > span{
+        display: inline-block;
+        width: 46%;
+        margin: 10px 2%;
+        font-size: 14px;
+        color: rgb(68, 155, 226);
         cursor: pointer;
       }
 }

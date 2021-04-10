@@ -1,6 +1,6 @@
 <template>
   <div class="simi">
-    <div class="simi-item" v-for="(item,index) in mvList" :key="index" @click="playMV(item.id)">
+    <div class="simi-item" v-for="(item,index) in videoList" :key="index" @click="playVideo(item.id)">
       <div class="left">
         <img :src="item.cover" alt="">
         <div class="count">
@@ -11,18 +11,18 @@
       <div class="right">
         <div class="name">
           <span>MV</span>
-          {{item.name}}
+          {{item.title}}
         </div>
-        <div class="artist">by:{{item.artist}} </div>
+        <div class="artist">by:{{item.user[0].userName}} </div>
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: 'SimiMvItem',
+  name: 'SiMiVideoItem',
   props: {
-    mvList: {
+    videoList: {
       type: Array,
       default () {
         return []
@@ -30,8 +30,8 @@ export default {
     }
   },
   methods: {
-    playMV (id) {
-      this.$router.push('/playmv/' + id)
+    playVideo (id) {
+      this.$router.push('/playvideo/' + id)
     }
   }
 }
@@ -68,11 +68,19 @@ export default {
       }
     }
     > .right{
+      width: calc(100% - 80px);
       flex: 1;
       padding-left: 10px;
       color: #fff;
       > .name{
+        width: 100%;
+        max-height: 52px;
+        padding-top: 2px;
         font-size: 13px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         > span{
           padding:1px;
           color: red;

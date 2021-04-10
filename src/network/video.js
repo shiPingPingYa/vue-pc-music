@@ -6,7 +6,8 @@ export class Video {
     this.id = obj.vid
     this.cover = obj.coverUrl
     this.title = obj.title
-    this.count = obj.commentCount
+    this.count = obj.playTime
+    this.user = obj.creator
   }
 }
 
@@ -39,7 +40,7 @@ export function _getGroupVideo (id, cookie, page) {
 // 获取视频播放地址
 export function _getVideoUrl (id) {
   return request({
-    url: ' /video/url',
+    url: '/video/url',
     params: {
       id: id
     }
@@ -63,6 +64,16 @@ export function _getVideoComment (id, limit) {
     params: {
       id: id,
       limit: limit
+    }
+  })
+}
+
+// 获取相似视频
+export function _getRelatedVideo (id) {
+  return request({
+    url: '/related/allvideo',
+    params: {
+      id: id
     }
   })
 }

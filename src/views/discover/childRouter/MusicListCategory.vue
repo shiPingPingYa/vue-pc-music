@@ -8,7 +8,7 @@
         {{item.name}}
       </div>
     </div>
-<scroll ref="scroll" class="song-category" :pull-up-load="true" @pullingUp="pullingUp">
+    <scroll ref="scroll" class="song-category" :pull-up-load="true" @pullingUp="pullingUp">
   <!-- 歌单列表 -->
 <music-list :totalList="musicList" ></music-list>
 </scroll>
@@ -20,13 +20,15 @@ import Scroll from '../../../components/common/scroll/Scroll'
 import MusicList from '../../musicListDetail/MusicList'
 // 导入数据接口，获取热门标签，获取热门标签歌单列表
 import { _getHighquality, _getMusicListHot } from '../../../network/detail'
+// 歌单节流
+import { throttled } from '../../../assets/common/tool'
 export default {
   name: 'MusicListCategory',
   data () {
     return {
       tags: null,
       currentIndex: 0,
-      limit: 30,
+      limit: 18,
       page: 1,
       musicList: []
     }
@@ -38,7 +40,12 @@ export default {
   created () {
     _getMusicListHot().then(res => {
       this.tags = res.data.tags
-      this.getHighquality()
+      return this.tags
+    }).then(res => {
+      _getHighquality(res[this.currentIndex].name, this.limit * this.page).then(res => {
+        this.musicList = res.data.playlists
+      })
+      this.$refs.scroll.finishPullUp()
     })
   },
   methods: {
@@ -47,13 +54,13 @@ export default {
       this.getHighquality()
     },
     // 获取热门标签下面的精品歌单
-    getHighquality () {
+    getHighquality: throttled(function () {
+      this.page++
       _getHighquality(this.tags[this.currentIndex].name, this.limit * this.page).then(res => {
-        this.page++
         this.musicList = res.data.playlists
-        this.$refs.scroll.finishPullUp()
       })
-    },
+      this.$refs.scroll.finishPullUp()
+    }, 800),
     // 导航栏的点击事件
     tagClick (index) {
       this.currentIndex = index

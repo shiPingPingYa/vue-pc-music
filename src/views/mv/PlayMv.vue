@@ -29,12 +29,12 @@
           <div class="playCount">播放次数:{{detail.playCount}}次 </div>
           <div class="clear"></div>
         </div>
-         <div class="mv-desc" v-if="detail.desc !== null">
+         <div class="mv-desc">
            <!-- 防止鼠标下滑的时候，重新调用方法，mv会重复 -->
            <scroll class="desc-scroll" ref="descScroll"
            @mouseenter="enter()" @mouseleave="leave()">
               <span>简介:</span>
-            {{detail.desc}}
+            {{isDescription(detail.desc) }}
            </scroll>
           </div>
       </div>
@@ -56,6 +56,8 @@ import SimiMvItem from '../mv/childComps/SimiMvItem'
 import Recommonds from '../musicListDetail/childComps/Recommends'
 // 导入mv的数据请求接口
 import { _getMvDetail, _getMvComment, _getMvUrl, _getSimiMv, MV } from '../../network/mv'
+// 评论组件节流
+import { throttled } from '../../assets/common/tool'
 export default {
   name: 'PlayMv',
   components: {
@@ -94,19 +96,13 @@ export default {
     pullingUp () {
       this.getComment()
     },
-    getComment () {
-      // 获取歌曲评论,offset是偏移位,limit默认20,通过$refs拿到了上面绑定的scroll,
-      // :pull-up-load='true'(下拉)是否刷新,@pullingUp是下拉调用方法,
-
-      // finishPullUp: 这个类似控制一个开关，比如在触发pullingUp事件的时候，插件肯定会把一
-      // 个开关给关掉，防止用户重复上拉 在数据加载完成以后,需要执行finishPullUp()
-      // 把开关打开，以便下次可以继续执行上拉刷新
+    getComment: throttled(function () {
+      this.offset++
       _getMvComment(this.id, this.offset * this.limit).then(res => {
         this.recommends = res.data.comments
-        this.offset++
-        this.$refs.scroll.finishPullUp()
       })
-    },
+      this.$refs.scroll.finishPullUp()
+    }, 800),
     async getBaseInfo () {
       // 分别是mv的详情，地址，评论，相似mv
       await Promise.all([_getMvDetail(this.id), _getMvUrl(this.id), _getMvComment(this.id, this.limit), _getSimiMv(this.id)]).then(res => {
@@ -114,13 +110,16 @@ export default {
         this.url = res[1].data.data.url
         this.recommends = res[2].data.comments
         this.notSimiMv = res[3].data.mvs
-        return res[2].data.comments
       })
       // 处理相似mv，获取新的mv对象(id，名字，标题,url,播放数量)
       for (var i of this.notSimiMv) {
-        var mv = new MV(i.id, i.cover, i.name, i.artistName, i.playCount)
+        var mv = new MV(i)
         this.simiMv.push(mv)
       }
+    },
+    // 判断是否有简介
+    isDescription (desc) {
+      return desc || 'MV暂无简介'
     },
     enter () {
       this.$refs.scroll.disable()

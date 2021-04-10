@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Loading } from 'element-ui'
 var loadingStance = null
-export function request (config) {
+export function request (config, post) {
   // 设置默认url
   const install = axios.create({
     // 请求地址设置为远程ip
@@ -16,14 +16,18 @@ export function request (config) {
     }
     return data
   }, err => {
-    return err
+    return new Promise((resolve, reject) => reject(err))
   })
   // 配置响应内容
   install.interceptors.response.use(data => {
-    loadingStance.close()
+    setTimeout(() => {
+      loadingStance.close()
+    }, 1000)
     return data
   }, err => {
-    return err
+    return new Promise((resolve, reject) => reject(err))
   })
+  // 判断是否是post请求
+  if (post === true) return install.post(config)
   return install(config)
 }

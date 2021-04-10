@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <keep-alive include="Allvideo">
+    <keep-alive include="Allmv">
     <router-view></router-view>
     </keep-alive>
     <!-- 登录组件 -->

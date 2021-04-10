@@ -62,11 +62,11 @@ export default {
       this.notTopMv = res[1].data.data
     })
     for (var i of this.notMvList) {
-      var mv = new MV(i.id, i.cover, i.name, i.artistName, i.playCount)
+      var mv = new MV(i)
       this.mvList.push(mv)
     }
     for (var j of this.notTopMv) {
-      var topMv = new MV(j.id, j.cover, j.name, j.artistName, j.playCount)
+      var topMv = new MV(j)
       this.topMv.push(topMv)
     }
   },

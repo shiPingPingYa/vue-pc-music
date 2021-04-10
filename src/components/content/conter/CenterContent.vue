@@ -1,8 +1,7 @@
 <template>
   <div class="content">
-    <left-menu></left-menu>
+    <left-menu ref="left_menu"></left-menu>
     <right-main></right-main>
-
   </div>
 </template>
 <script>
@@ -13,6 +12,27 @@ export default {
   components: {
     LeftMenu,
     RightMain
+  },
+  // 监听路由地址
+  watch: {
+    $route (oldkey) {
+      this.emitCheckClick(oldkey.path)
+    }
+  },
+  methods: {
+    // 遍历路由对象
+    emitCheckClick (path) {
+      var that = this
+      for (var i in that.$refs.left_menu.list) {
+        (function (e) {
+          if (that.$refs.left_menu.list[e].link === path) {
+            setTimeout(() => {
+              that.$refs.left_menu.checkClick(e)
+            }, 100)
+          }
+        })(i)
+      }
+    }
   }
 }
 </script>

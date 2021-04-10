@@ -7,7 +7,7 @@
       </div>
       <img :src="item.cover" alt="">
       <div class="desc">
-        <p>{{item.name}} </p>
+        <p>{{item.title}} </p>
       </div>
     </div>
     <div class="no-video-list" v-if="videoList.length == null">

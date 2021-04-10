@@ -66,7 +66,6 @@ const routes = [
     // 播放视频详情页面
     component: () => import('../views/allVideo/AllVideoDetail'),
     children: [
-      { path: '/', redirect: '/video/allvideo' },
       // 所有视频
       { path: '/video/allvideo', component: () => import('../views/allVideo/childComps/AllVideo') },
       // 所有mv
@@ -79,4 +78,23 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  // 没有登录
+  if (!window.localStorage.getItem('obj')) {
+    // 访问视频
+    if (to.path === '/video/allvideo') {
+      Vue.prototype.$message.error('视频必须登录才能获取资源')
+      return next('/discover/individ')
+    } else if (to.path === '/friend') {
+      Vue.prototype.$message.error('朋友需要登录才能获取动态')
+      return next('/discover/individ')
+    } else if (to.path === '/transceiver') {
+      Vue.prototype.$message.error('电台需要登陆才能收听')
+      return next('/discover/individ')
+    }
+  }
+
+  // 其余直接放行
+  next()
+})
 export default router

@@ -1,11 +1,11 @@
 import { request } from './request'
 export class MV {
-  constructor (id, cover, name, artist, count) {
-    this.id = id
-    this.cover = cover
-    this.name = name
-    this.artist = artist
-    this.count = count
+  constructor (i) {
+    this.id = i.id
+    this.cover = i.cover
+    this.name = i.name
+    this.artist = i.artistName
+    this.count = i.playCount
   }
 }
 
