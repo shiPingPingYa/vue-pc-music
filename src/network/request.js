@@ -25,6 +25,9 @@ export function request (config, post) {
     }, 1000)
     return data
   }, err => {
+    setTimeout(() => {
+      loadingStance.close()
+    }, 1000)
     return new Promise((resolve, reject) => reject(err))
   })
   // 判断是否是post请求

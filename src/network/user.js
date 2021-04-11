@@ -30,3 +30,32 @@ export function _getSongList (id) {
     }
   })
 }
+
+// 获取手机号码的验证码
+export function _getCaptcha (phone) {
+  return request({
+    url: '/captcha/sent',
+    params: {
+      phone: phone
+    }
+  })
+}
+
+// 验证验证码
+export function _getVerifyCaptcha (phone, captcha) {
+  return request({
+    url: '/captcha/verify',
+    params: {
+      phone: phone,
+      captcha: captcha
+    }
+  })
+}
+
+// 用户登录 phone,password,captcha,nickname
+export function _registerPhone (params) {
+  return request({
+    url: '/register/cellphone',
+    data: params
+  }, true)
+}

@@ -43,6 +43,8 @@ export default {
     // 隐藏登录页面
     showLogin () {
       this.$store.commit('showLogin', !this.$store.state.isShowLogin)
+      // 隐藏注册页面
+      this.$store.commit('hiddenRegister')
     }
   }
 }

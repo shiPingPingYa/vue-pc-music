@@ -7,10 +7,24 @@ Vue.use(Vuex)
 const state = {
   // 是否显示登录页面
   isShowLogin: false,
+  // 是否显示注册组件
+  isShowRegister: false,
+  // 是否显示验证码组件
+  isCaptcha: false,
+  // 是否显示呢称组件
+  isNickName: false,
   // 用户名
   user: null,
   // 用户id
   uid: null,
+  // 登录用户昵称
+  nickname: '',
+  // 注册手机号
+  phone: '',
+  // 注册密码
+  password: '',
+  // 验证码
+  captcha: '',
   // cookie
   cookie: '',
   // 播放歌单
@@ -42,6 +56,30 @@ export default new Vuex.Store({
     hiddenLogin (state) {
       state.isShowLogin = false
     },
+    // 显示注册页面
+    showRegister (state) {
+      state.isShowRegister = true
+    },
+    // 隐藏注册组件
+    hiddenRegister (state) {
+      state.isShowRegister = false
+    },
+    // 显示验证码组件
+    showCaptcha (state) {
+      state.isCaptcha = true
+    },
+    // 隐藏验证码组件
+    hiddenCaptcha (state) {
+      state.isCaptcha = false
+    },
+    // 显示昵称组件
+    showNickName (state) { state.isNickName = true },
+    hiddenNickName (state) { state.isNickName = false },
+    // 添加用户注册手机号，密码，验证码，昵称
+    addPhone (state, phone) { state.phone = phone },
+    addPassword (state, password) { state.password = password },
+    addCaptcha (state, captcha) { state.captcha = captcha },
+    addNickName (state, nickname) { state.nickname = nickname },
     // 添加用户信息，和cookie，uid
     async addUser (state, obj) {
       state.user = obj
@@ -65,6 +103,15 @@ export default new Vuex.Store({
   getters: {
     getLoginStatus (state) {
       return state.isShowLogin
+    },
+    getUserRegisterInfo (state) {
+      const obj = {
+        phone: state.phone,
+        password: state.password,
+        captcha: state.captcha,
+        nickname: state.nickname
+      }
+      return obj
     }
   }
 

@@ -15,12 +15,12 @@
        <div>
          <!-- 手机号码 -->
          <div class="form-item">
-           <input type="text" @blur="verifyPhone" v-model="phone"   placeholder="请输入手机号码">
+             <el-input placeholder="请输入账号"  prefix-icon="el-icon-user" v-model="phone" @blur="verifyPhone"></el-input>
            <p>{{phoneMessage}} </p>
          </div>
          <!-- 密码 -->
           <div class="form-item" >
-           <input type="password" @blur="verifyPassword"  v-model="password" placeholder="请输入密码">
+            <el-input placeholder="请输入密码"  prefix-icon="el-icon-user" v-model="password" @blur="verifyPassword" ></el-input>
            <p>{{passwordMessage}} </p>
          </div>
         <!-- 登录 -->
@@ -29,10 +29,10 @@
          </div>
          <!-- 注册 -->
           <div class="form-item">
-            <div class="register">注册</div>
+            <div class="register" @click="registerC()">注册</div>
          </div>
          <div class="form-item">
-           <span>手机号登陆</span><span>二维码登录</span>
+         <span>二维码登录</span>
          </div>
        </div>
       </div>
@@ -40,91 +40,20 @@
   </transition>
 </template>
 <script>
-// 导入数据请求
-import { _login, _VerifyPhone } from '../../../network/user'
 import { mixins } from './mixins'
 export default {
   name: 'Login',
-  data () {
-    return {
-      normal: '../../../assets/img/login.jpg',
-      isPhone: false,
-      isPassword: false,
-      phone: '',
-      phoneMessage: '',
-      password: '',
-      passwordMessage: '',
-      // 手机号的正则验证
-      phoneExec: /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/,
-      // 密码验证
-      passwordExec: /(?!^(\d+|[a-zA-Z]+|[~!@#$%^&*?]+)$)^[\w~!@#$%^&*?]{8,18}$/
-    }
-  },
   mixins: [mixins],
   methods: {
-    // 鼠标一聚焦验证手机号
-    verifyPhone () {
-      // 判断号码是否为空
-      if (this.phone.trim().length <= 0) {
-        this.phoneMessage = '手机号不能为空'
-      } else {
-        // 验证手机号格式是否正确
-        if (this.phoneExec.test(this.phone) === null) {
-          this.phoneMessage = '手机号码的格式有误'
-        } else {
-          // 检测手机号是否存在
-          _VerifyPhone(this.phone).then(res => {
-            if (res.data.exist === -1) {
-              this.phone = '手机号码未被注册'
-            } else {
-              this.phoneMessage = ''
-              this.isPhone = true
-            }
-          })
-        }
-      }
-    },
-    verifyPassword () {
-      // 判断密码是否为空
-      if (this.password.trim().length <= 0) {
-        this.passwordMessage = '密码不能为空'
-      } else {
-        // 验证密码是否符合格式
-        if (this.passwordExec.test(this.password) === null) {
-          this.passwordMessage = '密码格式有误'
-        } else {
-          this.passwordMessage = ''
-          this.isPassword = true
-        }
-      }
-    },
     // 隐藏登录界面
     hiddenLogin () {
       this.$store.commit('hiddenLogin')
     },
-    // 登录
-    userLogin () {
-      _login(this.phone, this.password).then(res => {
-        if (res.data.code !== 200) {
-          this.passwordMessage = '密码错误'
-        } else {
-          // 获取响应数据(cookie，uname,image,uid)
-          const obj = {
-            uid: res.data.profile.userId,
-            cookie: res.data.cookie,
-            nickname: res.data.profile.nickname,
-            image: res.data.profile.avatarUrl
-          }
-          window.localStorage.setItem('obj', JSON.stringify(obj))
-          this.$store.commit('addUser', obj)
-          // 隐藏登录页面
-          this.hiddenLogin()
-        }
-      })
-    },
-    // 判断是否禁用按钮
-    btnDisabled () {
-      return (this.isPhone && this.isPassword)
+    // 显示注册页面
+    registerC () {
+      // 隐藏登录页
+      this.$store.commit('hiddenLogin')
+      this.$store.commit('showRegister')
     }
   }
 }
@@ -133,7 +62,7 @@ export default {
 .login{
   position: absolute;
   width: 400px;
-  height: 360px;
+  height: 380px;
   left: -16%;
   top: 8%;
   margin: auto;
@@ -175,7 +104,7 @@ export default {
   }
   > .main{
     width: 100%;
-    height: 300px;
+    height: 320px;
     text-align: center;
   }
 }
@@ -187,13 +116,16 @@ export default {
       padding: 0px 0px 10px 10px;
       font-size: 13px;
       color: red;
+      > .el-input{
+        height: 30px;
+      }
       > input{
         width: 98%;
         outline-style: none;
         height: 30px;
       }
       > p{
-        margin-top: 6px;
+        margin-top: 10px;
       }
       .register{
         position: absolute;
