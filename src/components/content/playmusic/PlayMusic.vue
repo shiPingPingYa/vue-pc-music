@@ -166,8 +166,8 @@ export default {
   created () {
     // 播放默认的歌曲
     if (this.playList.length === 1) {
-      _getMusicUrl(this.playList[this.currentIndex].id).then(res => {
-        this.playList[this.currentIndex].src = res.data.data[0].url
+      _getMusicUrl(this.playList[0].id).then(res => {
+        this.playList[0].src = res.data.data[0].url
       })
     }
   },

@@ -48,7 +48,8 @@ export default {
       time: 60,
       exit: false,
       btnCaptcha: false,
-      timer: null
+      timer: null,
+      message: ''
     }
   },
   mixins: [mixins],
@@ -73,9 +74,17 @@ export default {
       // 获取验证码
       try {
         await _getCaptcha(this.$store.state.phone)
+        this.$message.warning('验证码已达每日最大五个上限')
         throw new Error('验证码已超过每日最大五个上限')
       } catch (e) {
-        console.log(e.message)
+        this.message = e.message.substr(10, 4)
+      }
+      // 验证码报错
+      if (this.message.trim().length >= 1) {
+        this.startS = this.message
+        this.message = ''
+        this.btnCaptcha = false
+        return true
       }
       if (this.flag === 1) {
         this.timer = setInterval(() => {
@@ -87,14 +96,13 @@ export default {
             this.time = 60
           }
         }, 1000)
-      } else if (this.flag === 2) {
+      } else if (this.flag >= 2) {
         this.timer = setInterval(() => {
           this.startS = `00:${this.time--}`
           if (this.time === 0) {
             clearInterval(this.timer)
             this.startS = '重新获取'
             this.btnCaptcha = false
-            this.flag = 0
             this.time = 60
           }
         }, 1000)
@@ -104,16 +112,16 @@ export default {
     checkCaptcha: debounce(function (e) {
       try {
         _getVerifyCaptcha(e.$store.state.phone, e.captcha.trim()).then(res => {
+          console.log(res.data)
           e.exit = res.data.data
-          e.$store.state.commit('addCaptcha', e.captcha)
-          clearInterval(e.timer)
+          // 存储验证码
+          e.$store.commit('addCaptcha', e.captcha)
         }).catch(err => {
-          clearInterval(e.timer)
           console.log(err)
+          e.$message.warning('验证码错误')
         })
-        throw new Error('验证码输入错误')
       } catch (k) {
-        e.$message.warning(k.message)
+        console.log(k)
       }
     }, 800),
     // 是否禁用按钮
@@ -127,6 +135,7 @@ export default {
     // 显示呢称组件
     enterNickN () {
       this.$store.commit('showNickName')
+      clearInterval(this.timer)
     }
   }
 }

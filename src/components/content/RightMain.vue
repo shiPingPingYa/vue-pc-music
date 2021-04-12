@@ -6,16 +6,20 @@
     <!-- 登录组件 -->
     <login v-show="$store.getters.getLoginStatus"></login>
     <!-- 注册组件 -->
-    <register v-show="$store.state.isShowRegister"></register>
+    <register v-if="$store.state.isShowRegister"></register>
+    <!-- 二维码组件 -->
+    <qrcode v-if="$store.state.isShowQrcode"></qrcode>
   </div>
 </template>
 <script>
 // 导入登录页面
 import Login from '../content/user/Login'
+// 注册组件
 import Register from './user/Register.vue'
+import Qrcode from './user/Qrcode'
 export default {
   name: 'RightMain',
-  components: { Login, Register }
+  components: { Login, Register, Qrcode }
 }
 </script>
 <style lang="less" scoped>

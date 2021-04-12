@@ -17,7 +17,13 @@
         <img :src="userImage()">
       </div>
       <div class="user-id">{{userName}}</div>
+        <!-- 退出登录 -->
+      <div class="enterLogin">
+        <div class="enter-name">退出登录</div>
+        <i class="el-icon-s-unfold" @click="enterLogin()"></i>
+      </div>
     </div>
+
   </div>
 </template>
 <script>
@@ -45,6 +51,26 @@ export default {
       this.$store.commit('showLogin', !this.$store.state.isShowLogin)
       // 隐藏注册页面
       this.$store.commit('hiddenRegister')
+    },
+    // 退出登录
+    enterLogin () {
+      // 判断是否登录
+      if (window.localStorage.getItem('obj')) {
+        this.$confirm('此操作会退出登录,是否继续?', '提示', {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 清除本地缓存
+          window.localStorage.clear('obj')
+          window.location.reload()
+          this.$message({ type: 'success', message: '已经退出' })
+        }).catch(() => {
+          this.$message({ type: 'info', message: '已取消' })
+        })
+      } else {
+        this.$message.warning('还未登录')
+      }
     }
   }
 }
@@ -56,13 +82,13 @@ export default {
   background-color: #212025;
 }
 .logo{
+  position: relative;
   display: flex;
   float: left;
   width: 25%;
   height: 100%;
   align-items: center;
   cursor: pointer;
-  position: relative;
   > i{
     display: inline-block;
     margin-left: 22px;
@@ -115,13 +141,13 @@ export default {
   height: 100%;
   justify-content: flex-end;
   align-items: center;
-  cursor: pointer;
   > .user-img{
     width: 32px;
     height: 32px;
     background-color: #fff;
     border-radius: 50%;
     line-height: 54px;
+    cursor: pointer;
     > img{
       width: 100%;
       height: 100%;
@@ -132,9 +158,23 @@ export default {
   }
   > .user-id{
       margin-left: 6px;
-      width: calc(100% - 56% - 32px);
+      width: calc(100% - 56% - 102px);
       color: #96959a;
       font-size: 14px;
+  }
+  > .enterLogin{
+    width: 20%;
+    font-size: 14px;
+    color: #96959a;
+    > div{
+      display: inline-block;
+      margin-right: 2px;
+    }
+    > i{
+      font-size: 18px  !important;
+      vertical-align: -2px;
+      cursor: pointer;
+    }
   }
 }
 

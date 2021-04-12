@@ -1,5 +1,5 @@
 // 导入数据请求
-import { _login, _VerifyPhone } from '../../../network/user'
+import { _VerifyPhone } from '../../../network/user'
 
 export const mixins = {
   data () {
@@ -76,26 +76,6 @@ export const mixins = {
         }
       }
     },
-    // 登录
-    userLogin () {
-      _login(this.phone, this.password).then(res => {
-        if (res.data.code !== 200) {
-          this.passwordMessage = '密码错误'
-        } else {
-          // 获取响应数据(cookie，uname,image,uid)
-          const obj = {
-            uid: res.data.profile.userId,
-            cookie: res.data.cookie,
-            nickname: res.data.profile.nickname,
-            image: res.data.profile.avatarUrl
-          }
-          window.localStorage.setItem('obj', JSON.stringify(obj))
-          this.$store.commit('addUser', obj)
-          // 隐藏登录页面
-          this.hiddenLogin()
-        }
-      })
-    },
     // 判断是否禁用按钮
     btnDisabled () {
       return (this.isPhone && this.isPassword)
@@ -112,7 +92,12 @@ export const mixins = {
     },
     // 关闭注册页面
     closeRegister () {
+      // 销毁注册，验证码，昵称页面
       this.$store.commit('hiddenRegister')
+      this.$store.commit('hiddenCaptcha')
+      this.$store.commit('hiddenNickName')
+      // 清除添加的手机号，密码，验证码
+      this.$store.commit('clearUserRegisterInfo', '')
     }
 
   }

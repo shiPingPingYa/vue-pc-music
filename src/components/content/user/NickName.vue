@@ -58,15 +58,18 @@ export default {
     },
     // 确认注册
     async nickNC () {
+      // 隐藏注册，验证码，昵称页面
+      this.closeRegister()
       try {
+        console.log(this.$store.state.phone)
         await _registerPhone(this.$store.getters.getUserRegisterInfo).then(res => {
           this.$message.success('账号注册成功')
         }).catch(err => {
           console.log(err)
+          this.$message.warning('注册失败')
         })
-        throw new Error('注册失败')
       } catch (e) {
-        this.$$message.warning('注册失败')
+        console.log(e)
       }
     }
   }

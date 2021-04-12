@@ -20,7 +20,7 @@
          </div>
          <!-- 密码 -->
           <div class="form-item" >
-            <el-input placeholder="请输入密码"  prefix-icon="el-icon-user" v-model="password" @blur="verifyPassword" ></el-input>
+            <el-input placeholder="请输入密码" type="password"  prefix-icon="el-icon-user" v-model="password" @blur="verifyPassword" ></el-input>
            <p>{{passwordMessage}} </p>
          </div>
         <!-- 登录 -->
@@ -31,7 +31,7 @@
           <div class="form-item">
             <div class="register" @click="registerC()">注册</div>
          </div>
-         <div class="form-item">
+         <div class="form-item" @click="qrcodeClick()">
          <span>二维码登录</span>
          </div>
        </div>
@@ -41,12 +41,14 @@
 </template>
 <script>
 import { mixins } from './mixins'
+import { _login } from '../../../network/user'
 export default {
   name: 'Login',
   mixins: [mixins],
   methods: {
     // 隐藏登录界面
     hiddenLogin () {
+      this.password = ''
       this.$store.commit('hiddenLogin')
     },
     // 显示注册页面
@@ -54,6 +56,32 @@ export default {
       // 隐藏登录页
       this.$store.commit('hiddenLogin')
       this.$store.commit('showRegister')
+    },
+    // 二维码组件
+    qrcodeClick () {
+      // 关闭注册组件
+      this.$store.commit('hiddenLogin')
+      this.$store.commit('showQrcode')
+    },
+    // 登录
+    userLogin () {
+      _login(this.phone, this.password).then(res => {
+        if (res.data.code !== 200) {
+          this.passwordMessage = '密码错误'
+        } else {
+          // 获取响应数据(cookie，uname,image,uid)
+          const obj = {
+            uid: res.data.profile.userId,
+            cookie: res.data.cookie,
+            nickname: res.data.profile.nickname,
+            image: res.data.profile.avatarUrl
+          }
+          window.localStorage.setItem('obj', JSON.stringify(obj))
+          this.$store.commit('addUser', obj)
+          // 隐藏登录页面
+          this.hiddenLogin()
+        }
+      })
     }
   }
 }

@@ -13,6 +13,8 @@ const state = {
   isCaptcha: false,
   // 是否显示呢称组件
   isNickName: false,
+  // 是否显示二维码
+  isShowQrcode: false,
   // 用户名
   user: null,
   // 用户id
@@ -74,12 +76,26 @@ export default new Vuex.Store({
     },
     // 显示昵称组件
     showNickName (state) { state.isNickName = true },
+    // 隐藏昵称组件
     hiddenNickName (state) { state.isNickName = false },
+    // 显示二维码组件
+    showQrcode (state) { state.isShowQrcode = true },
+    // 隐藏二维码组件
+    hiddenQrcode (state) { state.isShowQrcode = false },
     // 添加用户注册手机号，密码，验证码，昵称
     addPhone (state, phone) { state.phone = phone },
     addPassword (state, password) { state.password = password },
     addCaptcha (state, captcha) { state.captcha = captcha },
     addNickName (state, nickname) { state.nickname = nickname },
+    // 添加cookie
+    addCookie (state, cookie) { state.cookie = cookie },
+    // 清除用户登录信息
+    clearUserRegisterInfo (state, flag) {
+      state.phone = flag
+      state.password = flag
+      state.nickname = flag
+      state.captcha = flag
+    },
     // 添加用户信息，和cookie，uid
     async addUser (state, obj) {
       state.user = obj

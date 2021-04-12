@@ -32,6 +32,8 @@ import Scroll from '../../../components/common/scroll/Scroll'
 import ArtistList from '../childComps/ArtistList'
 // 导入数据请求
 import { _getArtist } from '../../../network/discover'
+// 节流
+import { throttled } from '../../../assets/common/tool'
 export default {
   name: 'ArtistCategory',
   components: {
@@ -67,7 +69,8 @@ export default {
   },
   methods: {
     // scroll下拉刷新
-    async pullingUp () {
+    pullingUp: throttled(async function () {
+      this.page++
       var artistList = []
       await _getArtist(
         this.area[this.areaIndex].value,
@@ -75,10 +78,10 @@ export default {
         this.limit * this.page
       ).then(res => {
         artistList = res.data.artists
-        this.page++
       })
       this.artistList = artistList
-    },
+      this.$refs.scroll.finishPullUp()
+    }, 800),
     areaClick (index) {
       this.areaIndex = index
       this.getArtist()
@@ -89,6 +92,7 @@ export default {
     },
     // 获取歌手数据
     async getArtist () {
+      this.artistList = []
       await _getArtist(this.area[this.areaIndex].value, this.type[this.typeIndex].value, this.limit * this.page).then(res => {
         this.artistList = res.data.artists
       })

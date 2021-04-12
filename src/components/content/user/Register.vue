@@ -1,9 +1,9 @@
 <template>
 <transition name="reg">
-<div class="register">
+<div class="register" ref="register">
   <!-- 登录背景 -->
   <div class="register-back">
-    <div class="close" @click="closeRegister">
+    <div class="close" @click="closeRegister()">
       <img src="../../../assets/img/user/x.svg" alt="">
     </div>
     <!-- 图片 -->
@@ -15,7 +15,7 @@
   <div class="main">
     <div>
       <div class="form-item">
-          <el-input placeholder="请输入手机号" @blur="verifyPhone" v-model="phone"  prefix-icon="el-icon-user"></el-input>
+          <el-input placeholder="请输入手机号" @blur="verifyPhone2" v-model="phone"  prefix-icon="el-icon-user"></el-input>
           <p>{{phoneMessage}}</p>
       </div>
       <div class="form-item">
@@ -30,7 +30,7 @@
     </div>
   </div>
   <!-- 验证码验证 -->
-  <check-captcha v-show="$store.state.isCaptcha"></check-captcha>
+  <check-captcha ref="check_captcha" v-show="$store.state.isCaptcha"></check-captcha>
   <!-- 昵称 -->
   <nick-name v-show="$store.state.isNickName"></nick-name>
   </div>
@@ -42,11 +42,20 @@
 import CheckCaptcha from './CheckCaptcha'
 // 昵称组件
 import NickName from './NickName'
+// 导入二维码组件
 // 导入混入
 import { mixins } from './mixins'
 export default {
   name: 'Register',
   components: { CheckCaptcha, NickName },
+  watch: {
+    phone (newkey) {
+      if (newkey.trim().length >= 11) {
+        this.$refs.check_captcha.flag = 0
+        clearInterval(this.$refs.check_captcha.timer)
+      }
+    }
+  },
   mixins: [mixins]
 }
 </script>
