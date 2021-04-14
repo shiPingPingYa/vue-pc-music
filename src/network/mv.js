@@ -2,7 +2,7 @@ import { request } from './request'
 export class MV {
   constructor (i) {
     this.id = i.id
-    this.cover = i.cover
+    this.cover = (i.cover || i.imgurl)
     this.name = i.name
     this.artist = i.artistName
     this.count = i.playCount

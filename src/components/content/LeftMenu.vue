@@ -61,7 +61,7 @@ export default {
           transform: false
         },
         {
-          link: '/friend',
+          link: '/friend/frienddetail',
           class: 'el-icon-s-custom',
           title: '朋友',
           icon: false,

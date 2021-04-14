@@ -16,6 +16,9 @@ export function request (config) {
     }
     return data
   }, err => {
+    if (config.isClose !== true) {
+      loadingStance = Loading.service({ fullscreen: true, background: 'rgba(0,0,0,0.1)' })
+    }
     return new Promise((resolve, reject) => reject(err))
   })
   // 配置响应内容
@@ -27,7 +30,12 @@ export function request (config) {
     }
     return data
   }, err => {
-    return new Promise((resolve, reject) => reject(err))
+    if (config.isClose !== true) {
+      setTimeout(() => {
+        loadingStance.close()
+      }, 1000)
+    }
+    return new Promise((resolve, reject) => reject(err.response))
   })
   // 判断是否是post请求
   return install(config)

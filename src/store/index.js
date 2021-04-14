@@ -15,7 +15,7 @@ const state = {
   isNickName: false,
   // 是否显示二维码
   isShowQrcode: false,
-  // 用户名
+  // 用户默认信息
   user: null,
   // 用户id
   uid: null,
@@ -39,6 +39,14 @@ const state = {
   image: null,
   // 用户id
   userName: '覃覃音乐',
+  // 用户的关注
+  userFollows: '',
+  // 用户的粉丝
+  userFolloweds: '',
+  // 用户性别
+  userGender: '',
+  // 用户动态
+  userEventCount: '',
   // 用户登录的手机号码
   isSongList: true
 }
@@ -106,6 +114,14 @@ export default new Vuex.Store({
       state.image = obj.image
       // 用户名字
       state.userName = obj.nickname
+      // 添加用户粉丝
+      state.userFolloweds = obj.followeds
+      // 添加用户性别
+      state.userGender = obj.gender
+      // 添加用户动态
+      state.userEventCount = obj.eventCount
+      // 添加用户关注
+      state.userFollows = obj.follows
       // 获取用户歌单
       await _getSongList(state.uid).then(res => {
         state.userSongList = res.data.playlist

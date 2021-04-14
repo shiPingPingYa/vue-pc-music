@@ -1,6 +1,7 @@
 <template>
   <div class="main">
     <keep-alive include="Allmv">
+    <!-- 左边导航栏的路由占位符 -->
     <router-view></router-view>
     </keep-alive>
     <!-- 登录组件 -->

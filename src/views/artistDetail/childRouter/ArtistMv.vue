@@ -26,14 +26,8 @@ export default {
     // 调用获取mv数据接口传入用户id，拿到返回的歌手mv数据
     _getArtistMv(this.artist.id).then(res => {
       var mvs = res.data.mvs
-      for (var i in mvs) {
-        var mv = new MV(
-          mvs[i].id,
-          mvs[i].imgurl,
-          mvs[i].name,
-          mvs[i].artistName,
-          mvs[i].playCount
-        )
+      for (var i of mvs) {
+        var mv = new MV(i)
         this.mvList.push(mv)
       }
     })

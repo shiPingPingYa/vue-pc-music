@@ -69,12 +69,17 @@ export default {
         if (res.data.code !== 200) {
           this.passwordMessage = '密码错误'
         } else {
-          // 获取响应数据(cookie，uname,image,uid)
+          // 获取响应数据(cookie，uname,image,uid),follows关注,followeds粉丝,gender(1男,0女),eventCount动态
+          console.log(res.data)
           const obj = {
             uid: res.data.profile.userId,
             cookie: res.data.cookie,
             nickname: res.data.profile.nickname,
-            image: res.data.profile.avatarUrl
+            image: res.data.profile.avatarUrl,
+            follows: res.data.profile.follows,
+            followeds: res.data.profile.followeds,
+            gender: res.data.profile.gender,
+            eventCount: res.data.profile.eventCount
           }
           window.localStorage.setItem('obj', JSON.stringify(obj))
           this.$store.commit('addUser', obj)

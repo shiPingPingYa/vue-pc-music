@@ -71,6 +71,21 @@ const routes = [
       // 所有mv
       { path: '/video/allmv', component: () => import('../views/mv/AllMv') }
     ]
+  },
+  // 朋友
+  {
+    path: '/friend',
+    component: () => import('../components/content/friend/Friend'),
+    children: [
+      { path: '/', redirect: 'frienddetail' },
+      { path: 'frienddetail', component: () => import('../components/content/friend/FriendDetail') },
+      // 动态
+      { path: 'userdynamic', component: () => import('../components/content/friend/childRouter/UserDynamic') },
+      // 粉丝
+      { path: 'userfolloweds', component: () => import('../components/content/friend/childRouter/UserFolloweds') },
+      // 关注
+      { path: 'userfollows', component: () => import('../components/content/friend/childRouter/UserFollows') }
+    ]
   }
 ]
 

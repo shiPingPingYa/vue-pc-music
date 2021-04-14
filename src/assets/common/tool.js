@@ -11,6 +11,12 @@ export function formDate (date, str) {
     var Mm = date.getMonth() + 1
     var Dd = date.getDate()
     return `${Mm}月${Dd}日`
+  } else if (str === 'mm:dd-hh:mm') {
+    var Mon = date.getMonth() + 1
+    var Dat = date.getDate()
+    var Hh = date.getHours()
+    var Minu = date.getMinutes()
+    return `${Mon}月${Dat}日 ${Hh}:${Minu}`
   } else {
     var F = date.getFullYear()
     var M = date.getMonth() + 1

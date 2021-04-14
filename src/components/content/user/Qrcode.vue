@@ -60,6 +60,8 @@ export default {
           // 获取cookie
           if (res.data.cookit !== null) { this.$store.commit('addCookie', res.data.cookie) }
         })
+
+        console.log(this.status)
         if (this.status === 800) {
           // 清除定时器
           clearInterval(this.timer)
@@ -83,8 +85,11 @@ export default {
           // 销毁二维码页面
           this.$store.commit('hiddenQrcode')
         }
-      }, 8000)
+      }, 6000)
     }
+  },
+  beforeDestroy () {
+    clearInterval(this.timer)
   }
 }
 </script>
