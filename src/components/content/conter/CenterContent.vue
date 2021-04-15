@@ -1,10 +1,8 @@
 <template>
-  <main>
       <div class="content">
     <left-menu ref="left_menu"></left-menu>
     <right-main></right-main>
   </div>
-  </main>
 </template>
 <script>
 import LeftMenu from '../LeftMenu'

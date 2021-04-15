@@ -1,5 +1,4 @@
 <template>
- <header>
     <div class="header">
     <div class="logo">
       <i class="el-icon-platform-eleme" style="color:red"></i>
@@ -26,7 +25,6 @@
     </div>
 
   </div>
- </header>
 </template>
 <script>
 import MusicSearch from '../search/MusicSearch'
