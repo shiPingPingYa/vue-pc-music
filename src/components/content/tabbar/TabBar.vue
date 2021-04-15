@@ -63,6 +63,8 @@ export default {
         }).then(() => {
           // 清除本地缓存
           window.localStorage.clear('obj')
+          // 跳转到首页，并重新刷新文档
+          this.$router.push('/')
           window.location.reload()
           this.$message({ type: 'success', message: '已经退出' })
         }).catch(() => {

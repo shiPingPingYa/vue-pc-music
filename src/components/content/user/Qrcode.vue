@@ -83,7 +83,7 @@ export default {
           // 销毁二维码页面
           this.$store.commit('hiddenQrcode')
         }
-      }, 6000)
+      }, 4000)
     }
   },
   beforeDestroy () {
