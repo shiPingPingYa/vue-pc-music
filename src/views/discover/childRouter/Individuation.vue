@@ -73,7 +73,7 @@ export default {
     })
     // 处理mv获取需要的参数
     for (var i of this.notMvList) {
-      var mv = new MV(i.id, i.picUrl, i.name, i.artistName, i.playCount)
+      var mv = new MV(i)
       this.mvList.push(mv)
     }
     this.mvList.slice(0, 3)
