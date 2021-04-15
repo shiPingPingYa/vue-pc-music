@@ -14,7 +14,7 @@
             </div>
             <div class="music-pic" :class="{rotate:isPlayer}">
               <div class="img-wrap">
-                <img src="../../../assets/img/userimg.png" alt="">
+                <img :src="music.pic" alt="">
               </div>
             </div>
           </div>
