@@ -1,5 +1,6 @@
 <template>
-  <div class="header">
+ <header>
+    <div class="header">
     <div class="logo">
       <i class="el-icon-platform-eleme" style="color:red"></i>
      <div class="title">覃覃音乐</div>
@@ -25,6 +26,7 @@
     </div>
 
   </div>
+ </header>
 </template>
 <script>
 import MusicSearch from '../search/MusicSearch'
@@ -82,6 +84,7 @@ export default {
   width: 100%;
   height: 54px;
   background-color: #212025;
+  user-select: none;
 }
 .logo{
   position: relative;

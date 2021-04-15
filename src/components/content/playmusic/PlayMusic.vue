@@ -1,5 +1,6 @@
 <template>
-  <div class="play-music" v-if="playList !== null" >
+ <footer>
+    <div class="play-music" v-if="playList !== null" >
     <!-- 播放条上面的内容区域 -->
     <div class="top" >
       <!-- 播放内容图片 -->
@@ -95,6 +96,7 @@
     <!-- 首页歌词 -->
     <Lyric ref="lyric" class="play-music-lyric" :lyric="lyric" v-show="isLyric"></Lyric>
   </div>
+ </footer>
 </template>
 <script>
 // 导入歌曲的歌词组件

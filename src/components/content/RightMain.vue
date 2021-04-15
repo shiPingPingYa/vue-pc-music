@@ -29,5 +29,6 @@ export default {
   width: 82%;
   height:100% ;
   background-color: #16181c;
+  user-select: none;
 }
 </style>
