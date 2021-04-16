@@ -31,9 +31,6 @@ export default {
       return this.$store.state.userSongList
     }
   },
-  created () {
-
-  },
   methods: {
     // 跳转到音乐详情页面
     enterMusicListDetail (i) {
@@ -52,7 +49,8 @@ export default {
 <style lang="less" scoped>
 .user-song-lsit{
   width: 100%;
-  height: 180px;
+  height: 100%;
+  padding-bottom: 20px;
 }
 
 .mymusic-scroll{
@@ -92,15 +90,13 @@ export default {
 
 .cur-song-list{
   opacity: 1;
-  background-color: #26282c;
-  color: #fff  !important;
+  background: #e6e7eb;
 
 }
 
 ul li:hover{
   opacity: 1;
   cursor: pointer;
-  background-color: #26282c;
-  color: #fff;
+  background-color: #e6e7eb;
 }
 </style>

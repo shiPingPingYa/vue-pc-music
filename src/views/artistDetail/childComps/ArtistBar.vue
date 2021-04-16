@@ -48,8 +48,8 @@ export default {
   height: 50px;
   align-items: center;
   font-size: 14px;
-  color: #fff;
-  border-bottom: 1px solid #2c2e32;
+  color: #0a0a0a;
+  border-bottom: 1px solid #ededee;
 }
 
 .detail-bar .bar-item{

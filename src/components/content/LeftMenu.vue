@@ -14,7 +14,7 @@
         <div class="icon">我的歌单 <i v-show="$store.state.user !== null" :class="{ 'el-icon-bottom':icon, 'el-icon-right':!icon}"></i></div>
 
         <keep-alive>
-      <my-song-list class="my-song-list" v-show="isSongList"></my-song-list>
+       <my-song-list class="my-song-list" v-show="isSongList"></my-song-list>
         </keep-alive>
       </div>
     </dl>
@@ -90,10 +90,10 @@ export default {
 .left-menu{
   width: 18%;
   height: 100%;
-  background-color: #191b1f;
-  // background-color: #fff;
-  color: #fff;
+  color: #0a0a0a;
+  background:#f5f5f7;;
   user-select: none;
+  opacity: 0.8;
 }
 
 dl{
@@ -102,7 +102,7 @@ dl{
 }
 
 dl a{
-  color: #fff;
+  color: #0a0a0a;
   text-decoration: none;
 }
 
@@ -110,7 +110,8 @@ dl a{
   margin-top: 10px;
   padding-left: 10px;
   font-size: 14px;
-  color: rgba(241, 232, 232, 0.8);
+  color: #000a0d;
+  background-color: #f5f5f7;
   cursor: pointer;
   div{
     display: block;
@@ -131,7 +132,7 @@ dl a{
 }
 
 .my-song-list{
-  height: 180px  !important;
+  height: calc(100vh - 58px - 59px - 288px)  !important;
 }
 
 dd{
@@ -145,7 +146,7 @@ dd{
 }
 
 dd:hover{
-  background-color: #26282c;
+  background-color: #e6e7eb;
   opacity: 1;
 }
 dd > div{
@@ -157,7 +158,7 @@ dd > div{
 }
 
 .action{
-  background-color: #26282c;
+  background-color: #e6e7eb;
   border-left: 4px solid #b82525;
 }
 

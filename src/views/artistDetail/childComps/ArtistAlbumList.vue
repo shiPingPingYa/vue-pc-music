@@ -12,7 +12,7 @@
           <table>
             <tbody>
                <tr v-for="(item,index) in musicList" :key="index"
-          :class="{backColor:setBackColor(index)}"
+          :class="{backColor:setBackColor(index),curMusicItem:playIndex == index}"
           @dblclick="albumClick(index)">
             <td :class="{curFont:playIndex == index}">
               {{setSerial(index)}}
@@ -94,11 +94,12 @@ export default {
 .album-list{
   margin-top: 50px;
   width: 100%;
+  color: #0a0a0a;
   > .top{
     display: block;
     padding-left: 26%;
     height: 20px;
-    color: #e5e5e5;
+    color: #0a0a0a;
     font-size: 14px;
   }
   > .album{
@@ -142,7 +143,7 @@ export default {
 .music>  table{
   margin-top: 4px;
   width: 100%;
-  border: 1px solid #2c2e32;
+  border: 1px solid #e6e7e9;
 }
 
 .music tbody{
@@ -164,8 +165,7 @@ export default {
 }
 
 .music tr:hover{
-  color: #fff;
-  background-color: #2c2e32;
+  background-color: #c9c6c6;
   cursor: pointer;
 }
 
@@ -199,7 +199,7 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: #fff;
+    color: #0a0a0a;
 }
 
 .music tr td:nth-child(4){

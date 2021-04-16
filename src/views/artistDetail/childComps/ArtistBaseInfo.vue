@@ -74,7 +74,7 @@ export default {
   > .top{
     padding-top: 8px;
     height: 18%;
-    color: #fff;
+    color: #0a0a0a;
     >span{
       font-size: 20px;
     }
@@ -93,7 +93,7 @@ export default {
       height: 30px;
       line-height: 30px;
       text-align: center;
-      background-color: #25272b;
+      background-color: #eceef1;
       font-size: 14px;
       border-radius: 10px;
       cursor: pointer;
@@ -107,7 +107,7 @@ export default {
     > div{
         margin-right: 10px;
         padding: 4px 10px;
-        background-color: #25272b;
+        background-color: #a6a6ac;
         border-radius: 10px;
         cursor: pointer;
         color: #fff;
@@ -137,7 +137,7 @@ export default {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
-    color: #fff;
+    color: #0a0a0a;
     bottom: 0;
     > .introduce {
     padding: 5px 0;

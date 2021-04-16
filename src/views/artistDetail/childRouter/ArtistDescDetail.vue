@@ -54,7 +54,7 @@ export default {
 
 .desc-detail h3{
   padding: 10px 0px;
-  color: #dcdde4;
+  color: #0a0a0a;
 
 }
 

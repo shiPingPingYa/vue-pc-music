@@ -49,7 +49,7 @@ export function distinct (arr) {
 // 防抖
 export function debounce (fn, delay) {
   let timer = null
-  return (...args) => {
+  return function (...args) {
     if (timer)clearTimeout(timer)
     timer = setTimeout(() => {
       fn && fn.apply(this, args)

@@ -2,7 +2,7 @@
   <div class="user-follows">
     <scroll ref="scroll" class="scroll" :pull-up-load="true" @pullingUp="pullingUp()">
     <div class="user-name">
-      {{$store.state.userName}}的关注
+      {{$store.state.userName}}的粉丝
     </div>
     <div class="follows-content">
       <div class="follows-user" v-for="(item,index) in followList" :key="index">
@@ -86,7 +86,7 @@ export default {
   overflow:hidden;
 }
 
-.user-name {
+.user-name{
     width: 100%;
     height: 40px;
     margin-bottom: 20px;
@@ -94,7 +94,7 @@ export default {
     border-bottom: 1px solid #949395;
     font-size: 16px;
     font-weight: 400;
-    color: #fff;
+    color: #01060a;
 }
 
 .follows-content{
@@ -102,7 +102,7 @@ export default {
   width: 100%;
   height: 100% ;
   flex-wrap: wrap;
-  font-size: 14px ;
+  font-size: 12px ;
   color: #949395;
   > .follows-user{
     position: relative;
@@ -112,7 +112,8 @@ export default {
     padding: 2px;
     margin-bottom: 20px;
     margin-right: 3.3%;
-    background: linear-gradient(to right, rgba(35, 36, 35, 0.5), rgba(35, 36, 35, 0.5));
+    border: 1px solid rgb(212, 212, 212);
+    background: rgb(247, 243, 243);
     opacity: 0.8;
     > .user-box{
       width: 54px;
@@ -125,8 +126,8 @@ export default {
       width: 160px;
       height: 100%;
       > .user_name{
-        font-size: 16px;
-        color: #fff;
+        font-size: 14px;
+        color: #01060a;
       }
       > .user-title{
         width: 100%;
@@ -150,14 +151,14 @@ export default {
       position: absolute;
       width: 46px;
       height: 40%;
-      margin: auto;
+      margin-right: 4px;
       right: 0;
       top: 50%;
       text-align: center;
       line-height: 30px;
       transform: translateY(-50%);
-      background-color: #252525;
-      color: #fff;
+      background-color: #ffff;
+      color: #01060a;
     }
   }
   > div:hover{

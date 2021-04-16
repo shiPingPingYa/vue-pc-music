@@ -162,12 +162,12 @@ export default {
     justify-content: space-between;
     font-size: 18px;
     font-weight: 400;
-    color: #e9e6e3;
+    color: #01060a;
     > .write-dynamic{
       width: 12%;
       height: 30px;
       text-align: center;
-      background-color: #2e2e2e;
+      background-color: #ffff;
       font-size: 14px  !important;
       border-radius: 20px;
       cursor: pointer;
@@ -224,7 +224,7 @@ export default {
         color: #949395;
        }
        > .title{
-         color: #fff;
+         color: #01060a;
          span{
            color: rgb(25, 137, 241);
            cursor: pointer;

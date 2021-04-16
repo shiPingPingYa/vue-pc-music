@@ -15,7 +15,7 @@
       <!-- 内容 -->
       <tbody>
         <tr v-for="(item,index) in musicList" :key="index"
-        :class="{backColor:setBackColor(index)}"
+        :class="{backColor:setBackColor(index),curMusicItem:playIndex == index}"
         @dblclick="musicItemClick(index)">
           <td :class="{curFont:playIndex==index}">{{setSerial(index)}}
             <div class="curPlay" v-show="playIndex == index">
@@ -64,7 +64,7 @@ export default {
 }
 
 .music thead{
-  color: #828385;
+  color: #0a0a0a;
 }
 
 .music tbody tr td{
@@ -78,18 +78,18 @@ export default {
 }
 
 .music tr:hover{
-  color: #fff;
-  background-color: #2c2e32;
+  color: #0a0a0a;
+  background-color: #c9c6c6;
   cursor: pointer;
 }
 
 .music tr td{
   position: relative;
-  border: 1px solid #23262c;
+  border: 1px solid #e9e3e7;
 }
 
 .music tbody{
-  color: #575757;
+  color: #0a0a0a;
 }
 
 .music tr td:nth-child(1){
@@ -123,7 +123,7 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: #dcdde4;
+    color: #0a0a0a;
 }
 
 .music tr td:nth-child(4){

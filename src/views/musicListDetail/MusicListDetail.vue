@@ -120,7 +120,7 @@ export default {
   margin: 4% auto;
   width: 90%;
   height: 94%;
-  color: #fff;
+  color: #01060a;
   overflow: hidden;
 }
 

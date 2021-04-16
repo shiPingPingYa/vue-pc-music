@@ -37,6 +37,40 @@ export default {
       scroll: null
     }
   },
+  methods: {
+    // better-scroll内置方法滚动到指定位置
+    scrollTo (x, y, timer = 500) {
+      this.scroll.scrollTo(x, y, timer) // better-scroll内置方法，回到指定位置
+    },
+    scrollBy (x, y, timer = 500) {
+      this.scroll.scrollBy(x, y, timer)
+    },
+    // 下拉调用refresh方法，重新获取x，y
+    finishPullUp () {
+      this.refresh()
+      this.scroll.finishPullUp()
+    },
+    refresh () {
+      this.scroll.refresh()
+    },
+    // 获取y的坐标
+    getScrollY () {
+      return this.scroll ? this.scroll.y : 0
+    },
+    // 启用better-scroll
+    enable () {
+      this.scroll && this.scroll.enable()
+    },
+
+    // 停止scroll的动画
+    stop () {
+      this.scroll.stop()
+    },
+    // 禁用better-scroll
+    disable () {
+      this.scroll && this.scroll.disable()
+    }
+  },
   mounted () {
     // 实例化better-scorll
     this.scroll = new Bscroll(this.$refs.swiper, {
@@ -59,33 +93,8 @@ export default {
     this.scroll.on('pullingUp', () => {
       this.$emit('pullingUp')
     })
-  },
-  methods: {
-    // better-scroll内置方法滚动到指定位置
-    scrollTo (x, y, timer = 500) {
-      this.scroll.scrollTo(x, y, timer) // better-scroll内置方法，回到指定位置
-    },
-    // 下拉调用refresh方法，重新获取x，y
-    finishPullUp () {
-      this.refresh()
-      this.scroll.finishPullUp()
-    },
-    refresh () {
-      this.scroll.refresh()
-    },
-    // 获取y的坐标
-    getScrollY () {
-      return this.scroll ? this.scroll.y : 0
-    },
-    // 启用better-scroll
-    enable () {
-      this.scroll && this.scroll.enable()
-    },
-    // 禁用better-scroll
-    disable () {
-      this.scroll && this.scroll.disable()
-    }
   }
+
 }
 </script>
 <style lang="less" scoped>

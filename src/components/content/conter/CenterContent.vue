@@ -43,6 +43,5 @@ export default {
   height: calc(100% - 54px - 58px);
   display: flex;
   justify-content: flex-start;
-
 }
 </style>

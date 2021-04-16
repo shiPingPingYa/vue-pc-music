@@ -70,7 +70,7 @@ export default {
     position: relative;
     width: 150px;
     font-size: 13px;
-    color: #fff;
+    color: #01060a;
     cursor: pointer;
     > img{
       width: 100%;
@@ -86,6 +86,7 @@ export default {
   height: 20px;
   line-height: 20px;
   text-align: right;
+  color: #fafbf5;
   background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
   > img{
     display: inline-block;

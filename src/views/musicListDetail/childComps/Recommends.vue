@@ -62,7 +62,7 @@ export default {
   > .desc{
     padding: 10px;
     height: 105px;
-    background-color: #1c1e23;
+    background-color: #e2e4eb;
     >.language{
       height: 60px;
       > textarea{
@@ -71,8 +71,8 @@ export default {
         height: 100%;
         border: none;
         outline-style: none;
-        color: #fff;
-        background-color: #2b2c31;
+        color: #01060a;
+        background-color: #fff;
       }
     }
     > .sub{
@@ -84,8 +84,8 @@ export default {
       line-height: 20px;
       border-radius: 6px;
       cursor: pointer;
-      color: #fff;
-      background-color: #2b2c31;
+      color: #2b2c31;
+      background-color: #fff;
     }
   }
 }
@@ -93,11 +93,11 @@ export default {
 .content{
   width: 100%;
   font-size: 13px;
-  color: #7b7d81;
+  color: #000a0d;
   > p{
     padding-bottom: 6px;
     padding-top: 20px;
-    border-bottom: 1px solid #23262c;
+    border-bottom: 1px solid #e3e4e6;
   }
 }
 
@@ -105,7 +105,7 @@ export default {
   display: flex;
   position: relative;
   padding: 10px 0px 10px 30px;
-  border-bottom: 1px solid #23262c;
+  border-bottom: 1px solid #e3e4e6;
   > .icon{
     margin-right: 15px;
     width: 40px;

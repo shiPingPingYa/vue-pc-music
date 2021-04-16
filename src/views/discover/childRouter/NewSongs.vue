@@ -126,8 +126,8 @@ export default {
 
 .area{
   display: flex;
-  border-bottom: 1px solid #25272b;
-  color: #828384;
+  border-bottom: 1px solid #d3d4d6;
+  color: #01060a;
   font-size: 14px;
   > .area-item{
     padding: 10px 10px;
@@ -141,7 +141,6 @@ export default {
     padding: 10px 0;
     width: 100%;
     font-size: 24px;
-    color: #fff;
     cursor: pointer;
    > span{
      font-size: 14px  !important;
@@ -155,11 +154,10 @@ export default {
 
 .music > table{
       width: 100%;
-      border: 1px solid #2c2e32;
+      border: 1px solid #e0e0e0;
       border-spacing: 0;
       > tbody{
         font-size: 13px;
-        color: #575757;
     }
   }
 
@@ -170,8 +168,7 @@ export default {
 }
 
 .music  tr:hover{
-  background-color: #2c2e32;
-  color: #fff  !important;
+  background-color: #b6b6b6;
 }
 
 .music > tr > td{
@@ -192,7 +189,7 @@ export default {
 
 .music tbody tr td:nth-child(3) {
   width: 34%;
-   color: #dcdde4;
+   color: #01060a;
 }
 
 .backMask{
@@ -229,11 +226,11 @@ export default {
 }
 
 .backColor {
-  background: #1a1c20;
+  background: #eeecec;
 }
 
 .action{
-  color: #fff;
+  color: #01060a;
   border-bottom: 2px solid #828384;
 }
 </style>

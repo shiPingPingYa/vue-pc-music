@@ -105,6 +105,9 @@ export default {
       this.$refs.scroll.finishPullUp()
     }, 800),
     async getBaseInfo () {
+      // 清空上一次的数据
+      this.notSimiVideo = []
+      this.simiVideo = []
       // 获取video的详情，播放地址，评论，推荐视频
       await Promise.all([_getVideoDetail(this.id), _getVideoUrl(this.id), _getVideoComment(this.id, this.limit), _getRelatedVideo(this.id)]).then(res => {
         this.detail = res[0].data.data
@@ -169,7 +172,7 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
       font-size: 18px;
-      color: #fff;
+      color: #01060a;
     }
     > .artist{
       margin-left: 5px;
@@ -204,7 +207,7 @@ export default {
 .p{
   padding-bottom: 10px;
   font-size: 18px;
-  color: #dcdde4;
+  color: #01060a;
 }
 
 .base{

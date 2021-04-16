@@ -126,7 +126,7 @@ ul li{
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      color: #fff;
+      color: #000a0d;
       font-size: 14px ;
 }
 

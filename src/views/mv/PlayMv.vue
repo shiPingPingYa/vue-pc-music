@@ -164,7 +164,7 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
       font-size: 18px;
-      color: #fff;
+      color: #01060a;
     }
     > .artist{
       margin-left: 5px;
@@ -199,7 +199,7 @@ export default {
 .p{
   padding-bottom: 10px;
   font-size: 18px;
-  color: #dcdde4;
+  color: #01060a;
 }
 
 .base{

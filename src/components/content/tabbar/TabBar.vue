@@ -81,7 +81,8 @@ export default {
 .header{
   width: 100%;
   height: 54px;
-  background-color: #212025;
+  background-color: #c72e30;
+  color: #fff9ef;
   user-select: none;
 }
 .logo{
@@ -100,7 +101,6 @@ export default {
     height: 28px;
     border-radius: 50%;
     font-size: 16px;
-    color: #1d1c21;
     background-color: #fff;
   }
   > .title{
@@ -122,11 +122,11 @@ export default {
   z-index: 1;
   > button{
   display: inline-block;
-  width: 50%;
+  width: 30%;
   height: 26px;
-  border: 1px solid #18171c;
+  border: 0.2px solid #787779;
   color: #fff;
-  background-color: #212025;
+  background-color: #c72e30;
   outline:none;
   cursor: pointer;
   }
@@ -162,13 +162,11 @@ export default {
   > .user-id{
       margin-left: 6px;
       width: calc(100% - 56% - 102px);
-      color: #96959a;
       font-size: 14px;
   }
   > .enterLogin{
     width: 20%;
     font-size: 14px;
-    color: #96959a;
     > div{
       display: inline-block;
       margin-right: 2px;

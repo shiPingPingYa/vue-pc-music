@@ -93,7 +93,7 @@ export default {
   margin-top: 10px;
   padding: 0 20px;
   font-size: 18px;
-  color: #fff;
+  color: #01060a;
   > .title-boder{
   margin-top: 10px;
   width: 100%;

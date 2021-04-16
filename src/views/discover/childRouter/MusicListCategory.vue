@@ -76,7 +76,7 @@ export default {
   width: 98%;
   height: 100%;
   font-size: 14px;
-  color: #fff;;
+  color: #01060a;;
   overflow: hidden;
   > .tags{
     margin-bottom: 20px;

@@ -47,7 +47,7 @@ export default {
   >.top{
     line-height: 30px;
     font-size: 16px;
-    color: #fff;
+    color: #01060a;
     border-bottom: 1px solid #b8b6b6;
   }
   > .content{
@@ -70,7 +70,7 @@ export default {
     line-height: 70px;
     text-align: center;
     font-size: 13px;
-    color: #fff;
+    color: #a7aaa3;
   }
   > .title{
     position: relative;
@@ -97,7 +97,7 @@ export default {
     margin-left: 10px;
     flex: 1;
     font-size: 13px;
-    color: #fff;
+    color: #01060a;
     > .bottom{
       position: absolute;
       margin-top: 6px;

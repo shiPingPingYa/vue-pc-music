@@ -54,13 +54,18 @@ export default {
 </script>
 <style lang="less" scoped>
 .user-attention-info{
+  position: absolute;
   width: 20%;
+  right: 6px;
+  margin-top: -10px;
   > .user-box{
     width: 100%;
-    height: 20%;
+    height: 140px;
     padding: 0 20px 10px ;
     font-size: 14px;
-    color: #95979a;
+    color: #01060a;
+    background:#eaebec ;
+    overflow: hidden;
     > .user-info{
       display: flex;
       width: 100%;
@@ -108,9 +113,6 @@ export default {
       }
       > div:nth-child(3){
         border: 0;
-      }
-      > div:hover{
-        color: #fff;
       }
     }
   }

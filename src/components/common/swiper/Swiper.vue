@@ -95,7 +95,7 @@ export default {
       height: 3px;
       display: inline-block;
       border-radius: 2px;
-      background-color: #fff;
+      background-color: rgb(182, 179, 179);
       cursor: pointer;
     }
   }
@@ -121,7 +121,7 @@ export default {
   width: 25%;
   height: 100%;
   z-index: 1;
-  color: #fff;
+  color: #01060a;
 }
 
 .right{
@@ -130,7 +130,7 @@ export default {
   width: 25%;
   height: 100%;
   z-index: 1;
-  color: #fff;
+  color: #01060a;
 }
 
 .pre{
@@ -160,7 +160,7 @@ export default {
 }
 
 .lineBar .action {
-  background-color: green  !important;
+  background-color: red  !important;
 }
 
 .list1 {

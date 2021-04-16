@@ -71,7 +71,7 @@ export default {
       width: calc(100% - 80px);
       flex: 1;
       padding-left: 10px;
-      color: #fff;
+      color: #01060a;
       > .name{
         width: 100%;
         max-height: 52px;

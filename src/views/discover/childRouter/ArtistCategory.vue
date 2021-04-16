@@ -112,7 +112,7 @@ export default {
   margin-bottom: 10px;
   padding-bottom: 8px;
   border-bottom: 1px solid #828384 ;
-  color: #828384;
+  color: #01060a;
   > .area{
     display:flex;
     > .area-item{
@@ -138,7 +138,7 @@ export default {
 }
 
 .action{
-  color: rgb(22, 21, 21);
+  color: #fff;
   background-color: #828384;
 }
 </style>

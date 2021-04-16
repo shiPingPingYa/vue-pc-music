@@ -60,19 +60,19 @@ export default {
       if (this.keywords !== '' && this.keywords !== null) {
         this.isShow = false
         this.isSuggest = true
-        this.suggest(this)
+        this.suggest()
       }
     }
   },
   methods: {
     // input输入内容后，发送请求,防抖输入值的时候多次向服务器请求数据
-    suggest: debounce(async function (e) {
-      if (e.keywords !== '') {
-        await _Suggest(e.keywords).then(res => {
-          e.sugSongs = res.data.result.songs
-          e.sugArtist = res.data.result.artists
+    suggest: debounce(async function () {
+      if (this.keywords !== '') {
+        await _Suggest(this.keywords).then(res => {
+          this.sugSongs = res.data.result.songs
+          this.sugArtist = res.data.result.artists
         })
-        e.isSuggest = true
+        this.isSuggest = true
       }
     }, 900),
     // 鼠标离开input，隐藏热搜

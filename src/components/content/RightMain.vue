@@ -28,7 +28,8 @@ export default {
   position: relative;
   width: 82%;
   height:100% ;
-  background-color: #16181c;
+  color: #01060a;
+  background: #f5f5f7;
   user-select: none;
 }
 </style>

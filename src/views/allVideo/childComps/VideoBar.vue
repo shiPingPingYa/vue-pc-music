@@ -40,8 +40,9 @@ export default {
 <style lang="less" scoped>
 .video-bar{
   width: 94%;
-  height: 30px;
-  border-bottom: 1px solid #8d8e8f;
+  height: 36px;
+  padding: 0;
+  border-bottom: 1px solid #c4c6c9;
   > .bar-list{
     margin: auto;
     width: 40%;
@@ -61,7 +62,7 @@ export default {
 }
 
 .action{
-    color: #fff;
+    color: #01060a;
     border-bottom: 2px solid #bbbbbd;
 }
 </style>

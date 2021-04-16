@@ -137,7 +137,7 @@ export default {
   margin-right: 15px;
   width: 300px;
   height: 400px;
-  color: #fff;
+  color: #01060a;
   cursor: pointer;
 
 }
@@ -145,6 +145,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100px;
+  color: #fff;
 }
 .rank-item-top .left {
   padding: 0px 25px;
@@ -189,7 +190,7 @@ export default {
   > table{
     width: 100%;
     font-size: 12px;
-    color: #575757;
+    color: #01060a;
      > tr{
     width: 100%;
     height: 30px;
@@ -206,7 +207,7 @@ export default {
 }
 
 .center tr td:nth-child(2) {
-  color: #dcdde4;
+  color: #909192;
 }
 
 .center tr:hover {

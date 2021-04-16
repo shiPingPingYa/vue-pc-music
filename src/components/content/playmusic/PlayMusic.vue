@@ -366,7 +366,8 @@ export default {
     width: 18%;
     height: 100%;
     display: flex;
-    background: #191b1f;
+    color: #000a0d;
+    background: #f0f0f8;
     z-index: 1;
   }
   > .play-music-left{
@@ -498,7 +499,7 @@ export default {
   left: 5px;
   width: 120px;
   font-size: 12px;
-  color: #fff;
+  color: #000a0d;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;

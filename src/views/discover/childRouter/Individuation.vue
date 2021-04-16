@@ -106,7 +106,7 @@ export default {
     line-height: 30px;
     font-size: 16px;
     border-bottom: 1px solid #b8b6b6;
-    color: #fff;
+    color: #01060a;
     line-height: 20px;
   }
 }

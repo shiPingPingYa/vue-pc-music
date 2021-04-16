@@ -88,7 +88,7 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: #dcdde4;
+    color: #01060a;
   }
   > span{
     font-size: 13px;

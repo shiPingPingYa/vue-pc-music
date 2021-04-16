@@ -78,6 +78,6 @@ h2{
   margin-bottom: 20px;
   font-weight: 300;
   font-size: 21px;
-  color: #fff;
+  color: #01060a;
 }
 </style>

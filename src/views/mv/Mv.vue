@@ -91,7 +91,7 @@ export default {
 .title{
   width: 100%;
   padding: 5px 0;
-  color: #dcdde4;
+  color: #01060a;
   font-size: 20px;
   border-bottom:  1px solid #818181 ;
   > .right{

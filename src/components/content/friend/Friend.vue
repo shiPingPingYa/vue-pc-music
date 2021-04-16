@@ -10,6 +10,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .friend{
+  position: relative;
   width: 100%;
   height: 100%;
   padding: 10px 20px 0;

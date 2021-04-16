@@ -68,7 +68,7 @@ export default {
 }
 
 .action{
-  color: #000000;
+  color: #fff;
   background-color: #54575f;
 }
 </style>

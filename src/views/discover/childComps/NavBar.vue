@@ -53,7 +53,7 @@ export default {
     height: 100%;
     line-height: 49px;
     text-align: center;
-    color: #fff;
+    color: #01060a;
     opacity: 0.6;
     text-decoration: none;
     font-size: 14px;

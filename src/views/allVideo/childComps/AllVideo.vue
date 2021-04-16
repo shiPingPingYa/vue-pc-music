@@ -91,7 +91,7 @@ export default {
   height: 100%;
   padding: 0 20px;
   font-size: 14px;
-  color: #828385;
+  color: #01060a;
   padding-bottom: 8px;
   > .all-video-scroll{
     width: 100%;
@@ -107,11 +107,13 @@ export default {
       margin-left: 10px;
       padding: 0 10px;
       text-align: center;
+      color: #54575f  ;
       cursor: pointer;
+
     }
   }
 .action{
-  color: #fff;
+  color: #fff  !important;
   background-color: #54575f;
 }
 </style>

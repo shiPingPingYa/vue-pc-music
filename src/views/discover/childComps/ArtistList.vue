@@ -55,7 +55,7 @@ export default {
     height: 134px;
     padding-bottom: 20px;
     font-size: 14px;
-    color: #fff;
+    color: #01060a;
     cursor: pointer;
     > img{
     width: 100%;

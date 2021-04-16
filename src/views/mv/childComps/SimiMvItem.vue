@@ -70,7 +70,7 @@ export default {
     > .right{
       flex: 1;
       padding-left: 10px;
-      color: #fff;
+      color: #01060a;
       > .name{
         font-size: 13px;
         > span{

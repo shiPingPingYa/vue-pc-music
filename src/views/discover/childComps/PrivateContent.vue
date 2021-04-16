@@ -39,7 +39,7 @@ export default {
   height: 100%;
   > .top{
     line-height: 20px;
-    color: #fff;
+    color: #01060a;
     font-size: 16px;
   }
   .content{
@@ -73,7 +73,7 @@ export default {
   }
   > .desc{
     font-size: 13px;
-    color: #fff;
+    color: #01060a;
   }
 }
 </style>

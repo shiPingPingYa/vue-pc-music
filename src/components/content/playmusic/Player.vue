@@ -114,7 +114,7 @@ export default {
   top: calc(54px + 60px - 100vh);
   width: 100%;
   height: calc(100vh - 59px - 54px);
-  background: linear-gradient(-45deg, #333540, #070708, #333540);
+  background: linear-gradient(-45deg, #cfcfd1, #c3c4c6, #f8f8fa);
 }
 
 .player-scroll{
@@ -185,7 +185,7 @@ export default {
    width: 50%;
    height: 100%;
    > .top{
-     color: #d5d5d5;
+     color: #000a0d;
      font-weight: 300;
      padding: 10px 0;
      > h2{

@@ -42,7 +42,7 @@ export default {
   text-indent: 20px;
   line-height: 40px;
   font-size: 16px;
-  color: #fff;
+  color: #01060a;
   }
 }
 
@@ -76,7 +76,7 @@ export default {
   height: 30px;
   align-items: center;
   justify-content: center;
-  background-color: rgba(160, 60, 60, 0.25);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));;
   color: #fff;
   > img{
     width: 100%;
@@ -89,7 +89,7 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: #dcdde4;
+    color: #01060a;
   }
   > span{
     font-size: 13px;

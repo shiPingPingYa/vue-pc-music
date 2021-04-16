@@ -1,7 +1,7 @@
 <template>
-  <div class="home-page-recommends"   v-if="this.recommends.length !== 0">
-    <scroll  ref="scroll"    class="hp-recommends">
-    <div class="content">
+  <div class="home-page-recommends" @mouseover="stopComments()" @mouseout.stop="startComments()"   v-if="this.recommends.length !== 0">
+    <scroll  ref="scroll"  class="hp-recommends">
+    <div class="content"  >
         <!-- 图片区域 -->
       <div class="item" v-for="(item,index) in this.recommends" :key="index">
         <!-- 评论人 -->
@@ -28,8 +28,8 @@
 import Scroll from './common/scroll/Scroll.vue'
 // 获取评论请求
 import { _musicRecommend } from '../network/detail'
-// 处理日期
-import { formDate } from '../assets/common/tool'
+// 处理日期,防抖
+import { formDate, debounce } from '../assets/common/tool'
 export default {
   components: { Scroll },
   name: 'HomePageRecommends',
@@ -38,7 +38,10 @@ export default {
       recommends: [],
       id: null,
       limit: 100,
-      index: 0
+      index: 0,
+      scrollY: '',
+      // 滚动的判断条件
+      scrollFlag: false
     }
   },
   created () {
@@ -55,20 +58,39 @@ export default {
     async getRecommends (id) {
       await _musicRecommend(id, this.limit).then(res => {
         this.recommends = res.data.comments
+      }).then(() => {
+        // 评论滚动
+        if (!this.scrollFlag) {
+          this.scrollFlag = true
+          if (this.$refs.scroll !== undefined) {
+          // 判断是否无了
+            this.index++
+            if (this.index !== this.recommends.length - 13) {
+              this.$refs.scroll.scrollBy(0, -30 * (this.limit - 13), 240000)
+            }
+          }
+        }
       })
-    }
-  },
-  updated () {
-    if (this.$refs.scroll !== undefined) {
-      // 判断是否无了
-      this.index++
-      if (this.index !== this.recommends.length - 13) {
-        this.$refs.scroll.scrollTo(0, -60 * 88, 980000)
-        this.$refs.scroll.finishPullUp()
+    },
+    // 停止滚动
+    stopComments () {
+      this.scrollFlag = true
+      // 停止滚动
+      this.$refs.scroll.stop()
+      // 获取当前滚动到的y坐标
+      this.scrollY = this.$refs.scroll.getScrollY()
+      this.$refs.scroll.finishPullUp()
+    },
+    // 继续滚动
+    startComments: debounce(function () {
+      this.scrollFlag = false
+      if (!this.scrollFlag) {
+        // 判断是否就剩一页了
+        if (this.$refs.scroll.getScrollY() > (83 * -11)) return
+        this.$refs.scroll.scrollBy(0, -30 * (this.limit - 11), 240000 + this.scrollY)
       }
-    }
+    }, 1000)
   }
-
 }
 </script>
 <style lang="less" scoped>
@@ -78,7 +100,7 @@ export default {
   height: 100%;
   left: 0;
   top: 0;
-  background:#dddddd;
+  background:#f5f5f7;
   opacity: 0.8;
   > .content{
     position: absolute;

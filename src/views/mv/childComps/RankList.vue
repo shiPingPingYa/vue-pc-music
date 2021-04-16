@@ -46,7 +46,7 @@ export default {
   margin-top: 10px;
   display: flex;
   width: 100%;
-  color: #fff;
+  color: #01060a;
   font-size: 13px;
   cursor: pointer;
   > .left{
