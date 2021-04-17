@@ -86,7 +86,7 @@ export default {
       this.scrollFlag = false
       if (!this.scrollFlag) {
         // 判断是否就剩一页了
-        if (this.$refs.scroll.getScrollY() > (83 * -11)) return
+        if (this.$refs.scroll.getScrollY() < ((this.limit.length - 11) * -70)) return
         this.$refs.scroll.scrollBy(0, -30 * (this.limit - 11), 240000 + this.scrollY)
       }
     }, 1000)
