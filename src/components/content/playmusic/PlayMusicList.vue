@@ -47,13 +47,13 @@ export default {
 .play-music-list{
   width: 500px;
   height: 500px;
-  box-shadow: 0 0 1px #fff;
-  background-color:#191b1f ;
-  color: #fff;
+  box-shadow: -2px -2px 4px rgb(177, 174, 174);
+  color: #0a0a0a;
+  background:#f5f5f7 ;
   > .top{
     width: 100%;
     font-size: 14px;
-    background-color: #282a2f  !important;
+    background-color: #e6e0e0  !important;
     > .title{
       float: left;
       width: calc(100% - 30px);
