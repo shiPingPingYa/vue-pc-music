@@ -100,7 +100,7 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/video/allvideo') {
       Vue.prototype.$message.error('视频必须登录才能获取资源')
       return next('/discover/individ')
-    } else if (to.path === '/friend') {
+    } else if (to.path === '/friend/frienddetail') {
       Vue.prototype.$message.error('朋友需要登录才能获取动态')
       return next('/discover/individ')
     } else if (to.path === '/transceiver') {
