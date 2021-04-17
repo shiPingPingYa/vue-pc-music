@@ -77,6 +77,6 @@ export default {
 }
 
 .backColor{
-  background-color: #333333;
+  background-color: #dededf;
 }
 </style>

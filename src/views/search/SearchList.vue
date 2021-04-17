@@ -123,7 +123,7 @@ export default {
     padding: 10px 40px;
     width: 100%;
     height: 100%;
-    color: #fff;
+    color: #0a0a0a;
     font-size: 14px;
 }
 .search-scroll{
@@ -146,7 +146,7 @@ export default {
   width: 100%;
   height: 50px;
   line-height: 50px;
-  border-bottom: 1px solid #1c1e23;
+  border-bottom: 1px solid #dcdcdd;
 }
 .bar-item{
   padding: 0 20px;

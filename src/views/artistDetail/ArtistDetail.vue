@@ -32,7 +32,6 @@ export default {
     ArtistBar,
     Scroll
   },
-
   created () {
     this.artist = this.$store.state.artist
   },

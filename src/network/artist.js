@@ -1,5 +1,15 @@
 import { request } from './request'
 
+// 获取歌手详情
+export function _getArtistDetail (id) {
+  return request({
+    url: '/artist/detail',
+    params: {
+      id: id
+    }
+  })
+}
+
 // 获取歌手描述
 // 调用此接口 , 传入歌手 id, 可获得歌手描述
 export function _getArtistDesc (id) {

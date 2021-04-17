@@ -2,7 +2,7 @@
   <div class="base" v-if="baseInfo!== null">
     <div class="title">
       <img v-if="baseInfo.picUrl!== null" :src="baseInfo.picUrl"  >
-      <img v-if="baseInfo.picUrl == null " src="../../../assets/img/userimg.png" alt="">
+      <img v-if="baseInfo.picUrl == null " :src="picUrl" alt="">
     </div>
     <div class="content">
       <div class="top">
@@ -30,6 +30,7 @@
   </div>
 </template>
 <script>
+import { _getArtistDetail } from '../../../network/artist'
 export default {
   name: 'ArtistBaseInfo',
   props: {
@@ -44,6 +45,18 @@ export default {
       defaul () {
         return {}
       }
+    }
+  },
+  data () {
+    return {
+      picUrl: ''
+    }
+  },
+  async created () {
+    if (this.baseInfo.picUrl === null || this.baseInfo.picUrl === undefined) {
+      await _getArtistDetail(this.baseInfo.id).then(res => {
+        this.picUrl = res.data.data.artist.cover
+      })
     }
   }
 }
