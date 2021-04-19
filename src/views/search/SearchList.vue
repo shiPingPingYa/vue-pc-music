@@ -100,8 +100,8 @@ export default {
           this.artistsList.push(list[i].artists[0])
           // 获取遍历数据的id
           this.musicListId.push(list[i].id)
-          // 遍历结束后
-          if (i === '49') {
+          // 遍历结束后,下标i在严格模式下是属于string
+          if (Number(i) === list.length - 1) {
             // 根据遍历数据的音乐id, 来获取歌曲对象
             for (var j of this.musicListId) {
               _getSongsDetail(j).then(res => {
