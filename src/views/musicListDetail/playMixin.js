@@ -6,8 +6,10 @@ export const playMinxin = {
   },
   created () {
     // 设置下标
-    this.$bus.$on('Playing', (index) => {
-      this.playIndex = index
+    this.$bus.$on('Playing', (path, index) => {
+      if (this.$route.path === path) {
+        this.playIndex = index
+      }
     })
   }
 

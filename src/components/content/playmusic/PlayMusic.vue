@@ -255,6 +255,7 @@ export default {
       // 触发播放方法，把下标传递过去
       this.$bus.$emit(
         'Playing',
+        this.path,
         this.playList[this.currentIndex].index
       )
       // 触发评论内容方法
@@ -310,7 +311,7 @@ export default {
     },
     // 设置歌曲播放的声音
     setVolumn (scale) {
-      this.$refs.audio.volume = scale
+      this.$refs.audio.volumn = scale
     },
     // 设置进度条的点击，歌曲时间对应跳转
     setMusicProgress (scale) {
