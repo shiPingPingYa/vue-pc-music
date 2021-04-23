@@ -1,7 +1,7 @@
 <template>
     <div class="header">
     <div class="logo">
-      <i class="el-icon-platform-eleme" style="color:red"></i>
+      <i class="el-icon-platform-eleme"></i>
      <div class="title">覃覃音乐</div>
     </div>
     <div class="buttons">
@@ -101,7 +101,7 @@ export default {
     height: 28px;
     border-radius: 50%;
     font-size: 16px;
-    background-color: #0a0a0a;
+    background-color: rgb(8, 183, 252);
   }
   > .title{
     display: inline-block;
@@ -179,6 +179,6 @@ export default {
 }
 
 .el-icon-platform-eleme{
-    color: red;
+    color: #f0f0f8;
 }
 </style>
