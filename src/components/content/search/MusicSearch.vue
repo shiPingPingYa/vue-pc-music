@@ -130,6 +130,7 @@ export default {
   width: 25%;
   height: 100%;
   line-height: 54px;
+  opacity: 1;
 }
 .search-item{
   position: absolute;
@@ -139,7 +140,7 @@ export default {
   line-height: 54px;
   width: 100%;
   height: 50%;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.966);
   border-radius: 10px;
 }
 .mess{

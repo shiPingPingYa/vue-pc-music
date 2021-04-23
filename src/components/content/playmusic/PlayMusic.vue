@@ -356,7 +356,7 @@ export default {
   position: relative;
   width: 100%;
   height: 58px;
-  background-color: #212124;
+  background-color: #a3b2b8;
   z-index: 3;
   bottom: 0;
   user-select: none;
@@ -378,7 +378,7 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    color: rgb(185, 185, 185);
+    color: rgb(103, 197, 235);
     > div{
       font-size: 46px;
       cursor: pointer;

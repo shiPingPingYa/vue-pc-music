@@ -49,12 +49,12 @@ export default {
   width: 100%;
   height: 3px;
   border-radius: 2px;
-  background: #454546;
+  background: #dbdbdb;
   cursor: pointer;
   > .progress-line{
     width: 50px;
     height: 100%;
-    background-color: #b82525;
+    background-color: rgb(103, 197, 235);
   }
   > .progress-dot{
     position: absolute;

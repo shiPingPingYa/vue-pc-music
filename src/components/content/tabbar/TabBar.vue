@@ -81,8 +81,8 @@ export default {
 .header{
   width: 100%;
   height: 54px;
-  background-color: #c72e30;
-  color: #fff9ef;
+  background-color: #f5f5f7;
+  color: #0a0a0a;
   user-select: none;
 }
 .logo{
@@ -101,7 +101,7 @@ export default {
     height: 28px;
     border-radius: 50%;
     font-size: 16px;
-    background-color: #fff;
+    background-color: #0a0a0a;
   }
   > .title{
     display: inline-block;
@@ -109,7 +109,7 @@ export default {
     width: 120px;
     height: 20px;
     font-size: 16px;
-    color: #fff;
+    color: #0a0a0a;
   }
 }
 
@@ -124,9 +124,8 @@ export default {
   display: inline-block;
   width: 30%;
   height: 26px;
-  border: 0.2px solid #787779;
-  color: #fff;
-  background-color: #c72e30;
+  border: 0.2px solid #f5f5f7;
+  color: #0a0a0a;
   outline:none;
   cursor: pointer;
   }
