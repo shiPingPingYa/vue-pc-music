@@ -259,7 +259,7 @@ export default {
         this.playList[this.currentIndex].index
       )
       // 触发评论内容方法
-      this.$bus.$emit('changeRecommends', this.playList[this.currentIndex].id)
+      // this.$bus.$emit('changeRecommends', this.playList[this.currentIndex].id)
       if (this.$refs.player !== null) this.$refs.player.isPlayer = true
     },
     // 音乐播放完毕

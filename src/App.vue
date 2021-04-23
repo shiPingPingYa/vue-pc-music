@@ -3,7 +3,7 @@
     <tab-bar></tab-bar>
     <center-content></center-content>
     <play-music></play-music>
-    <home-page-recommends></home-page-recommends>
+    <!-- <home-page-recommends></home-page-recommends> -->
   </div>
 </template>
 
@@ -15,14 +15,14 @@ import CenterContent from '../src/components/content/conter/CenterContent'
 // 底部区域
 import PlayMusic from '../src/components/content/playmusic/PlayMusic'
 // 导入首页评论组件
-import HomePageRecommends from '../src/components/HomePageRecommends'
+// import HomePageRecommends from '../src/components/HomePageRecommends'
 export default {
   name: 'app',
   components: {
     TabBar,
     CenterContent,
-    PlayMusic,
-    HomePageRecommends
+    PlayMusic
+    // HomePageRecommends
   },
   created () {
     // 获取localstorage里面的obj对象
@@ -37,7 +37,7 @@ export default {
 
 <style>
 #app {
-  margin: 0 0 0 20%;
+  margin: 0 10% 0 10%;
   width: 80%;
   height: 100%;
   opacity: 0.9;
