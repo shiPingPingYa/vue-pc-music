@@ -25,7 +25,7 @@ export const mixins = {
         this.phoneMessage = '手机号不能为空'
       } else {
         // 验证手机号格式是否正确
-        if (this.phoneExec.test(this.phone) === null) {
+        if (!this.phoneExec.test(this.phone)) {
           this.phoneMessage = '手机号码的格式有误'
         } else {
           // 检测手机号是否存在
@@ -47,7 +47,7 @@ export const mixins = {
         this.phoneMessage = '手机号不能为空'
       } else {
         // 验证手机号格式是否正确
-        if (this.phoneExec.test(this.phone) === null) {
+        if (!this.phoneExec.test(this.phone)) {
           this.phoneMessage = '手机号码的格式有误'
         } else {
           // 检测手机号是否存在
@@ -68,7 +68,7 @@ export const mixins = {
         this.passwordMessage = '密码不能为空'
       } else {
         // 验证密码是否符合格式
-        if (this.passwordExec.test(this.password) === null) {
+        if (!this.passwordExec.test(this.password)) {
           this.passwordMessage = '密码格式有误'
         } else {
           this.passwordMessage = ''

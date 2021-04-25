@@ -48,7 +48,10 @@ export default {
   methods: {
     // 隐藏登录界面
     hiddenLogin () {
+      // 清除提示信息
       this.password = ''
+      this.phoneMessage = ''
+      this.passwordMessage = ''
       this.$store.commit('hiddenLogin')
     },
     // 显示注册页面
