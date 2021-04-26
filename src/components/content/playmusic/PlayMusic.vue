@@ -311,7 +311,7 @@ export default {
     },
     // 设置歌曲播放的声音
     setVolumn (scale) {
-      this.$refs.audio.volumn = scale
+      this.$refs.audio.volume = scale
     },
     // 设置进度条的点击，歌曲时间对应跳转
     setMusicProgress (scale) {
