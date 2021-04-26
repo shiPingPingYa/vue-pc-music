@@ -29,7 +29,7 @@ export default {
       // 触发父组件监听的方法,将比例传递出去
       this.$emit('childClickScale', this.scale)
     },
-    // 根据audio的播放比例,重新设置小圆点和线条的位置
+    // 根据audio的播放比例,重新设置小圆点和de线条的位置
     setAudioProgress (scale) {
       this.proLine = scale * this.$refs.progress.offsetWidth
       this.proLoad = scale * this.$refs.progress.offsetWidth
