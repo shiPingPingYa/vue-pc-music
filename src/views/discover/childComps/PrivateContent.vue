@@ -47,7 +47,7 @@ export default {
     width: 100%;
     display: flex;
     justify-content: space-around;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 }
 
