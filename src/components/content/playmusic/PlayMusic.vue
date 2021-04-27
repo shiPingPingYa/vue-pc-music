@@ -191,6 +191,10 @@ export default {
     this.$bus.$on('playMusicListItem', (index) => {
       this.setCurrentIndex(index)
     })
+    // 播放视频的时候，停止音乐播放
+    this.$bus.$on('stopMusic', (flag) => {
+      this.stopMusic(flag)
+    })
   },
   methods: {
     // 改变currentindex,重新设置播放音乐
@@ -218,6 +222,16 @@ export default {
       if (this.isPlayer && this.$refs.audio.readyState === 4) {
         this.$refs.audio.play()
       } else {
+        this.$refs.audio.pause()
+      }
+    },
+    // 播放视频的时候停止播放音乐
+    stopMusic (flag) {
+      // 音乐处于播放状态
+      if (this.isPlayer && this.$refs.audio.readyState === 4) {
+        // 切换播放值和图片
+        this.isPlayer = flag
+        // 停止播放音乐
         this.$refs.audio.pause()
       }
     },
@@ -251,7 +265,6 @@ export default {
     // 音乐因缓存停止,或停止后已就绪时触发。
     musicPlaying () {
       this.isPlayer = true
-
       // 触发播放方法，把下标传递过去
       this.$bus.$emit(
         'Playing',
@@ -282,7 +295,9 @@ export default {
     },
     // 加载播放音频
     async playLoad () {
-    // 获取歌词
+      // 设置音量进度条
+      this.$refs.music_volumn.setAudioProgress(0.8)
+      // 获取歌词
       await _getLyric(this.playList[this.currentIndex].id).then(res => {
         try {
           this.lyric = res.data.lrc.lyric

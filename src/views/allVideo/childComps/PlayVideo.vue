@@ -89,6 +89,8 @@ export default {
     if (this.id !== null) {
       this.getBaseInfo()
     }
+    // 触发停止音乐播放的方法
+    this.$emit('stopMusic')
   },
   methods: {
     // scroll一下拉就调用pullingUp方法,重新获取评论区的值

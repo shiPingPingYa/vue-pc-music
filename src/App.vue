@@ -2,7 +2,7 @@
   <div id="app">
     <tab-bar></tab-bar>
     <center-content></center-content>
-    <play-music></play-music>
+    <play-music ref="play_music"></play-music>
     <!-- <home-page-recommends></home-page-recommends> -->
   </div>
 </template>
@@ -30,6 +30,15 @@ export default {
       var obj = window.localStorage.getItem('obj')
       obj = JSON.parse(obj)
       this.$store.commit('addUser', obj)
+    }
+  },
+  mounted () {
+    // 监听键盘事件，停止播放音乐
+    document.onkeyup = (e) => {
+      // 触发子组件里面的方法，停止播放音乐
+      if (e.keyCode === 32) {
+        this.$refs.play_music.toggle()
+      }
     }
   }
 }
