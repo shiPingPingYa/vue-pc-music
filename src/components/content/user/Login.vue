@@ -41,7 +41,6 @@
 </template>
 <script>
 import { mixins } from './mixins'
-import { _login } from '../../../network/user'
 export default {
   name: 'Login',
   mixins: [mixins],
@@ -65,32 +64,8 @@ export default {
       // 关闭注册组件
       this.$store.commit('hiddenLogin')
       this.$store.commit('showQrcode')
-    },
-    // 登录
-    userLogin () {
-      _login(this.phone, this.password).then(res => {
-        if (res.data.code !== 200) {
-          this.passwordMessage = '密码错误'
-        } else {
-          // 获取响应数据(cookie，uname,image,uid),follows关注,followeds粉丝,gender(1男,0女),eventCount动态
-          console.log(res.data)
-          const obj = {
-            uid: res.data.profile.userId,
-            cookie: res.data.cookie,
-            nickname: res.data.profile.nickname,
-            image: res.data.profile.avatarUrl,
-            follows: res.data.profile.follows,
-            followeds: res.data.profile.followeds,
-            gender: res.data.profile.gender,
-            eventCount: res.data.profile.eventCount
-          }
-          window.localStorage.setItem('obj', JSON.stringify(obj))
-          this.$store.commit('addUser', obj)
-          // 隐藏登录页面
-          this.hiddenLogin()
-        }
-      })
     }
+
   }
 }
 </script>

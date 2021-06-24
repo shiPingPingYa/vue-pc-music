@@ -77,6 +77,7 @@ export default {
         this.type[this.typeIndex].value,
         this.limit * this.page
       ).then(res => {
+        console.log(res)
         artistList = res.data.artists
       })
       this.artistList = artistList
