@@ -45,15 +45,15 @@ export default {
 </script>
 <style lang="less" scoped>
 .play-music-list{
-  width: 500px;
-  height: 500px;
-  box-shadow: -2px -2px 4px rgb(177, 174, 174);
+  width: 50%;
+  height: 600px;
+  box-shadow: -1px -1px 6px rgb(49, 166, 245);
   color: #0a0a0a;
   background:#f5f5f7 ;
   > .top{
     width: 100%;
     font-size: 14px;
-    background-color: #e6e0e0  !important;
+    background-color: #a3b2b8  !important;
     > .title{
       float: left;
       width: calc(100% - 30px);

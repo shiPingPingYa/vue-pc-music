@@ -149,7 +149,7 @@ export default {
   top: 0;
   left: 0;
   z-index: 100;
-  background-color: #dddddd;
+  background-color: #a3b2b8;
   > .captcha-back{
     position: relative;
     width: 100%;

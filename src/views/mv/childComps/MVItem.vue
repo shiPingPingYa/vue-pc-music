@@ -57,11 +57,10 @@ export default {
 .mv-item{
   position: relative;
   margin-top: 8px;
-  width: 230px;
+  width:24%;
   font-size: 14px;
   > img{
-    width: 230px;
-    height: 130px;
+    width: 100%;
     background-size: 100%,100%;
   }
 }

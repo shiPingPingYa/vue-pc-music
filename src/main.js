@@ -4,7 +4,6 @@ import router from './router'
 import axios from 'axios'
 // 导入创建好的vuex
 import store from './store'
-
 // 导入全局css样式
 import '../src/assets/css/babel.css'
 // 导入elementui

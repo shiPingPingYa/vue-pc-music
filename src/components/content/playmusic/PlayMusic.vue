@@ -101,8 +101,8 @@
 import Player from './Player'
 // 导入封装的处理时间函数
 import { formDate } from '../../../assets/common/tool'
-// 导入歌曲网络请求
-import { _getLyric, _getMusicUrl } from '../../../network/detail'
+// 导入歌曲网络请求 _getMusicUrl
+import { _getLyric } from '../../../network/detail'
 // 导入进度条
 import MusicProgress from './Progress'
 // 导入歌词组件
@@ -165,16 +165,16 @@ export default {
   },
   async created () {
     // 播放默认的歌曲
-    if (this.playList.length === 1) {
-      await _getMusicUrl(this.playList[0].id).then(res => {
-        this.playList[0].src = res.data.data[0].url
-      })
-    }
+    // if (this.playList.length === 1) {
+    //   await _getMusicUrl(this.playList[0].id).then(res => {
+    //     this.playList[0].src = res.data.data[0].url
+    //   })
+    // }
   },
   mounted () {
     // 音乐数据
     this.$bus.$on('PlayMusic', (index, path, musicList, playList) => {
-      this.playList = []
+      if (this.playList.length !== 0) this.playList = []
       this.path = path
       this.musicList = musicList
       this.playList = playList

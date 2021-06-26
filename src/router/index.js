@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { Message } from 'element-ui'
+import { getPageTitle } from '../assets/common/tool'
 
 // 关于路由重复问题
 const originalPush = VueRouter.prototype.push
@@ -16,20 +18,21 @@ const routes = [
     path: '/discover',
     // 首页
     component: () => import('../views/discover/DiscoverMusic'),
+    meta: { title: '首页' },
     children: [
       { path: '/', redirect: '/discover/individ' },
       // 个性推荐
-      { path: '/discover/individ', component: () => import('../views/discover/childRouter/Individuation') },
+      { path: '/discover/individ', component: () => import('../views/discover/childRouter/Individuation'), meta: { title: '个性推荐' } },
       // 歌单
-      { path: '/discover/category', component: () => import('../views/discover/childRouter/MusicListCategory') },
+      { path: '/discover/category', component: () => import('../views/discover/childRouter/MusicListCategory'), meta: { title: '歌单' } },
       // 排行榜
-      { path: '/discover/ranklist', component: () => import('../views/discover/childRouter/MusicListRank') },
+      { path: '/discover/ranklist', component: () => import('../views/discover/childRouter/MusicListRank'), meta: { title: '排行榜' } },
       // 歌手
-      { path: '/discover/artist', component: () => import('../views/discover/childRouter/ArtistCategory') },
+      { path: '/discover/artist', component: () => import('../views/discover/childRouter/ArtistCategory'), meta: { title: '歌手' } },
       // 最新音乐
-      { path: '/discover/newsongs', component: () => import('../views/discover/childRouter/NewSongs') },
+      { path: '/discover/newsongs', component: () => import('../views/discover/childRouter/NewSongs'), meta: { title: '最新音乐' } },
       // MV首页
-      { path: '/discover/mv', component: () => import('../views/mv/Mv') }
+      { path: '/discover/mv', component: () => import('../views/mv/Mv'), meta: { title: 'MV首页' } }
     ]
   },
   // 歌手信息
@@ -37,6 +40,7 @@ const routes = [
     path: '/artist',
     // 歌手详细信息开始
     component: () => import('../views/artistDetail/ArtistDetail'),
+    meta: { title: '歌手信息' },
     children: [
       { path: '/', redirect: '/artist/album' },
       // 歌手专辑
@@ -51,15 +55,15 @@ const routes = [
     ]
   },
   // input输入框搜索信息，搜索内容
-  { path: '/search/:id', component: () => import('../views/search/SearchList') },
+  { path: '/search/:id', component: () => import('../views/search/SearchList'), meta: { title: '搜索内容' } },
   // mv播放跳转,
-  { path: '/playmv/:id', component: () => import('../views/mv/PlayMv') },
+  { path: '/playmv/:id', component: () => import('../views/mv/PlayMv'), meta: { title: 'MV播放' } },
   // 所有mv
-  { path: '/allmv', component: () => import('../views/mv/AllMv') },
+  { path: '/allmv', component: () => import('../views/mv/AllMv'), meta: { title: '所有MV' } },
   // 歌单详情页面
-  { path: '/musicListDetail/:id/:time', component: () => import('../views/musicListDetail/MusicListDetail') },
+  { path: '/musicListDetail/:id/:time', component: () => import('../views/musicListDetail/MusicListDetail'), meta: { title: '歌单页面' } },
   // 播放视频
-  { path: '/playvideo/:id', component: () => import('../views/allVideo/childComps/PlayVideo') },
+  { path: '/playvideo/:id', component: () => import('../views/allVideo/childComps/PlayVideo'), meta: { title: '视频播放' } },
   // 所有视频
   {
     path: '/video',
@@ -67,15 +71,16 @@ const routes = [
     component: () => import('../views/allVideo/AllVideoDetail'),
     children: [
       // 所有视频
-      { path: '/video/allvideo', component: () => import('../views/allVideo/childComps/AllVideo') },
+      { path: '/video/allvideo', component: () => import('../views/allVideo/childComps/AllVideo'), meta: { title: '所有视频' } },
       // 所有mv
-      { path: '/video/allmv', component: () => import('../views/mv/AllMv') }
+      { path: '/video/allmv', component: () => import('../views/mv/AllMv'), meta: { title: '所有MV' } }
     ]
   },
   // 朋友
   {
     path: '/friend',
     component: () => import('../components/content/friend/Friend'),
+    meta: { title: '朋友' },
     children: [
       { path: '/', redirect: 'frienddetail' },
       { path: 'frienddetail', component: () => import('../components/content/friend/FriendDetail') },
@@ -94,18 +99,14 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  // 设置网站title
+  document.title = getPageTitle(to.meta.title)
   // 没有登录
   if (!window.localStorage.getItem('obj')) {
     // 访问视频
-    if (to.path === '/video/allvideo') {
-      Vue.prototype.$message.error('视频必须登录才能获取资源')
-      return next('/discover/individ')
-    } else if (to.path === '/friend/frienddetail') {
-      Vue.prototype.$message.error('朋友需要登录才能获取动态')
-      return next('/discover/individ')
-    } else if (to.path === '/transceiver') {
-      Vue.prototype.$message.error('电台需要登陆才能收听')
-      return next('/discover/individ')
+    if (to.path === '/video/allvideo' || to.path === '/friend/frienddetail' || to.path === '/transceiver') {
+      Message.info('电台等资源必须登录后才能获取，请先登录')
+      next('/discover/individ')
     }
   }
 

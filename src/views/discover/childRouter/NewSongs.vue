@@ -7,7 +7,7 @@
       {{item.name}}
       </div>
     </div>
-    <scroll ref="scroll" class="new-scroll" :pull-up-load="true" @pullingUp='pullingUp'>
+    <scroll ref="scroll" class="new-scroll" :pull-up-load="true">
       <div class="content">
         <!-- 播放按钮 -->
         <div class="play"  @click="playAllMusic()">
@@ -42,7 +42,7 @@
 </template>
 <script>
 import Scroll from '../../../components/common/scroll/Scroll'
-import { SongDetail, _getSongsDetail } from '../../../network/detail'
+import { _getSongsDetail, AllSongDetail } from '../../../network/detail'
 // 导入新歌速递接口，type: 地区类型 id
 import { _getTopSongs } from '../../../network/discover'
 import { tableMixin } from '../../musicListDetail/tableMixin'
@@ -64,7 +64,7 @@ export default {
         { value: 16, name: '韩国' },
         { value: 8, name: '日本' }
       ],
-      page: 0,
+      limit: 30,
       list: [],
       musicList: []
     }
@@ -73,31 +73,26 @@ export default {
   created () {
     this.getTopSongs()
   },
+  watch: {
+    // 监听标签改变，重置
+    areaIndex () {
+      this.page = 0
+    }
+  },
   methods: {
     // 头部导航条点击
     areaClick (index) {
       this.areaIndex = index
       this.page = 0
-      this.getTopSongs(true)
-    },
-    // scroll的下拉 事件
-    pullingUp () {
       this.getTopSongs()
     },
-    async  getTopSongs (clear = false) {
-      // 判断是否清空音乐数组
-      if (clear) this.musicList = []
+    async  getTopSongs () {
+      this.musicList = []
       this.page++
-      await _getTopSongs(this.area[this.areaIndex].value).then(res => {
-        this.list = res.data.data.slice(0, this.page * 10)
-      })
-      for (var i of this.list) {
-        _getSongsDetail(i.id).then(res => {
-          var song = new SongDetail(res.data.songs)
-          this.musicList.push(song)
-        })
-      }
-      this.$refs.scroll.finishPullUp()
+      const { data: { data } } = await _getTopSongs(this.area[this.areaIndex].value)
+      const ids = data.slice(0, this.limit).map(item => item.id).join(',')
+      const { data: { songs } } = await _getSongsDetail(ids)
+      songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
     },
     // 播放全部音乐
     playAllMusic () {

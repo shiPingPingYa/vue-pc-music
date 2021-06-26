@@ -123,7 +123,7 @@ export default new Vuex.Store({
       // 添加用户关注
       state.userFollows = obj.follows
       // 获取用户歌单
-      await _getSongList(state.uid).then(res => {
+      await _getSongList(state.uid, state.cookie).then(res => {
         state.userSongList = res.data.playlist
       })
     },
@@ -144,6 +144,10 @@ export default new Vuex.Store({
         nickname: state.nickname
       }
       return obj
+    },
+    // 歌单id
+    getSongId (state) {
+      return state.songID
     }
   }
 

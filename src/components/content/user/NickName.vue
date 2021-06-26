@@ -80,11 +80,10 @@ export default {
   position: absolute;
   width: 400px ;
   height: 360px;
-  margin: auto;
-  top: 0;
-  left: 0;
-  z-index: 102;
-  background-color: #dddddd;
+  top: 50%;
+  z-index: 10;
+  transform: translate(80%,-50%);
+  background-color: #a3b2b8;
   > .nick-back{
     position: relative;
     width: 100%;

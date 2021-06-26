@@ -1,7 +1,7 @@
 <template>
       <div class="content">
-    <left-menu ref="left_menu"></left-menu>
-    <right-main></right-main>
+      <keep-alive> <left-menu ref="left_menu"></left-menu></keep-alive>
+      <right-main></right-main>
   </div>
 </template>
 <script>

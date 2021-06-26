@@ -1,7 +1,7 @@
 <template>
     <div class="header">
     <div class="logo">
-      <i class="el-icon-platform-eleme"></i>
+      <img src="../../../assets/img/webSiteIcon.svg"  title="小拳拳锤你">
      <div class="title">覃覃音乐</div>
     </div>
     <div class="buttons">
@@ -91,17 +91,19 @@ export default {
   float: left;
   width: 25%;
   height: 100%;
+  justify-content: flex-start;
   align-items: center;
   cursor: pointer;
-  > i{
-    display: inline-block;
-    margin-left: 22px;
-    padding: 6px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    font-size: 16px;
-    background-color: rgb(8, 183, 252);
+  z-index: .8;
+  > img{
+    width: 36px ;
+    height: 36px;
+    margin-left: 10px;
+    z-index: 10000;
+  }
+  > img:hover{
+    transform:translateY(60px) scale(4) rotate(360deg);
+    transition: 3s all;
   }
   > .title{
     display: inline-block;
@@ -178,7 +180,4 @@ export default {
   }
 }
 
-.el-icon-platform-eleme{
-    color: #f0f0f8;
-}
 </style>

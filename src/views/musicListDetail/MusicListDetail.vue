@@ -27,7 +27,7 @@ import MusicItem from './childComps/MusicItem'
 // 导入歌单收藏组件
 import MusicListLike from './childComps/MusicListLike'
 // 导入数据请求
-import { _getMusicListDetail, BaseInfo, _getSongsDetail, SongDetail, _getSub, _getRecommends } from '../../network/detail'
+import { _getMusicListDetail, BaseInfo, _getSongsDetail, AllSongDetail, _getRecommends, _getSub } from '../../network/detail'
 // 混入
 import { indexMixin } from './indexMixin'
 // 混入
@@ -55,12 +55,23 @@ export default {
       // 歌单收藏者
       // 歌单评论内容
       recommends: null,
-      limit: 20,
+      limit: 100,
       subs: null
     }
   },
   // 音乐混入
   mixins: [indexMixin],
+  watch: {
+    $route: {
+      handler (val) {
+        if (val.params.id !== undefined) {
+          this.id = val.params.id
+          this.musicListDetailInit()
+        }
+      },
+      deep: true
+    }
+  },
   created () {
     // 获取歌单Id
     if (this.$route.params.id !== null && this.$route.params.id !== '') {
@@ -78,38 +89,33 @@ export default {
     },
     // 初始化音乐列表
     async musicListDetailInit () {
-      // 歌曲id清空
-      this.musicListDetailInit = null
-      // 获取歌单id,获取歌单数据
-      await _getMusicListDetail(this.id).then(res => {
-        this.musicListDetail = res.data
-        // 通过封装的baseinfo方法，获取需要的默认信息
-        this.baseInfo = new BaseInfo(this.musicListDetail.playlist)
-        var str = '评论(' + this.musicListDetail.playlist.commentCount + ')'
-        this.bar = ['歌曲列表', str, '收藏者']
+      this.musicList = []
+      this.recommends = []
+      this.baseInfo = null
+      // 获取歌单id，获取歌单数据，commentCount:评论数量，trackIds:歌曲id，playlist:歌曲信息
+      const { data: { playlist, playlist: { commentCount, trackIds } } } = await _getMusicListDetail(this.id)
 
-        // 遍历歌单对象里面的id，获取歌曲信息
-        for (var i of this.musicListDetail.playlist.trackIds) {
-        // 获取歌曲信息
-          _getSongsDetail(i.id).then(res => {
-          // 通过封装SongDetail方法，获取需要的歌曲信息
-            var song = new SongDetail(res.data.songs)
-            this.musicList.push(song)
-          })
-        }
+      // 获取歌单默认信息
+      this.baseInfo = new BaseInfo(playlist)
+      // 处理评论默认信息
+      const str = `评论${commentCount}`
+      this.bar = ['歌曲列表', str, '收藏者']
 
-        // 获取评论内容
-        _getRecommends(this.id, this.limit).then(res => {
-          this.recommends = res.data.comments
-          return res.data.comments
-        })
+      // 拼接id ,获取歌曲，处理歌曲信息
+      const ids = trackIds.map(item => item.id).join(',')
+      const { data: { songs } } = await _getSongsDetail(ids)
+      songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
 
-        // 获取歌单收藏者
-        _getSub(this.id).then(res => {
-          this.subs = res.data.subscribers
-        })
+      // // 获取评论内容
+      _getRecommends(this.id, this.limit).then(res => {
+        this.recommends = res.data.comments
+        return res.data.comments
       })
-    // 把歌单评论内容传递给首页评论组件
+
+      // 获取歌单收藏者
+      _getSub(this.id).then(res => {
+        this.subs = res.data.subscribers
+      })
     }
   }
 

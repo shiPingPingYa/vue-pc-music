@@ -12,7 +12,8 @@
       </div>
       <!-- 登录信息 -->
       <div class="main">
-       <div>
+      <form>
+         <div>
          <!-- 手机号码 -->
          <div class="form-item">
              <el-input placeholder="请输入账号"  prefix-icon="el-icon-user" v-model="phone" @blur="verifyPhone"></el-input>
@@ -35,6 +36,7 @@
          <span>二维码登录</span>
          </div>
        </div>
+      </form>
       </div>
   </div>
   </transition>
@@ -74,12 +76,11 @@ export default {
   position: absolute;
   width: 400px;
   height: 380px;
-  left: -16%;
-  top: 8%;
   margin: auto;
+  top: 50%;
   z-index: 10;
-  transform: translateX(50%);
-  background-color: #dddddd;
+  transform: translate(80%,-50%);
+  background-color: #a3b2b8;
   > .login-back{
     position: relative;
     width: 100%;

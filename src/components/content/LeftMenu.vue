@@ -1,5 +1,5 @@
 <template>
-  <div class="left-menu" v-if="list !== null">
+  <div class="left-menu" v-if="list !== null" ref="LeftMenu">
     <dl>
       <router-link :to="item.link" v-for="(item, index) in list" :key="index">
         <dd :class="{title:item.icon,action:currentIndex == index}"
@@ -159,7 +159,7 @@ dd > div{
 
 .action{
   background-color: #e6e7eb;
-  border-left: 4px solid #b82525;
+  border-left: 4px solid rgb(68, 155, 226);
 }
 
 #rotate{

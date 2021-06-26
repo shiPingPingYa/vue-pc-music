@@ -28,10 +28,9 @@ import ArtistItem from '../search/childComps/ArtistItem'
 import MusicItem from '../musicListDetail/childComps/MusicItem'
 // 导入数据请求，获取根据input输入的内容，拿到的音乐
 import { _Search } from '../../network/search'
-// 获取根据音乐id获取音乐详细对象,SongDetail处理音乐对象(返回需要的数据id，标题，歌手，专辑名，时间)
-import { _getSongsDetail, SongDetail } from '../../network/detail'
+// 获取根据音乐id获取音乐详细对象,SongDetail处理音乐对象(返回需要的数据id，标题，歌手，专辑名，时间)SongDetail
+import { _getSongsDetail, AllSongDetail } from '../../network/detail'
 // 导入工具函数，处理相同歌曲标题名
-import { distinct } from '../../assets/common/tool'
 // 导入混入，使能获取音乐列表
 import { indexMixin } from '../musicListDetail/indexMixin'
 export default {
@@ -92,28 +91,20 @@ export default {
       this.musicList = []
       this.artistsList = []
       this.musicListId = []
-      await _Search(this.key).then(res => {
-        var list = res.data.result.songs
-        // 遍历响应的的数据
-        for (var i in list) {
-          // 获取响应数据里面的歌手对象
-          this.artistsList.push(list[i].artists[0])
-          // 获取遍历数据的id
-          this.musicListId.push(list[i].id)
-          // 遍历结束后,下标i在严格模式下是属于string
-          if (Number(i) === list.length - 1) {
-            // 根据遍历数据的音乐id, 来获取歌曲对象
-            for (var j of this.musicListId) {
-              _getSongsDetail(j).then(res => {
-                var song = new SongDetail(res.data.songs)
-                this.musicList.push(song)
-              })
-            }
-            // 处理歌曲相同标题名
-            this.artistsList = distinct(this.artistsList)
-          }
-        }
-      })
+      // 搜索歌曲长度只有50
+      const length = 50
+      // 将根据关键字搜索的歌曲列表解构出来
+      const { data: { result: { songs } } } = await _Search(this.key).then()
+      for (let i = 0; i < length; i++) {
+        // 获取歌手列表，音乐ID列表
+        this.artistsList.push(songs[i].artists[0])
+        this.musicListId.push(songs[i].id)
+      }
+      // 根据音乐id获取出音乐详细信息
+      const { data: { songs: musicList } } = await _getSongsDetail(this.musicListId.join(',')).then()
+      for (let j = 0; j < length; j++) {
+        this.musicList.push(new AllSongDetail(musicList[j]))
+      }
     }
   }
 }

@@ -14,25 +14,10 @@
     <!-- 图片区域 -->
     <div class="imgBox">
       <ul>
-        <li class="list1">
-          <img :src="banner[0].imageUrl" alt="">
+        <li v-for="(item,index) in banner " :class=" 'list'+ ++index " :key="index" @dblclick="swiperMusic(item)">
+          <img :src="item.imageUrl" alt="">
         </li>
-        <li class="list2">
-          <img :src="banner[1].imageUrl" alt="">
-        </li>
-        <li class="list3">
-          <img :src="banner[2].imageUrl" alt="">
-        </li>
-        <li class="list4">
-          <img :src="banner[3].imageUrl" alt="">
 
-        </li>
-        <li class="list5">
-          <img :src="banner[4].imageUrl" alt="">
-        </li>
-        <li class="list6">
-          <img :src="banner[5].imageUrl" alt="">
-        </li>
       </ul>
     </div>
     <!-- 下面线条 -->
@@ -49,6 +34,9 @@
 <script>
 // 导入封装的轮播图函数
 import { _Swiper } from './indexSwper'
+import { indexMixin } from '../../../views/musicListDetail/indexMixin'
+import { _getCheckMusic, _getSongsDetail, SongDetail } from '../../../network/detail' //
+import { Message } from 'element-ui'
 export default {
   name: 'Swiper',
   props: {
@@ -56,6 +44,31 @@ export default {
       type: Array,
       default () {
         return []
+      }
+    }
+  },
+  data () {
+    return {
+      musicList: []
+    }
+  },
+  // 混入音乐播放方法
+  mixins: [indexMixin],
+  methods: {
+    async   swiperMusic (item) {
+      // 清空音乐列表
+      this.musicList = []
+      // 判断音乐有无版权再做处理
+      try {
+        const { data: { success } } = await _getCheckMusic(item.targetId).then()
+        if (success) {
+          const { data: { songs } } = await _getSongsDetail(item.targetId).then()
+          this.musicList.push(new SongDetail(songs))
+          // 播放音乐
+          this.playMusic()
+        }
+      } catch (e) {
+        Message.error(e.data.message)
       }
     }
   },

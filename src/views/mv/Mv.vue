@@ -50,24 +50,17 @@ export default {
     return {
       limit: 9,
       mvList: [],
-      topMv: [],
-      notTopMv: [],
-      notMvList: []
+      topMv: []
     }
   },
   async created () {
     // 获取最新mv和mv排行榜
-    await Promise.all([_getNewMV(this.limit), _getTopMv()]).then(res => {
-      this.notMvList = res[0].data.data
-      this.notTopMv = res[1].data.data
-    })
-    for (var i of this.notMvList) {
-      var mv = new MV(i)
-      this.mvList.push(mv)
+    const [{ data: { data: notMvList } }, { data: { data: notTopMv } }] = await Promise.all([_getNewMV(this.limit), _getTopMv()]).then()
+    for (const i of notMvList) {
+      this.mvList.push(new MV(i))
     }
-    for (var j of this.notTopMv) {
-      var topMv = new MV(j)
-      this.topMv.push(topMv)
+    for (const j of notTopMv) {
+      this.topMv.push(new MV(j))
     }
   },
   methods: {
@@ -108,7 +101,7 @@ export default {
     }
   }
   > .right:hover{
-    color: #fff;
+    color: #59aed3;
   }
 }
 

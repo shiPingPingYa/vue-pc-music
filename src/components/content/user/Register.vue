@@ -64,12 +64,10 @@ export default {
   position: absolute;
   width: 400px ;
   height: 360px;
-  left: -16%;
-  top: 8%;
-  margin: auto;
+  top: 50%;
   z-index: 10;
-  transform: translateX(50%);
-  background-color: #dddddd;
+  transform: translate(80%,-50%);
+  background-color: #a3b2b8;
   > .register-back{
     position: relative;
     width: 100%;
