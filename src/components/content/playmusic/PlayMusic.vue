@@ -304,6 +304,7 @@ export default {
         try {
           this.lyric = res.data.lrc.lyric
         } catch (e) {
+          this.lyric = '暂无歌词'
           console.log(e)
         }
       })

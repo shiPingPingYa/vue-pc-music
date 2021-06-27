@@ -22,7 +22,7 @@
           <div class="right">
             <div class="top">
               <h2>
-                <span>Promise</span>
+                <span>歌词</span>
                 </h2>
             </div>
             <!-- recommends 歌词 -->

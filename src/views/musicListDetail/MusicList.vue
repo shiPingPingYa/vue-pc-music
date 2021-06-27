@@ -51,7 +51,7 @@ export default {
     },
     // 条状到音乐详情页
     enterDetail (index) {
-      this.$router.push({ path: '/musiclistdetail/' + this.totalList[index].id + '/' + new Date().getTime(), query: { songId: this.totalList[index].id } })
+      this.$router.push({ path: '/musiclistdetail/' + this.totalList[index].id, query: { songId: this.totalList[index].id } })
     }
 
   }

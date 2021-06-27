@@ -61,7 +61,7 @@ const routes = [
   // 所有mv
   { path: '/allmv', component: () => import('../views/mv/AllMv'), meta: { title: '所有MV' } },
   // 歌单详情页面
-  { path: '/musicListDetail/:id/:time', component: () => import('../views/musicListDetail/MusicListDetail'), meta: { title: '歌单页面' } },
+  { path: '/musicListDetail/:id', component: () => import('../views/musicListDetail/MusicListDetail'), meta: { title: '歌单页面' } },
   // 播放视频
   { path: '/playvideo/:id', component: () => import('../views/allVideo/childComps/PlayVideo'), meta: { title: '视频播放' } },
   // 所有视频
