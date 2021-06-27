@@ -174,6 +174,8 @@ export default {
   mounted () {
     // 音乐数据
     this.$bus.$on('PlayMusic', (index, path, musicList, playList) => {
+      // 存储歌单路由
+      this.$store.commit('addSongListPath', path)
       if (this.playList.length !== 0) this.playList = []
       this.path = path
       this.musicList = musicList

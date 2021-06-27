@@ -48,7 +48,9 @@ const state = {
   // 用户动态
   userEventCount: '',
   // 用户登录的手机号码
-  isSongList: true
+  isSongList: true,
+  // 歌单路由
+  songListPath: ''
 }
 
 export default new Vuex.Store({
@@ -130,6 +132,10 @@ export default new Vuex.Store({
     // 显示用户歌单
     userSongList (state, isSongList) {
       state.isSongList = isSongList
+    },
+    // 添加歌单路由
+    addSongListPath (state, songListPath) {
+      state.songListPath = songListPath
     }
   },
   getters: {
@@ -148,6 +154,10 @@ export default new Vuex.Store({
     // 歌单id
     getSongId (state) {
       return state.songID
+    },
+    // 获取歌单路由
+    getSongListPath (state) {
+      return state.songListPath
     }
   }
 

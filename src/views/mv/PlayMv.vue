@@ -78,11 +78,14 @@ export default {
     }
   },
   watch: {
-    $route () {
-      this.id = this.$route.params.id
-      if (this.id !== null) {
-        this.getBaseInfo()
-      }
+    $route: {
+      handler (val) {
+        if (val.params.id !== undefined && val.params.id !== null) {
+          this.id = this.$route.params.id
+          this.getBaseInfo()
+        }
+      },
+      deep: true
     }
   },
   created () {
