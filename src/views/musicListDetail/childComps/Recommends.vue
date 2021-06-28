@@ -8,7 +8,7 @@
     </div>
 
     <!-- 评论区域 -->
-    <div class="content">
+    <div class="content" v-if="recommends.length !== 0">
       <p>精彩评论</p>
       <div class="item" v-for="(item,index) in recommends" :key="index">
         <div class="icon">
@@ -27,6 +27,11 @@
         </div>
       </div>
     </div>
+    <div class="content" v-else-if="recommends.length === 0 ">
+      <p>精彩评论</p>
+      <div class="item">暂无评论，快去评论吧。。。</div>
+    </div>
+    <div class="more-comments" @click="moreComments">{{recommendTitle}}</div>
   </div>
 </template>
 <script>
@@ -48,10 +53,20 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      // 评论提示内容
+      recommendTitle: '更多评论....'
+    }
+  },
   methods: {
     // 格式化时间
     _formatDate (data) {
       return formDate(new Date(data), 'mmmm--yy-dd')
+    },
+    // 获取更多评论消息
+    moreComments () {
+      this.$emit('moreComments')
     }
   }
 }
@@ -88,6 +103,14 @@ export default {
       background-color: #fff;
     }
   }
+  > .more-comments{
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #2e6bb0;
+    cursor: pointer;
+  }
 }
 
 .content{
@@ -123,6 +146,10 @@ export default {
       margin-bottom: 14px;
       > span{
         color: #2e6bb0;
+
+      }
+      > span:hover{
+        cursor: pointer;
       }
     }
     > .bottom{

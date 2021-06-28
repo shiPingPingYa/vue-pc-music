@@ -8,12 +8,15 @@ import store from './store'
 import '../src/assets/css/babel.css'
 // 导入elementui
 import '../src/plugins/element'
+import { Message } from 'element-ui'
 
 Vue.config.productionTip = false
 // 挂载axios
 Vue.prototype.$http = axios
 // 创建事件中心
 Vue.prototype.$bus = new Vue()
+// 挂载消息提示
+Vue.prototype.$Message = Message
 new Vue({
   router,
   render: h => h(App),

@@ -60,24 +60,40 @@ export function _getSub (id, limit) {
   })
 }
 
+/**
+ *
+ * @param {歌单} id
+ * @param {评论数量，默认20} limit
+ * @param {页码值} offset
+ * @returns
+ */
 // 获取歌单的评论内容
-export function _getRecommends (id, limit) {
+export function _getRecommends (id, limit, offset) {
   return request({
     url: '/comment/playlist',
     params: {
       id: id,
-      limit: limit
+      limit: limit,
+      offset: offset
     }
   })
 }
 
+/**
+ *
+ * @param {歌曲} id
+ * @param {评论数量，默认20} limit
+ * @param {页码值} offset
+ * @returns
+ */
 // 音乐评论内容
-export function _musicRecommend (id, limit) {
+export function _musicRecommend (id, limit, offset) {
   return request({
     url: '/comment/music',
     params: {
       id: id,
-      limit: limit
+      limit: limit,
+      offset: offset
     },
     isClose: true
   })

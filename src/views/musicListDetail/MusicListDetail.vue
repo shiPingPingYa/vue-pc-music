@@ -8,7 +8,7 @@
   <!-- 音乐榜单列表 -->
     <music-item @musicItemClick="musicItemClick" :musicList="musicList" v-show="isShow == 'music'"></music-item>
   <!-- 音乐榜单评论信息 -->
-    <recommends :recommends="recommends" v-show="isShow == 'recommends'"></recommends>
+    <song-list-recommends ref="songList_recommends" :recommends="recommends" v-show="isShow == 'recommends'" @moreComments="moreComments"></song-list-recommends>
   <!-- 音乐榜单收藏者 -->
     <music-list-like :subs="subs" v-show="isShow == 'like'"></music-list-like>
  </scroll>
@@ -20,8 +20,6 @@ import Scroll from '../../components/common/scroll/Scroll'
 import MusicBaseInfo from './childComps/MusicBaseInfo'
 // 导入歌单导航条
 import MusicBar from './childComps/MusicBar'
-// 导入歌单评论组件
-import Recommends from './childComps/Recommends'
 // 导入歌单列表
 import MusicItem from './childComps/MusicItem'
 // 导入歌单收藏组件
@@ -30,6 +28,9 @@ import MusicListLike from './childComps/MusicListLike'
 import { _getMusicListDetail, BaseInfo, _getSongsDetail, AllSongDetail, _getRecommends, _getSub } from '../../network/detail'
 // 混入
 import { indexMixin } from './indexMixin'
+import { Message } from 'element-ui'
+// 导入歌单评论组件
+const songListRecommends = () => import('./childComps/Recommends.vue')
 // 混入
 export default {
   name: 'MusicListDetail',
@@ -38,7 +39,7 @@ export default {
     MusicBar,
     MusicListLike,
     MusicItem,
-    Recommends,
+    songListRecommends,
     Scroll
   },
   data () {
@@ -54,8 +55,8 @@ export default {
       baseInfo: null,
       // 歌单收藏者
       // 歌单评论内容
-      recommends: null,
-      limit: 100,
+      recommends: [],
+      limit: 50,
       subs: null
     }
   },
@@ -90,8 +91,6 @@ export default {
     // 初始化音乐列表
     async musicListDetailInit () {
       this.musicList = []
-      this.recommends = []
-      this.baseInfo = null
       // 获取歌单id，获取歌单数据，commentCount:评论数量，trackIds:歌曲id，playlist:歌曲信息
       const { data: { playlist, playlist: { commentCount, trackIds } } } = await _getMusicListDetail(this.id)
 
@@ -107,15 +106,26 @@ export default {
       songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
 
       // // 获取评论内容
-      _getRecommends(this.id, this.limit).then(res => {
-        this.recommends = res.data.comments
-        return res.data.comments
-      })
+      const { data: { comments } } = await _getRecommends(this.id, this.limit, this.recommends.length)
+      this.recommends = comments
 
       // 获取歌单收藏者
       _getSub(this.id).then(res => {
         this.subs = res.data.subscribers
       })
+    },
+    // 评论组件的获取更多评论方法
+    async moreComments () {
+      const { data: { comments } } = await _getRecommends(this.id, this.limit, this.recommends.length)
+      // 评论已经被请求完毕
+      if (comments.length === 0) {
+        Message.info('评论已经加载完毕，暂无更多评论')
+        // 修改评论组件，评论提示消息
+        this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....'
+      } else {
+        // 遍历添加请求成功后的歌单评论
+        comments.forEach(item => this.recommends.push(item))
+      }
     }
   }
 

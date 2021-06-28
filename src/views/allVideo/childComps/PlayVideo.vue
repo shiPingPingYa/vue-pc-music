@@ -15,7 +15,7 @@
       <!-- 下面评论区 -->
       <div class="recommend">
         <p class="p">评论</p>
-        <recommends class="recds" :recommends="recommends"></recommends>
+        <video-recommends  class="recds"  @moreComments="moreComments" :recommends="recommends"></video-recommends>
       </div>
     </div>
     <!-- 右边内容布局 -->
@@ -40,7 +40,7 @@
       <!-- 相关视频推荐 -->
       <div class="alia">
         <p class="p">相关推荐</p>
-        <si-mi-video-item :videoList="simiVideo"></si-mi-video-item>
+        <si-mi-video-item :videoList="simiVideo" ></si-mi-video-item>
       </div>
     </div>
     </scroll>
@@ -51,18 +51,18 @@
 import Scroll from '../../../components/common/scroll/Scroll'
 // 导入推荐video组件
 import SiMiVideoItem from './SiMiVideoItem'
-// 导入评论组件
-import Recommends from '../../musicListDetail/childComps/Recommends.vue'
 // 导入video的数据请求接口
 import { Video, _getVideoDetail, _getVideoUrl, _getVideoComment, _getRelatedVideo } from '../../../network/video'
 // 导入工具函数处理时间,导入节流函数
-import { formDate, throttled } from '../../../assets/common/tool'
+import { formDate } from '../../../assets/common/tool'
+// 导入评论组件
+const videoRecommends = () => import('../../musicListDetail/childComps/Recommends.vue')
 export default {
   name: 'PlayVideo',
   components: {
     Scroll,
     SiMiVideoItem,
-    Recommends
+    videoRecommends
   },
   data () {
     return {
@@ -96,19 +96,6 @@ export default {
     this.$emit('stopMusic')
   },
   methods: {
-    // scroll一下拉就调用pullingUp方法,重新获取评论区的值
-    pullingUp () {
-      this.getComment()
-    },
-    // 刷新时调用节流
-    getComment: throttled(function () {
-      // 下拉刷新评论
-      ++this.offset
-      _getVideoComment(this.id, this.offset * this.limit).then(res => {
-        this.recommends = res.data.comments
-      })
-      this.$refs.scroll.finishPullUp()
-    }, 800),
     async getBaseInfo () {
       // 清空上一次的数据
       this.notSimiVideo = []
@@ -139,6 +126,19 @@ export default {
     },
     leave () {
       this.$refs.scroll.enable()
+    },
+    // 获取mv评论内容
+    async  moreComments () {
+      const { data: { comments } } = await _getVideoComment(this.id, this.limit, this.recommends.length)
+      // 评论已经被请求完毕
+      if (comments.length === 0) {
+        this.$Message.info('评论已经加载完毕，暂无更多评论')
+        // 修改评论组件，评论提示消息
+        this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....'
+      } else {
+        // 遍历添加请求成功后的歌单评论
+        comments.forEach(item => this.recommends.push(item))
+      }
     }
   }
 }

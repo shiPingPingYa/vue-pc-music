@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
      <div class="player" v-if="music !==null && lyric !== null">
-      <scroll class="player-scroll" ref="scroll" :pull-up-load="true" @pullingUp="pullingUp()">
+      <scroll class="player-scroll" ref="scroll" :pull-up-load="true" >
         <!-- 上面内容区域 -->
         <div class="player-content">
           <!-- 左边图标区域 -->
@@ -34,7 +34,7 @@
 
         <!-- 下面评论组件 -->
         <div class="player-bottom">
-          <recommends :recommends="recommends"></recommends>
+        <music-recommends ref="music_recommends" @moreComments="moreComments" :recommends="recommends" ></music-recommends>
         </div>
     </scroll>
       </div>
@@ -43,17 +43,17 @@
 </template>
 <script>
 import Scroll from '../../common/scroll/Scroll'
-// 评论组件
-import Recommends from '../../../views/musicListDetail/childComps/Recommends'
 // 歌词组件
 import Lyric from './Lyric'
 // 导入歌曲评论请求和歌词请求
 import { _musicRecommend } from '../../../network/detail'
+// 评论组件
+const musicRecommends = () => import('../../../views/musicListDetail/childComps/Recommends')
 export default {
   name: 'Player',
   components: {
     Scroll,
-    Recommends,
+    musicRecommends,
     Lyric
   },
   props: {
@@ -72,7 +72,6 @@ export default {
   },
   data () {
     return {
-      page: 1,
       limit: 40,
       recommends: [],
       isPlayer: false
@@ -94,15 +93,18 @@ export default {
     })
   },
   methods: {
-    pullingUp () {
-      this.musicRecommends()
-    },
-    musicRecommends () {
-      this.page++
-      _musicRecommend(this.music.id, this.limit * this.page).then(res => {
-        this.recommends = res.data.comments
-        this.$refs.scroll.finishPullUp()
-      })
+    // 加载更多评论
+    async  moreComments () {
+      const { data: { comments } } = await _musicRecommend(this.music.id, this.limit, this.recommends.length)
+      // 评论已经被请求完毕
+      if (comments.length === 0) {
+        this.$Message.info('评论已经加载完毕，暂无更多评论')
+        // 修改评论组件，评论提示消息
+        this.$refs.music_recommends.recommendTitle = '评论加载完毕，暂无更多.....'
+      } else {
+        // 遍历添加请求成功后的歌单评论
+        comments.forEach(item => this.recommends.push(item))
+      }
     }
   }
 }
