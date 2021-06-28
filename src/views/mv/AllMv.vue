@@ -48,14 +48,14 @@ export default {
     }, 800),
     async loadMv () {
       this.offset++
-      var mvList = []
+      this.mvList = []
       await _AllMv(this.area, this.type, this.order, this.offset * this.limit).then(res => {
         for (var i of res.data.data) {
-          var mv = new MV(i)
-          mvList.push(mv)
+          const mv = new MV(i)
+          this.mvList.push(mv)
         }
-        this.mvList = mvList
       })
+      // 重新获取dom元素高度
       this.$refs.scroll.finishPullUp()
     },
     async allMv (area = '全部', type = '全部', order = '上升最快', limit = this.limit * this.offset) {
@@ -66,13 +66,8 @@ export default {
       this.order = order
 
       // 调用接口获取数据
-      await _AllMv(area, type, order, limit).then(res => {
-        for (var i of res.data.data) {
-          var mv = new MV(i)
-          this.mvList.push(mv)
-        }
-      }
-      )
+      const { data: { data } } = await _AllMv(area, type, order, limit).then()
+      data.forEach(item => this.mvList.push(new MV(item)))
     }
   }
 }

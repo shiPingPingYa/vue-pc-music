@@ -13,13 +13,14 @@ export const tableMixin = {
     },
     // 音乐条目点击事件
     musicItemClick (index) {
-      // 播放音乐列表不为空
-      if (this.$parent.$parent.$el.className.indexOf('play-music-list') !== -1) {
-        // 触发播放方法，传递index，把音乐播放顺序换了
+      // 判断是否在同一歌单下面，是则不再请求音乐数据，而是切换播放音乐下标
+      if (this.$route.path === this.$store.getters.getSongListPath) {
+        // 触发播放方法，传递index，把播放音乐小标换了
         this.$bus.$emit('playMusicListItem', index)
+      } else {
+        // 触发父组件上面的方法，重新获取音乐
+        this.$emit('musicItemClick', index)
       }
-      // 触发父组件上面的方法，把音乐点击下标换了
-      this.$emit('musicItemClick', index)
     }
   }
 }

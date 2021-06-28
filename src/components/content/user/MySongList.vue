@@ -35,7 +35,7 @@ export default {
     // 跳转到音乐详情页面
     enterMusicListDetail (i) {
       // 阻止冒泡
-      this.$router.push('/musiclistdetail/' + this.getUserList[i].id + '/' + new Date().getTime())
+      this.$router.push('/musiclistdetail/' + this.getUserList[i].id)
     },
     // 显示点击后的歌单
     setItemCur (i) {

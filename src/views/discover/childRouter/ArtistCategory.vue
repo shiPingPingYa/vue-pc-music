@@ -44,7 +44,7 @@ export default {
     return {
       areaIndex: 0,
       typeIndex: 0,
-      limit: 12,
+      limit: 15,
       page: 1,
       artistList: [],
       area: [
@@ -67,19 +67,27 @@ export default {
   created () {
     this.getArtist()
   },
+  watch: {
+    // 标签改变后，重置页码和大小
+    areaIndex () {
+      this.limit = 15
+      this.page = 1
+    },
+    typeIndex () {
+      this.limit = 15
+      this.page = 1
+    }
+  },
   methods: {
     // scroll下拉刷新
     pullingUp: throttled(async function () {
       this.page++
-      var artistList = []
-      await _getArtist(
+      const { data: { artists } } = await _getArtist(
         this.area[this.areaIndex].value,
         this.type[this.typeIndex].value,
         this.limit * this.page
-      ).then(res => {
-        artistList = res.data.artists
-      })
-      this.artistList = artistList
+      ).then()
+      this.artistList = artists
       this.$refs.scroll.finishPullUp()
     }, 800),
     areaClick (index) {
@@ -92,10 +100,8 @@ export default {
     },
     // 获取歌手数据
     async getArtist () {
-      this.artistList = []
-      await _getArtist(this.area[this.areaIndex].value, this.type[this.typeIndex].value, this.limit * this.page).then(res => {
-        this.artistList = res.data.artists
-      })
+      const { data: { artists } } = await _getArtist(this.area[this.areaIndex].value, this.type[this.typeIndex].value, this.limit * this.page).then()
+      this.artistList = artists
     }
   }
 }

@@ -10,7 +10,7 @@
     </div>
     <scroll ref="scroll" class="song-category" :pull-up-load="true" @pullingUp="pullingUp">
   <!-- 歌单列表 -->
-<music-list :totalList="musicList" ></music-list>
+  <music-list :totalList="musicList" ></music-list>
 </scroll>
   </div>
 </template>
@@ -37,16 +37,12 @@ export default {
     Scroll,
     MusicList
   },
-  created () {
-    _getMusicListHot().then(res => {
-      this.tags = res.data.tags
-      return this.tags
-    }).then(res => {
-      _getHighquality(res[this.currentIndex].name, this.limit * this.page).then(res => {
-        this.musicList = res.data.playlists
-      })
-      this.$refs.scroll.finishPullUp()
-    })
+  async  created () {
+    const { data: { tags } } = await _getMusicListHot().then()
+    this.tags = tags
+    const { data: { playlists } } = await _getHighquality(this.tags[this.currentIndex].name, this.limit * this.page).then()
+    this.$refs.scroll.finishPullUp()
+    this.musicList = playlists
   },
   methods: {
     // scroll下拉调用的方法
@@ -54,11 +50,10 @@ export default {
       this.getHighquality()
     },
     // 获取热门标签下面的精品歌单
-    getHighquality: throttled(function () {
+    getHighquality: throttled(async function () {
       this.page++
-      _getHighquality(this.tags[this.currentIndex].name, this.limit * this.page).then(res => {
-        this.musicList = res.data.playlists
-      })
+      const { data: { playlists } } = await _getHighquality(this.tags[this.currentIndex].name, this.limit * this.page).then()
+      this.musicList = playlists
       this.$refs.scroll.finishPullUp()
     }, 800),
     // 导航栏的点击事件
@@ -98,6 +93,6 @@ export default {
 }
 
 .tagCur {
-  color: #b82525 !important;
+  color: #4facd1 !important;
 }
 </style>

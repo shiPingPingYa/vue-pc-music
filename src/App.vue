@@ -1,6 +1,8 @@
 <template>
   <div id="app">
+    <keep-alive>
     <tab-bar></tab-bar>
+    </keep-alive>
     <center-content></center-content>
     <play-music ref="play_music"></play-music>
     <!-- <home-page-recommends></home-page-recommends> -->

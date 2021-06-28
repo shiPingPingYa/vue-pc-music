@@ -12,6 +12,22 @@ export function _getMusicUrl (id) {
     }
   })
 }
+
+/**
+ *
+ * @param {就是音乐id用于判断是否有版权} params
+ * @returns
+ */
+// 判断音乐是否有权限
+export function _getCheckMusic (id) {
+  return request({
+    url: '/check/music',
+    params: {
+      id: id
+    }
+  })
+}
+
 // 获取歌曲详情，传入ids(可以传入多个id)
 export function _getSongsDetail (arr) {
   return request({
@@ -23,11 +39,12 @@ export function _getSongsDetail (arr) {
 }
 
 // 获取歌单详情
-export function _getMusicListDetail (id) {
+export function _getMusicListDetail (id, cookie) {
   return request({
     url: '/playlist/detail',
     params: {
-      id: id
+      id: id,
+      cookie: cookie
     }
   })
 }
@@ -43,24 +60,40 @@ export function _getSub (id, limit) {
   })
 }
 
+/**
+ *
+ * @param {歌单} id
+ * @param {评论数量，默认20} limit
+ * @param {页码值} offset
+ * @returns
+ */
 // 获取歌单的评论内容
-export function _getRecommends (id, limit) {
+export function _getRecommends (id, limit, offset) {
   return request({
     url: '/comment/playlist',
     params: {
       id: id,
-      limit: limit
+      limit: limit,
+      offset: offset
     }
   })
 }
 
+/**
+ *
+ * @param {歌曲} id
+ * @param {评论数量，默认20} limit
+ * @param {页码值} offset
+ * @returns
+ */
 // 音乐评论内容
-export function _musicRecommend (id, limit) {
+export function _musicRecommend (id, limit, offset) {
   return request({
     url: '/comment/music',
     params: {
       id: id,
-      limit: limit
+      limit: limit,
+      offset: offset
     },
     isClose: true
   })
@@ -85,7 +118,7 @@ export function _getHighquality (cat, limit) {
   })
 }
 
-// 将获取的歌曲对象进行封装
+// 将获取的歌曲对象进行封装,单个音乐对象
 export class SongDetail {
   constructor (songs) {
     this.id = songs[0].id
@@ -94,6 +127,18 @@ export class SongDetail {
     this.song = songs[0].ar[0].name
     this.pic = songs[0].al.picUrl
     this.time = formDate(new Date(songs[0].dt), 'mm:ss')
+  }
+}
+
+// 多个音乐对象
+export class AllSongDetail {
+  constructor (songs) {
+    this.id = songs.id
+    this.name = songs.name
+    this.album = songs.al.name
+    this.song = songs.ar[0].name
+    this.pic = songs.al.picUrl
+    this.time = formDate(new Date(songs.dt), 'mm:ss')
   }
 }
 

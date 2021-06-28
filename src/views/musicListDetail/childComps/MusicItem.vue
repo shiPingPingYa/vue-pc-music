@@ -51,6 +51,11 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      path: null
+    }
+  },
   mixins: [tableMixin, playMinxin]
 }
 </script>

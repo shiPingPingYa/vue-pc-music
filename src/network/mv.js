@@ -72,14 +72,15 @@ export function _getTopMv (limit = 10) {
 }
 
 // 全部mv
-export function _AllMv (area = '全部', type = '全部', order = '最新', limit) {
+export function _AllMv (area = '全部', type = '全部', order = '最新', limit, offset = 0) {
   return request({
     url: '/mv/all',
     params: {
       area: area,
       type: type,
       order: order,
-      limit: limit
+      limit: limit,
+      offset: offset
     }
   })
 }

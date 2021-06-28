@@ -1,6 +1,6 @@
 <template>
   <div class="play-mv" v-if="id!== null&&detail!==null">
-    <scroll class="play-mv-scroll" ref="scroll" :pull-up-load="true" @pullingUp="pullingUp()">
+    <scroll class="play-mv-scroll" ref="scroll" :pull-up-load="true" >
     <!-- 左边内容布局 -->
     <div class="left-layout">
       <!-- 左边头部标题-->
@@ -16,7 +16,7 @@
       <!-- 下面评论区 -->
       <div class="recommend">
         <p class="p">评论</p>
-        <recommonds class="recds" :recommends="recommends"></recommonds>
+        <mv-recommends class="recds" @moreComments="moreComments" :recommends="recommends"></mv-recommends>
       </div>
     </div>
     <!-- 右边内容布局 -->
@@ -52,18 +52,16 @@
 import Scroll from '../../components/common/scroll/Scroll'
 // mv的相关推荐
 import SimiMvItem from '../mv/childComps/SimiMvItem'
-// 评论组件
-import Recommonds from '../musicListDetail/childComps/Recommends'
 // 导入mv的数据请求接口
 import { _getMvDetail, _getMvComment, _getMvUrl, _getSimiMv, MV } from '../../network/mv'
-// 评论组件节流
-import { throttled } from '../../assets/common/tool'
+// 评论组件
+const mvRecommends = () => import('../musicListDetail/childComps/Recommends')
 export default {
   name: 'PlayMv',
   components: {
     Scroll,
     SimiMvItem,
-    Recommonds
+    mvRecommends
   },
   data () {
     return {
@@ -71,18 +69,20 @@ export default {
       detail: null,
       url: null,
       recommends: null,
-      offset: 1,
-      limit: 20,
+      limit: 60,
       simiMv: [],
       notSimiMv: []
     }
   },
   watch: {
-    $route () {
-      this.id = this.$route.params.id
-      if (this.id !== null) {
-        this.getBaseInfo()
-      }
+    $route: {
+      handler (val) {
+        if (val.params.id !== undefined && val.params.id !== null) {
+          this.id = this.$route.params.id
+          this.getBaseInfo()
+        }
+      },
+      deep: true
     }
   },
   created () {
@@ -94,17 +94,7 @@ export default {
     this.$bus.$emit('stopMusic', false)
   },
   methods: {
-    // scroll一下拉就调用pullingUp方法,重新获取评论区的值
-    pullingUp () {
-      this.getComment()
-    },
-    getComment: throttled(function () {
-      this.offset++
-      _getMvComment(this.id, this.offset * this.limit).then(res => {
-        this.recommends = res.data.comments
-      })
-      this.$refs.scroll.finishPullUp()
-    }, 800),
+    // 获取播放mv默认信息
     async getBaseInfo () {
       // 分别是mv的详情，地址，评论，相似mv
       await Promise.all([_getMvDetail(this.id), _getMvUrl(this.id), _getMvComment(this.id, this.limit), _getSimiMv(this.id)]).then(res => {
@@ -128,6 +118,19 @@ export default {
     },
     leave () {
       this.$refs.scroll.enable()
+    },
+    // 获取mv评论内容
+    async  moreComments () {
+      const { data: { comments } } = await _getMvComment(this.id, this.limit, this.recommends.length)
+      // 评论已经被请求完毕
+      if (comments.length === 0) {
+        this.$Message.info('评论已经加载完毕，暂无更多评论')
+        // 修改评论组件，评论提示消息
+        this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....'
+      } else {
+        // 遍历添加请求成功后的歌单评论
+        comments.forEach(item => this.recommends.push(item))
+      }
     }
   }
 }

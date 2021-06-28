@@ -1,10 +1,13 @@
 <template>
   <div class="lyric" v-if="lyric !== ''">
     <scroll ref="scroll" class="lyric-scroll">
-      <ul>
+      <ul  v-if="lyric.length > 4">
         <li v-for="(item,index) in lyricArray" :key="index" :class="{action:lyricIndex == index}">
           {{item.lyric}}
         </li>
+      </ul>
+      <ul>
+        <li v-if="lyric.length === 4">{{lyric}} </li>
       </ul>
     </scroll>
   </div>
@@ -35,9 +38,12 @@ export default {
   watch: {
     // 监听歌词，歌词一发生变化重新格式化歌词
     lyric () {
-      this.lyricIndex = -1
-      this.maxIndex = 0
-      this.parseLyric(this.lyric)
+      if (this.lyric.length < 5) return true
+      else {
+        this.lyricIndex = -1
+        this.maxIndex = 0
+        this.parseLyric(this.lyric)
+      }
     }
   },
   methods: {

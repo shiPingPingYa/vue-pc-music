@@ -51,8 +51,7 @@ export default {
   > .music-item{
     position: relative;
     margin: 5px 6px;
-    width: 150px;
-    height: 134px;
+    width: 30%;
     padding-bottom: 20px;
     font-size: 14px;
     color: #01060a;

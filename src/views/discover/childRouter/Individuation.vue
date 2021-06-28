@@ -29,7 +29,7 @@ import NewSongs from '../childComps/NewSongs'
 // 导入首页数据请求
 import { _getBanner, _getPersonalized, _getPrivateContent, _getNewSong, _getPrivateMv } from '../../../network/discover'
 // 歌曲请求
-import { _getSongsDetail, SongDetail } from '../../../network/detail'
+import { _getSongsDetail, AllSongDetail } from '../../../network/detail'
 // 导入封装的mv处理函数
 import { MV } from '../../../network/mv'
 // 导入mv组件
@@ -41,7 +41,7 @@ export default {
   data () {
     return {
       banner: null,
-      limit: 12,
+      limit: 10,
       totalList: null,
       songList: null,
       musicList: [],
@@ -60,37 +60,48 @@ export default {
   },
   mixins: [indexMixin],
   async created () {
-    // 获取首页轮播图
-    // _getBanner().then(res => {
-    //   this.banner = res.data.banners.slice(0, 6)
-    // })
-    await Promise.all([_getBanner(), _getPersonalized(this.limit), _getPrivateContent(), _getNewSong(), _getPrivateMv()]).then(res => {
-      this.banner = res[0].data.banners.slice(0, 6)
-      this.totalList = res[1].data.result
-      this.privateContent = res[2].data
-      this.songList = res[3].data.result
-      this.notMvList = res[4].data.result
-    })
+    // 获取首页轮播图,最新音乐，最新歌单，最新mv等等数据
+    const [
+      {
+        data: { banners }
+      },
+      {
+        data: { result: totalList }
+      },
+      { data: privateContent },
+      {
+        data: { result: songList }
+      },
+      {
+        data: { result: notMvList }
+      }
+    ] = await Promise.all(
+      [
+        _getBanner(),
+        _getPersonalized(this.limit),
+        _getPrivateContent(),
+        _getNewSong(),
+        _getPrivateMv()
+      ]
+    ).then()
+    this.banner = banners.slice(0, 6)
+    this.totalList = totalList
+    this.privateContent = privateContent
+    this.songList = songList
     // 处理mv获取需要的参数
-    for (var i of this.notMvList) {
-      var mv = new MV(i)
-      this.mvList.push(mv)
-    }
-    this.mvList.slice(0, 3)
+    notMvList.forEach(mv => this.mvList.push(new MV(mv)))
   },
   methods: {
     // 最新音乐的点击
     async playNewsong (index) {
       // 先清空音乐列表
       this.musicList = []
+      // 拼接歌曲id
+      const ids = this.songList.map(item => item.id).join(',')
       // 根据歌曲的id获取音乐详细信息
-      for (var i in this.songList) {
-        // 获取音乐详细信息
-        await _getSongsDetail(this.songList[i].id).then(res => {
-          var song = new SongDetail(res.data.songs)
-          this.musicList.push(song)
-        })
-      }
+      // 获取音乐详细信息
+      const { data: { songs } } = await _getSongsDetail(ids)
+      songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
       this.playMusic(index)
     }
   }

@@ -7,9 +7,7 @@ export function _getArtist (area, type, limit) {
     params: {
       area: area,
       type: type,
-      limit: limit,
-      width: '150px',
-      heigth: '114px'
+      limit: limit
     }
   })
 }

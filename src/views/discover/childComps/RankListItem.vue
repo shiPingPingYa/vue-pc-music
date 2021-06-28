@@ -1,5 +1,5 @@
 <template>
- <div class="rank-item" v-if="musicListDetail !== null">
+ <div class="rank-item"  v-if="rankId && bgColor !== null" >
         <!--卡片区域头部图片 -->
      <div
       class="rank-item-top"
@@ -8,14 +8,14 @@
     >
       <div class="left"  >
         <div class="left-itemF">
-          <i>{{title[0]}}</i>
+          <i>{{titleList[0]}}</i>
         </div>
         <div class="set">
           <div class="left-item">
-            <i>{{title[1]}}</i>
+            <i>{{titleList[1]}}</i>
           </div>
           <div class="left-item">
-            <i>{{title[2]}}</i>
+            <i>{{titleList[2]}}</i>
           </div>
           <div class="update">{{getUpdateTime}}</div>
         </div>
@@ -40,7 +40,7 @@
 </template>
 <script>
 // // 导入歌单接口,歌曲详细信息和初始化
-import { _getMusicListDetail, _getSongsDetail, SongDetail } from '../../../network/detail'
+import { _getMusicListDetail, _getSongsDetail, AllSongDetail } from '../../../network/detail'
 // // 格式化日期
 import { formDate } from '../../../assets/common/tool'
 // // 处理隔行变色
@@ -50,43 +50,22 @@ import { indexMixin } from '../../musicListDetail/indexMixin'
 export default {
   name: 'RankListItem',
   props: {
+    // 排行榜单ID
     rankId: {
       type: Number,
       default () {
         return 0
       }
     },
-    newSongId: {
-      type: Number,
-      default () {
-        return 0
-      }
-    },
-    originalId: {
-      type: Number,
-      default () {
-        return 0
-      }
-    },
-    hotId: {
-      type: Number,
-      default () {
-        return 0
-      }
-    },
-    artistId: {
-      type: Number,
-      default () {
-        return 0
-      }
-    },
+    // 背景颜色
     bgColor: {
       type: Array,
       defaule () {
         return []
       }
     },
-    title: {
+    // 标题
+    titleList: {
       type: Array,
       defaule () {
         return []
@@ -96,40 +75,42 @@ export default {
   data () {
     return {
       musicList: [],
-      musicListDetail: null
+      musicListDetail: null,
+      // 榜单时间
+      updateTime: null
     }
   },
   mixins: [tableMixin, indexMixin],
+  created () {
+    this.initMusicRankList()
+  },
   computed: {
     getUpdateTime () {
-      var time = this.musicListDetail.playlist.updateTime
-      return formDate(new Date(time), 'mm月dd日')
-    }
-  },
-  mounted () {
-    if (this.rankId || this.newSongId || this.hotId || this.originalId || this.artistId !== null) {
-      _getMusicListDetail(this.rankId || this.newSongId || this.hotId || this.originalId || this.artistId).then(res => {
-        this.musicListDetail = res.data
-        for (var i of this.musicListDetail.playlist.trackIds.slice(0, 8)) {
-          _getSongsDetail(i.id).then(res => {
-            var song = new SongDetail(res.data.songs)
-            this.musicList.push(song)
-          })
-        }
-      })
+      return formDate(new Date(this.updateTime), 'mm月dd日')
     }
   },
   methods: {
+    // 获取音乐榜单数据
+    async  initMusicRankList () {
+      // 根据榜单id获取榜单id和时间
+      const { data: { playlist: { updateTime, trackIds } } } = await _getMusicListDetail(this.rankId)
+      this.updateTime = updateTime
+      // 只获取排行榜前八位歌曲，id可以传入id数组
+      // 拼接歌曲id
+      const ids = trackIds.slice(0, 8).map(item => { return item.id }).join(',')
+      const { data: { songs } } = await _getSongsDetail(ids)
+      songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
+      // _getSongsDetail(item.id).then(res => this.musicList.push(new SongDetail(res.data.songs)))
+    },
+    // 跳转到音乐排行榜单详情页面
     enterDetail () {
-      this.$router.push('/musiclistdetail/' + (this.rankId ||
-       this.newSongId || this.artistId || this.hotId || this.originalId) + '/' + new Date().getTime())
+      this.$router.push('/musiclistdetail/' + this.rankId + '/' + new Date().getTime())
     },
     // 混入音乐
     rankItemClick () {
       this.playMusic()
     }
   }
-
 }
 </script>
 <style lang="less" scoped>

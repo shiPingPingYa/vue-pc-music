@@ -51,7 +51,7 @@ export default {
     },
     // 条状到音乐详情页
     enterDetail (index) {
-      this.$router.push('/musiclistdetail/' + this.totalList[index].id + '/' + new Date().getTime())
+      this.$router.push({ path: '/musiclistdetail/' + this.totalList[index].id, query: { songId: this.totalList[index].id } })
     }
 
   }
@@ -68,12 +68,14 @@ export default {
 .song-item{
     padding-bottom: 10px;
     position: relative;
-    width: 150px;
+    width: 24%;
+    max-width: 230px;
     font-size: 13px;
     color: #01060a;
     cursor: pointer;
     > img{
       width: 100%;
+      max-height: 250px;
       background-size: 100%,100%;
     }
   }

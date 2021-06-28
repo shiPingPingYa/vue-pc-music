@@ -2,8 +2,10 @@
   <div class="music-search" @mouseleave="leave()">
     <!-- 搜索框 -->
     <div class="search-item">
-        <input type="text" class="mess" v-model="keywords" @focus="focus()" @keydown.enter="keyEnter()">
-      <div class="icon el-icon-zoom-in" @click="keyEnter()"></div>
+        <form>
+            <input type="text"  class="mess" placeholder="请输入搜索歌曲" v-model="keywords" @focus="focus()" @keydown.enter="keyEnter()">
+        </form>
+        <img src="../../../assets/img/search_svg.svg" @click="keyEnter" alt="">
     </div>
     <!-- 热搜榜 -->
     <hot-search @del="del" :searchList='searchList' v-show="isShow" @recordClick='recordClick($event)'></hot-search>
@@ -93,7 +95,7 @@ export default {
     },
     // 添加热搜记录,并跳转搜索的内容
     keyEnter () {
-      if (this.keywords === '' || this.keywords == null) return
+      if (this.keywords === '' || this.keywords == null) return this.$message.info('请输入搜索内容')
       this.searchList.unshift(this.keywords)
       this.$router.push('/search/' + this.keywords)
       this.keywords = ''
@@ -134,14 +136,25 @@ export default {
 }
 .search-item{
   position: absolute;
+  display: flex;
   margin: auto;
   top: 0;
   bottom: 0;
-  line-height: 54px;
   width: 100%;
   height: 50%;
+  justify-content: space-between;
+  line-height: 54px;
   background-color: rgba(255, 255, 255, 0.966);
   border-radius: 10px;
+  > img{
+    display: inline-block;
+    width: 20px;
+    height: 100%;
+    margin-right: 2%;
+  }
+  > img:hover{
+    cursor: pointer;
+  }
 }
 .mess{
   position: absolute;

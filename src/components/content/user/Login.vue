@@ -12,7 +12,8 @@
       </div>
       <!-- 登录信息 -->
       <div class="main">
-       <div>
+      <form>
+         <div>
          <!-- 手机号码 -->
          <div class="form-item">
              <el-input placeholder="请输入账号"  prefix-icon="el-icon-user" v-model="phone" @blur="verifyPhone"></el-input>
@@ -35,13 +36,13 @@
          <span>二维码登录</span>
          </div>
        </div>
+      </form>
       </div>
   </div>
   </transition>
 </template>
 <script>
 import { mixins } from './mixins'
-import { _login } from '../../../network/user'
 export default {
   name: 'Login',
   mixins: [mixins],
@@ -65,32 +66,8 @@ export default {
       // 关闭注册组件
       this.$store.commit('hiddenLogin')
       this.$store.commit('showQrcode')
-    },
-    // 登录
-    userLogin () {
-      _login(this.phone, this.password).then(res => {
-        if (res.data.code !== 200) {
-          this.passwordMessage = '密码错误'
-        } else {
-          // 获取响应数据(cookie，uname,image,uid),follows关注,followeds粉丝,gender(1男,0女),eventCount动态
-          console.log(res.data)
-          const obj = {
-            uid: res.data.profile.userId,
-            cookie: res.data.cookie,
-            nickname: res.data.profile.nickname,
-            image: res.data.profile.avatarUrl,
-            follows: res.data.profile.follows,
-            followeds: res.data.profile.followeds,
-            gender: res.data.profile.gender,
-            eventCount: res.data.profile.eventCount
-          }
-          window.localStorage.setItem('obj', JSON.stringify(obj))
-          this.$store.commit('addUser', obj)
-          // 隐藏登录页面
-          this.hiddenLogin()
-        }
-      })
     }
+
   }
 }
 </script>
@@ -99,12 +76,11 @@ export default {
   position: absolute;
   width: 400px;
   height: 380px;
-  left: -16%;
-  top: 8%;
   margin: auto;
+  top: 50%;
   z-index: 10;
-  transform: translateX(50%);
-  background-color: #dddddd;
+  transform: translate(80%,-50%);
+  background-color: #a3b2b8;
   > .login-back{
     position: relative;
     width: 100%;

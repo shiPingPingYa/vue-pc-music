@@ -49,6 +49,6 @@ export default {
 }
 
 .action{
-  border-bottom: 4px solid #b82525;
+  border-bottom: 3px solid #b82525;
 }
 </style>>
