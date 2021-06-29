@@ -9,7 +9,7 @@ export function request (config) {
   // 设置默认url
   const install = axios.create({
     // 请求地址设置为远程ip
-    baseURL: 'http://81.69.232.192:3000',
+    baseURL: 'http://localhost:3000',
     timeout: 7000,
     paramsSerializer: (params) => qs.stringify(params, { indices: false }) // 序列化get请求参数数组
   })

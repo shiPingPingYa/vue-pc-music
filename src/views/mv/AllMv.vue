@@ -52,7 +52,8 @@ export default {
     this.allMv()
   },
   methods: {
-    async allMv (area = '全部', type = '全部', order = '上升最快') {
+    async allMv (area = '全部', type = '全部', order = '上升最快', flag = false) {
+      if (flag) this.page = 0
       // 值变了，就将mv数组清空
       this.mvList = []
       this.area = area
@@ -68,6 +69,7 @@ export default {
       const { data: { data } } = await _AllMv(this.area, this.type, this.order, this.limit, (val - 1) * this.limit)
       data.forEach(item => this.mvList.push(new MV(item)))
       this.$refs.scroll.scrollTo(0, 0, 0)
+      this.$refs.scroll.finishPullUp()
     }
   }
 }
