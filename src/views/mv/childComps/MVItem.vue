@@ -48,6 +48,7 @@ export default {
 
 .mv-list {
     width: 100%;
+    padding-right: 20px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;

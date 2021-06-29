@@ -8,8 +8,17 @@
       </div>
     </div>
   </div>
-  <scroll ref="scroll" class="all-video-scroll" :pull-up-load="true" @pullingUp="pullingUp()">
+  <scroll ref="scroll" class="all-video-scroll" >
   <video-item :videoList="videoList"></video-item>
+   <div class="video_pagination">
+     <el-pagination
+     v-show="videoList.length >= 38"
+      @current-change="handleCurrentChange"
+      background
+      layout="prev, pager, next"
+      :total="1000">
+  </el-pagination>
+  </div>
   </scroll>
   </div>
 </template>
@@ -18,10 +27,6 @@
 import { _getGroupList, _getGroupVideo, Video } from '../../../network/video'
 import Scroll from '../../../components/common/scroll/Scroll.vue'
 import VideoItem from './VideoItem.vue'
-// 导入vuex获取保存的cookie
-import { mapState } from 'vuex'
-// 导入防抖函数
-import { throttled } from '../../../assets/common/tool'
 export default {
   name: 'AllVideo',
   components: { Scroll, VideoItem },
@@ -32,55 +37,48 @@ export default {
       GroupList: null,
       currentIndex: 0,
       groupId: 58100,
-      // 分页参数
-      page: 4
+      page: 1,
+      offset: 5
     }
   },
-  computed: {
-    ...mapState(['cookie'])
-  },
   async created () {
+    // 获取导航条
     await _getGroupList().then(res => {
       this.videoGroupList = res.data.data.slice(0, 10)
     })
-    // 判断是否登录
-    if (this.cookie !== '' && this.cookie !== null) {
-      // 获取默认的第一个导航条的数据
-      this.loadGroup()
-    } else {
-      this.$message.warning('请先登录，才能获取视频')
-    }
+    this.loadGroup()
   },
   methods: {
-    // 加载导航条
+    // 获取对应导航条下面的数据
     async loadGroup () {
+      // 清空视频列表
       this.videoList = []
-      for (let i = 0; i < this.page; i++) {
-        await _getGroupVideo(this.videoGroupList[this.currentIndex].id, this.cookie, i).then(res => {
-          if (res.data.datas.length === 0) {
-            this.$message.warning('当前标签下暂无音乐')
-          }
-          for (var i in res.data.datas) {
-            var video = new Video(res.data.datas[i].data)
-            this.videoList.push(video)
-          }
-        })
+      const params = {
+        id: this.videoGroupList[this.currentIndex].id,
+        offset: undefined
       }
+      const data = []
+      for (let i = this.page; i <= this.offset; i++) {
+        params.offset = i
+        const { data: { datas } } = await _getGroupVideo(params)
+        datas.forEach(item => data.push(item.data))
+      }
+      data.forEach(item => this.videoList.push(new Video(item)))
+      // 修改page值，以便后面循环
+      this.page = this.offset
     },
-    // 下拉视频
-    pullingUp: throttled(function () {
-      ++this.page
-      // 获取数据
-      this.loadGroup()
-      this.$refs.scroll.finishPullUp()
-    }, 900),
-    // 导航条点击事件，重新获取数据
+    // 导航条点击事件，重新修改导航条显示下标
     groupClick (i) {
       this.currentIndex = i
-      this.page = 4
+      this.page = 1
+      this.offset = 5
       // 重新获取数据
       this.loadGroup()
       this.$refs.scroll.finishPullUp()
+    },
+    // 获取对应页码数据
+    async handleCurrentChange (val) {
+      console.log(val)
     }
   }
 }
@@ -92,8 +90,8 @@ export default {
   padding: 0 20px;
   font-size: 14px;
   color: #01060a;
-  padding-bottom: 8px;
   > .all-video-scroll{
+    position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -115,5 +113,13 @@ export default {
 .action{
   color: #fff  !important;
   background-color: #54575f;
+}
+
+.video_pagination{
+  display: flex;
+  margin-top: 10px;
+  padding-bottom: 80px;
+  justify-content: flex-end;
+
 }
 </style>

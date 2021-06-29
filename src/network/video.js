@@ -26,14 +26,14 @@ export function _getGroupList () {
 }
 
 // 获取视频标签/分类下的视频
-export function _getGroupVideo (id, cookie, page) {
+/**
+ * id :视频标签id，
+ * offset:偏移位
+ */
+export function _getGroupVideo (params) {
   return request({
     url: '/video/group',
-    params: {
-      id: id,
-      cookie: cookie,
-      page: page
-    }
+    params: params
   })
 }
 

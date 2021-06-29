@@ -76,7 +76,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .all-mv{
-  padding: 0 20px 20px;
+  padding: 0 20px 60px;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -84,11 +84,6 @@ export default {
 
 .scroll{
   height:100%;
-}
-
-.mv_pagination{
-  display: flex;
-  justify-content: flex-end;
 }
 
 .mv_item{
@@ -109,4 +104,10 @@ export default {
   }
 }
 
+</style>
+<style>
+.mv_pagination{
+  display: flex;
+  justify-content: flex-end;
+}
 </style>
