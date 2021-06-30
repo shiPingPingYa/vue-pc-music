@@ -61,7 +61,7 @@ export default {
       }
       for (let i = this.page; i <= this.offset; i++) {
         params.offset = i
-        _getGroupVideo(params).then(res => {
+        await _getGroupVideo(params).then(res => {
           res.data.datas.forEach(item => this.videoList.push(new Video(item.data)))
         })
       }
