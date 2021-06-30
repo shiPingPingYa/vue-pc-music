@@ -12,9 +12,10 @@
   <video-item :videoList="videoList"></video-item>
    <div class="video_pagination">
      <el-pagination
-     v-show="videoList.length >= 38"
+      v-show="videoList.length >= 38"
       @current-change="handleCurrentChange"
       background
+      :current-page="currenPage"
       layout="prev, pager, next"
       :total="1000">
   </el-pagination>
@@ -37,6 +38,7 @@ export default {
       GroupList: null,
       currentIndex: 0,
       groupId: 58100,
+      currenPage: 1,
       page: 1,
       offset: 5
     }
@@ -57,28 +59,28 @@ export default {
         id: this.videoGroupList[this.currentIndex].id,
         offset: undefined
       }
-      const data = []
       for (let i = this.page; i <= this.offset; i++) {
         params.offset = i
-        const { data: { datas } } = await _getGroupVideo(params)
-        datas.forEach(item => data.push(item.data))
+        _getGroupVideo(params).then(res => {
+          res.data.datas.forEach(item => this.videoList.push(new Video(item.data)))
+        })
       }
-      data.forEach(item => this.videoList.push(new Video(item)))
-      // 修改page值，以便后面循环
-      this.page = this.offset
     },
     // 导航条点击事件，重新修改导航条显示下标
     groupClick (i) {
       this.currentIndex = i
       this.page = 1
       this.offset = 5
+      this.currenPage = 1
       // 重新获取数据
       this.loadGroup()
       this.$refs.scroll.finishPullUp()
     },
     // 获取对应页码数据
     async handleCurrentChange (val) {
-      console.log(val)
+      this.offset = val * 5
+      this.page = this.offset - 4
+      this.loadGroup()
     }
   }
 }

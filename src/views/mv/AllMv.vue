@@ -11,6 +11,7 @@
      <div class="mv_pagination">
      <el-pagination
      v-show="mvList.length === 40"
+     :current-page="page"
       @current-change="handleCurrentChange"
       background
       layout="prev, pager, next"
@@ -45,14 +46,14 @@ export default {
       area: null,
       type: null,
       order: null,
-      page: 0
+      page: 1
     }
   },
   created () {
     this.allMv()
   },
   methods: {
-    async allMv (area = '全部', type = '全部', order = '上升最快', flag = false) {
+    allMv (area = '全部', type = '全部', order = '上升最快', flag = false) {
       if (flag) this.page = 0
       // 值变了，就将mv数组清空
       this.mvList = []
@@ -61,15 +62,16 @@ export default {
       this.order = order
 
       // 调用接口获取数据
-      const { data: { data } } = await _AllMv(this.area, this.type, this.order, this.limit, this.page * this.limit)
-      data.forEach(item => this.mvList.push(new MV(item)))
+      _AllMv(this.area, this.type, this.order, this.limit, this.page * this.limit).then(res => {
+        res.data.data.forEach(item => this.mvList.push(new MV(item)))
+      })
     },
-    async handleCurrentChange (val) {
+    handleCurrentChange (val) {
       this.mvList = []
-      const { data: { data } } = await _AllMv(this.area, this.type, this.order, this.limit, (val - 1) * this.limit)
-      data.forEach(item => this.mvList.push(new MV(item)))
-      this.$refs.scroll.scrollTo(0, 0, 0)
-      this.$refs.scroll.finishPullUp()
+      _AllMv(this.area, this.type, this.order, this.limit, (val) * this.limit).then(res => {
+        res.data.data.forEach(item => this.mvList.push(new MV(item)))
+        this.$refs.scroll.scrollTo(0, 0, 0)
+      }).then(() => this.$refs.scroll.finishPullUp())
     }
   }
 }
