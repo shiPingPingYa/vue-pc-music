@@ -105,21 +105,19 @@ export default {
     // 热搜历史记录的跳转
     recordClick (i) {
       this.$router.push('/search/' + this.searchList[i])
+      this.keywords = ''
       this.isShow = false
     },
     // 搜索内容歌曲点击跳转
     enterSongs (song) {
       this.$router.push('/search/' + song)
+      this.keywords = ''
       this.isSuggest = false
     },
     enterArtists (artist) {
-      this.$router.push({
-        path: '/artist',
-        query: {
-          artist: artist
-        }
-      })
-      this.$store.commit('addArtist', artist)
+      this.$router.push('/artist')
+      this.keywords = ''
+      localStorage.setItem('artist', JSON.stringify(artist))
     }
   }
 }

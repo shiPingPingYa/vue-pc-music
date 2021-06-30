@@ -81,6 +81,7 @@ export default {
     lyric () {
       if (this.$refs.playerLyric.$refs.scroll != null) {
         this.$refs.playerLyric.$refs.scroll.scrollTo(0, 0, 0)
+        this.$refs.scroll.scrollTo(0, 0, 0)
       }
       _musicRecommend(this.music.id, this.limit).then(res => {
         this.recommends = res.data.comments

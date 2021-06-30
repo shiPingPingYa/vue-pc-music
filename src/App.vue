@@ -26,6 +26,16 @@ export default {
     PlayMusic
     // HomePageRecommends
   },
+  watch: {
+    // 路由发生改变时，判断播放组件是不是处于隐藏状态
+    $route: {
+      handler () {
+        if (this.$refs.play_music.isPlayerShow) {
+          this.$refs.play_music.isPlayerShow = false
+        }
+      }
+    }
+  },
   created () {
     // 获取localstorage里面的obj对象
     if (window.localStorage.getItem('obj')) {
