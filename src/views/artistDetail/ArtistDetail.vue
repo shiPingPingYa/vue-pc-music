@@ -2,7 +2,7 @@
   <div class="artist-detail">
       <scroll class="artist-swiper">
         <artist-base-info :desc="artistDesc" :baseInfo="getArtist"></artist-base-info>
-        <artist-bar :barList="barList" ref="artistBar"></artist-bar>
+        <artist-bar  ref="artistBar" :barList="barList"></artist-bar>
         <router-view></router-view>
       </scroll>
   </div>
@@ -32,29 +32,26 @@ export default {
     ArtistBar,
     Scroll
   },
-  created () {
-    this.artist = this.$store.state.artist
-  },
-  watch: {
-    // 监听用户信息，如果发生变化，就重新获取用户详细信息
-    async artist  (to, from) {
-      // 触发artist-bar里面的currentClick点击方法(默认点击专辑)
-      this.$refs.artistBar.currentClick(0)
-      // 判断用户信息是否存在
-      if (typeof (to.id) !== 'undefined') {
-        await _getArtistDesc(to.id).then(res => {
-          this.artistDesc = res.data.briefDesc
-        })
-      }
-    }
-  },
   computed: {
     getArtist () {
-      return this.$store.state.artist
+      return JSON.parse(localStorage.getItem('artist'))
+    }
+  },
+  created () {
+    this.artist = JSON.parse(localStorage.getItem('artist'))
+    this.getArtistDesc()
+  },
+  methods: {
+    getArtistDesc () {
+      _getArtistDesc(this.artist.id).then(res => {
+        this.artistDesc = res.data.briefDesc
+      })
     }
   }
 }
+
 </script>
+
 <style lang="less" scoped>
 .artist-detail{
   width: 100%;

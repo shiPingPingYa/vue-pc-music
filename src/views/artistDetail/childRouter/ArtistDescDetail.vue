@@ -28,7 +28,7 @@ export default {
   },
   async created () {
     // 获取请求数据用户
-    this.artist = this.$store.state.artist
+    this.artist = JSON.parse(localStorage.getItem('artist'))
     if (this.artist !== null) {
       // 根据用户id请求数据
       await _getArtistDescDetail(this.artist.id).then(res => {
