@@ -34,7 +34,7 @@
 
         <!-- 下面评论组件 -->
         <div class="player-bottom">
-        <music-recommends ref="music_recommends" @moreComments="moreComments" :recommends="recommends" ></music-recommends>
+        <music-recommends ref="music_recommends" @moreComments="moreComments" @getCommends="getCommends" :id="String(music.id)" :Type="0" :recommends="recommends" ></music-recommends>
         </div>
     </scroll>
       </div>
@@ -106,6 +106,14 @@ export default {
         // 遍历添加请求成功后的歌单评论
         comments.forEach(item => this.recommends.push(item))
       }
+    },
+    // 发送评论后，重新获取评论
+    getCommends () {
+      // 清除评论数据
+      this.recommends = []
+      _musicRecommend(this.music.id, this.limit, 0).then(res => {
+        res.data.comments.forEach(item => this.recommends.push(item))
+      })
     }
   }
 }

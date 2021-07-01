@@ -15,7 +15,7 @@
       <!-- 下面评论区 -->
       <div class="recommend">
         <p class="p">评论</p>
-        <video-recommends  class="recds"  @moreComments="moreComments" :recommends="recommends"></video-recommends>
+        <video-recommends  class="recds"  @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="5" :recommends="recommends"></video-recommends>
       </div>
     </div>
     <!-- 右边内容布局 -->
@@ -139,6 +139,14 @@ export default {
         // 遍历添加请求成功后的歌单评论
         comments.forEach(item => this.recommends.push(item))
       }
+    },
+    // 发送评论后，重新获取评论
+    getCommends () {
+      // 清除评论数据
+      this.recommends = []
+      _getVideoComment(this.id, this.limit, 0).then(res => {
+        res.data.comments.forEach(item => this.recommends.push(item))
+      })
     }
   }
 }

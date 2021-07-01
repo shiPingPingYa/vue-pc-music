@@ -74,7 +74,8 @@ export function _getRecommends (id, limit, offset) {
     params: {
       id: id,
       limit: limit,
-      offset: offset
+      offset: offset,
+      timestamp: Date.now()
     }
   })
 }
@@ -93,7 +94,8 @@ export function _musicRecommend (id, limit, offset) {
     params: {
       id: id,
       limit: limit,
-      offset: offset
+      offset: offset,
+      timestamp: Date.now()
     },
     isClose: true
   })

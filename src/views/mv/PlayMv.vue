@@ -16,7 +16,7 @@
       <!-- 下面评论区 -->
       <div class="recommend">
         <p class="p">评论</p>
-        <mv-recommends class="recds" @moreComments="moreComments" :recommends="recommends"></mv-recommends>
+        <mv-recommends class="recds" @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="1" :recommends="recommends"></mv-recommends>
       </div>
     </div>
     <!-- 右边内容布局 -->
@@ -104,10 +104,7 @@ export default {
         this.notSimiMv = res[3].data.mvs
       })
       // 处理相似mv，获取新的mv对象(id，名字，标题,url,播放数量)
-      for (var i of this.notSimiMv) {
-        var mv = new MV(i)
-        this.simiMv.push(mv)
-      }
+      this.notSimiMv.forEach(item => this.simiMv.push(new MV(item)))
     },
     // 判断是否有简介
     isDescription (desc) {
@@ -131,6 +128,14 @@ export default {
         // 遍历添加请求成功后的歌单评论
         comments.forEach(item => this.recommends.push(item))
       }
+    },
+    // 发送评论后，重新获取评论
+    getCommends () {
+      // 清除评论数据
+      this.recommends = []
+      _getMvComment(this.id, this.limit, 0).then(res => {
+        res.data.comments.forEach(item => this.recommends.push(item))
+      })
     }
   }
 }

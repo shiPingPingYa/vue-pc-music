@@ -8,7 +8,7 @@
   <!-- 音乐榜单列表 -->
     <music-item @musicItemClick="musicItemClick" :musicList="musicList" v-show="isShow == 'music'"></music-item>
   <!-- 音乐榜单评论信息 -->
-    <song-list-recommends ref="songList_recommends" :recommends="recommends" v-show="isShow == 'recommends'" @moreComments="moreComments"></song-list-recommends>
+    <song-list-recommends ref="songList_recommends" :recommends="recommends" :id="id" :Type="2" v-show="isShow == 'recommends'"  @moreComments="moreComments" @getCommends="getCommends"></song-list-recommends>
   <!-- 音乐榜单收藏者 -->
     <music-list-like :subs="subs" v-show="isShow == 'like'"></music-list-like>
  </scroll>
@@ -120,12 +120,20 @@ export default {
       // 评论已经被请求完毕
       if (comments.length === 0) {
         Message.info('评论已经加载完毕，暂无更多评论')
-        // 修改评论组件，评论提示消息
+        // 修改评论组件，的评论提示消息
         this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....'
       } else {
         // 遍历添加请求成功后的歌单评论
         comments.forEach(item => this.recommends.push(item))
       }
+    },
+    // 发送评论后，重新获取评论
+    getCommends () {
+      // 清除评论数据
+      this.recommends = []
+      _getRecommends(this.id, this.limit, 0).then(res => {
+        res.data.comments.forEach(item => this.recommends.push(item))
+      })
     }
   }
 

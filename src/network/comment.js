@@ -1,6 +1,5 @@
 import { request } from './request'
 
-export default {
 /**
  * @description 发送删除评论
  * @param  params ：t(1：发送,2：回复)
@@ -10,10 +9,10 @@ export default {
  * @param commentId :回复评论id(回复消息必填)
  * @returns
  */
-  sendAndRemoveComment (params) {
-    return request({
-      url: '/comment',
-      params: params
-    })
-  }
+export function sendAndRemoveComment (params) {
+  return request({
+    url: '/comment',
+    params: params,
+    timestamp: Date.now()
+  })
 }

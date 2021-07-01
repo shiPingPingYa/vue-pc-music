@@ -46,7 +46,8 @@ export function _getMvComment (id, limit) {
     url: '/comment/mv',
     params: {
       id: id,
-      limit: limit
+      limit: limit,
+      timestamp: Date.now()
     }
   })
 }

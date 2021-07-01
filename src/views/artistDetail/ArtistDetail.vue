@@ -1,7 +1,7 @@
 <template>
   <div class="artist-detail">
       <scroll class="artist-swiper">
-        <artist-base-info :desc="artistDesc" :baseInfo="getArtist"></artist-base-info>
+        <artist-base-info :desc="artistDesc" :baseInfo="getArtist()"></artist-base-info>
         <artist-bar  ref="artistBar" :barList="barList"></artist-bar>
         <router-view></router-view>
       </scroll>
@@ -32,20 +32,29 @@ export default {
     ArtistBar,
     Scroll
   },
-  computed: {
-    getArtist () {
-      return JSON.parse(localStorage.getItem('artist'))
+  watch: {
+    // 修改歌手默认信息
+    $route: {
+      handler (val) {
+        if (val.path === '/artist/album') {
+          this.getArtist()
+          this.getArtistDesc()
+        }
+      }
     }
   },
   created () {
-    this.artist = JSON.parse(localStorage.getItem('artist'))
     this.getArtistDesc()
   },
   methods: {
     getArtistDesc () {
+      this.artist = JSON.parse(localStorage.getItem('artist'))
       _getArtistDesc(this.artist.id).then(res => {
         this.artistDesc = res.data.briefDesc
       })
+    },
+    getArtist () {
+      return JSON.parse(localStorage.getItem('artist'))
     }
   }
 }

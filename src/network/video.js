@@ -63,7 +63,8 @@ export function _getVideoComment (id, limit) {
     url: '/comment/video',
     params: {
       id: id,
-      limit: limit
+      limit: limit,
+      timestamp: Date.now()
     }
   })
 }

@@ -8,7 +8,7 @@ import store from './store'
 import '../src/assets/css/babel.css'
 // 导入elementui
 import '../src/plugins/element'
-import { Message, Pagination } from 'element-ui'
+import { Message, Pagination, Row, Col } from 'element-ui'
 
 Vue.config.productionTip = false
 // 挂载axios
@@ -18,6 +18,8 @@ Vue.prototype.$bus = new Vue()
 // 挂载消息提示
 Vue.prototype.$Message = Message
 Vue.use(Pagination)
+Vue.use(Row)
+Vue.use(Col)
 new Vue({
   router,
   render: h => h(App),

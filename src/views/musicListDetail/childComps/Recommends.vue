@@ -1,14 +1,14 @@
 <template>
-  <div class="recommond">
+  <div class="recommond" >
     <div class="desc">
       <div class="language">
-        <textarea name id cols="30" rows="10"></textarea>
+        <textarea name id cols="30" rows="10" v-model.trim="content"></textarea>
       </div>
-      <div class="sub">评论</div>
+      <div class="sub" @click="submitCommends">评论</div>
     </div>
 
     <!-- 评论区域 -->
-    <div class="content" v-if="recommends.length !== 0">
+    <div class="content"  v-if="recommends.length !== 0">
       <p>精彩评论</p>
       <div class="item" v-for="(item,index) in recommends" :key="index">
         <div class="icon">
@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <div class="content" v-else-if="recommends.length === 0 ">
+    <div class="content"  v-else-if="recommends.length == 0">
       <p>精彩评论</p>
       <div class="item">暂无评论，快去评论吧。。。</div>
     </div>
@@ -37,6 +37,7 @@
 <script>
 // 导入工具函数,处理日期
 import { formDate } from '../../../assets/common/tool'
+import { sendAndRemoveComment } from '../../../network/comment'
 export default {
   name: 'Recommends',
   props: {
@@ -44,19 +45,26 @@ export default {
       type: Array,
       default () {
         return []
-      },
-      id: {
-        type: String,
-        default () {
-          return ''
-        }
+      }
+    },
+    id: {
+      type: String,
+      default () {
+        return ''
+      }
+    },
+    Type: {
+      type: Number,
+      default () {
+        return 0
       }
     }
   },
   data () {
     return {
       // 评论提示内容
-      recommendTitle: '更多评论....'
+      recommendTitle: '更多评论....',
+      content: ''
     }
   },
   methods: {
@@ -67,6 +75,27 @@ export default {
     // 获取更多评论消息
     moreComments () {
       this.$emit('moreComments')
+    },
+    // 发表在歌单下面的评论
+    async submitCommends () {
+      if (this.content.length === 0) return this.$message.error('评论内容不能为空')
+      const params = {
+        t: 1,
+        id: this.id,
+        type: this.Type,
+        content: this.content
+      }
+      try {
+        const { data: { code } } = await sendAndRemoveComment(params)
+        if (code === 200) {
+          this.$message.success('评论发表成功')
+          this.content = ''
+          this.$emit('getCommends')
+        }
+      } catch (e) {
+        console.log(e)
+        this.$message.error(e.response.data.message)
+      }
     }
   }
 }
@@ -86,7 +115,8 @@ export default {
         height: 100%;
         border: none;
         outline-style: none;
-        color: #01060a;
+        color: #2e6bb0;
+        font-weight: bold;
         background-color: #fff;
       }
     }

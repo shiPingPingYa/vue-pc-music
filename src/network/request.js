@@ -1,7 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import { Loading, Message } from 'element-ui'
-var loadingStance = Loading.service({ fullscreen: true, background: 'rgba(0,0,0,0.1)' })
+import { Message } from 'element-ui'
 
 // 所有请求允许跨域
 axios.defaults.withCredentials = true
@@ -16,16 +15,13 @@ export function request (config) {
 
   // 配置请求头
   install.interceptors.request.use(data => {
-    loadingStance.close()
     return data
   }, err => {
-    loadingStance.close()
     return Promise.reject(err)
   })
 
   // 配置响应内容
   install.interceptors.response.use(res => {
-    loadingStance.close()
     const { status } = res
     if (status === 200 && res !== null) {
       return res
@@ -39,7 +35,6 @@ export function request (config) {
       message: err.message,
       center: true
     })
-    loadingStance.close()
     return Promise.reject(err)
   })
   return install(config)
