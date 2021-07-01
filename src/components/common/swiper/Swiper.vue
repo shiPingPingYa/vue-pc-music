@@ -67,8 +67,11 @@ export default {
           this.playMusic()
         }
       } catch (e) {
-        if (e.data !== undefined) {
-          this.$Message.error(e.data.message)
+        if (e.response !== undefined) {
+          this.$Message.error({
+            message: e.response.data.message,
+            center: true
+          })
         } else {
           this.$Message.error(e.message)
         }

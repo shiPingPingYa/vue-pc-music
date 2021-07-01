@@ -2,7 +2,7 @@
   <div class="recommond" >
     <div class="desc">
       <div class="language">
-        <textarea name id cols="30" rows="10" v-model.trim="content"></textarea>
+        <textarea name id cols="30" rows="10" v-model.trim="params.content"></textarea>
       </div>
       <div class="sub" @click="submitCommends">评论</div>
     </div>
@@ -64,8 +64,17 @@ export default {
     return {
       // 评论提示内容
       recommendTitle: '更多评论....',
-      content: ''
+      params: {
+        t: '',
+        id: '',
+        type: '',
+        content: ''
+      }
     }
+  },
+  created () {
+    this.params.id = this.id
+    this.params.type = this.Type
   },
   methods: {
     // 格式化时间
@@ -78,18 +87,13 @@ export default {
     },
     // 发表在歌单下面的评论
     async submitCommends () {
-      if (this.content.length === 0) return this.$message.error('评论内容不能为空')
-      const params = {
-        t: 1,
-        id: this.id,
-        type: this.Type,
-        content: this.content
-      }
+      if (this.params.content.length === 0) return this.$message.error('评论内容不能为空')
+      this.params.t = 1
       try {
-        const { data: { code } } = await sendAndRemoveComment(params)
+        const { data: { code } } = await sendAndRemoveComment(this.params)
         if (code === 200) {
           this.$message.success('评论发表成功')
-          this.content = ''
+          this.params.content = ''
           this.$emit('getCommends')
         }
       } catch (e) {
