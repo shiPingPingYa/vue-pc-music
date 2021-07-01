@@ -120,6 +120,16 @@ export function _getHighquality (cat, limit) {
   })
 }
 
+/**
+ *
+ * @description 获取精品歌单标签列表
+ */
+export function _getHighqualityTags () {
+  return request({
+    url: '/playlist/highquality/tags'
+  })
+}
+
 // 将获取的歌曲对象进行封装,单个音乐对象
 export class SongDetail {
   constructor (songs) {

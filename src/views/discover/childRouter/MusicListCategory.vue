@@ -1,5 +1,16 @@
 <template>
   <div class="category">
+    <!-- 热门标签列表 -->
+    <div class="w-120" >
+       <el-select v-model="HighqualityName" placeholder="请选择" size="small" style="width:100%" @change="changeHighqualityName">
+        <el-option
+          v-for="item in HighqualityOptions"
+          :key="item.id"
+          :label="item.name"
+          :value="item.name">
+        </el-option>
+      </el-select>
+    </div>
     <!-- 热门标签 -->
     <div class="tags" >
       <span>热门标签:</span>
@@ -10,7 +21,7 @@
     </div>
     <scroll ref="scroll" class="song-category" :pull-up-load="true" @pullingUp="pullingUp">
   <!-- 歌单列表 -->
-  <music-list :totalList="musicList" ></music-list>
+      <music-list :totalList="musicList" ></music-list>
 </scroll>
   </div>
 </template>
@@ -19,7 +30,7 @@ import Scroll from '../../../components/common/scroll/Scroll'
 // 导入歌单列表
 import MusicList from '../../musicListDetail/MusicList'
 // 导入数据接口，获取热门标签，获取热门标签歌单列表
-import { _getHighquality, _getMusicListHot } from '../../../network/detail'
+import { _getHighquality, _getMusicListHot, _getHighqualityTags } from '../../../network/detail'
 // 歌单节流
 import { throttled } from '../../../assets/common/tool'
 export default {
@@ -30,7 +41,9 @@ export default {
       currentIndex: 0,
       limit: 18,
       page: 1,
-      musicList: []
+      musicList: [],
+      HighqualityOptions: '',
+      HighqualityName: ''
     }
   },
   components: {
@@ -41,25 +54,40 @@ export default {
     const { data: { tags } } = await _getMusicListHot().then()
     this.tags = tags
     const { data: { playlists } } = await _getHighquality(this.tags[this.currentIndex].name, this.limit * this.page).then()
+    // 获取精品歌单标签
+    _getHighqualityTags().then(res => { this.HighqualityOptions = res.data.tags })
+
     this.$refs.scroll.finishPullUp()
     this.musicList = playlists
   },
   methods: {
     // scroll下拉调用的方法
     pullingUp () {
-      this.getHighquality()
+      this.getHighquality(false)
     },
     // 获取热门标签下面的精品歌单
-    getHighquality: throttled(async function () {
+    getHighquality: throttled(async function (flag) {
       this.page++
-      const { data: { playlists } } = await _getHighquality(this.tags[this.currentIndex].name, this.limit * this.page).then()
-      this.musicList = playlists
+      if (flag === false) {
+        const { data: { playlists } } = await _getHighquality(this.tags[this.currentIndex].name, this.limit * this.page).then()
+        this.musicList = playlists
+      } else {
+        const { data: { playlists } } = await _getHighquality(this.HighqualityName, this.limit * this.page).then()
+        this.musicList = playlists
+      }
       this.$refs.scroll.finishPullUp()
     }, 800),
     // 导航栏的点击事件
     tagClick (index) {
       this.currentIndex = index
-      this.getHighquality()
+      this.page = 1
+      this.getHighquality(false)
+    },
+    // 下拉列表点击事件
+    changeHighqualityName () {
+      this.currentIndex = -1
+      this.page = 1
+      this.getHighquality(true)
     }
   }
 }

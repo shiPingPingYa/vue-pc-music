@@ -63,4 +63,9 @@ export default {
   height: 100%;
   opacity: 0.9;
 }
+
+.w-120{
+  width: 120px;
+  margin-top: 10px;
+}
 </style>

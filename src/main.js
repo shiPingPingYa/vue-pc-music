@@ -8,7 +8,7 @@ import store from './store'
 import '../src/assets/css/babel.css'
 // 导入elementui
 import '../src/plugins/element'
-import { Message, Pagination, Row, Col } from 'element-ui'
+import { Message, Pagination, Row, Col, Select, Option, Tag } from 'element-ui'
 
 Vue.config.productionTip = false
 // 挂载axios
@@ -20,6 +20,10 @@ Vue.prototype.$Message = Message
 Vue.use(Pagination)
 Vue.use(Row)
 Vue.use(Col)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(Tag)
+
 new Vue({
   router,
   render: h => h(App),
