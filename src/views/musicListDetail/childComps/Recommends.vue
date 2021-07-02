@@ -1,8 +1,8 @@
 <template>
-  <div class="recommond">
+  <div class="recommond" >
     <div class="desc">
       <div class="language">
-        <textarea name id cols="30" rows="10" v-model.trim="params.content"></textarea>
+        <textarea ref="textarea_comments" @keypress.enter="submitCommends" name id cols="30" rows="10"  v-model.trim="params.content">   </textarea>
       </div>
       <div class="sub" @click="submitCommends">评论</div>
     </div>
@@ -10,7 +10,8 @@
     <!-- 评论区域 -->
     <div class="content"  v-if="recommends.length !== 0">
       <p>精彩评论</p>
-      <div class="item" v-for="(item,index) in recommends" :key="index">
+    <comments-content >
+        <div class="item" v-for="(item,index) in recommends" :key="index">
         <div class="icon">
           <img :src="item.user.avatarUrl" alt="">
         </div>
@@ -22,22 +23,26 @@
             {{item.content}}
           </div>
           <!-- 楼层评论 -->
-          <div v-if="item.parentCommentId !== 0" :class="{'noneComments':noneRecoments}">
-         <song-list-comment  class="parentCommend" :id="id" :Type="Type" :parentCommentId="item.parentCommentId "></song-list-comment>
-          <div class="shaer_start" @click="noneRecoments = !noneRecoments">{{getCommentTitle}}</div>
+          <div  :class="{'noneComments':noneRecoments,'noneComments_noHeight':item.parentCommentId === 0}">
+         <song-list-comment :ref="`parentCommentId${item.commentId}`"  class="parentCommend" :id="id" :Type="Type" :parentCommentId="item.parentCommentId " ></song-list-comment>
+          <div v-if="item.parentCommentId !== 0" class="shaer_start" @click="noneRecoments = !noneRecoments">{{getCommentTitle}}</div>
           </div>
           <div class="bottom">
            <div class="item_time"> {{_formatDate(item.time)}}</div>
            <div class="item_right" @mouseenter="showReport = index" @mouseleave="showReport = -1">
                 <div :class="{'comments_report':(showReport === index)}">举报</div>
-                <div class="like_count">👍</div>
+                <div class="like_count" @click="setCommentsLikedCount(item.commentId,item)">
+                  <span v-if="likeCount !== item.commentId"><img  src="../../../assets/img/clickLike.svg" alt="">{{item.likedCount}} </span>
+                  <span v-else style="color:red"><img  src="../../../assets/img/is_clickLike.svg" alt="">{{item.likedCount}}  </span>
+                </div>
                 <div class="comments_share">分享</div>
-                <div class="reply">回复</div>
+                <div class="reply" @click="replyComments(item.commentId,item.user.nickname)">回复</div>
           </div>
           </div>
         </div>
 
       </div>
+    </comments-content>
     </div>
     <div class="content"  v-else-if="recommends.length == 0">
       <p>精彩评论</p>
@@ -49,11 +54,13 @@
 <script>
 // 导入工具函数,处理日期
 import { formDate } from '../../../assets/common/tool'
-import { sendAndRemoveComment } from '../../../network/comment'
+import { sendAndRemoveComment, _setCommentsLikedCount } from '../../../network/comment'
+const commentsContent = () => import('../../../components/common/scroll/Scroll.vue')
+// 楼中楼评论组件，用异步调用声明一个新的组件实例
 const songListComment = () => import('./ParentCommentId.vue')
 export default {
   name: 'Recommends',
-  components: { songListComment },
+  components: { songListComment, commentsContent },
   props: {
     recommends: {
       type: Array,
@@ -85,7 +92,21 @@ export default {
         content: ''
       },
       showReport: -1,
-      noneRecoments: true
+      noneRecoments: true,
+      // 区别其他回复和消息回复,
+      reply: 0,
+      likeCount: ''
+    }
+  },
+  watch: {
+    params: {
+      // 评论内容为空时，重新将其定义为一般回复
+      handler (val) {
+        if (val.content === '') {
+          this.reply = 0
+        }
+      },
+      deep: true
     }
   },
   created () {
@@ -108,18 +129,61 @@ export default {
     },
     // 发表在歌单下面的评论
     async submitCommends () {
-      if (this.params.content.length === 0) return this.$message.error('评论内容不能为空')
+      if (this.reply === 0) {
+        if (this.params.content.length === 0) return this.$message.error('评论内容不能为空')
+        this._sendAndRemoveComment()
+      } else {
+        // 评论内容不能为空和没有@+name值
+        if (this.params.content.length !== 0 && this.params.content.includes('@') && this.params.content.includes(':')) {
+          this._sendAndRemoveComment()
+        } else {
+          this.$message.info('内容不能为空，且必须按照@：name名，形式来评论,请重新点击回复')
+          this.params.content = ''
+          this.reply = 0
+        }
+        // 重置消息回复判断值
+        this.reply = 0
+      }
+    },
+    // 回复评论
+    replyComments (commentId, userName) {
+      this.params.content = `@${userName}:`
+      this.params.commentId = commentId
+      this.reply = 1
+      this.$nextTick(function () {
+        // DOM 更新了
+        this.$refs.textarea_comments.focus()
+      })
+      this.$parent.scrollTo(0, 0, 200)
+    },
+    // 评论方法封装
+    async _sendAndRemoveComment () {
       this.params.t = 1
       try {
         const { data: { code } } = await sendAndRemoveComment(this.params)
         if (code === 200) {
           this.$message.success('评论发表成功')
           this.params.content = ''
+          this.params.commentId = ''
           this.$emit('getCommends')
         }
       } catch (e) {
-        console.log(e)
         this.$message.error(e.response.data.message)
+      }
+    },
+    // 评论点赞
+    async setCommentsLikedCount (commentId, item) {
+      this.likeCount = commentId
+      const params = {
+        id: this.id,
+        cid: commentId,
+        t: 1,
+        type: this.Type
+      }
+      const { data: { code } } = await _setCommentsLikedCount(params)
+      if (code === 200) this.$emit('getCommends')
+      else {
+        this.$message.error('点赞失败')
       }
     }
   }
@@ -259,9 +323,21 @@ export default {
   margin-bottom: 30px;
 }
 
+.noneComments_noHeight{
+  height: 0 !important;
+}
+
 .shaer_start{
   height: 20px;
   color: rgb(128, 122, 122);
   cursor: pointer;
+}
+
+.like_count{
+  img{
+    width: 20px;
+    height: 15px;
+    vertical-align: -2px;
+  }
 }
 </style>

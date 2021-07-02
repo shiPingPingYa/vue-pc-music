@@ -1,6 +1,6 @@
 <template>
   <div class="music-list-detail">
- <scroll class="musiclist-detail" >
+ <scroll class="musiclist-detail">
     <!-- 音乐榜单默认信息 -->
     <music-base-info :baseInfo="baseInfo"></music-base-info>
   <!-- 音乐榜单导航条 -->

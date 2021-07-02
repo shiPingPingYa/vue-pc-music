@@ -1,5 +1,5 @@
 <template>
-  <div  class="floor_comment" >
+  <div  class="floor_comment" v-if="parentCommentId !== 0" >
   <div class="floor_comment_list" v-for="item in floorComments" :key="item.commentId">
   <span>@{{item.user.nickname}}: </span>
   <div>{{item.content}}</div>
@@ -27,25 +27,30 @@ export default {
     }
   },
   created () {
-    const params = {
-      id: this.$parent.id,
-      type: this.$parent.Type,
-      parentCommentId: this.parentCommentId
+    if (this.parentCommentId !== 0) {
+      const params = {
+        id: this.$parent.$parent.id,
+        type: this.$parent.$parent.Type,
+        parentCommentId: this.parentCommentId,
+        timestamp: Date.now()
+      }
+      // 获取楼中楼评论消息
+      _getFloorComment(params).then(res => {
+        this.floorComments = res.data.data.comments
+        // 获取最后一个楼层评论的时间
+        this.lastTime = res.data.data.comments[res.data.data.comments.length - 1].time
+      })
     }
-    _getFloorComment(params).then(res => {
-      this.floorComments = res.data.data.comments
-      // 获取最后一个楼层评论的时间
-      this.lastTime = res.data.data.comments[res.data.data.comments.length - 1].time
-    })
   },
   methods: {
     // 获取更多的楼层评论
     async  moreFloorComments () {
       const params = {
-        id: this.$parent.id,
-        type: this.$parent.Type,
+        id: this.$parent.$parent.id,
+        type: this.$parent.$parent.Type,
         parentCommentId: this.parentCommentId,
-        time: this.lastTime
+        time: this.lastTime, // 评论楼层最后一个评论消息的时间,
+        timestamp: Date.now() // 不缓存
       }
       const { data: { data: { comments } } } = await _getFloorComment(params)
       if (comments.length === 0) {
@@ -55,6 +60,17 @@ export default {
         comments.forEach(item => this.floorComments.push(item))
         this.lastTime = comments[comments.length - 1].time
       }
+    },
+    // 回复用户消息后，重新获取楼中楼评论
+    getFloorComments () {
+      const params = {
+        id: this.$parent.$parent.id,
+        type: this.$parent.$parent.Type,
+        parentCommentId: this.parentCommentId
+      }
+      _getFloorComment(params).then(res => {
+        console.log(res)
+      })
     }
   }
 }
