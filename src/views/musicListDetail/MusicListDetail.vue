@@ -77,6 +77,8 @@ export default {
     // 获取歌单Id
     if (this.$route.params.id !== null && this.$route.params.id !== '') {
       this.id = this.$route.params.id
+      // 存储歌单id，心动模式必需
+      localStorage.setItem('pid', this.id)
       this.musicListDetailInit()
     }
   },

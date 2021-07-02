@@ -31,7 +31,7 @@
            <div class="item_time"> {{_formatDate(item.time)}}</div>
            <div class="item_right" @mouseenter="showReport = index" @mouseleave="showReport = -1">
                 <div :class="{'comments_report':(showReport === index)}">举报</div>
-                <div class="like_count" @click="setCommentsLikedCount(item.commentId,item)">
+                <div class="like_count" @click="setCommentsLikedCount(item.commentId)">
                   <span v-if="likeCount !== item.commentId"><img  src="../../../assets/img/clickLike.svg" alt="">{{item.likedCount}} </span>
                   <span v-else style="color:red"><img  src="../../../assets/img/is_clickLike.svg" alt="">{{item.likedCount}}  </span>
                 </div>
@@ -172,7 +172,7 @@ export default {
       }
     },
     // 评论点赞
-    async setCommentsLikedCount (commentId, item) {
+    async setCommentsLikedCount (commentId) {
       this.likeCount = commentId
       const params = {
         id: this.id,

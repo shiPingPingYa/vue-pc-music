@@ -130,6 +130,20 @@ export function _getHighqualityTags () {
   })
 }
 
+/**
+ *
+ * @pid 歌单Id
+ * @id 音乐id
+ * @cid 正在播放音乐id
+ * @description 音乐播放心动模式
+ */
+export function _getIntelligenceList (params) {
+  return request({
+    url: '/playmode/intelligence/list',
+    params: params
+  })
+}
+
 // 将获取的歌曲对象进行封装,单个音乐对象
 export class SongDetail {
   constructor (songs) {

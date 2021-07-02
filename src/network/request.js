@@ -28,6 +28,8 @@ export function request (config) {
     } else if (status !== 200) {
       Message.error(res.code)
       return Promise.reject(new Error(res.message || 'Error'))
+    } else if (res.data.code === 301) {
+      Message.error(res.data.msg)
     }
   }, err => {
     Message({
