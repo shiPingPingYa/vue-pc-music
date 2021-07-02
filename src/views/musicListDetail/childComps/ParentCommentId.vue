@@ -4,6 +4,7 @@
   <span>@{{item.user.nickname}}: </span>
   <div>{{item.content}}</div>
   </div>
+  <div :class="{'more_floor_comments':floorCommentsTitle === '获取更多....','no_more_floor_comments':floorCommentsTitle ==='暂无更多评论，快去评论吧....'}" @click="moreFloorComments">{{floorCommentsTitle}} </div>
   </div>
 </template>
 <script>
@@ -20,7 +21,9 @@ export default {
   },
   data () {
     return {
-      floorComments: ''
+      floorComments: '',
+      floorCommentsTitle: '获取更多....',
+      lastTime: ''
     }
   },
   created () {
@@ -31,7 +34,28 @@ export default {
     }
     _getFloorComment(params).then(res => {
       this.floorComments = res.data.data.comments
+      // 获取最后一个楼层评论的时间
+      this.lastTime = res.data.data.comments[res.data.data.comments.length - 1].time
     })
+  },
+  methods: {
+    // 获取更多的楼层评论
+    async  moreFloorComments () {
+      const params = {
+        id: this.$parent.id,
+        type: this.$parent.Type,
+        parentCommentId: this.parentCommentId,
+        time: this.lastTime
+      }
+      const { data: { data: { comments } } } = await _getFloorComment(params)
+      if (comments.length === 0) {
+        this.$message.info('暂无更多楼层评论')
+        this.floorCommentsTitle = '暂无更多评论，快去评论吧....'
+      } else {
+        comments.forEach(item => this.floorComments.push(item))
+        this.lastTime = comments[comments.length - 1].time
+      }
+    }
   }
 }
 </script>
@@ -50,4 +74,23 @@ export default {
   }
   }
 }
+
+.more_floor_comments{
+  padding:0 20px 10px;
+  float: right;
+  color: #1989f1;
+  &&:hover{
+  cursor: pointer;
+  }
+}
+
+.no_more_floor_comments{
+   padding:0 20px 10px;
+  float: right;
+  color: red;
+  &&:hover{
+    cursor: pointer;
+  }
+}
+
 </style>

@@ -255,7 +255,7 @@ export default {
 }
 
 .noneComments{
-  height: 58px;
+  height: 54px;
   margin-bottom: 30px;
 }
 
