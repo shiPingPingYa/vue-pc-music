@@ -1,5 +1,5 @@
 <template>
-  <div class="recommond" >
+  <div class="recommond" v-if="recommends.length !== 0" >
     <div class="desc">
       <div class="language">
         <textarea ref="textarea_comments" @keypress.enter="submitCommends" name id cols="30" rows="10"  v-model.trim="params.content">   </textarea>
