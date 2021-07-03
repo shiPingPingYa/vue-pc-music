@@ -23,9 +23,9 @@
             {{item.content}}
           </div>
           <!-- 楼层评论 -->
-          <div  v-if="item.parentCommentId !== 0"  :class="{'noneComments':noneRecoments,'noneComments_noHeight':item.parentCommentId === 0}">
+          <div  v-if="item.parentCommentId !== 0"  :class="{'noneComments':noneRecoments !== index,'noneComments_noHeight':item.parentCommentId === 0}">
          <song-list-comment :ref="`parentCommentId${item.commentId}`"  class="parentCommend" :id="id" :Type="Type" :parentCommentId="item.parentCommentId " ></song-list-comment>
-          <div class="shaer_start" @click="noneRecoments = !noneRecoments">{{getCommentTitle}}</div>
+          <div class="shaer_start" @click="setNoneComments(index)">{{getCommentTitle(index)}}</div>
           </div>
           <div class="bottom">
            <div class="item_time"> {{_formatDate(item.time)}}</div>
@@ -92,7 +92,7 @@ export default {
         content: ''
       },
       showReport: -1,
-      noneRecoments: true,
+      noneRecoments: -1,
       // 区别其他回复和消息回复,
       reply: 0,
       likeCount: ''
@@ -112,11 +112,6 @@ export default {
   created () {
     this.params.id = this.id
     this.params.type = this.Type
-  },
-  computed: {
-    getCommentTitle () {
-      return this.noneRecoments === false ? '收起' : '展开'
-    }
   },
   methods: {
     // 格式化时间
@@ -185,6 +180,15 @@ export default {
       else {
         this.$message.error('点赞失败')
       }
+    },
+    setNoneComments (index) {
+      if (this.noneRecoments === index) this.noneRecoments = -1
+      else {
+        this.noneRecoments = index
+      }
+    },
+    getCommentTitle (index) {
+      return this.noneRecoments === index ? '收起' : '展开'
     }
   }
 }
