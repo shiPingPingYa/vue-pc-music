@@ -1,5 +1,5 @@
 <template>
-  <div  class="floor_comment"  >
+  <div  class="floor_comment" v-if="parentCommentId !== 0" >
   <div class="floor_comment_list" v-for="(item,index) in floorComments" :key="index">
   <span>@{{item.user.nickname}}: </span>
   <div>{{item.content}}</div>

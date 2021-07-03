@@ -1,5 +1,5 @@
 <template>
-  <div class="recommond" v-if="recommends.length !== 0" >
+  <div class="recommond">
     <div class="desc">
       <div class="language">
         <textarea ref="textarea_comments" @keypress.enter="submitCommends" name id cols="30" rows="10"  v-model.trim="params.content">   </textarea>
@@ -23,9 +23,9 @@
             {{item.content}}
           </div>
           <!-- 楼层评论 -->
-          <div  :class="{'noneComments':noneRecoments,'noneComments_noHeight':item.parentCommentId === 0}">
+          <div  v-if="item.parentCommentId !== 0"  :class="{'noneComments':noneRecoments,'noneComments_noHeight':item.parentCommentId === 0}">
          <song-list-comment :ref="`parentCommentId${item.commentId}`"  class="parentCommend" :id="id" :Type="Type" :parentCommentId="item.parentCommentId " ></song-list-comment>
-          <div v-if="item.parentCommentId !== 0" class="shaer_start" @click="noneRecoments = !noneRecoments">{{getCommentTitle}}</div>
+          <div class="shaer_start" @click="noneRecoments = !noneRecoments">{{getCommentTitle}}</div>
           </div>
           <div class="bottom">
            <div class="item_time"> {{_formatDate(item.time)}}</div>

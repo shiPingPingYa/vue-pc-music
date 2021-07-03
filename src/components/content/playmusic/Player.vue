@@ -83,19 +83,17 @@ export default {
         this.$refs.playerLyric.$refs.scroll.scrollTo(0, 0, 0)
         this.$refs.scroll.scrollTo(0, 0, 0)
       }
-      this.getCommentsInit()
+      _musicRecommend(this.music.id, this.limit).then(res => {
+        this.recommends = res.data.comments
+      })
     }
   },
   created () {
-    this.getCommentsInit()
+    _musicRecommend(this.music.id, this.limit).then(res => {
+      this.recommends = res.data.comments
+    })
   },
   methods: {
-    // 评论初始化
-    async  getCommentsInit () {
-      await _musicRecommend(this.music.id, this.limit).then(res => {
-        this.recommends = res.data.comments
-      })
-    },
     // 加载更多评论
     async  moreComments () {
       const { data: { comments } } = await _musicRecommend(this.music.id, this.limit, this.recommends.length)

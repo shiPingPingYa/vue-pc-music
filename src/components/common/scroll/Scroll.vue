@@ -74,7 +74,7 @@ export default {
   mounted () {
     // 实例化better-scorll
     this.scroll = new Bscroll(this.$refs.swiper, {
-      click: true,
+      click: false,
       probeType: this.probeType,
       pullUpLoad: this.pullUpLoad,
       scrollbar: this.scrollbar,
