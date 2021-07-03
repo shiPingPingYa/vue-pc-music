@@ -8,7 +8,8 @@ export function _getMusicUrl (id) {
   return request({
     url: '/song/url',
     params: {
-      id: id
+      id: id,
+      timestamp: Date.now()
     }
   })
 }
@@ -33,7 +34,8 @@ export function _getSongsDetail (arr) {
   return request({
     url: '/song/detail',
     params: {
-      ids: arr
+      ids: arr,
+      timestamp: Date.now()
     }
   })
 }
@@ -174,7 +176,8 @@ export function _getLyric (id) {
   return request({
     url: '/lyric',
     params: {
-      id: id
+      id: id,
+      timestamp: Date.now()
     }
   })
 }

@@ -396,7 +396,6 @@ export default {
         songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
         this.musicList.forEach((item, index) => {
           if (Number(index) >= 1) {
-            console.log(item)
             this.playList.push(new PlayList(index, item, musicUrlList[index].url, item.id))
           }
         })
