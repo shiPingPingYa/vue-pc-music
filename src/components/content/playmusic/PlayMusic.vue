@@ -190,7 +190,7 @@ export default {
         return a.index - b.index
       })
       // 设置index
-      this.setCurrentIndex(index)
+      this.setCurrentIndex(0)
       this.$refs.music_volumn.setAudioProgress(0.8)
     })
     // 监听歌曲列表的点击,设置index
@@ -394,11 +394,13 @@ export default {
         const { data: { data: musicUrlList } } = await _getMusicUrl(ids)
         const { data: { songs } } = await _getSongsDetail(ids)
         songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
-        this.musicList.forEach((item, index) => {
-          if (Number(index) >= 1) {
-            this.playList.push(new PlayList(index, item, musicUrlList[index].url, item.id))
-          }
-        })
+        if (songs.length === this.musicList.length) {
+          this.musicList.forEach((item, index) => {
+            if (Number(index) >= 1) {
+              this.playList.push(new PlayList(index + 1, item, musicUrlList[index].url, item.id))
+            }
+          })
+        }
       } catch (e) {
         console.log(e)
       }
