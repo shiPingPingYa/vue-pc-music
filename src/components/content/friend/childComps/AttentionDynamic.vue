@@ -25,7 +25,6 @@
         <div class="transmit-content">
           <!-- 名字 -->
           <div class="name">{{item.name}}
-            <span>分享{{issue[index]}}</span>
           </div>
           <!-- 时间 -->
           <div class="transmit-time">
@@ -70,12 +69,12 @@ export default {
       page: 1,
       musicIdList: [],
       issue: [],
-      lasttime: -1,
-      RegExp: /#[^#]+#/
-
+      RegExp: /#[^#]+#/,
+      // 最后一项评论的时间
+      lastTime: -1
     }
   },
-  async created () {
+  created () {
     this.loadDynamic()
   },
   methods: {
@@ -83,48 +82,17 @@ export default {
     handleTime (time) {
       return formDate(new Date(time), 'mm:dd-hh:mm')
     },
-    // 判断发布了什么,song单曲，mv视频，playlist歌单，event转发
-    handleIssueDynamic (obj) {
-      if (obj.song !== undefined) {
-        this.issue.push('单曲')
-      } else if (obj.mv !== undefined) {
-        this.issue.push('mv')
-      } else if (obj.playlist !== undefined) {
-        this.issue.push('歌单')
-      } else if (obj.event !== undefined) {
-        this.issue.push('转发')
-      }
-    },
     // 下拉获取动态
-    pullingUp: throttled(async function () {
+    pullingUp: throttled(function () {
       this.loadDynamic()
     }, 800),
     // 加载数据
     async loadDynamic () {
-      var notDynamic = []
-      // 请求用户关注动态
-      try {
-        await _getEvent(this.pagesize * this.page, this.$store.state.cookie, this.lasttime).then(res => {
-          this.lasttime = res.data.lasttime
-          notDynamic = res.data.event
-        }).catch(e => {
-          if (e.data.code === 301) {
-            throw new Error(e.data.msg)
-          }
-        })
-      } catch (e) {
-        this.$message.warning(e.message)
-      }
-      for (var i of notDynamic) {
-      // 解析发布数据
-        var dynamic = new AttentionDynamic(i)
-        this.dynamicList.push(dynamic)
-        // 判断发布类型
-        this.handleIssueDynamic(dynamic.Info)
-        console.log(dynamic.pics)
-      }
-
       this.page++
+      // 请求用户关注动态
+      const { data: { event, lasttime } } = await _getEvent(this.pagesize, this.$store.state.cookie, this.lastTime)
+      this.lastTime = lasttime
+      event.forEach(item => this.dynamicList.push(new AttentionDynamic(item)))
       this.$refs.scroll.finishPullUp()
     },
     // 处理发布消息
@@ -132,7 +100,8 @@ export default {
       if (str.trim().length >= 1 && str !== '') {
         if (!this.RegExp.test(str)) return str
         else {
-          return str.split('#')[2]
+          if (str.split('#')[2]) return str.split('#')[2]
+          else return str.split('#')[0]
         }
       }
     },

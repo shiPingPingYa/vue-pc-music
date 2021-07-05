@@ -38,11 +38,11 @@ export function _getUserDynamic (uid, limit) {
 export function _getEvent (pagesize, cookie, lasttime) {
   return request({
     url: '/event',
-    method: 'POST',
-    data: {
+    params: {
       pagesize: pagesize,
       cookie: cookie,
-      lasttime: lasttime
+      lasttime: lasttime,
+      timestamp: Date.now()
     }
   })
 }
