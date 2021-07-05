@@ -17,9 +17,9 @@
         <div class="user">
           <!-- 小log -->
           <div class="icon" v-show="item.smallImg !== ''">
-            <img :src="item.smallImg" alt="">
+            <img :src="item.smallImg + '?param=50y50'" alt="">
           </div>
-          <img :src="item.userimg" alt="">
+          <img :src="item.userimg + '?param=18y18'" alt="">
         </div>
         <!-- 用户分享内容 -->
         <div class="transmit-content">
@@ -52,9 +52,9 @@
         <!-- 分享图片 -->
         <div class="share_img" v-if="item.pics.length !== 0">
           <ul v-if="item.pics.length > 1">
-            <li v-for="(items, index) in item.pics" :key="index"><img :src="items.pcSquareUrl" alt=""> </li>
+            <li v-for="(items, index) in item.pics" :key="index"><img :src="items.pcSquareUrl  + '?param=302y302'" alt=""> </li>
           </ul>
-          <img v-else :src="item.pics[0].pcSquareUrl" alt="">
+          <img v-else :src="item.pics[0].pcSquareUrl + '?param=566y566'" alt="">
         </div>
     </div>
       </div>
@@ -213,7 +213,7 @@ export default {
       position: absolute;
       width: 18px;
       height: 18px;
-      right: 0;
+      left: 50%;
       bottom: 0;
       img{
         width: 100%;

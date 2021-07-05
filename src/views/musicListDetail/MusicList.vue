@@ -11,7 +11,7 @@
   <div class="song-item" v-for="(item,index) in totalList" :key="index"
   @click="enterDetail(index)">
     <!-- 背景图 -->
-    <img :src="getImgUrl(item)" alt="">
+    <img :src="getImgUrl(item) + '?param=230y230'" alt="">
      <!-- 标题 -->
     <div class="title">
       {{item.name}}

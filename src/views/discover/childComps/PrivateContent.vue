@@ -3,7 +3,7 @@
     <p class="top">{{privateContent.name}} </p>
     <div class="content" >
       <div class="private-item" v-for="(item,index) in privateContent.result" :key="index" @click="playMv(item.id)">
-        <img :src="item.picUrl" alt="">
+        <img :src="item.picUrl + '?param=300y111'" alt="">
         <div class="icon">
           <img src="../../../assets/img/leftmenu/shiping.svg" alt="">
         </div>

@@ -5,7 +5,7 @@
       <div class="item" v-for="(item, index) in songList" :key="index"  @dblclick="playMusic(index)">
         <div class="number">{{index+1}} </div>
       <div class="title">
-        <img :src="item.picUrl" alt="">
+        <img :src="item.picUrl + '?param=70y70'" alt="">
         <div class="icon">
           <i class="el-icon-video-play"></i>
         </div>

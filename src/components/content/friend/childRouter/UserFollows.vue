@@ -10,7 +10,7 @@
         <div class="user-box">
           <div class="icon"></div>
           <div class="image">
-             <img :src="item.userImg" alt="">
+             <img :src="item.userImg + '?param=50y50'" alt="">
           </div>
         </div>
         <!-- 用户内容 -->

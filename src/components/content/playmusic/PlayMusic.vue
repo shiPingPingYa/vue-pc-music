@@ -155,7 +155,7 @@ export default {
           src:
             'http://m701.music.126.net/20210401170701/9290add54f39749184e2adb863956371/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/7354163734/999a/1cdf/5b29/77e0ceef7990395739432c4d77e3edf7.mp3',
           pic:
-            'https://p1.music.126.net/J94zxjSMe5IjNABnpdOPew==/109951165670275788.jpg'
+            'https://p1.music.126.net/J94zxjSMe5IjNABnpdOPew==/109951165670275788.jpg?param=50y50'
         }
       ]
     }

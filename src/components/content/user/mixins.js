@@ -82,7 +82,7 @@ export const mixins = {
     },
     // 显示登录背景图
     userImage () {
-      return (this.$store.state.uid !== null) ? this.$store.state.image : 'img/login.128c56ca.jpg'
+      return (this.$store.state.uid !== null) ? (this.$store.state.image + '?param=48y48') : 'img/login.128c56ca.jpg'
     },
     // 显示验证码,并存储手机号和密码
     enterCaptcha () {
