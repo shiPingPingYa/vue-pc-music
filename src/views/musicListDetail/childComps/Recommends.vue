@@ -6,11 +6,12 @@
       </div>
       <div class="sub" @click="submitCommends">评论</div>
     </div>
-
     <!-- 评论区域 -->
     <div class="content"  v-if="recommends.length !== 0">
-      <p>精彩评论</p>
     <comments-content >
+       <p>热门评论</p>
+      <hot-comments :hotComments="hotComments"></hot-comments>
+      <p>精彩评论</p>
         <div class="item" v-for="(item,index) in recommends" :key="index">
         <div class="icon">
           <img :src="item.user.avatarUrl" alt="">
@@ -58,11 +59,19 @@ import { sendAndRemoveComment, _setCommentsLikedCount } from '../../../network/c
 const commentsContent = () => import('../../../components/common/scroll/Scroll.vue')
 // 楼中楼评论组件，用异步调用声明一个新的组件实例
 const songListComment = () => import('./ParentCommentId.vue')
+// 热门评论
+const hotComments = () => import('./HotComments.vue')
 export default {
   name: 'Recommends',
-  components: { songListComment, commentsContent },
+  components: { songListComment, commentsContent, hotComments },
   props: {
     recommends: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    hotComments: {
       type: Array,
       default () {
         return []

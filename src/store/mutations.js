@@ -82,5 +82,11 @@ export default {
   // 添加歌单路由
   addSongListPath (state, songListPath) {
     state.songListPath = songListPath
+  },
+  async getSongList (state) {
+  // 获取用户歌单
+    await _getSongList(state.uid, state.cookie).then(res => {
+      state.userSongList = res.data.playlist
+    })
   }
 }

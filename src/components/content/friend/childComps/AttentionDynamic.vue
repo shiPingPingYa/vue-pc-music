@@ -2,7 +2,7 @@
   <div class="attention-dynamic">
     <scroll ref="scroll" class="scroll" :pull-up-load='true' @pullingUp="pullingUp()">
       <div class="content">
-         <div class="dynamic-box">
+      <div class="dynamic-box">
       <div class="dynamic">
         动态
       </div>
@@ -36,6 +36,13 @@
             <span>{{handleTitle1(item.title)}}</span>
             {{handleTitle(item.title)}}
           </div>
+        </div>
+        <!-- 分享图片 -->
+        <div class="share_img" v-if="item.pics.length !== 0">
+          <ul v-if="item.pics.length > 1">
+            <li v-for="(items, index) in item.pics" :key="index"><img :src="items.pcRectangleUrl" alt=""> </li>
+          </ul>
+          <img v-else :src="item.pics[0].pcRectangleUrl" alt="">
         </div>
     </div>
       </div>
@@ -114,7 +121,9 @@ export default {
         this.dynamicList.push(dynamic)
         // 判断发布类型
         this.handleIssueDynamic(dynamic.Info)
+        console.log(dynamic.pics)
       }
+
       this.page++
       this.$refs.scroll.finishPullUp()
     },
@@ -182,6 +191,7 @@ export default {
     width: 100%;
     padding: 30px 20px;
     justify-content: flex-start;
+    flex-wrap: wrap;
     border-top: 1px solid #949493;
      > .user{
     position: relative;
@@ -231,6 +241,28 @@ export default {
          }
        }
      }
+}
+
+.share_img{
+  width: 100%;
+  margin-left: 8%;
+ > ul{
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+    li{
+    width: 32%;
+    margin-left: 1%;
+    >img{
+      width: 100%;
+    }
+  }
+ }
+ > img{
+   width: 100%;
+   height: 400px;
+ }
 }
 
 </style>

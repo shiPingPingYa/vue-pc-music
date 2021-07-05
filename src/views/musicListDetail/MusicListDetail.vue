@@ -8,7 +8,7 @@
   <!-- 音乐榜单列表 -->
     <music-item @musicItemClick="musicItemClick" :musicList="musicList" v-show="isShow == 'music'"></music-item>
   <!-- 音乐榜单评论信息 -->
-    <song-list-recommends ref="songList_recommends" :recommends="recommends" :id="id" :Type="2" v-show="isShow == 'recommends'"  @moreComments="moreComments" @getCommends="getCommends"></song-list-recommends>
+    <song-list-recommends ref="songList_recommends" :recommends="recommends" :hotComments="hotComments" :id="id" :Type="2" v-show="isShow == 'recommends'"  @moreComments="moreComments" @getCommends="getCommends"></song-list-recommends>
   <!-- 音乐榜单收藏者 -->
     <music-list-like :subs="subs" v-show="isShow == 'like'"></music-list-like>
  </scroll>
@@ -56,6 +56,8 @@ export default {
       // 歌单收藏者
       // 歌单评论内容
       recommends: [],
+      // 热门评论内容
+      hotComments: [],
       limit: 50,
       subs: null
     }
@@ -108,8 +110,9 @@ export default {
       songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
 
       // // 获取评论内容
-      const { data: { comments } } = await _getRecommends(this.id, this.limit, this.recommends.length)
+      const { data: { comments, hotComments } } = await _getRecommends(this.id, this.limit, this.recommends.length)
       this.recommends = comments
+      this.hotComments = hotComments
 
       // 获取歌单收藏者
       _getSub(this.id).then(res => {

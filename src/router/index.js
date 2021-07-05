@@ -91,6 +91,12 @@ const routes = [
       // 关注
       { path: 'userfollows', component: () => import('../components/content/friend/childRouter/UserFollows') }
     ]
+  },
+  // 电台
+  {
+    path: '/transceiver',
+    component: () => import('../components/content/friend/Friend.vue'),
+    meta: { title: '朋友' }
   }
 ]
 

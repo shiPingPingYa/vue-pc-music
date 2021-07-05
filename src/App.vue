@@ -57,6 +57,9 @@ export default {
 </script>
 
 <style>
+ul li{
+  list-style: none;
+}
 #app {
   margin: 0 10% 0 10%;
   width: 80%;

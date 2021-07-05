@@ -7,6 +7,7 @@ export class AttentionDynamic {
     this.Info = JSON.parse(obj.json)
     this.smallImg = (obj.user.avatarDetail !== null ? obj.user.avatarDetail.identityIconUrl : '')
     this.eventTime = obj.eventTime
+    this.pics = obj.pics
   }
 }
 

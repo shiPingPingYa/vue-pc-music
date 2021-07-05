@@ -47,3 +47,18 @@ export function _setCommentsLikedCount (params) {
     params: params
   })
 }
+
+/**
+ * @description 获取热门评论
+ * @param id:资源id
+ * @param type: 0: 歌曲,1: mv,2: 歌单,3: 专辑,4: 电台,5: 视频,6: 动态
+ * @param offset;便宜数量
+ * @param before:最后一页的时间，在评论超过5000时设置
+ * @returns
+ */
+export function _getHotComments (params) {
+  return request({
+    url: '/comment/hot',
+    params: params
+  })
+}
