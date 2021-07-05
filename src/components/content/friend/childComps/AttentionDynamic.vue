@@ -36,12 +36,25 @@
             {{handleTitle(item.title)}}
           </div>
         </div>
+        <!-- 歌曲或mv或歌单区域 -->
+        <div class="songContent" v-if="(item.ids !== false && item.ids.type !== 'mv') " @click="shareContentClick(0,item.ids.type,item.ids.id)">
+          <div class="content_img" @click.stop="shareContentClick(1,item.ids.type,item.ids.id)">
+            <img :src="item.contentImg" alt="">
+            <div class="stop_music">
+              <img src="../../../../assets/img/stopMusic.svg" alt="">
+            </div>
+           </div>
+          <div class="content_container">
+           {{item.contentTitle}} <br>
+           <span>{{item.name}} </span>
+          </div>
+        </div>
         <!-- 分享图片 -->
         <div class="share_img" v-if="item.pics.length !== 0">
           <ul v-if="item.pics.length > 1">
-            <li v-for="(items, index) in item.pics" :key="index"><img :src="items.pcRectangleUrl" alt=""> </li>
+            <li v-for="(items, index) in item.pics" :key="index"><img :src="items.pcSquareUrl" alt=""> </li>
           </ul>
-          <img v-else :src="item.pics[0].pcRectangleUrl" alt="">
+          <img v-else :src="item.pics[0].pcSquareUrl" alt="">
         </div>
     </div>
       </div>
@@ -52,6 +65,9 @@
 <script>
 // 导入数据请求
 import { _getEvent } from '../../../../network/friend'
+// 歌曲
+import { _getSongsDetail, SongDetail, _getMusicListDetail, AllSongDetail } from '../../../../network/detail'
+import { indexMixin } from '../../../../views/musicListDetail/indexMixin'
 // 导入方法，获取需要的请求数据
 import { AttentionDynamic } from './handleUserInfo'
 // 导入处理时间的函数
@@ -71,9 +87,11 @@ export default {
       issue: [],
       RegExp: /#[^#]+#/,
       // 最后一项评论的时间
-      lastTime: -1
+      lastTime: -1,
+      musicList: []
     }
   },
+  mixins: [indexMixin],
   created () {
     this.loadDynamic()
   },
@@ -105,12 +123,35 @@ export default {
         }
       }
     },
-    // 处理连接
+    // 处理发布 # 中间内容
     handleTitle1 (str) {
       if (str.trim().length >= 1 && str !== '') {
         if (this.RegExp.test(str)) {
           return '#' + str.split('#')[1] + '#'
         }
+      }
+    },
+    // 分享内容点击事件
+    async shareContentClick (flag, type, id) {
+      // 分享内容两种内容会触发，歌曲直接播放，歌单跳转歌单详情页面,0是分享内容条目点击，1是播放logo点击
+      if (type === 'playlist') {
+        if (flag === 0) {
+          this.$router.push('/musiclistdetail/' + id)
+        } else {
+          console.log('歌单亲求数据')
+          const { data: { playlist: { trackIds } } } = await _getMusicListDetail(id)
+          const ids = trackIds.map(item => item.id).join(',')
+          const { data: { songs } } = await _getSongsDetail(ids)
+          songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
+          // 歌曲数据处理完毕
+          if (songs.length === this.musicList.length) {
+            this.playMusic()
+          }
+        }
+      } else if (type === 'song') {
+        const { data: { songs } } = await _getSongsDetail(id)
+        this.musicList.push(new SongDetail(songs))
+        this.playMusic()
       }
     }
   }
@@ -214,7 +255,8 @@ export default {
 
 .share_img{
   width: 100%;
-  margin-left: 8%;
+  margin:10px 0 0 8%;
+
  > ul{
   width: 100%;
   display: flex;
@@ -229,9 +271,52 @@ export default {
   }
  }
  > img{
-   width: 100%;
-   height: 400px;
+   width: 60%;
  }
 }
 
+.songContent  {
+  display: flex;
+  justify-content: flex-start;
+  width: calc( 100% - 8%);
+  height: 70px;
+  margin:10px 0 6px  8%;
+  background: rgba(228, 224, 224, 0.877);
+  opacity: 0.8;
+  .content_img{
+    position: relative;
+    height: 100%;
+    padding: 10px;
+    line-height: 100%;
+    img{
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    }
+    .stop_music{
+      position: absolute;
+      top: 30%;
+      right: 30%;
+      margin: auto;
+      img{
+        width: 30px;
+        height: 30px;
+        color: black;
+      }
+    }
+  }
+  .content_container{
+    flex: 1;
+    padding: 15px 0;
+    span{
+      color: rgb(46, 141, 170);
+      font-size: 14px;
+    }
+  }
+}
+
+.songContent:hover{
+  opacity: 1;
+  cursor: pointer;
+}
 </style>

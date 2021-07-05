@@ -8,6 +8,42 @@ export class AttentionDynamic {
     this.smallImg = (obj.user.avatarDetail !== null ? obj.user.avatarDetail.identityIconUrl : '')
     this.eventTime = obj.eventTime
     this.pics = obj.pics
+    this.ids = this.getDynamicId(JSON.parse(obj.json))
+    this.contentImg = this.getContentImg(JSON.parse(obj.json))
+    this.contentTitle = this.getContentTitle(JSON.parse(obj.json))
+  }
+
+  // 判断发送的什么内容
+  getDynamicId (item) {
+    if (item.playlist === undefined && item.song === undefined && item.mv === undefined) {
+      return false
+    } else {
+      if (item.playlist !== undefined) {
+        return { id: item.playlist.id, type: 'playlist' }
+      } else if (item.song !== undefined) {
+        return { id: item.song.id, type: 'song' }
+      } else if (item.mv !== undefined) {
+        return { id: item.mv.id, type: 'mv' }
+      }
+    }
+  }
+
+  // 获取分享的歌曲或者歌单等的图片
+  getContentImg (item) {
+    if (item.playlist !== undefined) {
+      return item.playlist.coverImgUrl + '?param=50y50' // 限制图片高度
+    } else if (item.song !== undefined) {
+      return item.song.album.picUrl + '?param=50y50'
+    }
+  }
+
+  // 获取分享的歌曲或者歌单等的标题
+  getContentTitle (item) {
+    if (item.playlist !== undefined) {
+      return item.playlist.name
+    } else if (item.song !== undefined) {
+      return item.song.name
+    }
   }
 }
 
