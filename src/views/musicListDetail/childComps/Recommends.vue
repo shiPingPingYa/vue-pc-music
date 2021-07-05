@@ -9,12 +9,14 @@
     <!-- 评论区域 -->
     <div class="content"  v-if="recommends.length !== 0">
     <comments-content >
-       <p>热门评论</p>
+     <div class="hot_comments" v-if="hotComments.length !== 0">
+         <p>热门评论</p>
       <hot-comments :hotComments="hotComments"></hot-comments>
+     </div>
       <p>精彩评论</p>
         <div class="item" v-for="(item,index) in recommends" :key="index">
         <div class="icon">
-          <img :src="item.user.avatarUrl" alt="">
+          <img :src="item.user.avatarUrl +'?param=40y40'" alt="">
         </div>
         <div class="mess">
           <div class="top">
@@ -351,6 +353,13 @@ export default {
     width: 20px;
     height: 15px;
     vertical-align: -2px;
+  }
+}
+
+.hot_comments{
+  p{
+  padding: 10px 0;
+  border-bottom: 1px solid #e3e4e6;
   }
 }
 </style>

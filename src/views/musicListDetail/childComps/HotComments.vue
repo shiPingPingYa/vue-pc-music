@@ -2,7 +2,7 @@
  <div class="hotComments">
     <div class="item" v-for="(item,index) in hotComments" :key="index">
     <div class="icon">
-      <img :src="item.user.avatarUrl" alt="">
+      <img :src="item.user.avatarUrl +'?param40y40'" alt="">
     </div>
     <div class="mess">
       <div class="top">
