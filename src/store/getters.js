@@ -18,5 +18,6 @@ export default {
   // 获取歌单路由
   getSongListPath (state) {
     return state.songListPath
-  }
+  },
+  getAsyncShareImag: state => state.asyncShareImag
 }

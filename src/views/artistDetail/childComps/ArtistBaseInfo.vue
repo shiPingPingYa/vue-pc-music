@@ -143,7 +143,7 @@ export default {
   }
   > .describe{
     position: absolute;
-    height: 30%;
+    height: 25%;
     font-size: 14px;
     max-height: 46px;
     display: -webkit-box;

@@ -2,7 +2,7 @@
   <div class="music-list">
     <div class="music-item" v-for="(item,index) in artistList" :key="index"
     @click="enterArtistDetail(item)">
-      <img :src="item.picUrl + '?param=327y287' " alt="" @load="artistImgLoad">
+      <img :src="item.picUrl +'?param=326y286' " alt="" @load="artistImgLoad">
       <div class="name">{{item.name}} </div>
     </div>
   </div>

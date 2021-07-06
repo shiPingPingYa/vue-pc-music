@@ -50,11 +50,13 @@ const state = {
   // 用户登录的手机号码
   isSongList: true,
   // 歌单路由
-  songListPath: ''
+  songListPath: '',
+  // 分享内容的图片显示与否
+  asyncShareImag: false
 }
 
 export default new Vuex.Store({
   state,
-  mutations,
-  getters
+  getters,
+  mutations
 })

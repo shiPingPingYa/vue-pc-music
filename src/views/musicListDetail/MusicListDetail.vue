@@ -25,7 +25,7 @@ import MusicItem from './childComps/MusicItem'
 // 导入歌单收藏组件
 import MusicListLike from './childComps/MusicListLike'
 // 导入数据请求
-import { _getMusicListDetail, BaseInfo, _getSongsDetail, AllSongDetail, _getRecommends, _getSub } from '../../network/detail'
+import { _getMusicListDetail, BaseInfo, _getSongsDetail, _getRecommends, _getSub, AllSongDetail } from '../../network/detail'
 // 混入
 import { indexMixin } from './indexMixin'
 import { Message } from 'element-ui'
@@ -106,13 +106,15 @@ export default {
 
       // 拼接id ,获取歌曲，处理歌曲信息
       const ids = trackIds.map(item => item.id).join(',')
-      const { data: { songs } } = await _getSongsDetail(ids)
-      songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
+      _getSongsDetail(ids).then(res => {
+        res.data.songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
+      })
 
       // // 获取评论内容
-      const { data: { comments, hotComments } } = await _getRecommends(this.id, this.limit, this.recommends.length)
-      this.recommends = comments
-      this.hotComments = hotComments
+      _getRecommends(this.id, this.limit, this.recommends.length).then(res => {
+        this.recommends = res.data.comments
+        this.hotComments = res.data.hotComments
+      })
 
       // 获取歌单收藏者
       _getSub(this.id).then(res => {
@@ -120,17 +122,16 @@ export default {
       })
     },
     // 评论组件的获取更多评论方法
-    async moreComments () {
-      const { data: { comments } } = await _getRecommends(this.id, this.limit, this.recommends.length)
-      // 评论已经被请求完毕
-      if (comments.length === 0) {
-        Message.info('评论已经加载完毕，暂无更多评论')
-        // 修改评论组件，的评论提示消息
-        this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....'
-      } else {
-        // 遍历添加请求成功后的歌单评论
-        comments.forEach(item => this.recommends.push(item))
-      }
+    moreComments () {
+      _getRecommends(this.id, this.limit, this.recommends.length).then(res => {
+        if (res.data.comments.length === 0) {
+          Message.info('评论已经加载完毕，暂无更多评论')
+          // 修改评论组件，的评论提示消息
+          this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....'
+        } else {
+          res.data.comments.forEach(item => this.recommends.push(item))
+        }
+      })
     },
     // 发送评论后，重新获取评论
     getCommends () {

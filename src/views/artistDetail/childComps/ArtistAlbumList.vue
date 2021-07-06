@@ -4,7 +4,7 @@
     <div class="album">
       <div class="left">
         <div class="icon">
-          <img :src="album.picUrl" alt="">
+          <img :src="album.picUrl + '?param=280y260'" alt="">
         </div>
       </div>
       <div class="right">
@@ -67,21 +67,22 @@ export default {
     }
   },
   mixins: [tableMixin, indexMixin, playMinxin],
-  async created () {
+  created () {
     // 判断专辑是否为空
     if (this.album !== null) {
       // 调用接口，根据专辑ID获取专辑
-      const { data: { songs } } = await _getAlbum(this.album.id)
-      if (songs.length === 1) {
-        _getSongsDetail(songs[0].id).then(res => {
-          this.musicList.push(new SongDetail(res.data.songs))
-        })
-      } else {
-        const ids = songs.map(item => item.id).join(',')
-        _getSongsDetail(ids).then(res => {
-          res.data.songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
-        })
-      }
+      _getAlbum(this.album.id).then(res => {
+        if (res.data.songs.length === 1) {
+          _getSongsDetail(res.data.songs[0].id).then(res => {
+            this.musicList.push(new SongDetail(res.data.songs))
+          })
+        } else {
+          const ids = res.data.songs.map(item => item.id).join(',')
+          _getSongsDetail(ids).then(res => {
+            res.data.songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
+          })
+        }
+      })
     }
   },
   methods: {

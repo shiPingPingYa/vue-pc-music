@@ -88,5 +88,9 @@ export default {
     await _getSongList(state.uid, state.cookie).then(res => {
       state.userSongList = res.data.playlist
     })
+  },
+  // 设置分享内容图片的显示
+  setAsyncShareImag (state, flag) {
+    state.asyncShareImag = flag
   }
 }

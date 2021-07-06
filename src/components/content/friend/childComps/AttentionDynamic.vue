@@ -17,15 +17,14 @@
         <div class="user">
           <!-- 小log -->
           <div class="icon" v-show="item.smallImg !== ''">
-            <img :src="item.smallImg + '?param=50y50'" alt="">
+            <img :src="item.smallImg + '?param=18y18'" alt="">
           </div>
-          <img :src="item.userimg + '?param=18y18'" alt="">
+          <img :src="item.userimg + '?param=50y50'" alt="">
         </div>
         <!-- 用户分享内容 -->
         <div class="transmit-content">
           <!-- 名字 -->
-          <div class="name">{{item.name}}
-          </div>
+          <div class="name">{{item.name}} <span>分享{{isShareType(item.ids)}}</span> </div>
           <!-- 时间 -->
           <div class="transmit-time">
             {{handleTime(item.eventTime)}}
@@ -39,7 +38,7 @@
         <!-- 歌曲或mv或歌单区域 -->
         <div class="songContent" v-if="(item.ids !== false && item.ids.type !== 'mv') " @click="shareContentClick(0,item.ids.type,item.ids.id)">
           <div class="content_img" @click.stop="shareContentClick(1,item.ids.type,item.ids.id)">
-            <img :src="item.contentImg" alt="">
+            <img :src="item.contentImg + '?param=50y50'" alt="">
             <div class="stop_music">
               <img src="../../../../assets/img/stopMusic.svg" alt="">
             </div>
@@ -52,14 +51,15 @@
         <!-- 分享图片 -->
         <div class="share_img" v-if="item.pics.length !== 0">
           <ul v-if="item.pics.length > 1">
-            <li v-for="(items, index) in item.pics" :key="index"><img :src="items.pcSquareUrl  + '?param=302y302'" alt=""> </li>
+            <li v-for="(items, index) in item.pics" :key="index"><img :src="items.pcSquareUrl  + '?param=302y302'" alt="" @click.stop="showPicsList(index,item.pics)"> </li>
           </ul>
-          <img v-else :src="item.pics[0].pcSquareUrl + '?param=566y566'" alt="">
+          <img v-else :src="item.pics[0].pcSquareUrl + '?param=566y566'"  @click.stop="showPicsList(0,item.pics)" alt="">
         </div>
     </div>
       </div>
     </scroll>
-
+   <!-- 展示分享图片 -->
+      <alert-image v-if="asyncShareImag"  :index="shareContentImgIndex" :urlList="shareContentImg"></alert-image>
   </div>
 </template>
 <script>
@@ -73,10 +73,11 @@ import { AttentionDynamic } from './handleUserInfo'
 // 导入处理时间的函数
 import { formDate, throttled } from '../../../../assets/common/tool'
 import Scroll from '../../../common/scroll/Scroll'
-// 节流
+import { mapState, mapMutations } from 'vuex'
+const AlertImage = () => import('../childRouter/AlertImage.vue')
 export default {
   name: 'AttentionDynamic',
-  components: { Scroll },
+  components: { Scroll, AlertImage },
   data () {
     return {
       notDynamic: [],
@@ -88,14 +89,20 @@ export default {
       RegExp: /#[^#]+#/,
       // 最后一项评论的时间
       lastTime: -1,
-      musicList: []
+      musicList: [],
+      shareContentImg: [],
+      shareContentImgIndex: 0
     }
   },
   mixins: [indexMixin],
+  computed: {
+    ...mapState(['asyncShareImag'])
+  },
   created () {
     this.loadDynamic()
   },
   methods: {
+    ...mapMutations(['setAsyncShareImag']),
     // 处理发布时间
     handleTime (time) {
       return formDate(new Date(time), 'mm:dd-hh:mm')
@@ -134,7 +141,7 @@ export default {
     // 分享内容点击事件
     async shareContentClick (flag, type, id) {
       // 分享内容两种内容会触发，歌曲直接播放，歌单跳转歌单详情页面,0是分享内容条目点击，1是播放logo点击
-      if (type === 'playlist') {
+      if (type === '歌单') {
         if (flag === 0) {
           this.$router.push('/musiclistdetail/' + id)
         } else {
@@ -148,11 +155,27 @@ export default {
             this.playMusic()
           }
         }
-      } else if (type === 'song') {
+      } else if (type === '歌曲') {
         const { data: { songs } } = await _getSongsDetail(id)
         this.musicList.push(new SongDetail(songs))
         this.playMusic()
       }
+    },
+    // 展示分享图片
+    showPicsList (index, pics) {
+      // index当前显示图片，pics是当前展示图片数组
+      this.shareContentImg = []
+      this.shareContentImgIndex = index
+      if (pics.length === 1) {
+        this.shareContentImg.push(pics[0].pcSquareUrl)
+      } else {
+        pics.forEach(item => this.shareContentImg.push(item.pcSquareUrl))
+      }
+      this.setAsyncShareImag(true)
+    },
+    // 判断动态的发布类型
+    isShareType (item) {
+      return item === false ? '动态' : item.type
     }
   }
 }

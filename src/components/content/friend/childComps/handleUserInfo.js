@@ -19,9 +19,9 @@ export class AttentionDynamic {
       return false
     } else {
       if (item.playlist !== undefined) {
-        return { id: item.playlist.id, type: 'playlist' }
+        return { id: item.playlist.id, type: '歌单' }
       } else if (item.song !== undefined) {
-        return { id: item.song.id, type: 'song' }
+        return { id: item.song.id, type: '歌曲' }
       } else if (item.mv !== undefined) {
         return { id: item.mv.id, type: 'mv' }
       }

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @click="setAsyncShareImag(false)">
     <keep-alive>
     <tab-bar></tab-bar>
     </keep-alive>
@@ -18,6 +18,7 @@ import CenterContent from '../src/components/content/conter/CenterContent'
 import PlayMusic from '../src/components/content/playmusic/PlayMusic'
 // 导入首页评论组件
 // import HomePageRecommends from '../src/components/HomePageRecommends'
+import { mapMutations } from 'vuex'
 export default {
   name: 'app',
   components: {
@@ -43,6 +44,9 @@ export default {
       obj = JSON.parse(obj)
       this.$store.commit('addUser', obj)
     }
+  },
+  methods: {
+    ...mapMutations(['setAsyncShareImag'])
   },
   mounted () {
     // 监听键盘事件，停止播放音乐
