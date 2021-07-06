@@ -179,6 +179,14 @@ export function _getLyric (id) {
     }
   })
 }
+
+export function getDayMusic (parmas) {
+  return request({
+    url: '/recommend/songs',
+    parmas: parmas
+  })
+}
+
 // 封装歌单对象
 export class BaseInfo {
   constructor (playlist) {

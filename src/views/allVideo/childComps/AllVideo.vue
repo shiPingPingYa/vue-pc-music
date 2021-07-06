@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     // 获取对应导航条下面的数据
-    async loadGroup (flag) {
+    loadGroup (flag) {
       // 清空视频列表
       this.videoList = []
       if (flag === false) {
@@ -75,7 +75,7 @@ export default {
         }
         for (let i = this.page; i <= this.offset; i++) {
           params.offset = i
-          await _getGroupVideo(params).then(res => {
+          _getGroupVideo(params).then(res => {
             res.data.datas.forEach(item => this.videoList.push(new Video(item.data)))
           })
         }
@@ -86,7 +86,7 @@ export default {
         }
         for (let i = this.page; i <= this.offset; i++) {
           param.offset = i
-          await _getGroupVideo(param).then(res => {
+          _getGroupVideo(param).then(res => {
             res.data.datas.forEach(item => this.videoList.push(new Video(item.data)))
           })
         }

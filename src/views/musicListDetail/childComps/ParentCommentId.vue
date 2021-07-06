@@ -26,7 +26,7 @@ export default {
       lastTime: ''
     }
   },
-  async  created () {
+  created () {
     if (this.parentCommentId !== 0) {
       const params = {
         id: this.$parent.$parent.id,
@@ -35,14 +35,15 @@ export default {
         timestamp: Date.now()
       }
       // 获取楼中楼评论消息
-      const { data: { data: { comments } } } = await _getFloorComment(params)
-      if (comments.length === 1) {
-        this.floorComments = comments
-        this.lastTime = comments[0].time
-      } else {
-        comments.forEach(item => this.floorComments.push(item))
-        this.lastTime = comments[comments.length - 1].time
-      }
+      _getFloorComment(params).then(res => {
+        if (res.data.data.comments.length === 1) {
+          this.floorComments = res.data.data.comments
+          this.lastTime = res.data.data.comments[0].time
+        } else {
+          res.data.data.comments.forEach(item => this.floorComments.push(item))
+          this.lastTime = res.data.data.comments[res.data.data.comments.length - 1].time
+        }
+      })
     }
   },
   methods: {

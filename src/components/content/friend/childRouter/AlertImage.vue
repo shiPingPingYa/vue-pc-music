@@ -70,7 +70,7 @@ export default {
     width: 100%;
     img{
       width: 100%;
-      height: 100%;
+      height: 706px;
     }
   }
   .perImage, .nextImage{
@@ -78,7 +78,7 @@ export default {
     position: absolute;
     width: 60px;
     height: 60px;
-    top: 50%;
+    top: 8%;
     z-index: 10;
     img{
       background-size: 100%,100%;
@@ -97,7 +97,7 @@ export default {
   justify-content: flex-start;
   width: 50%;
   bottom: 10px;
-  left: 25%;
+  left: 30%;
   z-index: 100;
   span{
     display: inline-block;

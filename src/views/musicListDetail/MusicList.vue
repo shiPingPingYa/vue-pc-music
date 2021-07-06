@@ -1,11 +1,13 @@
 <template>
   <div class="music-lsit">
     <!-- 每日推荐 -->
-  <div class="list-item newday" v-if="isShow" v-show="isShow" @click="enterDayDetail()">
-    <div class="new">
-      <p>{{getDate}}</p>
-      <div>{{time}} </div>
+  <div class="day_music"  @click="enterDayDetail()">
+    <div class="day_music_back"></div>
+    <div class="day_music_time">
+      <div class="day_music_date">{{getDay}}</div>
+      <div class="day_music_day">{{getDate}}</div>
     </div>
+    <div class="day_music_title">每日歌曲推荐</div>
   </div>
   <!-- 歌单列表 -->
   <div class="song-item" v-for="(item,index) in totalList" :key="index"
@@ -38,8 +40,14 @@ export default {
   },
   data () {
     return {
-      isShow: false
+      getDate: '',
+      getDay: ''
     }
+  },
+  created () {
+    const date = new Date()
+    this.getDate = date.getDate()
+    this.getDay = this.isGetDay(date.getDay())
   },
   methods: {
     // 跳转到推荐详情页
@@ -52,6 +60,17 @@ export default {
     // 条状到音乐详情页
     enterDetail (index) {
       this.$router.push({ path: '/musiclistdetail/' + this.totalList[index].id, query: { songId: this.totalList[index].id } })
+    },
+    isGetDay (day) {
+      switch (day) {
+        case 0: return '星期天'
+        case 1: return '星期一'
+        case 2: return '星期二'
+        case 3: return '星期三'
+        case 4: return '星期四'
+        case 5: return '星期五'
+        case 6: return '星期六'
+      }
     }
 
   }
@@ -96,6 +115,29 @@ export default {
     height: 10px;
     background-size: 100%,100%;
   }
+}
+
+.day_music{
+  position: relative;
+  width: 230px;
+  height: 267px;
+  text-align: center;
+  .day_music_back{
+    width: 229px;
+    height: 229px;
+    border: 1px solid #b8b6b6;
+  }
+  .day_music_time{
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    .day_music_day{
+      font-size: 100px;
+      color: red;
+    }
+  }
+
 }
 
 </style>

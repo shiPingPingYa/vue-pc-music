@@ -97,6 +97,12 @@ const routes = [
     path: '/transceiver',
     component: () => import('../components/content/friend/Friend.vue'),
     meta: { title: '朋友' }
+  },
+  // 每日推荐
+  {
+    path: '/daymusic',
+    component: () => import('../views/musicListDetail/childComps/DayMusic.vue'),
+    meta: { title: '每日歌曲推荐' }
   }
 ]
 

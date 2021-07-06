@@ -145,7 +145,6 @@ export default {
         if (flag === 0) {
           this.$router.push('/musiclistdetail/' + id)
         } else {
-          console.log('歌单亲求数据')
           const { data: { playlist: { trackIds } } } = await _getMusicListDetail(id)
           const ids = trackIds.map(item => item.id).join(',')
           const { data: { songs } } = await _getSongsDetail(ids)
