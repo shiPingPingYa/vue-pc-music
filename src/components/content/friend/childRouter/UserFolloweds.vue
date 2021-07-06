@@ -2,7 +2,7 @@
   <div class="user-follows">
     <scroll ref="scroll" class="scroll" :pull-up-load="true" @pullingUp="pullingUp()">
     <div class="user-name">
-      {{$store.state.userName}}的粉丝
+      {{userName}}的粉丝
     </div>
     <div class="follows-content">
       <div class="follows-user" v-for="(item,index) in followList" :key="index">
@@ -39,6 +39,7 @@ import Scroll from '../../../common/scroll/Scroll.vue'
 import { Aollows } from '../childComps/handleUserInfo'
 // 节流
 import { throttled } from '../../../../assets/common/tool'
+import { mapState } from 'vuex'
 export default {
   components: { Scroll },
   name: 'UserFollows',
@@ -49,6 +50,9 @@ export default {
       page: 1,
       limit: 30
     }
+  },
+  computed: {
+    ...mapState(['userName'])
   },
   created () {
     this.loadFollows()
