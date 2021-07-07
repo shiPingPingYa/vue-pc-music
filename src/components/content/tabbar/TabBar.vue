@@ -7,20 +7,26 @@
     <div class="buttons">
       <button class="el-icon-arrow-left" @click="preRouter()"></button>
       <button class="el-icon-arrow-right" @click="nextRouter()"></button>
-
     </div>
     <!-- 音乐搜索 -->
     <music-search></music-search>
     <!-- 用户登录 -->
     <div class="userlogin">
       <div class="user-img" @click="showLogin()">
-        <img :src="userImage()">
+        <img :src="getUserImage">
       </div>
       <div class="user-id">{{userName}}</div>
         <!-- 退出登录 -->
-      <div class="enterLogin">
-        <div class="enter-name">退出登录</div>
-        <i class="el-icon-s-unfold" @click="enterLogin()"></i>
+      <div class="enterLogin" v-if="isLogin">
+          <el-upload
+          action="/avatar/upload"
+          :headers=" header"
+          :show-file-list="false"
+          :http-request="httpRequest"
+           >
+         <i class="el-icon-picture-outline-round"></i>
+          </el-upload>
+        <i   class="el-icon-s-unfold" @click="enterLogin()"></i>
       </div>
     </div>
 
@@ -28,18 +34,28 @@
 </template>
 <script>
 import MusicSearch from '../search/MusicSearch'
-import { mapState } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import { mixins } from '../user/mixins'
+import { _setUserImage } from '../../../network/user'
 export default {
   name: 'TabBar',
   components: {
     MusicSearch
   },
-  computed: {
-    ...mapState(['userName'])
-  },
   mixins: [mixins],
+  computed: {
+    ...mapState(['userName']),
+    ...mapGetters(['getUserImage', 'isLogin'])
+  },
+  data () {
+    return {
+      header: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+  },
   methods: {
+    ...mapActions(['_GETUSERINFO']),
     preRouter () {
       this.$router.go(-1)
     },
@@ -55,23 +71,31 @@ export default {
     // 退出登录
     enterLogin () {
       // 判断是否登录
-      if (window.localStorage.getItem('obj')) {
+      if (window.localStorage.getItem('userId')) {
         this.$confirm('此操作会退出登录,是否继续?', '提示', {
           confirmButtonText: '确认',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          // 清除本地缓存
-          window.localStorage.clear('obj')
-          // 跳转到首页，并重新刷新文档
-          this.$router.push('/')
+          this.$store.commit('setIslogin', false)
+          window.localStorage.clear('userId')
           window.location.reload()
-          this.$message({ type: 'success', message: '已经退出' })
         }).catch(() => {
           this.$message({ type: 'info', message: '已取消' })
         })
       } else {
         this.$message.warning('还未登录')
+      }
+    },
+    async   httpRequest (item) {
+      const isType = item.file.type === 'image/jpeg' || item.file.type === 'image/png'
+      if (!isType) return this.$message.error('请选择正确的文件')
+      var uploadImage = new FormData()
+      uploadImage.append('imgFile', item.file)
+      const { data: { data: { code } } } = await _setUserImage(uploadImage)
+      if (code === 200) {
+        this.$message.success('头像修改成功')
+        await this._GETUSERINFO(localStorage.getItem('userId'))
       }
     }
   }
@@ -173,11 +197,19 @@ export default {
       margin-right: 2px;
     }
     > i{
-      font-size: 18px  !important;
+      display: inline-block;
+      padding: 0  0 0  20px;
+      font-size: 30px  !important;
       vertical-align: -2px;
       cursor: pointer;
     }
   }
+}
+
+.el-icon-picture-outline-round{
+  display: inline-block;
+  font-size: 30px  !important;
+  vertical-align: -2px;
 }
 
 </style>

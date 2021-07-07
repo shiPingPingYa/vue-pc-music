@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import getters from './getters'
 import mutations from './mutations'
+import actions from './actions'
 Vue.use(Vuex)
 
 const state = {
@@ -27,8 +28,6 @@ const state = {
   password: '',
   // 验证码
   captcha: '',
-  // cookie
-  cookie: '',
   // 播放歌单
   playlist: [],
   // 歌手
@@ -49,14 +48,15 @@ const state = {
   userEventCount: '',
   // 用户登录的手机号码
   isSongList: true,
-  // 歌单路由
-  songListPath: '',
   // 分享内容的图片显示与否
-  asyncShareImag: false
+  asyncShareImag: false,
+  isLogin: false
+
 }
 
 export default new Vuex.Store({
   state,
   getters,
-  mutations
+  mutations,
+  actions
 })

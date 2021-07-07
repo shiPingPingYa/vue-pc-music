@@ -122,6 +122,9 @@ export default {
   width: 230px;
   height: 267px;
   text-align: center;
+  &&:hover{
+    cursor: pointer;
+  }
   .day_music_back{
     width: 229px;
     height: 229px;

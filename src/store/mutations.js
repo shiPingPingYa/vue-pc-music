@@ -1,5 +1,3 @@
-// 导入获取歌单请求
-import { _getSongList } from '../network/user'
 
 export default {
   // 更新歌手
@@ -57,9 +55,8 @@ export default {
     state.user = obj
     // 用户id
     state.uid = obj.uid
-    state.cookie = obj.cookie
     // 用户背景图
-    state.image = obj.image
+    state.image = obj.avatarUrl
     // 用户名字
     state.userName = obj.nickname
     // 添加用户粉丝
@@ -70,10 +67,6 @@ export default {
     state.userEventCount = obj.eventCount
     // 添加用户关注
     state.userFollows = obj.follows
-    // 获取用户歌单
-    await _getSongList(state.uid, state.cookie).then(res => {
-      state.userSongList = res.data.playlist
-    })
   },
   // 显示用户歌单
   userSongList (state, isSongList) {
@@ -83,14 +76,19 @@ export default {
   addSongListPath (state, songListPath) {
     state.songListPath = songListPath
   },
-  async getSongList (state) {
+  async addSongList (state, playlist) {
   // 获取用户歌单
-    await _getSongList(state.uid, state.cookie).then(res => {
-      state.userSongList = res.data.playlist
-    })
+    state.userSongList = playlist
   },
   // 设置分享内容图片的显示
   setAsyncShareImag (state, flag) {
     state.asyncShareImag = flag
+  },
+  // 修改用户背景图片
+  setUserImage (state, img) {
+    state.image = img
+  },
+  setIslogin (state, flag) {
+    state.isLogin = flag
   }
 }

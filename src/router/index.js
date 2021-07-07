@@ -114,7 +114,7 @@ router.beforeEach((to, from, next) => {
   // 设置网站title
   document.title = getPageTitle(to.meta.title)
   // 没有登录
-  if (!window.localStorage.getItem('obj')) {
+  if (!window.localStorage.getItem('userId')) {
     // 访问视频
     if (to.path === '/video/allvideo' || to.path === '/friend/frienddetail' || to.path === '/transceiver') {
       Message.info('电台等资源必须登录后才能获取，请先登录')

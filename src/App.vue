@@ -38,15 +38,16 @@ export default {
     }
   },
   created () {
-    // 获取localstorage里面的obj对象
-    if (window.localStorage.getItem('obj')) {
-      var obj = window.localStorage.getItem('obj')
-      obj = JSON.parse(obj)
-      this.$store.commit('addUser', obj)
+    // 获取localstorage里面的用户id
+    if (localStorage.getItem('userId')) {
+      this.$store.dispatch('_GETUSERINFO', localStorage.getItem('userId'))
+    } else {
+      this.$message.info('已退出登录')
+      this.showLogin()
     }
   },
   methods: {
-    ...mapMutations(['setAsyncShareImag'])
+    ...mapMutations(['setAsyncShareImag', 'showLogin'])
   },
   mounted () {
     // 监听键盘事件，停止播放音乐

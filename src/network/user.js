@@ -24,14 +24,11 @@ export function _VerifyPhone (phone) {
 }
 
 // 手机登录,必选参数 :phone: 手机号码,password: 密码
-export function _login (phone, password) {
+export function _login (data) {
   return request({
     url: '/login/cellphone',
     method: 'POST',
-    data: {
-      phone: phone,
-      password: password
-    }
+    data
   })
 }
 
@@ -108,5 +105,29 @@ export function _getCheckQrcode (key) {
       timerstamp: Date.now()
     },
     withCredentials: true
+  })
+}
+
+/**
+ *
+ * @description 修改用户头像
+ * @imgSize 图片尺寸 默认300
+ */
+export function _setUserImage (data) {
+  return request({
+    url: '/avatar/upload',
+    method: 'POST',
+    data
+  })
+}
+
+/**
+ * @description 获取用户默认信息
+ * @uid 用户id
+ */
+export function _getUserInfo (params) {
+  return request({
+    url: '/user/detail',
+    params: params
   })
 }

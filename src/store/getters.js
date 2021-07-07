@@ -19,5 +19,7 @@ export default {
   getSongListPath (state) {
     return state.songListPath
   },
-  getAsyncShareImag: state => state.asyncShareImag
+  getAsyncShareImag: state => state.asyncShareImag,
+  getUserImage: state => state.image || 'img/login.128c56ca.jpg',
+  isLogin: state => state.isLogin || localStorage.getItem('userId')
 }

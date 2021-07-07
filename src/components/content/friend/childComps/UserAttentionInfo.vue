@@ -4,8 +4,8 @@
       <div class="user-box">
         <!-- 用户默认信息 -->
        <div class="user-info">
-        <div class="user-image">
-          <img :src="userImage()" alt="">
+        <div class="user-image" >
+          <img :src="getUserImage" alt="">
         </div>
         <div class="user-id">{{userName}}</div>
         <div class="user-gender">
@@ -31,6 +31,7 @@
            <span>粉丝</span>
          </div>
        </div>
+
       </div>
   </div>
 </template>
@@ -38,12 +39,13 @@
 // 背景混入
 import { mixins } from '../../user/mixins'
 // 解析vuex的state
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'UserAttentionInfo',
   mixins: [mixins],
   computed: {
-    ...mapState(['userName', 'userGender', 'userFollows', 'userFolloweds', 'userEventCount'])
+    ...mapState(['userName', 'userGender', 'userFollows', 'userFolloweds', 'userEventCount']),
+    ...mapGetters(['getUserImage'])
   },
   methods: {
     enterUser (path) {

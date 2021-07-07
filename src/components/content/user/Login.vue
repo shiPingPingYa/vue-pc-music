@@ -3,7 +3,7 @@
   <div class="login">
       <!-- 登录背景 -->
       <div class="login-back">
-        <div class="close" @click="hiddenLogin">
+        <div class="close" @click.stop="__hiddenLogin">
           <img src="../../../assets/img/user/x.svg" alt="">
         </div>
         <div class="back">
@@ -26,13 +26,13 @@
          </div>
         <!-- 登录 -->
          <div class="form-item" >
-          <input ref="btn" @click="userLogin()" type="button" :disabled="!btnDisabled()" value="登陆" :class="{'btn-login':btnDisabled(),'disabled-btn':!btnDisabled()}" >
+          <input ref="btn" @click.stop="userLogin()" type="button" :disabled="!btnDisabled()" value="登陆" :class="{'btn-login':btnDisabled(),'disabled-btn':!btnDisabled()}" >
          </div>
          <!-- 注册 -->
           <div class="form-item">
-            <div class="register" @click="registerC()">注册</div>
+            <div class="register" @click.stop="registerC()">注册</div>
          </div>
-         <div class="form-item" @click="qrcodeClick()">
+         <div class="form-item" @click.stop="qrcodeClick()">
          <span>二维码登录</span>
          </div>
        </div>
@@ -43,54 +43,36 @@
 </template>
 <script>
 import { mixins } from './mixins'
-import { _login } from '../../../network/user'
+import { mapMutations } from 'vuex'
 export default {
   name: 'Login',
   mixins: [mixins],
   methods: {
+    ...mapMutations(['hiddenLogin', 'showRegister', 'showQrcode']),
     // 隐藏登录界面
-    hiddenLogin () {
+    __hiddenLogin () {
       // 清除提示信息
       this.password = ''
       this.phoneMessage = ''
       this.passwordMessage = ''
-      this.$store.commit('hiddenLogin')
+      this.hiddenLogin()
     },
     // 显示注册页面
     registerC () {
       // 隐藏登录页
-      this.$store.commit('hiddenLogin')
-      this.$store.commit('showRegister')
+      this.hiddenLogin()
+      this.showRegister()
     },
     // 二维码组件
     qrcodeClick () {
       // 关闭注册组件
-      this.$store.commit('hiddenLogin')
-      this.$store.commit('showQrcode')
+      this.hiddenLogin()
+      this.showQrcode()
     },
     // 登录
     userLogin () {
-      _login(this.phone, this.password).then(res => {
-        if (res.data.code !== 200) {
-          this.passwordMessage = '密码错误'
-        } else {
-          // 获取响应数据(cookie，uname,image,uid),follows关注,followeds粉丝,gender(1男,0女),eventCount动态
-          const obj = {
-            uid: res.data.profile.userId,
-            cookie: res.data.cookie,
-            nickname: res.data.profile.nickname,
-            image: res.data.profile.avatarUrl,
-            follows: res.data.profile.follows,
-            followeds: res.data.profile.followeds,
-            gender: res.data.profile.gender,
-            eventCount: res.data.profile.eventCount
-          }
-          window.localStorage.setItem('obj', JSON.stringify(obj))
-          this.$store.commit('addUser', obj)
-          // 隐藏登录页面
-          this.hiddenLogin()
-        }
-      })
+      const data = { phone: this.phone, password: this.password }
+      this.$store.dispatch('__LOGIN', data)
     }
   }
 }
