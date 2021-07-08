@@ -123,7 +123,7 @@ export function _setUserImage (data) {
 
 /**
  * @description 获取用户默认信息
- * @uid 用户id
+ * @param uid 用户id
  */
 export function _getUserInfo (params) {
   return request({

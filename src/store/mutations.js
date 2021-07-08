@@ -54,7 +54,7 @@ export default {
   async addUser (state, obj) {
     state.user = obj
     // 用户id
-    state.uid = obj.uid
+    state.uid = obj.userId
     // 用户背景图
     state.image = obj.avatarUrl
     // 用户名字

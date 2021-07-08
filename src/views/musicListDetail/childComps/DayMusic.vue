@@ -124,6 +124,7 @@ export default {
 .day_music_play{
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
   button{
     font-size: 18px;
     color: #fff;
@@ -133,11 +134,11 @@ export default {
   }
   .el_add{
     width: 20px;
-    height: 42px;
+    height: 35px;
     margin-left: -10px;
     color: #fff;
     background: red;
-    line-height: 44px;
+    line-height: 35px;
     i{
       &:hover{
         cursor: pointer;
