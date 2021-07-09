@@ -66,6 +66,7 @@ export default {
   width: 70%;
   top: 10%;
   margin-left: 2%;
+  z-index: 1000;
   .alert_container{
     width: 100%;
     img{

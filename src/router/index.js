@@ -103,6 +103,16 @@ const routes = [
     path: '/daymusic',
     component: () => import('../views/musicListDetail/childComps/DayMusic.vue'),
     meta: { title: '每日歌曲推荐' }
+  },
+  {
+    path: '/hotTopicRankList',
+    component: () => import('../components/content/friend/childRouter/HotTopicRankList.vue'),
+    meta: { title: '热门话题' }
+  },
+  {
+    path: '/topicDetail/:id',
+    component: () => import('../components/content/friend/TopicDetail.vue'),
+    meta: { title: '话题详情' }
   }
 ]
 

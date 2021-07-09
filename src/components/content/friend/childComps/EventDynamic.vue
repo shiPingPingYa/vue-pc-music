@@ -1,5 +1,5 @@
 <template>
-<div style="width:100%">
+<div style="width:100%" v-if="dynamicList.length !== 0 ">
   <div class="condition-dynamic" v-for="(item,index) in dynamicList" :key="index">
     <!-- 用户头像 -->
         <div class="user">

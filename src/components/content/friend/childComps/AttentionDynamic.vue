@@ -77,7 +77,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .attention-dynamic{
-  width: 80%;
+  width: 70%;
   height: 100%;
   padding-right: 20px;
   border-right: 1px solid #949493;

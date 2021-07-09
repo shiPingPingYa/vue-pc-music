@@ -33,6 +33,7 @@
        </div>
 
       </div>
+      <top-topic :limit="limit" :isTitle='true'></top-topic>
   </div>
 </template>
 <script>
@@ -40,8 +41,15 @@
 import { mixins } from '../../user/mixins'
 // 解析vuex的state
 import { mapState, mapGetters } from 'vuex'
+import TopTopic from './TopTopic.vue'
 export default {
   name: 'UserAttentionInfo',
+  data () {
+    return {
+      limit: 6 // 话题榜个数
+    }
+  },
+  components: { TopTopic },
   mixins: [mixins],
   computed: {
     ...mapState(['userName', 'userGender', 'userFollows', 'userFolloweds', 'userEventCount']),
@@ -57,7 +65,7 @@ export default {
 <style lang="less" scoped>
 .user-attention-info{
   position: absolute;
-  width: 20%;
+  width: 30%;
   right: 6px;
   margin-top: -10px;
   > .user-box{
