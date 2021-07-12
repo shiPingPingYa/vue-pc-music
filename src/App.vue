@@ -20,7 +20,7 @@ import PlayMusic from '../src/components/content/playmusic/PlayMusic'
 // import HomePageRecommends from '../src/components/HomePageRecommends'
 import { mapMutations } from 'vuex'
 export default {
-  name: 'app',
+  name: 'App',
   components: {
     TabBar,
     CenterContent,
