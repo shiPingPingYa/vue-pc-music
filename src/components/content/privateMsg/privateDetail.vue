@@ -67,8 +67,8 @@ import Scroll from '../../common/scroll/Scroll.vue'
 import { formDate } from '../../../assets/common/tool'
 import { _getPrivateMsg, _getPrivateComments, _getPrivateMe, _getPrivateNotices, HandlePrivateMsg, HandlePrivateNotices, HandlePrivateComments } from '../../../network/privateNews'
 export default {
-  components: { Scroll },
   name: 'privateDetail',
+  components: { Scroll },
   data () {
     return {
       tabbarList: ['私信', '评论', '@我', '通知'],

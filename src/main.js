@@ -8,7 +8,7 @@ import store from './store'
 import '../src/assets/css/babel.css'
 // 导入elementui
 import '../src/plugins/element'
-import { Message, Pagination, Row, Col, Select, Option, Tag, Form, Upload, Container, Tabs, TabPane } from 'element-ui'
+import { Message, Pagination, Row, Col, Select, Option, Tag, Form, Upload, Container } from 'element-ui'
 
 Vue.config.productionTip = false
 // 挂载axios
@@ -26,8 +26,6 @@ Vue.use(Tag)
 Vue.use(Form)
 Vue.use(Upload)
 Vue.use(Container)
-Vue.use(Tabs)
-Vue.use(TabPane)
 
 new Vue({
   router,

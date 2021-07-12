@@ -1,42 +1,28 @@
 
 // 把传进来的歌曲的时间进行处理(mm:ss)
 export function formDate (date, str) {
+  // 获取时间
+  const fullyear = date.getFullYear()
+  const newFullyear = new Date().getFullYear()
+  const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`
+  const dateO = date.getDate()
+  const hours = date.getHours() > 9 ? date.getHours() : `0${date.getHours()}`
+  const minutes = date.getMinutes() > 9 ? date.getMinutes() : `0${date.getMinutes()}`
+  const seconds = date.getSeconds() > 9 ? date.getSeconds() : `0${date.getSeconds()}`
   if (str === 'mm:ss') {
-    let m = date.getMinutes()
-    let s = date.getSeconds()
-    m = m < 10 ? '0' + m : m
-    s = s < 10 ? '0' + s : s
-    return `${m}:${s}`
+    return `${minutes}:${seconds}`
   } else if (str === 'mm月dd日') {
-    const Mm = date.getMonth() + 1
-    const Dd = date.getDate()
-    return `${Mm}月${Dd}日`
+    return `${month}月${dateO}日`
   } else if (str === 'mm:dd-hh:mm') {
-    const Mon = date.getMonth() + 1
-    const Dat = date.getDate()
-    const Hh = date.getHours()
-    const Minu = date.getMinutes()
-    return `${Mon}月${Dat}日 ${Hh}:${Minu}`
+    return `${month}月${dateO}日 ${hours}:${minutes}`
   } else if (str === 'ff:mm:dd') {
-    const Ff = date.getFullYear()
-    const startF = new Date().getFullYear()
-    const Mm = date.getMonth() + 1 > 10 ? date.getMonth() : `0${date.getMonth() + 1}`
-    const D = date.getDate()
-    if (Ff === startF) {
-      return `${Mm}月${D}日`
+    if (fullyear === newFullyear) {
+      return `${month}月${dateO}日`
     } else {
-      return `${Ff}年${Mm}月${D}日`
+      return `${fullyear}年${month}月${dateO}日`
     }
   } else {
-    const F = date.getFullYear()
-    const M = date.getMonth() + 1
-    const D = date.getDate()
-    const H = date.getHours()
-    let mm = date.getMinutes()
-    if (mm < 10) {
-      mm = `0${mm}`
-    }
-    return `${F}年${M}月${D}日 ${H}:${mm}`
+    return `${fullyear}年${month}月${dateO}日 ${hours}:${minutes}`
   }
 }
 
