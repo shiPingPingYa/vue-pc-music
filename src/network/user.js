@@ -8,7 +8,7 @@ export function _getLonginStatus (cookie) {
     params: {
       cookie: cookie,
       withCredentials: true,
-      timerstamp: Date.now()
+      timestamp: Date.now()
     }
   })
 }
@@ -37,7 +37,8 @@ export function _getSongList (id) {
   return request({
     url: '/user/playlist',
     params: {
-      uid: id
+      uid: id,
+      timestamp: Date.now()
     }
   })
 }

@@ -7,7 +7,6 @@ export default {
       Message.error('密码错误')
     } else {
       Message.success('登陆成功')
-      console.log(profile)
       localStorage.setItem('userId', profile.userId)
       context.commit('addUser', profile)
       context.commit('hiddenLogin')

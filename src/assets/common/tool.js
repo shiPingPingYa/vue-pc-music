@@ -2,27 +2,40 @@
 // 把传进来的歌曲的时间进行处理(mm:ss)
 export function formDate (date, str) {
   if (str === 'mm:ss') {
-    var m = date.getMinutes()
-    var s = date.getSeconds()
+    let m = date.getMinutes()
+    let s = date.getSeconds()
     m = m < 10 ? '0' + m : m
     s = s < 10 ? '0' + s : s
     return `${m}:${s}`
   } else if (str === 'mm月dd日') {
-    var Mm = date.getMonth() + 1
-    var Dd = date.getDate()
+    const Mm = date.getMonth() + 1
+    const Dd = date.getDate()
     return `${Mm}月${Dd}日`
   } else if (str === 'mm:dd-hh:mm') {
-    var Mon = date.getMonth() + 1
-    var Dat = date.getDate()
-    var Hh = date.getHours()
-    var Minu = date.getMinutes()
+    const Mon = date.getMonth() + 1
+    const Dat = date.getDate()
+    const Hh = date.getHours()
+    const Minu = date.getMinutes()
     return `${Mon}月${Dat}日 ${Hh}:${Minu}`
+  } else if (str === 'ff:mm:dd') {
+    const Ff = date.getFullYear()
+    const startF = new Date().getFullYear()
+    const Mm = date.getMonth() + 1 > 10 ? date.getMonth() : `0${date.getMonth() + 1}`
+    const D = date.getDate()
+    if (Ff === startF) {
+      return `${Mm}月${D}日`
+    } else {
+      return `${Ff}年${Mm}月${D}日`
+    }
   } else {
-    var F = date.getFullYear()
-    var M = date.getMonth() + 1
-    var D = date.getDate()
-    var H = date.getHours()
-    var mm = date.getMinutes()
+    const F = date.getFullYear()
+    const M = date.getMonth() + 1
+    const D = date.getDate()
+    const H = date.getHours()
+    let mm = date.getMinutes()
+    if (mm < 10) {
+      mm = `0${mm}`
+    }
     return `${F}年${M}月${D}日 ${H}:${mm}`
   }
 }

@@ -30,6 +30,8 @@ export function request (config) {
       return Promise.reject(new Error(res.message || 'Error'))
     } else if (res.data.code === 301) {
       Message.error(res.data.msg)
+    } else if (res.data.code === 404) {
+      Message.error('cookie，失效请重新登录')
     }
   }, err => {
     Message({

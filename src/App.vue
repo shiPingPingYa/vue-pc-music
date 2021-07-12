@@ -66,6 +66,7 @@ ul li{
   list-style: none;
 }
 #app {
+  position: relative;
   margin: 0 10% 0 10%;
   width: 80%;
   height: 100%;

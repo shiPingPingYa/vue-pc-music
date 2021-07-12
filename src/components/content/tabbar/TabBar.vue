@@ -16,8 +16,11 @@
         <img :src="getUserImage">
       </div>
       <div class="user-id">{{userName}}</div>
+      <div class="news" v-show="isLogin" @click="isPrivate = !isPrivate">
+         <img src="../../../assets/img/news.svg" alt="">
+      </div>
         <!-- 退出登录 -->
-      <div class="enterLogin" v-if="isLogin">
+      <div class="enterLogin" v-show="isLogin">
           <el-upload
           action="/avatar/upload"
           :headers=" header"
@@ -26,10 +29,11 @@
            >
          <i class="el-icon-picture-outline-round"></i>
           </el-upload>
-        <i   class="el-icon-s-unfold" @click="enterLogin()"></i>
+        <i  class="el-icon-s-unfold" @click="enterLogin()"></i>
+
       </div>
     </div>
-
+    <private-detail class="private_detail" v-show="isPrivate"></private-detail>
   </div>
 </template>
 <script>
@@ -37,11 +41,10 @@ import MusicSearch from '../search/MusicSearch'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import { mixins } from '../user/mixins'
 import { _setUserImage } from '../../../network/user'
+import privateDetail from '../privateMsg/privateDetail.vue'
 export default {
   name: 'TabBar',
-  components: {
-    MusicSearch
-  },
+  components: { MusicSearch, privateDetail },
   mixins: [mixins],
   computed: {
     ...mapState(['userName']),
@@ -51,7 +54,8 @@ export default {
     return {
       header: {
         'Content-Type': 'multipart/form-data'
-      }
+      },
+      isPrivate: false
     }
   },
   methods: {
@@ -203,6 +207,19 @@ export default {
       vertical-align: -2px;
       cursor: pointer;
     }
+
+  }
+  .news{
+      width: 30px;
+      height: 30px;
+      margin-right: 20px;
+      img{
+      width: 100%;
+      height: 100%;
+      &:hover{
+        cursor: pointer;
+      }
+      }
   }
 }
 
@@ -212,4 +229,10 @@ export default {
   vertical-align: -2px;
 }
 
+.private_detail{
+  position: absolute;
+  top: 54px;
+  right: 0;
+  z-index: 10000;
+}
 </style>
