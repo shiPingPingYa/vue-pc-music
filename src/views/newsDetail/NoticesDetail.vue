@@ -85,6 +85,7 @@ export default {
                   '评论加载完毕，暂无更多.....'
               } else {
                 res.data.comments.forEach((item) => this.recommends.push(item))
+                console.log('aaaa')
               }
             }
           )
