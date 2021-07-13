@@ -3,7 +3,10 @@ import { request } from './request'
 // 工具函数
 import { formDate } from '../assets/common/tool'
 
-// 获取音乐URL
+/**
+ * @description 获取音乐播放地址
+ * @param id  音乐id
+ */
 export function _getMusicUrl (id) {
   return request({
     url: '/song/url',
@@ -14,9 +17,8 @@ export function _getMusicUrl (id) {
 }
 
 /**
- *
- * @param {就是音乐id用于判断是否有版权} params
- * @returns
+ * @description 判断音乐是否有版权，swiper轮播图需要
+ * @param id 音乐id
  */
 // 判断音乐是否有权限
 export function _getCheckMusic (id) {
@@ -28,7 +30,11 @@ export function _getCheckMusic (id) {
   })
 }
 
-// 获取歌曲详情，传入ids(可以传入多个id)
+/**
+ * @description 获取音乐详细信息
+ * @param ids 音乐id，可以传入单个，也可以传入多个以逗号链接如，23，23，232
+ * @returns
+ */
 export function _getSongsDetail (arr) {
   return request({
     url: '/song/detail',
@@ -38,18 +44,25 @@ export function _getSongsDetail (arr) {
   })
 }
 
-// 获取歌单详情
-export function _getMusicListDetail (id, cookie) {
+/**
+ * @description 获取歌单详细信息
+ * @param id 歌单id
+ * @returns
+ */
+export function _getMusicListDetail (id) {
   return request({
     url: '/playlist/detail',
     params: {
-      id: id,
-      cookie: cookie
+      id: id
     }
   })
 }
 
-// 歌单收藏者
+/**
+ * @description 获取歌单收藏者
+ * @param id 歌单id
+ * @param limit  收藏者数量，默认20
+ */
 export function _getSub (id, limit) {
   return request({
     url: '/playlist/subscribers',
@@ -61,11 +74,11 @@ export function _getSub (id, limit) {
 }
 
 /**
- *
- * @param {歌单} id
- * @param {评论数量，默认20} limit
- * @param {页码值} offset
- * @returns
+ * @description 获取歌单评论
+ * @param  id 歌单或者歌曲的id
+ * @param  limit 请求数量，默认20
+ * @param  offset 偏移位，取当前评论数组长度，即偏移当前评论
+ * @param  before  分页参数,取上一页最后一项的 time 获取下一页数据(获取超过5000条评论的时候需要用到)
  */
 // 获取歌单的评论内容
 export function _getRecommends (id, limit, offset) {
@@ -81,13 +94,12 @@ export function _getRecommends (id, limit, offset) {
 }
 
 /**
- *
- * @param {歌曲} id
- * @param {评论数量，默认20} limit
- * @param {页码值} offset
- * @returns
+ * @description 获取歌曲评论
+ * @param  id 歌曲id
+ * @param  limit 评论数量，默认20
+ * @param  offset 偏移位，取当前评论数组长度，即偏移当前评论
+ * @param  before  分页参数,取上一页最后一项的 time 获取下一页数据(获取超过5000条评论的时候需要用到)
  */
-// 音乐评论内容
 export function _musicRecommend (id, limit, offset) {
   return request({
     url: '/comment/music',
@@ -101,7 +113,9 @@ export function _musicRecommend (id, limit, offset) {
   })
 }
 
-// 热门歌单分类
+/**
+ * @description 获取热门播放歌单
+ */
 export function _getMusicListHot () {
   return request({
     url: '/playlist/hot'
@@ -109,6 +123,12 @@ export function _getMusicListHot () {
 }
 
 // 获取精品歌单cat: tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部"
+/**
+ * @description 获取精品歌单
+ * @param  cat tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部",可从精品歌单标签列表接口获取(/playlist/highquality/tags)
+ * @param  limit 取出歌单数量 , 默认为 20
+ * @param  before: 分页参数,取上一页最后一个歌单的 updateTime 获取下一页数据
+ */
 export function _getHighquality (cat, limit) {
   return request({
     url: '/top/playlist/highquality',
@@ -121,7 +141,6 @@ export function _getHighquality (cat, limit) {
 }
 
 /**
- *
  * @description 获取精品歌单标签列表
  */
 export function _getHighqualityTags () {
@@ -131,11 +150,10 @@ export function _getHighqualityTags () {
 }
 
 /**
- *
- * @pid 歌单Id
- * @id 音乐id
- * @cid 正在播放音乐id
- * @description 音乐播放心动模式
+ * @description 音乐心动模式
+ * @param pid 歌单Id
+ * @param id 音乐id
+ * @param cid 正在播放音乐id
  */
 export function _getIntelligenceList (params) {
   return request({
@@ -170,16 +188,24 @@ export class AllSongDetail {
 
 // 获取歌词
 // 说明 : 调用此接口 , 传入音乐 id 可获得对应音乐的歌词 ( 不需要登录 )
+/**
+ * @description 获取歌词
+ * @param  id 音乐的id
+ */
 export function _getLyric (id) {
   return request({
     url: '/lyric',
     params: {
-      id: id,
-      timestamp: Date.now()
+      id: id
     }
   })
 }
 
+/**
+ * @description 获取每日推荐歌曲(需要登录)
+ * @param {*} parmas
+ * @returns
+ */
 export function getDayMusic (parmas) {
   return request({
     url: '/recommend/songs',

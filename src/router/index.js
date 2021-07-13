@@ -113,6 +113,11 @@ const routes = [
     path: '/topicDetail/:id',
     component: () => import('../components/content/friend/TopicDetail.vue'),
     meta: { title: '话题详情' }
+  },
+  {
+    path: '/noticesDetail/:id/:type',
+    component: () => import('../views/newsDetail/NoticesDetail.vue'),
+    meta: { title: '通知详情' }
   }
 ]
 

@@ -42,7 +42,6 @@ export default {
       currentIndex: 0,
       // 歌手列表(名字，图片)
       artistsList: [],
-      musicListId: [],
       musicList: [],
       // input输入框的值
       key: '',
@@ -90,9 +89,8 @@ export default {
     async searchMusic () {
       this.musicList = []
       this.artistsList = []
-      this.musicListId = []
       // 将根据关键字搜索的歌曲列表解构出来
-      const { data: { result: { songs } } } = await _Search(this.key).then()
+      const { data: { result: { songs } } } = await _Search({ keywords: this.key, limit: 50 }).then()
       const ids = songs.map(item => item.id).join(',')
       songs.forEach(item => this.artistsList.push(item.artists[0]))
       _getSongsDetail(ids).then(res => {

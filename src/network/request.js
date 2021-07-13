@@ -25,9 +25,6 @@ export function request (config) {
     const { status } = res
     if (status === 200 && res !== null) {
       return res
-    } else if (status !== 200) {
-      Message.error(res.code)
-      return Promise.reject(new Error(res.message || 'Error'))
     } else if (res.data.code === 301) {
       Message.error(res.data.msg)
     } else if (res.data.code === 404) {

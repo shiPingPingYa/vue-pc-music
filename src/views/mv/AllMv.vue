@@ -41,11 +41,10 @@ export default {
   data () {
     return {
       limit: 40,
-      offset: 40,
       mvList: [],
-      area: null,
-      type: null,
-      order: null,
+      area: '全部',
+      type: '全部',
+      order: '上升最快',
       page: 1
     }
   },
@@ -53,25 +52,40 @@ export default {
     this.allMv()
   },
   methods: {
-    allMv (area = '全部', type = '全部', order = '上升最快', flag = false) {
-      if (flag) this.page = 0
-      // 值变了，就将mv数组清空
-      this.mvList = []
-      this.area = area
-      this.type = type
-      this.order = order
-
+    allMv (area, type, order, flag = false) {
+      // 导航条点击后才将修改请求参数
+      if (flag) {
+        this.mvList = []
+        this.page = 0
+        this.area = area
+        this.type = type
+        this.order = order
+      }
+      const params = {
+        type: this.type,
+        area: this.area,
+        order: this.order,
+        limit: this.limit,
+        offset: this.mvList.length
+      }
       // 调用接口获取数据
-      _AllMv(this.area, this.type, this.order, this.limit, this.page * this.limit).then(res => {
+      _AllMv(params).then(res => {
         res.data.data.forEach(item => this.mvList.push(new MV(item)))
       })
     },
-    handleCurrentChange (val) {
+    async  handleCurrentChange (val) {
+      const params = {
+        type: this.type,
+        area: this.area,
+        order: this.order,
+        limit: this.limit,
+        offset: this.mvList.length * (val - 1)
+      }
       this.mvList = []
-      _AllMv(this.area, this.type, this.order, this.limit, (val) * this.limit).then(res => {
-        res.data.data.forEach(item => this.mvList.push(new MV(item)))
-        this.$refs.scroll.scrollTo(0, 0, 0)
-      }).then(() => this.$refs.scroll.finishPullUp())
+      const { data: { data } } = await _AllMv(params)
+      data.forEach(item => this.mvList.push(new MV(item)))
+      this.$refs.scroll.scrollTo(0, 0, 0)
+      this.$refs.scroll.finishPullUp()
     }
   }
 }

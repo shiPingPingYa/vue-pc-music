@@ -1,7 +1,5 @@
 export default {
-  getLoginStatus (state) {
-    return state.isShowLogin
-  },
+  getLoginStatus: state => state.isShowLogin,
   getUserRegisterInfo (state) {
     const obj = {
       phone: state.phone,
@@ -12,13 +10,9 @@ export default {
     return obj
   },
   // 歌单id
-  getSongId (state) {
-    return state.songID
-  },
+  getSongId: state => state.songID,
   // 获取歌单路由
-  getSongListPath (state) {
-    return state.songListPath
-  },
+  getSongListPath: state => state.songListPath,
   getAsyncShareImag: state => state.asyncShareImag,
   getUserImage: state => state.image || 'img/login.128c56ca.jpg',
   isLogin: state => state.isLogin || localStorage.getItem('userId')

@@ -1,4 +1,6 @@
-import { request } from './request'
+import {
+  request
+} from './request'
 
 /**
  * @description 获取私信
@@ -39,7 +41,7 @@ export function _getPrivateMe (params) {
 /**
  * @description 获取通知数据
  * @param limit 数量默认30
- * @lasttime 上一页最后一条数据的lasttime
+ * @lasttime 上一页最后一条数据的time
  */
 export function _getPrivateNotices (params) {
   return request({
@@ -53,6 +55,7 @@ export class HandlePrivateMsg {
     this.lasttime = obj.lastMsgTime
     this.userName = obj.fromUser.nickname
     this.userId = obj.fromUser.userId
+    // 对话框里的历史私信
     this.initPrivateMsg(obj)
   }
 
@@ -71,22 +74,25 @@ export class HandlePrivateNotices {
   }
 
   initPrivateNotices (obj) {
-    // 通过type来判断是什么通知，2：歌单，
-    if (obj.type === 10) {
+    // 通过type来判断是什么通知，2：歌单，6:评论
+    this.type = obj.type
+    if (this.type === 10) {
       this.title = obj.generalNotice.actionDesc
       this.content = obj.generalNotice.content
       this.nickname = obj.user.nickname
       this.avatarUrl = obj.user.avatarUrl
-    } else if (obj.type === 6) {
+    } else if (this.type === 6) {
       this.content = obj.comment.content
       this.nickname = obj.user.nickname
+      this.threadId = obj.comment.threadId
       this.avatarUrl = obj.user.avatarUrl
       this.title = '攒了你的评论'
-    } else if (obj.type === 2) {
+    } else if (this.type === 2) {
       this.nickname = obj.user.nickname
       this.avatarUrl = obj.user.avatarUrl
       this.content = '[' + obj.playlist.name + ']'
       this.title = '收藏了你的歌单'
+      this.threadId = obj.playlist.id
     }
   }
 }

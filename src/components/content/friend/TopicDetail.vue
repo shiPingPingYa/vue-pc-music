@@ -68,11 +68,11 @@ export default {
   methods: {
     async initTopicDetail () {
       this.dynamicList = []
-      const { data: { act: { coverPCListUrl, participateCount, title } } } = await _getTopicDetail(this.id)
+      const { data: { act: { coverPCListUrl, participateCount, title } } } = await _getTopicDetail({ actid: this.id })
       this.coverPCListUrl = coverPCListUrl
       this.participateCount = participateCount
       this.title = title
-      _getTopicEvent(this.id).then(res => {
+      _getTopicEvent({ actid: this.id }).then(res => {
         res.data.events.forEach(item => this.dynamicList.push(new AttentionDynamic(item)))
       })
     },

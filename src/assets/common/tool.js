@@ -26,7 +26,7 @@ export function formDate (date, str) {
   }
 }
 
-// 把传递进来的歌曲标题名进行处理(前后两首歌，标题名不能一样)
+// 把传递进来的歌曲标题名进行处理(前后两首歌，标题名不能一样) (暂时放弃使用)
 export function distinct (arr) {
   var newArr = []
   let isExist = false

@@ -13,3 +13,15 @@ export function _getUserSendEvent (params) {
     params: params
   })
 }
+
+/**
+ * @description 登录后获取动态评论
+ * @param  params threadId 动态id，在comment(评论)下面获取
+ * @param offset  偏移位，偏移当前数组长度，即偏移当前数组
+ */
+export function _getCommentEvent (params) {
+  return request({
+    url: '/comment/event',
+    params
+  })
+}

@@ -1,17 +1,17 @@
 import { Date } from 'core-js'
 import { request } from './request'
 
-// 登录状态
-export function _getLonginStatus (cookie) {
+/**
+ * @description 根据cookie获取登录状态
+ * @param cookie 二维码登录成功后的cookie
+ */
+export function _getLonginStatus (params) {
   return request({
     url: '/login/status',
-    params: {
-      cookie: cookie,
-      withCredentials: true,
-      timestamp: Date.now()
-    }
+    params
   })
 }
+
 // 手机号验证,必选参数 :,phone : 手机号码
 export function _VerifyPhone (phone) {
   return request({

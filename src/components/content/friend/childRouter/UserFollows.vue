@@ -39,17 +39,19 @@ import Scroll from '../../../common/scroll/Scroll.vue'
 import { Aollows } from '../childComps/handleUserInfo'
 // 节流
 import { throttled } from '../../../../assets/common/tool'
+import { mapState } from 'vuex'
 export default {
   components: { Scroll },
   name: 'UserFollows',
   data () {
     return {
       followList: [],
-      notFollowList: [],
       page: 1,
-      limit: 39
+      limit: 39,
+      followsMore: ''
     }
   },
+  computed: { ...mapState(['uid']) },
   created () {
     this.loadFollows()
   },
@@ -58,18 +60,18 @@ export default {
     pullingUp: throttled(function () {
       this.loadFollows()
     }, 800),
-    async loadFollows () {
-      this.notFollowList = []
-      if (this.followList.length >= this.$store.state.userFollows) return
-      await _getUserAttentionList(this.$store.state.uid, this.limit * this.page).then(res => {
-        this.notFollowList = res.data.follow
-      })
-      for (var i of this.notFollowList) {
-        var follows = new Aollows(i)
-        this.followList.push(follows)
+    loadFollows () {
+      if (this.followsMore === false) return this.$message.info('暂无更多关注，快快关注去吧')
+      const params = {
+        uid: this.uid || localStorage.getItem('userId'),
+        offset: this.followList.length,
+        limit: 40
       }
-      this.offset++
-      this.$refs.scroll.finishPullUp()
+      _getUserAttentionList(params).then(res => {
+        this.notFollowList = res.data.follow.forEach(item => this.followList.push(new Aollows(item)))
+        this.followsMore = res.data.more
+        this.$refs.scroll.finishPullUp()
+      })
     }
   }
 }

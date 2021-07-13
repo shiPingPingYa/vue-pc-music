@@ -16,7 +16,7 @@
       <!-- 下面评论区 -->
       <div class="recommend">
         <p class="p">评论</p>
-        <mv-recommends class="recds" @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="1" :recommends="recommends"></mv-recommends>
+        <mv-recommends class="recds" ref="songList_recommends" @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="1" :recommends="recommends"></mv-recommends>
       </div>
     </div>
     <!-- 右边内容布局 -->
@@ -69,7 +69,7 @@ export default {
       detail: null,
       url: null,
       recommends: null,
-      limit: 60,
+      limit: 30,
       simiMv: [],
       notSimiMv: []
     }
@@ -97,7 +97,7 @@ export default {
     // 获取播放mv默认信息
     async getBaseInfo () {
       // 分别是mv的详情，地址，评论，相似mv
-      await Promise.all([_getMvDetail(this.id), _getMvUrl(this.id), _getMvComment(this.id, this.limit), _getSimiMv(this.id)]).then(res => {
+      await Promise.all([_getMvDetail({ mvid: this.id }), _getMvUrl({ id: this.id }), _getMvComment({ id: this.id, limit: this.limit }), _getSimiMv({ mvid: this.id })]).then(res => {
         this.detail = res[0].data.data
         this.url = res[1].data.data.url
         this.recommends = res[2].data.comments
@@ -118,7 +118,12 @@ export default {
     },
     // 获取mv评论内容
     async  moreComments () {
-      const { data: { comments } } = await _getMvComment(this.id, this.limit, this.recommends.length)
+      const params = {
+        id: this.id,
+        limit: this.limit,
+        offset: this.recommends.length
+      }
+      const { data: { comments } } = await _getMvComment(params)
       // 评论已经被请求完毕
       if (comments.length === 0) {
         this.$Message.info('评论已经加载完毕，暂无更多评论')
@@ -133,7 +138,7 @@ export default {
     getCommends () {
       // 清除评论数据
       this.recommends = []
-      _getMvComment(this.id, this.limit, 0).then(res => {
+      _getMvComment({ id: this.id, limit: this.limit }).then(res => {
         res.data.comments.forEach(item => this.recommends.push(item))
       })
     }

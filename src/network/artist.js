@@ -1,6 +1,9 @@
 import { request } from './request'
 
-// 获取歌手详情
+/**
+ * @description 获取歌手详情
+ * @param id 歌手id
+ */
 export function _getArtistDetail (id) {
   return request({
     url: '/artist/detail',
@@ -10,8 +13,10 @@ export function _getArtistDetail (id) {
   })
 }
 
-// 获取歌手描述
-// 调用此接口 , 传入歌手 id, 可获得歌手描述
+/**
+ * @description 获取歌手描述
+ * @param  id 歌手id
+ */
 export function _getArtistDesc (id) {
   return request({
     url: '/artist/desc',
@@ -21,8 +26,10 @@ export function _getArtistDesc (id) {
   })
 }
 
-// 歌手热门50首歌曲
-// 说明 : 调用此接口, 可获取歌手热门50首歌曲
+/**
+ * @description 获取歌手热门50首音乐
+ * @param 歌手id
+ */
 export function _getArtistHot50 (id) {
   return request({
     url: '/artist/top/song',
@@ -32,8 +39,11 @@ export function _getArtistHot50 (id) {
   })
 }
 
-// 获取歌手专辑
-// 说明 : 调用此接口 , 传入歌手 id, 可获得歌手专辑内容,limit数量
+/**
+ * @description 获取歌手专辑
+ * @param  id  歌手id
+ * @param limit 专辑数量，默认50
+ */
 export function _getArtistAlbum (id) {
   return request({
     url: '/artist/album',
@@ -44,8 +54,11 @@ export function _getArtistAlbum (id) {
   })
 }
 
-// 获取专辑内容
-// 说明 : 调用此接口 , 传入专辑 id, 可获得专辑内容
+/**
+ * @description 获取专辑内容
+ * @param  id 专辑id
+ * @returns
+ */
 export function _getAlbum (id) {
   return request({
     url: '/album',
@@ -55,8 +68,10 @@ export function _getAlbum (id) {
   })
 }
 
-// 获取歌手描述
-// 说明 : 调用此接口 , 传入歌手 id, 可获得歌手描述
+/**
+ * @description 获取歌手详细信息
+ * @param  id  歌手id
+ */
 export function _getArtistDescDetail (id) {
   return request({
     url: '/artist/desc',
@@ -66,8 +81,11 @@ export function _getArtistDescDetail (id) {
   })
 }
 
-// 获取相似歌手
-// 说明 : 调用此接口 , 传入歌手 id, 可获得相似歌手
+/**
+ * @description 获取相似的歌手
+ * @param  id 歌手id
+ * @returns
+ */
 export function _getArtistSimilar (id) {
   return request({
     url: '/simi/artist',
@@ -77,10 +95,10 @@ export function _getArtistSimilar (id) {
   })
 }
 
-// 获取歌手 mv
-// 说明 : 调用此接口 , 传入歌手 id, 可获得歌手 mv 信息 ,
-//  具体 mv 播放地址可调 用/mv传入此接口获得的 mvid 来拿到 , 如 : /artist/mv?
-
+/**
+ * @description 获取歌手mv
+ * @param  id  歌手id
+ */
 export function _getArtistMv (id) {
   return request({
     url: '/artist/mv',

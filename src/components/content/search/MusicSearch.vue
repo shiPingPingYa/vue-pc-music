@@ -70,13 +70,13 @@ export default {
     // input输入内容后，发送请求,防抖输入值的时候多次向服务器请求数据
     suggest: debounce(async function () {
       if (this.keywords !== '') {
-        await _Suggest(this.keywords).then(res => {
+        await _Suggest({ keywords: this.keywords }).then(res => {
           this.sugSongs = res.data.result.songs
           this.sugArtist = res.data.result.artists
         })
         this.isSuggest = true
       }
-    }, 900),
+    }, 200),
     // 鼠标离开input，隐藏热搜
     leave () {
       this.isShow = false

@@ -41,8 +41,8 @@ import { Aollows } from '../childComps/handleUserInfo'
 import { throttled } from '../../../../assets/common/tool'
 import { mapState } from 'vuex'
 export default {
+  name: 'UserFolloweds',
   components: { Scroll },
-  name: 'UserFollows',
   data () {
     return {
       followList: [],
@@ -52,7 +52,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userName'])
+    ...mapState(['userName', 'uid'])
   },
   created () {
     this.loadFollows()
@@ -63,17 +63,14 @@ export default {
       this.loadFollows()
     }, 800),
     async loadFollows () {
-      this.notFollowList = []
-      if (this.followList.length >= this.$store.state.userFolloweds) return
-      await _getUserFons(this.$store.state.uid, this.limit * this.page).then(res => {
-        this.notFollowList = res.data.followeds
-      })
-      for (var i of this.notFollowList) {
-        var follows = new Aollows(i)
-        this.followList.push(follows)
+      const params = {
+        uid: this.uid || localStorage.getItem('userId'),
+        offset: this.followList.length
       }
-      this.offset++
-      this.$refs.scroll.finishPullUp()
+      _getUserFons(params).then(res => {
+        this.notFollowList = res.data.followeds.forEach(item => this.followList.push(new Aollows(item)))
+        this.$refs.scroll.finishPullUp()
+      })
     }
   }
 }

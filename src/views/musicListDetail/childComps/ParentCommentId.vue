@@ -54,7 +54,7 @@ export default {
         type: this.$parent.$parent.Type,
         parentCommentId: this.parentCommentId,
         time: this.lastTime, // 评论楼层最后一个评论消息的时间,
-        timestamp: Date.now() // 不缓存
+        timestamp: Date.now() // 不缓存楼层消息
       }
       const { data: { data: { comments } } } = await _getFloorComment(params)
       if (comments.length === 0) {

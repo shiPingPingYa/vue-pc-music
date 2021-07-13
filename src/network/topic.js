@@ -16,24 +16,20 @@ export function _getHotTopic (params) {
  * @description 获取话题详情
  * @param actid 话题id
  */
-export function _getTopicDetail (actid) {
+export function _getTopicDetail (params) {
   return request({
     url: '/topic/detail',
-    params: {
-      actid
-    }
+    params
   })
 }
 
 /**
- * @description 获取热门话题动态
+ * @description 获取热门话题动态评论
  * @param actid 话题id 76352260 76352260 76352260
  */
-export function _getTopicEvent (actid) {
+export function _getTopicEvent (params) {
   return request({
     url: '/topic/detail/event/hot',
-    params: {
-      actid
-    }
+    params
   })
 }

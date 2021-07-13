@@ -1,7 +1,7 @@
 <template>
   <div class="music-lsit">
     <!-- 每日推荐 -->
-  <div class="day_music"  @click="enterDayDetail()">
+  <div class="day_music" v-show="isLogin"  @click="enterDayDetail()">
     <div class="day_music_back"></div>
     <div class="day_music_time">
       <div class="day_music_date">{{getDay}}</div>
@@ -28,6 +28,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'MusicList',
   props: {
@@ -37,6 +38,9 @@ export default {
         return []
       }
     }
+  },
+  computed: {
+    ...mapGetters(['isLogin'])
   },
   data () {
     return {

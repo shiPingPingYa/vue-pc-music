@@ -9,79 +9,86 @@ export class MV {
   }
 }
 
-// 最新 mv
-// 说明 : 调用此接口 , 可获取最新 mv,取出数量 , 默认为 30
-export function _getNewMV (limit) {
+/**
+ * @description 获取最新mv
+ * @param  limit 最新mv数量，默认30
+ */
+export function _getNewMV (params) {
   return request({
     url: '/mv/first',
-    params: {
-      limit: limit
-    }
+    params
   })
 }
 
-// 获取 mv 数据
-export function _getMvDetail (id) {
+/**
+ * @description 获取mv详细信息
+ * @param  mvid mv的id
+ * @returns
+ */
+export function _getMvDetail (params) {
   return request({
     url: '/mv/detail',
-    params: {
-      mvid: id
-    }
+    params
   })
 }
 
-// 获取Mv地址
-export function _getMvUrl (id) {
+/**
+ * @description 获取mv的播放地址
+ * @param id mv的id
+ */
+export function _getMvUrl (params) {
   return request({
     url: '/mv/url',
-    params: {
-      id: id
-    }
+    params
   })
 }
 
-// 发送/删除评论
-export function _getMvComment (id, limit) {
+/**
+ * @description 获取mv的评论
+ * @param id mv的id
+ * @param limit 取出评论的数量，默认20
+ * @param offset 偏移位，取当前评论数组的长度，即偏移当前评论数组
+ */
+export function _getMvComment (params) {
   return request({
     url: '/comment/mv',
-    params: {
-      id: id,
-      limit: limit,
-      timestamp: Date.now()
-    }
+    params
   })
 }
 
-// 相似 mv,传入id
-export function _getSimiMv (id) {
+/**
+ * @description 获取相似mv
+ * @param id mv的id
+ */
+export function _getSimiMv (params) {
   return request({
     url: '/simi/mv',
-    params: {
-      mvid: id
-    }
+    params
   })
 }
 
-// mv 排行
-export function _getTopMv (limit = 10) {
+/**
+ * @description 获取mv的排行榜
+ * @param limit 取出数量，默认30
+ * @param area: 地区,可选值为内地,港台,欧美,日本,韩国,不填则为全部
+ * @param offset: 偏移数量 , 用于分页 , 如 :( 页数 -1)*30, 其中 30 为 limit 的值 , 默认 为 0
+ */
+export function _getTopMv (params) {
   return request({
     url: '/top/mv',
-    params: {
-      limit: limit
-    }
+    params
   })
 }
-
-// 全部mv
-export function _AllMv (area = '全部', type = '全部', order = '最新', limit, offset = 0) {
+/**
+ * @description 获取全部mv
+ * @param area: 地区,可选值为全部,内地,港台,欧美,日本,韩国,不填则为全部 type: 类型,可选值为全部,官方版,原生,现场版,网易出品,不填则为全部
+ * @param order: 排序,可选值为上升最快,最热,最新,不填则为上升最快
+ * @param limit: 取出数量 , 默认为 30
+ * @param offset: 偏移数量 , 用于分页 , 如 :( 页数 -1)*50, 其中 50 为 limit 的值 , 默认 为 0(取当前mv数组长度，即偏移当前mv)
+ */
+export function _AllMv (params) {
   return request({
     url: '/mv/all',
-    params: {
-      area: area,
-      type: type,
-      order: order,
-      limit: limit,
-      offset: offset
-    }
+    params
   })
 }

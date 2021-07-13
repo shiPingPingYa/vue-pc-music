@@ -2,7 +2,7 @@
   <div class="music-list">
     <div class="music-item" v-for="(item,index) in artistList" :key="index"
     @click="enterArtistDetail(item)">
-      <img :src="item.picUrl +'?param=326y286' " alt="" @load="artistImgLoad">
+      <img :src="item.picUrl +'?param=326y286' " >
       <div class="name">{{item.name}} </div>
     </div>
   </div>
@@ -33,10 +33,6 @@ export default {
         }
       })
       this.$store.commit('addArtist', artist)
-    },
-    artistImgLoad () {
-      if (this.count === this.artistList.length) this.$emit('artistImgLoad')
-      this.count++
     }
   }
 }

@@ -19,11 +19,11 @@ export function sendAndRemoveComment (params) {
 
 /**
  * @description 获取楼层评论
- * @param  t ：t(1：发送,2：回复)
  * @param type: 0: 歌曲,1: mv,2: 歌单,3: 专辑,4: 电台,5: 视频,6: 动态
  * @param id:对应id
  * @param parentCommendId:楼层ID
  * @param limit :评论数量，默认20
+ * @param time: 分页参数,取上一页最后一项的 time 获取下一页数据
  * @returns
  */
 export function _getFloorComment (params) {

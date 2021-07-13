@@ -59,9 +59,12 @@ export default {
     }, 800),
     // 加载数据
     async loadDynamic () {
-      this.page++
-      // 请求用户关注动态
-      const { data: { event, lasttime } } = await _getEvent(this.pagesize, this.$store.state.cookie, this.lastTime)
+      // 用户关注动态
+      const params = {
+        pagesize: this.pagesize,
+        lasttime: this.lastTime
+      }
+      const { data: { event, lasttime } } = await _getEvent(params)
       this.lastTime = lasttime
       event.forEach(item => this.dynamicList.push(new AttentionDynamic(item)))
       this.$refs.scroll.finishPullUp()
