@@ -24,6 +24,7 @@
           v-for="item in privateNewsList"
           :key="item.userId"
           v-show="privateNewsList.length !== 0"
+          @click="privateNewsChange(item.userId)"
         >
           <div class="private_img">
             <img :src="item.avatarurl + '?param=40y40'" alt="" />
@@ -286,6 +287,9 @@ export default {
         this.$router.push('/noticesDetail/' + id + '/' + type)
       }
       this.$parent.isPrivate = false
+    },
+    privateNewsChange (userId) {
+      this.$emit('privateNewChange', userId)
     }
   }
 }

@@ -118,6 +118,11 @@ const routes = [
     path: '/noticesDetail/:id/:type',
     component: () => import('../views/newsDetail/NoticesDetail.vue'),
     meta: { title: '通知详情' }
+  },
+  {
+    path: '/artist/albumDetail/:id',
+    component: () => import('../views/AlbumDetail/ArtistAlbumDetail.vue'),
+    meta: { title: '歌手专辑' }
   }
 ]
 

@@ -21,6 +21,9 @@ export function formDate (date, str) {
     } else {
       return `${fullyear}年${month}月${dateO}日`
     }
+  } else if (str === 'f:mm:dd-hh:mm') {
+    const fullyearTwo = fullyear.toString().slice(2, 4)
+    return `${fullyearTwo}年${month}月${dateO}日 ${hours}:${minutes}`
   } else {
     return `${fullyear}年${month}月${dateO}日 ${hours}:${minutes}`
   }
