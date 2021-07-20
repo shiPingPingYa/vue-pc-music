@@ -8,7 +8,7 @@ import store from './store'
 import '../src/assets/css/babel.css'
 // 导入elementui
 import '../src/plugins/element'
-import { Message, Pagination, Row, Col, Select, Option, Tag, Form, Upload, Container } from 'element-ui'
+import { Message, Pagination, Row, Col, Select, Option, Tag, Form, Upload, Container, Main, Tabs, TabPane, Header, Table, TableColumn, Dialog, FormItem, RadioGroup, Radio, CheckboxGroup, Checkbox } from 'element-ui'
 
 Vue.config.productionTip = false
 // 挂载axios
@@ -24,8 +24,20 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Tag)
 Vue.use(Form)
+Vue.use(FormItem)
 Vue.use(Upload)
 Vue.use(Container)
+Vue.use(Main)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Header)
+Vue.use(Table)
+Vue.use(TableColumn)
+Vue.use(Dialog)
+Vue.use(RadioGroup)
+Vue.use(Radio)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)
 
 new Vue({
   router,
