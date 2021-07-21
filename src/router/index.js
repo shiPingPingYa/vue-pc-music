@@ -255,14 +255,14 @@ const routes = [{
   meta: {
     title: '歌手专辑'
   }
-},
-{
-  path: '/ceshi',
-  component: () => import('../components/yunying/itemBankManage.vue'),
-  meta: {
-    title: '测试'
-  }
 }
+  // {
+  //   path: '/ceshi',
+  //   component: () => import('../components/yunying/itemBankManage.vue'),
+  //   meta: {
+  //     title: '测试'
+  //   }
+  // }
 ]
 
 const router = new VueRouter({

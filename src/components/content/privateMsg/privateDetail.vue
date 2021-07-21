@@ -81,7 +81,7 @@
           v-for="item in privateNoticesList"
           :key="item.id"
           v-show="privateNoticesList.length !== 0"
-          @click="goNoticesDetail(item.threadId,item.type)"
+          @click="goNoticesDetail(item.threadId, item.type)"
         >
           <div class="private_img">
             <img :src="item.avatarUrl + '?param=40y40'" alt="" />
