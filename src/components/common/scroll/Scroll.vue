@@ -24,6 +24,12 @@ export default {
         return false
       }
     },
+    pullDownRefresh: {
+      type: Boolean,
+      default () {
+        return false
+      }
+    },
     // 滚动条
     scrollbar: {
       type: [Boolean, Object],
@@ -50,6 +56,10 @@ export default {
       this.refresh()
       this.scroll.finishPullUp()
     },
+    finishPullDown () {
+      this.refresh()
+      this.scroll.finishPullDown()
+    },
     refresh () {
       this.scroll.refresh()
     },
@@ -61,7 +71,6 @@ export default {
     enable () {
       this.scroll && this.scroll.enable()
     },
-
     // 停止scroll的动画
     stop () {
       this.scroll.stop()
@@ -69,6 +78,9 @@ export default {
     // 禁用better-scroll
     disable () {
       this.scroll && this.scroll.disable()
+    },
+    getMaxScrollY () {
+      return this.scroll && this.scroll.maxScrollY
     }
   },
   mounted () {
@@ -78,6 +90,7 @@ export default {
       probeType: this.probeType,
       pullUpLoad: this.pullUpLoad,
       scrollbar: this.scrollbar,
+      pullDownRefresh: this.pullDownRefresh,
       // 设置pc端鼠标事件
       mouseWheel: {
         speed: 20,
@@ -92,6 +105,10 @@ export default {
     // 是否派发下拉加载事件
     this.scroll.on('pullingUp', () => {
       this.$emit('pullingUp')
+    })
+    // 是否派发上拉加载事件
+    this.scroll.on('pullingDown', () => {
+      this.$emit('pullingDown')
     })
   }
 

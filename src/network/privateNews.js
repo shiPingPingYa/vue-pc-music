@@ -1,6 +1,7 @@
 import {
   request
 } from './request'
+import { formDate } from '../assets/common/tool'
 
 /**
  * @description 获取私信
@@ -46,6 +47,19 @@ export function _getPrivateMe (params) {
 export function _getPrivateNotices (params) {
   return request({
     url: '/msg/notices',
+    params
+  })
+}
+
+/**
+ * @description 获取私信内容
+ * @param uid 用户id
+ * @param limit 取出数量默认30
+ * @param before : 分页参数,取上一页最后一项的 time 获取下一页数据
+ */
+export function _getPrivateHistoryNews (params) {
+  return request({
+    url: '/msg/private/history',
     params
   })
 }
@@ -105,5 +119,61 @@ export class HandlePrivateComments {
     this.content = obj.beRepliedContent
     this.nickname = obj.user.nickname
     this.avatarUrl = obj.user.avatarUrl
+  }
+}
+
+export class HandlePrivateHistory {
+  constructor (obj) {
+    this.nickname = obj.fromUser.nickname
+    this.avatarUrl = obj.fromUser.avatarUrl
+    this.time = obj.time
+    this.userId = obj.fromUser.userId
+    // 分享动态标题，分享动态图片，标题，内容
+    this.handleMsg(JSON.parse(obj.msg))
+  }
+
+  handleMsg (obj) {
+    // 这里的23是网易的分享的歌手动态，12是活动之类的，1：单曲，7：mv或者视频，2：专辑
+    switch (obj.type) {
+      case 23:
+        this.type = obj.type
+        this.shareTitle = obj.msg
+        this.title = (obj.generalMsg.noticeMsg || obj.generalMsg.title || '')
+        this.userImage = obj.generalMsg.cover
+        this.tag = obj.generalMsg.tag
+        break
+      case 12:
+        this.type = obj.type
+        this.shareTitle = obj.msg
+        this.title = obj.title
+        this.userImage = obj.promotionUrl.coverUrl
+        break
+      case 1:
+        this.type = obj.type
+        this.shareTitle = obj.msg
+        this.text = obj.title
+        this.title = obj.song.name
+        this.userImage = obj.song.album.blurPicUrl
+        this.id = obj.song.id
+        break
+      case 2:
+        this.type = obj.type
+        this.shareTitle = obj.msg
+        this.title = obj.album.name
+        this.userImage = obj.album.blurPicUrl
+        this.id = obj.album.id
+        break
+      case 7:
+        this.type = obj.type
+        this.shareTitle = obj.msg
+        this.userImage = obj.mv.imgurl
+        this.text = obj.title
+        this.tag = 'mv'
+        this.contentTitle = `${obj.mv.name}-${this.nickname}`
+        this.playCount = '播放' + Math.round(obj.mv.playCount / 10000) + '万'
+        this.duration = formDate(new Date(obj.mv.duration), 'mm:ss')
+        this.mvId = obj.mv.id
+        break
+    }
   }
 }

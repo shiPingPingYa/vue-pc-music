@@ -162,6 +162,45 @@ export function _getIntelligenceList (params) {
   })
 }
 
+/**
+ * @description 获取专辑信息
+ * @param id 专辑id
+ * @returns
+ */
+export function _getAlbumDeatil (params) {
+  return request({
+    url: '/album',
+    params
+  })
+}
+
+/**
+ * @description 获取专辑动态信息(如专辑收餐数量，专辑评论，专辑分享数量等等)
+ * @param id 专辑id
+ * @returns
+ */
+export function _getAlbumDynamicDetail (params) {
+  return request({
+    url: '/album/detail/dynamic',
+    params
+  })
+}
+
+/**
+ * @description 获取专辑评论
+ * @param 必选参数 : id: 专辑 id
+ * @param limit 可选参数 : limit: 取出评论数量 , 默认为 20
+ * @param offset: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)*20, 其中 20 为 limit 的值
+ * @param before: 分页参数,取上一页最后一项的 time 获取下一页数据(获取超过5000条评论的时候需要用到)
+ * @returns
+ */
+export function _getAlbumComments (params) {
+  return request({
+    url: '/comment/album',
+    params
+  })
+}
+
 // 将获取的歌曲对象进行封装,单个音乐对象
 export class SongDetail {
   constructor (songs) {

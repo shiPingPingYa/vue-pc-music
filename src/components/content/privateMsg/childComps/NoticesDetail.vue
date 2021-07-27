@@ -13,11 +13,11 @@
   </div>
 </template>
 <script>
-import { _getCommentEvent } from '../../network/event.js'
-import { _getRecommends } from '../../network/detail'
+import { _getCommentEvent } from '../../../../network/event.js'
+import { _getRecommends } from '../../../../network/detail'
 const NoticesRecommends = () =>
-  import('../../views/musicListDetail/childComps/Recommends')
-const scroll = () => import('../../components/common/scroll/Scroll.vue')
+  import('../../../../views/musicListDetail/childComps/Recommends.vue')
+const scroll = () => import('../../../common/scroll/Scroll.vue')
 export default {
   name: 'NoticesDetail',
   components: { NoticesRecommends, scroll },
