@@ -1,25 +1,26 @@
 <template>
-  <!-- 私信 -->
   <div class="private_content">
     <div
       class="content_item"
-      v-for="item in privateNewsList"
-      :key="item.userId"
-      v-show="privateNewsList.length !== 0"
-      @click="privateNewsChange(item.userId)"
+      v-for="item in privateCommentsList"
+      :key="item.id"
     >
       <div class="private_img">
-        <img :src="item.avatarurl + '?param=40y40'" alt="" />
+        <img :src="item.avatarUrl + '?param=40y40'" alt="" />
       </div>
       <div class="private_header">
-        <div class="private_name">{{ item.userName }}</div>
-        <div class="private_time">
-          {{ handlePrivateTime(item.lasttime) }}
+        <div class="private_comments_name">{{ item.nickname }}</div>
+        <div class="private_comments_time">
+          <span>{{ handlePrivateTime(item.lasttime) }}</span>
         </div>
-        <div class="private_ablum">{{ item.title }}</div>
+        <div class="private_title">回复我:{{ item.title }}</div>
+        <div class="private_comments_ablum">{{ item.content }}</div>
+        <div class="private_comments_replay">
+          <img src="../../../../assets/img/replay.svg" alt="" />回复
+        </div>
       </div>
     </div>
-    <div class="foward_prompt" v-show="privateNewsList.length === 0">
+    <div class="foward_prompt" v-show="privateCommentsList.length === 0">
       暂无数据
     </div>
   </div>
@@ -27,21 +28,16 @@
 <script>
 import { privateDetailMixin } from '../indexmixin'
 export default {
-  name: 'PrivateNewsList',
+  name: 'PrivateCommentList',
   props: {
-    privateNewsList: {
+    privateCommentsList: {
       type: Array,
       default () {
         return []
       }
     }
   },
-  mixins: [privateDetailMixin],
-  methods: {
-    privateNewsChange (userId) {
-      this.$parent.$parent.$emit('privateNewChange', userId)
-    }
-  }
+  mixins: [privateDetailMixin]
 }
 </script>
 <style lang="less" scoped>
@@ -98,11 +94,41 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
   .foward_prompt {
     width: 100%;
     height: 30px;
     margin-top: 20%;
     line-height: 30px;
     text-align: center;
+  }
+
+  .private_comments_name {
+    width: 50%;
+    color: rgb(22, 140, 236);
+  }
+
+  .private_comments_time {
+    width: 50%;
+    text-align: right;
+  }
+
+  .private_comments_ablum {
+    width: 100%;
+    padding: 6px 0;
+    background: rgb(246, 239, 239);
+  }
+
+  .private_comments_replay {
+    width: 100%;
+    text-align: right;
+    color: rgb(160, 154, 154);
+    img {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      vertical-align: -8px;
+      color: rgb(160, 154, 154);
+    }
   }
 </style>

@@ -244,7 +244,7 @@ const routes = [{
 },
 {
   path: '/noticesDetail/:id/:type',
-  component: () => import('../views/newsDetail/NoticesDetail.vue'),
+  component: () => import('../components/content/privateMsg/childComps/NoticesDetail.vue'),
   meta: {
     title: '通知详情'
   }

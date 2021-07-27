@@ -2,13 +2,13 @@
   <div class="history_news" v-if="historyList.length !== 0">
     <div class="new_headers">
       <div @click="prePrivateDetail">
-        <img src="../../assets/img/privateNews/pre.svg" alt="" />
+        <img src="../../../../assets/img/privateNews/pre.svg" alt="" />
       </div>
       <div>
         {{ historyList[0].nickname }}
       </div>
       <div @click="cancelHistory">
-        <img src="../../assets/img/privateNews/replay_privateNews.svg" alt="" />
+        <img src="../../../../assets/img/privateNews/replay_privateNews.svg" alt="" />
       </div>
     </div>
     <div class="new_container">
@@ -85,10 +85,10 @@
   </div>
 </template>
 <script>
-import Scroll from '../../components/common/scroll/Scroll.vue'
-import { SongDetail, _getSongsDetail } from '../../network/detail'
-import { formDate } from '../../assets/common/tool'
-import { indexMixin } from '../../views/musicListDetail/indexMixin'
+import Scroll from '../../../common/scroll/Scroll.vue'
+import { SongDetail, _getSongsDetail } from '../../../../network/detail'
+import { formDate } from '../../../../assets/common/tool'
+import { indexMixin } from '../../../../views/musicListDetail/indexMixin'
 export default {
   name: 'HistoryNews',
   props: {

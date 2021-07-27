@@ -18,88 +18,25 @@
       @pullingUp="pullingUp"
     >
       <!-- 私信 -->
-      <div class="private_content" v-show="isTabber === 0">
-        <div
-          class="content_item"
-          v-for="item in privateNewsList"
-          :key="item.userId"
-          v-show="privateNewsList.length !== 0"
-          @click="privateNewsChange(item.userId)"
-        >
-          <div class="private_img">
-            <img :src="item.avatarurl + '?param=40y40'" alt="" />
-          </div>
-          <div class="private_header">
-            <div class="private_name">{{ item.userName }}</div>
-            <div class="private_time">
-              {{ handlePrivateTime(item.lasttime) }}
-            </div>
-            <div class="private_ablum">{{ item.title }}</div>
-          </div>
-        </div>
-        <div class="foward_prompt" v-show="privateNewsList.length === 0">
-          暂无数据
-        </div>
-      </div>
+      <private-news-list
+        v-if="isTabber === 0"
+        :privateNewsList="privateNewsList"
+      ></private-news-list>
       <!-- 评论 -->
-      <div class="private_content" v-show="isTabber === 1">
-        <div
-          class="content_item"
-          v-for="item in privateCommentsList"
-          :key="item.id"
-          v-show="privateCommentsList.length !== 0"
-        >
-          <div class="private_img">
-            <img :src="item.avatarUrl + '?param=40y40'" alt="" />
-          </div>
-          <div class="private_header">
-            <div class="private_comments_name">{{ item.nickname }}</div>
-            <div class="private_comments_time">
-              <span>{{ handlePrivateTime(item.lasttime) }}</span>
-            </div>
-            <div class="private_title">回复我:{{ item.title }}</div>
-            <div class="private_comments_ablum">{{ item.content }}</div>
-            <div class="private_comments_replay">
-              <img src="../../../assets/img/replay.svg" alt="" />回复
-            </div>
-          </div>
-        </div>
-        <div class="foward_prompt" v-show="privateCommentsList.length === 0">
-          暂无数据
-        </div>
-      </div>
+      <private-comment-list
+        v-if="isTabber === 1"
+        :privateCommentsList="privateCommentsList"
+      ></private-comment-list>
       <!-- @我 -->
-      <div class="forward_content" v-show="isTabber === 2">
-        <div class="foward_prompt" v-show="forwardsList.length === 0">
-          暂无数据
-        </div>
-      </div>
+      <private-forward-list
+        v-if="isTabber === 2"
+        :forwardsList="forwardsList"
+      ></private-forward-list>
       <!-- 通知 -->
-      <div class="private_content" v-show="isTabber === 3">
-        <div
-          class="content_item"
-          v-for="item in privateNoticesList"
-          :key="item.id"
-          v-show="privateNoticesList.length !== 0"
-          @click="goNoticesDetail(item.threadId, item.type)"
-        >
-          <div class="private_img">
-            <img :src="item.avatarUrl + '?param=40y40'" alt="" />
-          </div>
-          <div class="private_header">
-            <div class="private_name">
-              {{ item.nickname }}<span>{{ item.title }}</span>
-            </div>
-            <div class="private_time">
-              {{ handlePrivateTime(item.lasttime) }}
-            </div>
-            <div class="private_ablum">{{ item.content }}</div>
-          </div>
-        </div>
-        <div class="foward_prompt" v-show="privateNoticesList.length === 0">
-          暂无数据
-        </div>
-      </div>
+      <private-notices-list
+        v-show="isTabber === 3"
+        :privateNoticesList="privateNoticesList"
+      ></private-notices-list>
     </scroll>
   </div>
 </template>
@@ -115,9 +52,19 @@ import {
   HandlePrivateNotices,
   HandlePrivateComments
 } from '../../../network/privateNews'
+import PrivateNewsList from './childRouter/PrivateNewsList.vue'
+import PrivateCommentList from './childRouter/PrivateCommentList.vue'
+import PrivateForwardList from './childRouter/PrivateForwardList.vue'
+import PrivateNoticesList from './childRouter/PrivateNoticesList.vue'
 export default {
   name: 'privateDetail',
-  components: { Scroll },
+  components: {
+    Scroll,
+    PrivateNewsList,
+    PrivateCommentList,
+    PrivateForwardList,
+    PrivateNoticesList
+  },
   data () {
     return {
       tabbarList: ['私信', '评论', '@我', '通知'],
@@ -344,99 +291,8 @@ export default {
     }
   }
 
-  .private_content {
-    width: 98%;
-    height: 100%;
-    padding: 4px 0 0 2px;
-    .content_item {
-      display: flex;
-      padding: 4px 0 0 10px;
-      margin-bottom: 10px;
-      justify-content: flex-start;
-      &:hover {
-        cursor: pointer;
-        background: rgb(240, 238, 238);
-      }
-      .private_img {
-        width: 40px;
-        height: 60px;
-        border-radius: 100%;
-        img {
-          display: inline-block;
-          width: 100%;
-          height: 40px;
-          margin-top: 10px;
-          border-radius: 100%;
-        }
-      }
-      .private_header {
-        flex: 1;
-        width: calc(100% - 40px);
-        padding-left: 10px;
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        .private_name {
-          color: rgb(22, 140, 236);
-          span {
-            color: #828385;
-          }
-        }
-        .private_time {
-          padding-right: 20px;
-          color: rgb(160, 154, 154);
-        }
-      }
-    }
-  }
-
-  .private_ablum {
-    width: 100%;
-    height: 28px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   .tabbar_back {
     color: #fff;
     background: rgb(138, 139, 137);
-  }
-
-  .foward_prompt {
-    width: 100%;
-    height: 30px;
-    margin-top: 20%;
-    line-height: 30px;
-    text-align: center;
-  }
-
-  .private_comments_name {
-    width: 50%;
-    color: rgb(22, 140, 236);
-  }
-
-  .private_comments_time {
-    width: 50%;
-    text-align: right;
-  }
-
-  .private_comments_ablum {
-    width: 100%;
-    padding: 6px 0;
-    background: rgb(246, 239, 239);
-  }
-
-  .private_comments_replay {
-    width: 100%;
-    text-align: right;
-    color: rgb(160, 154, 154);
-    img {
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      vertical-align: -8px;
-      color: rgb(160, 154, 154);
-    }
   }
 </style>

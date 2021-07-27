@@ -1,25 +1,26 @@
 <template>
-  <!-- 私信 -->
   <div class="private_content">
     <div
       class="content_item"
-      v-for="item in privateNewsList"
-      :key="item.userId"
-      v-show="privateNewsList.length !== 0"
-      @click="privateNewsChange(item.userId)"
+      v-for="item in privateNoticesList"
+      :key="item.id"
+      v-show="privateNoticesList.length !== 0"
+      @click="goNoticesDetail(item.threadId, item.type)"
     >
       <div class="private_img">
-        <img :src="item.avatarurl + '?param=40y40'" alt="" />
+        <img :src="item.avatarUrl + '?param=40y40'" alt="" />
       </div>
       <div class="private_header">
-        <div class="private_name">{{ item.userName }}</div>
+        <div class="private_name">
+          {{ item.nickname }}<span>{{ item.title }}</span>
+        </div>
         <div class="private_time">
           {{ handlePrivateTime(item.lasttime) }}
         </div>
-        <div class="private_ablum">{{ item.title }}</div>
+        <div class="private_ablum">{{ item.content }}</div>
       </div>
     </div>
-    <div class="foward_prompt" v-show="privateNewsList.length === 0">
+    <div class="foward_prompt" v-show="privateNoticesList.length === 0">
       暂无数据
     </div>
   </div>
@@ -27,9 +28,9 @@
 <script>
 import { privateDetailMixin } from '../indexmixin'
 export default {
-  name: 'PrivateNewsList',
+  name: 'PrivateNoticesList',
   props: {
-    privateNewsList: {
+    privateNoticesList: {
       type: Array,
       default () {
         return []
@@ -38,8 +39,12 @@ export default {
   },
   mixins: [privateDetailMixin],
   methods: {
-    privateNewsChange (userId) {
-      this.$parent.$parent.$emit('privateNewChange', userId)
+    goNoticesDetail (id, type) {
+      if (id === '' || id === undefined) return true
+      else {
+        this.$router.push('/noticesDetail/' + id + '/' + type)
+      }
+      this.$parent.isPrivate = false
     }
   }
 }

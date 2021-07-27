@@ -62,7 +62,7 @@ import {
   HandlePrivateHistory
 } from '../../../network/privateNews'
 import privateDetail from '../privateMsg/privateDetail.vue'
-import HistoryNews from '../../../views/newsDetail/HistoryNews.vue'
+import HistoryNews from '../privateMsg/childComps/HistoryNews.vue'
 export default {
   name: 'TabBar',
   components: { MusicSearch, privateDetail, HistoryNews },
