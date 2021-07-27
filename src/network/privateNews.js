@@ -1,7 +1,9 @@
 import {
   request
 } from './request'
-import { formDate } from '../assets/common/tool'
+import {
+  formDate
+} from '../assets/common/tool'
 
 /**
  * @description 获取私信

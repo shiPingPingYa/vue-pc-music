@@ -42,7 +42,6 @@
 </template>
 <script>
 import Scroll from '../../common/scroll/Scroll.vue'
-import { formDate } from '../../../assets/common/tool'
 import {
   _getPrivateMsg,
   _getPrivateComments,
@@ -194,9 +193,7 @@ export default {
           // 获取通知数据
           if (flag === 0) {
             this.privateNoticesList = []
-            const {
-              data: { notices, more }
-            } = await _getPrivateNotices()
+            const { data: { more, notices } } = await _getPrivateNotices()
             this.noticesMore = more
             notices.forEach((item) =>
               this.privateNoticesList.push(new HandlePrivateNotices(item))
@@ -222,21 +219,8 @@ export default {
       }
       this.$refs.private_content_scroll.finishPullUp()
     },
-    handlePrivateTime (time) {
-      return formDate(new Date(time), 'ff:mm:dd')
-    },
     pullingUp () {
       this.initPrivateDetail(1)
-    },
-    goNoticesDetail (id, type) {
-      if (id === '' || id === undefined) return true
-      else {
-        this.$router.push('/noticesDetail/' + id + '/' + type)
-      }
-      this.$parent.isPrivate = false
-    },
-    privateNewsChange (userId) {
-      this.$emit('privateNewChange', userId)
     }
   }
 }
