@@ -55,7 +55,14 @@ export default {
       tabBarList: [],
       isShow: '歌曲列表',
       musicList: [],
-      albumInfo: null,
+      albumInfo: {
+        nickName: '',
+        avatarUrl: '',
+        albumName: '',
+        albumPublishTime: '',
+        subCount: '',
+        shareCount: ''
+      },
       albumDescription: '',
       recommends: [],
       hotComments: [],
@@ -76,12 +83,10 @@ export default {
           this.musicList.push(new AllSongDetail(item))
         )
         this.albumDescription = res.data.album.description
-        this.albumInfo = {
-          nickName: res.data.album.artist.name,
-          avatarUrl: res.data.album.picUrl,
-          albumName: res.data.album.name,
-          albumPublishTime: res.data.album.publishTime
-        }
+        this.albumInfo.nickName = res.data.album.artist.name
+        this.albumInfo.avatarUrl = res.data.album.picUrl
+        this.albumInfo.albumName = res.data.album.name
+        this.albumInfo.albumPublishTime = res.data.album.publishTime
       })
       _getAlbumDynamicDetail({ id: this.id }).then((res) => {
         this.$nextTick(() => {
@@ -91,8 +96,8 @@ export default {
             '专辑详情'
           ]
         })
-        this.albumInfo.subCount = res.data.subCount
-        this.albumInfo.shareCount = res.data.shareCount
+        this.albumInfo.subCount = `(${res.data.subCount})`
+        this.albumInfo.shareCount = `(${res.data.shareCount})`
       })
       // 评论
       _getAlbumComments({ id: this.id }).then((res) => {
