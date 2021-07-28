@@ -52,7 +52,7 @@ export default {
     this.allMv()
   },
   methods: {
-    allMv (area, type, order, flag = false) {
+    async  allMv (area, type, order, flag = false) {
       // 导航条点击后才将修改请求参数
       if (flag) {
         this.mvList = []
@@ -69,7 +69,7 @@ export default {
         offset: this.mvList.length
       }
       // 调用接口获取数据
-      _AllMv(params).then(res => {
+      await _AllMv(params).then(res => {
         res.data.data.forEach(item => this.mvList.push(new MV(item)))
       })
     },

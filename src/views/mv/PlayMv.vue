@@ -96,6 +96,7 @@ export default {
   methods: {
     // 获取播放mv默认信息
     async getBaseInfo () {
+      this.simiMv = []
       // 分别是mv的详情，地址，评论，相似mv
       await Promise.all([_getMvDetail({ mvid: this.id }), _getMvUrl({ id: this.id }), _getMvComment({ id: this.id, limit: this.limit }), _getSimiMv({ mvid: this.id })]).then(res => {
         this.detail = res[0].data.data
