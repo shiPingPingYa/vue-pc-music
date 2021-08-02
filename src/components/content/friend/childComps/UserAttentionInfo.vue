@@ -5,7 +5,7 @@
         <!-- 用户默认信息 -->
        <div class="user-info">
         <div class="user-image" >
-          <img :src="getUserImage" alt="">
+          <img :src="getUserImage" alt="" @click="goUserDetail">
         </div>
         <div class="user-id">{{userName}}</div>
         <div class="user-gender">
@@ -58,6 +58,9 @@ export default {
   methods: {
     enterUser (path) {
       this.$router.push(path)
+    },
+    goUserDetail () {
+      this.$router.push('/userDetail')
     }
   }
 }

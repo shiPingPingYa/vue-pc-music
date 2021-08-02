@@ -1,7 +1,9 @@
 import {
   request
 } from './request'
-import { formDate } from '../assets/common/tool'
+import {
+  formDate
+} from '../assets/common/tool'
 
 /**
  * @description 获取私信
@@ -69,6 +71,7 @@ export class HandlePrivateMsg {
     this.lasttime = obj.lastMsgTime
     this.userName = obj.fromUser.nickname
     this.userId = obj.fromUser.userId
+    this.newMsgCount = obj.newMsgCount
     // 对话框里的历史私信
     this.initPrivateMsg(obj)
   }

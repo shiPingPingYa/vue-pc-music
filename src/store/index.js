@@ -33,7 +33,7 @@ const state = {
   // 歌手
   artist: null,
   // 用户歌单
-  userSongList: null,
+  userSongList: [],
   // 用户背景图片
   image: null,
   // 用户id
@@ -50,8 +50,9 @@ const state = {
   isSongList: true,
   // 分享内容的图片显示与否
   asyncShareImag: false,
-  isLogin: false
-
+  isLogin: false,
+  // 用户等级
+  level: ''
 }
 
 export default new Vuex.Store({

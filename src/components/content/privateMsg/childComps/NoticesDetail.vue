@@ -1,4 +1,5 @@
 <template>
+<!-- 暂时 -->
   <div class="notices_detail">
     通知详情页面
     <scroll class="notices_detail">

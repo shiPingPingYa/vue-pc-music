@@ -25,7 +25,11 @@
         <p>精彩评论</p>
         <div class="item" v-for="(item, index) in recommends" :key="index">
           <div class="icon">
-            <img :src="item.user.avatarUrl + '?param=40y40'" alt="" />
+            <img
+              :src="item.user.avatarUrl + '?param=40y40'"
+              alt=""
+              @click="goOtherUserDetail(item.user.userId)"
+            />
           </div>
           <div class="mess">
             <div class="top">
@@ -182,7 +186,9 @@ export default {
     // 发表在歌单下面的评论
     async submitCommends () {
       if (this.reply === 0) {
-        if (this.params.content.length === 0) { return this.$message.error('评论内容不能为空') }
+        if (this.params.content.length === 0) {
+          return this.$message.error('评论内容不能为空')
+        }
         this._sendAndRemoveComment()
       } else {
         // 评论内容不能为空和没有@+name值
@@ -256,6 +262,9 @@ export default {
     },
     getCommentTitle (index) {
       return this.noneRecoments === index ? '收起' : '展开'
+    },
+    goOtherUserDetail (id) {
+      this.$router.push({ path: '/otherUserDetail', query: { id: id } })
     }
   }
 }
@@ -329,6 +338,7 @@ export default {
         width: 100%;
         border-radius: 50%;
         background-size: 100%, 100%;
+        cursor: pointer;
       }
     }
     > .mess {

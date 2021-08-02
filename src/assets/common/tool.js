@@ -1,6 +1,5 @@
-
 // 把传进来的歌曲的时间进行处理(mm:ss)
-export function formDate (date, str) {
+export function formDate (date, str, all) {
   // 获取时间
   const fullyear = date.getFullYear()
   const newFullyear = new Date().getFullYear()
@@ -16,7 +15,7 @@ export function formDate (date, str) {
   } else if (str === 'mm:dd-hh:mm') {
     return `${month}月${dateO}日 ${hours}:${minutes}`
   } else if (str === 'ff:mm:dd') {
-    if (fullyear === newFullyear) {
+    if (fullyear === newFullyear && all !== 2) {
       return `${month}月${dateO}日`
     } else {
       return `${fullyear}年${month}月${dateO}日`
@@ -52,7 +51,7 @@ export function distinct (arr) {
 export function debounce (fn, delay) {
   let timer = null
   return function (...args) {
-    if (timer)clearTimeout(timer)
+    if (timer) clearTimeout(timer)
     timer = setTimeout(() => {
       fn && fn.apply(this, args)
     }, delay)

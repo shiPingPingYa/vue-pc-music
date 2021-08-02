@@ -25,6 +25,9 @@
             @shaerContentImageChange="shaerContentImageChange"
           ></event-dynamic>
         </div>
+        <div class="dynamic-over" v-show="dynamicList.length === 0">
+          该话题暂无动态
+        </div>
       </scroll>
     </div>
     <div class="topic_right">
@@ -187,5 +190,11 @@ export default {
     padding: 20px 0 4px 0;
     font-weight: normal;
     border-bottom: 1px solid #818283;
+  }
+
+  .dynamic-over {
+    width: 100%;
+    padding: 100px ;
+    font-size: 28px;
   }
 </style>

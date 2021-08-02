@@ -255,6 +255,20 @@ const routes = [{
   meta: {
     title: '歌手专辑'
   }
+},
+{
+  path: '/userDetail',
+  component: () => import('../components/content/user/UserDetail.vue'),
+  meta: {
+    title: '用户详情'
+  }
+},
+{
+  path: '/otherUserDetail',
+  component: () => import('../components/content/user/childRoute/OtherUserDetail.vue'),
+  meta: {
+    title: '用户歌单'
+  }
 }
   // {
   //   path: '/ceshi',
