@@ -41,7 +41,9 @@ const routes = [{
     path: '/discover/individ',
     component: () => import('../views/discover/childRouter/Individuation'),
     meta: {
-      title: '个性推荐'
+      title: '个性推荐',
+      keepLive: true
+
     }
   },
   // 歌单
@@ -49,7 +51,9 @@ const routes = [{
     path: '/discover/category',
     component: () => import('../views/discover/childRouter/MusicListCategory'),
     meta: {
-      title: '歌单'
+      title: '歌单',
+      keepLive: true
+
     }
   },
   // 排行榜
@@ -57,7 +61,9 @@ const routes = [{
     path: '/discover/ranklist',
     component: () => import('../views/discover/childRouter/MusicListRank'),
     meta: {
-      title: '排行榜'
+      title: '排行榜',
+      keepLive: true
+
     }
   },
   // 歌手
@@ -65,7 +71,9 @@ const routes = [{
     path: '/discover/artist',
     component: () => import('../views/discover/childRouter/ArtistCategory'),
     meta: {
-      title: '歌手'
+      title: '歌手',
+      keepLive: true
+
     }
   },
   // 最新音乐
@@ -73,7 +81,8 @@ const routes = [{
     path: '/discover/newsongs',
     component: () => import('../views/discover/childRouter/NewSongs'),
     meta: {
-      title: '最新音乐'
+      title: '最新音乐',
+      keepLive: true
     }
   },
   // MV首页
@@ -81,7 +90,9 @@ const routes = [{
     path: '/discover/mv',
     component: () => import('../views/mv/Mv'),
     meta: {
-      title: 'MV首页'
+      title: 'MV首页',
+      keepLive: true
+
     }
   }
   ]
@@ -283,7 +294,8 @@ const routes = [{
   path: '/userDetail',
   component: () => import('../components/content/user/UserDetail.vue'),
   meta: {
-    title: '用户详情'
+    title: '用户详情',
+    keepLive: true
   }
 },
 {

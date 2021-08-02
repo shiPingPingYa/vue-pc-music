@@ -1,7 +1,9 @@
 <template>
   <div class="main">
     <!-- 左边导航栏的路由占位符 -->
-    <router-view></router-view>
+    <keep-alive include="$route.meta.keepLive">
+      <router-view></router-view>
+    </keep-alive>
     <!-- 登录组件 -->
     <login v-show="$store.getters.getLoginStatus"></login>
     <!-- 注册组件 -->
@@ -22,12 +24,12 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.main{
-  position: relative;
-  width: 82%;
-  height:100% ;
-  color: #01060a;
-  background: #f5f5f7;
-  user-select: none;
-}
+  .main {
+    position: relative;
+    width: 82%;
+    height: 100%;
+    color: #01060a;
+    background: #f5f5f7;
+    user-select: none;
+  }
 </style>
