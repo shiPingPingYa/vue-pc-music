@@ -1,8 +1,19 @@
-import { _login, _getSongList, _getUserInfo } from '../network/user'
-import { Message } from 'element-ui'
+import {
+  _login,
+  _getSongList,
+  _getUserInfo
+} from '../network/user'
+import {
+  Message
+} from 'element-ui'
 export default {
-  async  __LOGIN (context, params) {
-    const { data: { code, profile } } = await _login(params)
+  async __LOGIN (context, params) {
+    const {
+      data: {
+        code,
+        profile
+      }
+    } = await _login(params)
     if (code !== 200) {
       Message.error('密码错误')
     } else {
@@ -20,7 +31,16 @@ export default {
     })
   },
   async _GETUSERINFO (context, uid) {
-    const { data: { profile } } = await _getUserInfo({ uid: uid, timestamp: Date.now() })
+    const {
+      data: {
+        profile,
+        level
+      }
+    } = await _getUserInfo({
+      uid: uid,
+      timestamp: Date.now()
+    })
+    profile.level = level
     context.commit('addUser', profile)
     context.dispatch('_GETUSERSONGLIST', profile.userId)
   }

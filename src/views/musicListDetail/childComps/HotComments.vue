@@ -2,7 +2,7 @@
   <div class="hotComments">
     <div class="item" v-for="(item, index) in hotComments" :key="index">
       <div class="icon">
-        <img :src="item.user.avatarUrl + '?param40y40'" alt="" />
+        <img :src="item.user.avatarUrl + '?param40y40'" alt="" @click="goOtherUserDetail(item.user.userId)"/>
       </div>
       <div class="mess">
         <div class="top">
@@ -41,6 +41,9 @@ export default {
     // 格式化时间
     _formatDate (data) {
       return formDate(new Date(data), 'mmmm--yy-dd')
+    },
+    goOtherUserDetail (id) {
+      this.$router.push({ path: '/otherUserDetail', query: { id: id } })
     }
   }
 }
@@ -61,6 +64,7 @@ export default {
         width: 100%;
         border-radius: 50%;
         background-size: 100%, 100%;
+        cursor: pointer;
       }
     }
     > .mess {

@@ -1,4 +1,3 @@
-
 export default {
   // 更新歌手
   addArtist (state, artist) {
@@ -29,20 +28,38 @@ export default {
     state.isCaptcha = false
   },
   // 显示昵称组件
-  showNickName (state) { state.isNickName = true },
+  showNickName (state) {
+    state.isNickName = true
+  },
   // 隐藏昵称组件
-  hiddenNickName (state) { state.isNickName = false },
+  hiddenNickName (state) {
+    state.isNickName = false
+  },
   // 显示二维码组件
-  showQrcode (state) { state.isShowQrcode = true },
+  showQrcode (state) {
+    state.isShowQrcode = true
+  },
   // 隐藏二维码组件
-  hiddenQrcode (state) { state.isShowQrcode = false },
+  hiddenQrcode (state) {
+    state.isShowQrcode = false
+  },
   // 添加用户注册手机号，密码，验证码，昵称
-  addPhone (state, phone) { state.phone = phone },
-  addPassword (state, password) { state.password = password },
-  addCaptcha (state, captcha) { state.captcha = captcha },
-  addNickName (state, nickname) { state.nickname = nickname },
+  addPhone (state, phone) {
+    state.phone = phone
+  },
+  addPassword (state, password) {
+    state.password = password
+  },
+  addCaptcha (state, captcha) {
+    state.captcha = captcha
+  },
+  addNickName (state, nickname) {
+    state.nickname = nickname
+  },
   // 添加cookie
-  addCookie (state, cookie) { state.cookie = cookie },
+  addCookie (state, cookie) {
+    state.cookie = cookie
+  },
   // 清除用户登录信息
   clearUserRegisterInfo (state, flag) {
     state.phone = flag
@@ -67,6 +84,10 @@ export default {
     state.userEventCount = obj.eventCount
     // 添加用户关注
     state.userFollows = obj.follows
+    // 添加用户等级
+    if (obj.level) {
+      state.level = obj.level
+    }
   },
   // 显示用户歌单
   userSongList (state, isSongList) {
@@ -77,7 +98,7 @@ export default {
     state.songListPath = songListPath
   },
   async addSongList (state, playlist) {
-  // 获取用户歌单
+    // 获取用户歌单
     state.userSongList = playlist
   },
   // 设置分享内容图片的显示
