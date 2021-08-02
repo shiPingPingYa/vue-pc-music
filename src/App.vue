@@ -50,7 +50,7 @@ export default {
     ...mapMutations(['setAsyncShareImag', 'showLogin'])
   },
   mounted () {
-    // 监听键盘事件，停止播放音乐
+    // 监听键盘空格事件，停止播放音乐
     document.onkeyup = (e) => {
       // 触发子组件里面的方法，停止播放音乐
       if (e.keyCode === 32) {
