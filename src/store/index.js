@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// 导入获取歌单请求
-import { _getSongList } from '../network/user'
+import getters from './getters'
+import mutations from './mutations'
+import actions from './actions'
 Vue.use(Vuex)
 
 const state = {
@@ -27,14 +28,12 @@ const state = {
   password: '',
   // 验证码
   captcha: '',
-  // cookie
-  cookie: '',
   // 播放歌单
   playlist: [],
   // 歌手
   artist: null,
   // 用户歌单
-  userSongList: null,
+  userSongList: [],
   // 用户背景图片
   image: null,
   // 用户id
@@ -49,116 +48,16 @@ const state = {
   userEventCount: '',
   // 用户登录的手机号码
   isSongList: true,
-  // 歌单路由
-  songListPath: ''
+  // 分享内容的图片显示与否
+  asyncShareImag: false,
+  isLogin: false,
+  // 用户等级
+  level: ''
 }
 
 export default new Vuex.Store({
   state,
-  mutations: {
-    // 更新歌手
-    addArtist (state, artist) {
-      state.artist = artist
-    },
-    // 显示登录页面
-    showLogin (state, isShowLogin) {
-      state.isShowLogin = isShowLogin
-    },
-    // 隐藏登录页面
-    hiddenLogin (state) {
-      state.isShowLogin = false
-    },
-    // 显示注册页面
-    showRegister (state) {
-      state.isShowRegister = true
-    },
-    // 隐藏注册组件
-    hiddenRegister (state) {
-      state.isShowRegister = false
-    },
-    // 显示验证码组件
-    showCaptcha (state) {
-      state.isCaptcha = true
-    },
-    // 隐藏验证码组件
-    hiddenCaptcha (state) {
-      state.isCaptcha = false
-    },
-    // 显示昵称组件
-    showNickName (state) { state.isNickName = true },
-    // 隐藏昵称组件
-    hiddenNickName (state) { state.isNickName = false },
-    // 显示二维码组件
-    showQrcode (state) { state.isShowQrcode = true },
-    // 隐藏二维码组件
-    hiddenQrcode (state) { state.isShowQrcode = false },
-    // 添加用户注册手机号，密码，验证码，昵称
-    addPhone (state, phone) { state.phone = phone },
-    addPassword (state, password) { state.password = password },
-    addCaptcha (state, captcha) { state.captcha = captcha },
-    addNickName (state, nickname) { state.nickname = nickname },
-    // 添加cookie
-    addCookie (state, cookie) { state.cookie = cookie },
-    // 清除用户登录信息
-    clearUserRegisterInfo (state, flag) {
-      state.phone = flag
-      state.password = flag
-      state.nickname = flag
-      state.captcha = flag
-    },
-    // 添加用户信息，和cookie，uid
-    async addUser (state, obj) {
-      state.user = obj
-      // 用户id
-      state.uid = obj.uid
-      state.cookie = obj.cookie
-      // 用户背景图
-      state.image = obj.image
-      // 用户名字
-      state.userName = obj.nickname
-      // 添加用户粉丝
-      state.userFolloweds = obj.followeds
-      // 添加用户性别
-      state.userGender = obj.gender
-      // 添加用户动态
-      state.userEventCount = obj.eventCount
-      // 添加用户关注
-      state.userFollows = obj.follows
-      // 获取用户歌单
-      await _getSongList(state.uid, state.cookie).then(res => {
-        state.userSongList = res.data.playlist
-      })
-    },
-    // 显示用户歌单
-    userSongList (state, isSongList) {
-      state.isSongList = isSongList
-    },
-    // 添加歌单路由
-    addSongListPath (state, songListPath) {
-      state.songListPath = songListPath
-    }
-  },
-  getters: {
-    getLoginStatus (state) {
-      return state.isShowLogin
-    },
-    getUserRegisterInfo (state) {
-      const obj = {
-        phone: state.phone,
-        password: state.password,
-        captcha: state.captcha,
-        nickname: state.nickname
-      }
-      return obj
-    },
-    // 歌单id
-    getSongId (state) {
-      return state.songID
-    },
-    // 获取歌单路由
-    getSongListPath (state) {
-      return state.songListPath
-    }
-  }
-
+  getters,
+  mutations,
+  actions
 })

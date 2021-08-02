@@ -2,7 +2,7 @@
   <div class="user-follows">
     <scroll ref="scroll" class="scroll" :pull-up-load="true" @pullingUp="pullingUp()">
     <div class="user-name">
-      {{$store.state.userName}}的粉丝
+      {{userName}}的粉丝
     </div>
     <div class="follows-content">
       <div class="follows-user" v-for="(item,index) in followList" :key="index">
@@ -10,7 +10,7 @@
         <div class="user-box">
           <div class="icon"></div>
           <div class="image">
-             <img :src="item.userImg" alt="">
+             <img :src="item.userImg  + '?param=50y50'" alt="">
           </div>
         </div>
         <!-- 用户内容 -->
@@ -39,9 +39,10 @@ import Scroll from '../../../common/scroll/Scroll.vue'
 import { Aollows } from '../childComps/handleUserInfo'
 // 节流
 import { throttled } from '../../../../assets/common/tool'
+import { mapState } from 'vuex'
 export default {
+  name: 'UserFolloweds',
   components: { Scroll },
-  name: 'UserFollows',
   data () {
     return {
       followList: [],
@@ -49,6 +50,9 @@ export default {
       page: 1,
       limit: 30
     }
+  },
+  computed: {
+    ...mapState(['userName', 'uid'])
   },
   created () {
     this.loadFollows()
@@ -59,17 +63,14 @@ export default {
       this.loadFollows()
     }, 800),
     async loadFollows () {
-      this.notFollowList = []
-      if (this.followList.length >= this.$store.state.userFolloweds) return
-      await _getUserFons(this.$store.state.uid, this.limit * this.page).then(res => {
-        this.notFollowList = res.data.followeds
-      })
-      for (var i of this.notFollowList) {
-        var follows = new Aollows(i)
-        this.followList.push(follows)
+      const params = {
+        uid: this.uid || localStorage.getItem('userId'),
+        offset: this.followList.length
       }
-      this.offset++
-      this.$refs.scroll.finishPullUp()
+      _getUserFons(params).then(res => {
+        this.notFollowList = res.data.followeds.forEach(item => this.followList.push(new Aollows(item)))
+        this.$refs.scroll.finishPullUp()
+      })
     }
   }
 }

@@ -22,14 +22,10 @@ export default {
     MvItem
   },
   created () {
-    this.artist = this.$route.query.artist || this.$store.state.artist
+    this.artist = JSON.parse(localStorage.getItem('artist'))
     // 调用获取mv数据接口传入用户id，拿到返回的歌手mv数据
     _getArtistMv(this.artist.id).then(res => {
-      var mvs = res.data.mvs
-      for (var i of mvs) {
-        var mv = new MV(i)
-        this.mvList.push(mv)
-      }
+      res.data.mvs.forEach(item => this.mvList.push(new MV(item)))
     })
   }
 

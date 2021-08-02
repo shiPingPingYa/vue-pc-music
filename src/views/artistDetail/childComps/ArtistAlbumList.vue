@@ -4,7 +4,7 @@
     <div class="album">
       <div class="left">
         <div class="icon">
-          <img :src="album.picUrl" alt="">
+          <img :src="album.picUrl + '?param=280y260'" alt="">
         </div>
       </div>
       <div class="right">
@@ -45,7 +45,7 @@ import { tableMixin } from '../../musicListDetail/tableMixin'
 // 导入获取专辑接口
 import { _getAlbum } from '../../../network/artist'
 // 导入获取歌曲信息接口
-import { _getSongsDetail, SongDetail } from '../../../network/detail'
+import { SongDetail, _getSongsDetail, AllSongDetail } from '../../../network/detail'
 // 音乐混入
 import { indexMixin } from '../../musicListDetail/indexMixin'
 // 列表下标
@@ -67,17 +67,19 @@ export default {
     }
   },
   mixins: [tableMixin, indexMixin, playMinxin],
-  async created () {
+  created () {
     // 判断专辑是否为空
     if (this.album !== null) {
       // 调用接口，根据专辑ID获取专辑
-      await _getAlbum(this.album.id).then(res => {
-        for (var i of res.data.songs) {
-        // 根据专辑id获取歌曲
-          if (i == null) return
-          _getSongsDetail(i.id).then(res => {
-            var song = new SongDetail(res.data.songs)
-            this.musicList.push(song)
+      _getAlbum(this.album.id).then(res => {
+        if (res.data.songs.length === 1) {
+          _getSongsDetail(res.data.songs[0].id).then(res => {
+            this.musicList.push(new SongDetail(res.data.songs))
+          })
+        } else {
+          const ids = res.data.songs.map(item => item.id).join(',')
+          _getSongsDetail(ids).then(res => {
+            res.data.songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
           })
         }
       })

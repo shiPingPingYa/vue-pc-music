@@ -1,33 +1,34 @@
-
 // 把传进来的歌曲的时间进行处理(mm:ss)
-export function formDate (date, str) {
+export function formDate (date, str, all) {
+  // 获取时间
+  const fullyear = date.getFullYear()
+  const newFullyear = new Date().getFullYear()
+  const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`
+  const dateO = date.getDate()
+  const hours = date.getHours() > 9 ? date.getHours() : `0${date.getHours()}`
+  const minutes = date.getMinutes() > 9 ? date.getMinutes() : `0${date.getMinutes()}`
+  const seconds = date.getSeconds() > 9 ? date.getSeconds() : `0${date.getSeconds()}`
   if (str === 'mm:ss') {
-    var m = date.getMinutes()
-    var s = date.getSeconds()
-    m = m < 10 ? '0' + m : m
-    s = s < 10 ? '0' + s : s
-    return `${m}:${s}`
+    return `${minutes}:${seconds}`
   } else if (str === 'mm月dd日') {
-    var Mm = date.getMonth() + 1
-    var Dd = date.getDate()
-    return `${Mm}月${Dd}日`
+    return `${month}月${dateO}日`
   } else if (str === 'mm:dd-hh:mm') {
-    var Mon = date.getMonth() + 1
-    var Dat = date.getDate()
-    var Hh = date.getHours()
-    var Minu = date.getMinutes()
-    return `${Mon}月${Dat}日 ${Hh}:${Minu}`
+    return `${month}月${dateO}日 ${hours}:${minutes}`
+  } else if (str === 'ff:mm:dd') {
+    if (fullyear === newFullyear && all !== 2) {
+      return `${month}月${dateO}日`
+    } else {
+      return `${fullyear}年${month}月${dateO}日`
+    }
+  } else if (str === 'f:mm:dd-hh:mm') {
+    const fullyearTwo = fullyear.toString().slice(2, 4)
+    return `${fullyearTwo}年${month}月${dateO}日 ${hours}:${minutes}`
   } else {
-    var F = date.getFullYear()
-    var M = date.getMonth() + 1
-    var D = date.getDate()
-    var H = date.getHours()
-    var mm = date.getMinutes()
-    return `${F}年${M}月${D}日 ${H}:${mm}`
+    return `${fullyear}年${month}月${dateO}日 ${hours}:${minutes}`
   }
 }
 
-// 把传递进来的歌曲标题名进行处理(前后两首歌，标题名不能一样)
+// 把传递进来的歌曲标题名进行处理(前后两首歌，标题名不能一样) (暂时放弃使用)
 export function distinct (arr) {
   var newArr = []
   let isExist = false
@@ -50,7 +51,7 @@ export function distinct (arr) {
 export function debounce (fn, delay) {
   let timer = null
   return function (...args) {
-    if (timer)clearTimeout(timer)
+    if (timer) clearTimeout(timer)
     timer = setTimeout(() => {
       fn && fn.apply(this, args)
     }, delay)

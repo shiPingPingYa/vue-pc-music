@@ -10,7 +10,7 @@
       <div class="clear"></div>
     </div>
     <!-- 音乐列表区域 -->
-    <scroll class="play-music-list-scroll">
+    <scroll ref="play_music_scroll" class="play-music-list-scroll">
       <div class="list">
         <music-item @musicItemClick="musicItemClick" :musicList="musicList"></music-item>
       </div>

@@ -36,7 +36,6 @@
 import { _Swiper } from './indexSwper'
 import { indexMixin } from '../../../views/musicListDetail/indexMixin'
 import { _getCheckMusic, _getSongsDetail, SongDetail } from '../../../network/detail' //
-import { Message } from 'element-ui'
 export default {
   name: 'Swiper',
   props: {
@@ -68,7 +67,14 @@ export default {
           this.playMusic()
         }
       } catch (e) {
-        Message.error(e.data.message)
+        if (e.response !== undefined) {
+          this.$Message.error({
+            message: e.response.data.message,
+            center: true
+          })
+        } else {
+          this.$Message.error(e.message)
+        }
       }
     }
   },

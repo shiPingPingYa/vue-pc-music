@@ -5,7 +5,7 @@
         <img src="../../../assets/img/leftmenu/shiping.svg" alt="">
         <div class="play-count">{{item.count}} </div>
       </div>
-      <img :src="item.cover" alt="">
+      <img :src="item.cover + '?param=321y181'" alt="">
       <div class="desc">
         <p>{{item.name}} </p>
         <span>{{item.artist}} </span>
@@ -48,6 +48,7 @@ export default {
 
 .mv-list {
     width: 100%;
+    padding-right: 20px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;

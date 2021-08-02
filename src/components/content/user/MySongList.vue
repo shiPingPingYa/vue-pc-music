@@ -6,7 +6,7 @@
      @click="setItemCur(index)"
      :class="{'cur-song-list':currentIndex == index}">
        <div class="name">
-         <img :src="item.coverImgUrl" alt="">
+         <img :src="item.coverImgUrl  + '?param=50y50'" alt="">
        </div>
       <span>{{item.name }}</span>
      </li>

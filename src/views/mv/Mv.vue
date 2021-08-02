@@ -48,20 +48,16 @@ export default {
   },
   data () {
     return {
-      limit: 9,
       mvList: [],
       topMv: []
     }
   },
   async created () {
     // 获取最新mv和mv排行榜
-    const [{ data: { data: notMvList } }, { data: { data: notTopMv } }] = await Promise.all([_getNewMV(this.limit), _getTopMv()]).then()
-    for (const i of notMvList) {
-      this.mvList.push(new MV(i))
-    }
-    for (const j of notTopMv) {
-      this.topMv.push(new MV(j))
-    }
+    Promise.all([_getNewMV({ limit: 10 }), _getTopMv({ limit: 10 })]).then(res => {
+      res[0].data.data.forEach(item => this.mvList.push(new MV(item)))
+      res[1].data.data.forEach(item => this.topMv.push(new MV(item)))
+    })
   },
   methods: {
     allMv () {

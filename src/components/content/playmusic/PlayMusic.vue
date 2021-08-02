@@ -72,6 +72,9 @@
           <a href="#" title="单曲循环" v-show="schemaIndex==2">
             <img src="../../../assets/img/playmusic/danquxunhuan.svg" />
           </a>
+          <a href="#" title="心动模式" v-show="schemaIndex == 3">
+            <img src="../../../assets/img/heart.svg" alt="">
+          </a>
         </div>
         <!-- 歌词按钮 -->
         <div class="music-lyric" @click="toggleLyric()">
@@ -101,8 +104,9 @@
 import Player from './Player'
 // 导入封装的处理时间函数
 import { formDate } from '../../../assets/common/tool'
-// 导入歌曲网络请求 _getMusicUrl
-import { _getLyric } from '../../../network/detail'
+// 导入歌曲网络请求
+import { _getLyric, _getIntelligenceList, _getSongsDetail, AllSongDetail, _getMusicUrl } from '../../../network/detail'
+import { PlayList } from './playList'
 // 导入进度条
 import MusicProgress from './Progress'
 // 导入歌词组件
@@ -151,7 +155,7 @@ export default {
           src:
             'http://m701.music.126.net/20210401170701/9290add54f39749184e2adb863956371/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/7354163734/999a/1cdf/5b29/77e0ceef7990395739432c4d77e3edf7.mp3',
           pic:
-            'https://p1.music.126.net/J94zxjSMe5IjNABnpdOPew==/109951165670275788.jpg'
+            'https://p1.music.126.net/J94zxjSMe5IjNABnpdOPew==/109951165670275788.jpg?param=50y50'
         }
       ]
     }
@@ -186,7 +190,7 @@ export default {
         return a.index - b.index
       })
       // 设置index
-      this.setCurrentIndex(index)
+      this.setCurrentIndex(0)
       this.$refs.music_volumn.setAudioProgress(0.8)
     })
     // 监听歌曲列表的点击,设置index
@@ -291,6 +295,8 @@ export default {
             break
           case 2:
             break
+          case 3: this.playModeIntellgence()
+            break
         }
         this.$refs.audio.src = this.playList[this.currentIndex].src
       }
@@ -316,7 +322,7 @@ export default {
     },
     // 通过改变schema的值来实现音乐播放顺序设置
     toggleSchema () {
-      if (this.schemaIndex >= 2) this.schemaIndex = 0
+      if (this.schemaIndex >= 3) this.schemaIndex = 0
       else { this.schemaIndex++ }
     },
     // 是否在首页显示歌词
@@ -362,9 +368,44 @@ export default {
             break
           case 2:
             break
+          case 3:
+            this.playModeIntellgence()
+            break
         }
         this.$refs.audio.src = this.playList[this.currentIndex].src
       }
+    },
+    // 心动模式
+    async playModeIntellgence () {
+      const params = {
+        pid: localStorage.getItem('pid'),
+        id: this.playList[this.currentIndex].id
+      }
+      const { data: { data } } = await _getIntelligenceList(params)
+      // 音乐id
+      const ids = data.slice(0, 60).map(item => item.id).join(',')
+      const mulistItem = this.musicList[this.currentIndex]
+      const playListItem = this.playList[this.currentIndex]
+      this.musicList = []
+      this.playList = []
+      this.playList.push(playListItem)
+      this.musicList.push(mulistItem)
+      try {
+        const { data: { data: musicUrlList } } = await _getMusicUrl(ids)
+        const { data: { songs } } = await _getSongsDetail(ids)
+        songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
+        if (songs.length === this.musicList.length) {
+          this.musicList.forEach((item, index) => {
+            if (Number(index) >= 1) {
+              this.playList.push(new PlayList(index + 1, item, musicUrlList[index].url, item.id))
+            }
+          })
+        }
+      } catch (e) {
+        console.log(e)
+      }
+      this.currentIndex = 1
+      this.schemaIndex = 0
     }
   }
 }

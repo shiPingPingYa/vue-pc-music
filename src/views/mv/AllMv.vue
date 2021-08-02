@@ -1,14 +1,25 @@
 <template>
   <div class="all-mv">
-    <scroll ref="scroll" class="scroll" :pull-up-load="true" @pullingUp="pullingUp()">
+    <scroll ref="scroll" class="scroll">
      <div class="title">
          这是全部mv
      </div>
    <div class="content">
       <mv-bar></mv-bar>
-      <mv-item :mvList="mvList"></mv-item>
+      <mv-item class="mv_item" :mvList="mvList"></mv-item>
    </div>
+     <div class="mv_pagination">
+     <el-pagination
+     v-show="mvList.length === 40"
+     :current-page="page"
+      @current-change="handleCurrentChange"
+      background
+      layout="prev, pager, next"
+      :total="1000">
+  </el-pagination>
+  </div>
     </scroll>
+
   </div>
 </template>
 <script>
@@ -20,8 +31,6 @@ import MvBar from './childComps/MvBar'
 import MvItem from './childComps/MVItem'
 // 导入mv数据请求
 import { _AllMv, MV } from '../../network/mv'
-// mv刷新节流
-import { throttled } from '../../assets/common/tool'
 export default {
   name: 'AllMv',
   components: {
@@ -31,57 +40,70 @@ export default {
   },
   data () {
     return {
-      limit: 24,
-      offset: 1,
+      limit: 40,
       mvList: [],
-      area: null,
-      type: null,
-      order: null
+      area: '全部',
+      type: '全部',
+      order: '上升最快',
+      page: 1
     }
   },
   created () {
     this.allMv()
   },
   methods: {
-    pullingUp: throttled(function () {
-      this.loadMv()
-    }, 800),
-    async loadMv () {
-      this.offset++
-      this.mvList = []
-      await _AllMv(this.area, this.type, this.order, this.offset * this.limit).then(res => {
-        for (var i of res.data.data) {
-          const mv = new MV(i)
-          this.mvList.push(mv)
-        }
-      })
-      // 重新获取dom元素高度
-      this.$refs.scroll.finishPullUp()
-    },
-    async allMv (area = '全部', type = '全部', order = '上升最快', limit = this.limit * this.offset) {
-      // 值变了，就将mv数组清空
-      this.mvList = []
-      this.area = area
-      this.type = type
-      this.order = order
-
+    async  allMv (area, type, order, flag = false) {
+      // 导航条点击后才将修改请求参数
+      if (flag) {
+        this.mvList = []
+        this.page = 0
+        this.area = area
+        this.type = type
+        this.order = order
+      }
+      const params = {
+        type: this.type,
+        area: this.area,
+        order: this.order,
+        limit: this.limit,
+        offset: this.mvList.length
+      }
       // 调用接口获取数据
-      const { data: { data } } = await _AllMv(area, type, order, limit).then()
+      await _AllMv(params).then(res => {
+        res.data.data.forEach(item => this.mvList.push(new MV(item)))
+      })
+    },
+    async  handleCurrentChange (val) {
+      const params = {
+        type: this.type,
+        area: this.area,
+        order: this.order,
+        limit: this.limit,
+        offset: this.mvList.length * (val - 1)
+      }
+      this.mvList = []
+      const { data: { data } } = await _AllMv(params)
       data.forEach(item => this.mvList.push(new MV(item)))
+      this.$refs.scroll.scrollTo(0, 0, 0)
+      this.$refs.scroll.finishPullUp()
     }
   }
 }
 </script>
 <style lang="less" scoped>
 .all-mv{
-  padding: 0 20px;
+  padding: 0 20px 60px;
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
 .scroll{
-  height: 100%;
+  height:100%;
+}
+
+.mv_item{
+  margin-bottom: 20px;
 }
 
 .title{
@@ -98,4 +120,10 @@ export default {
   }
 }
 
+</style>
+<style>
+.mv_pagination{
+  display: flex;
+  justify-content: flex-end;
+}
 </style>

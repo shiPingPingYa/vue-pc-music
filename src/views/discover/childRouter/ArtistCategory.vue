@@ -5,14 +5,14 @@
       <div class="area">
           语种:
       <div class="area-item" v-for="(item,index) in area" :key="index" :class="{action:areaIndex == index}"
-      @click="areaClick(index)">
+      @click.stop="areaClick(index)">
         {{item.name}}
       </div>
       </div>
       <div class="type">
         分类:
         <div class="type-item" v-for="(item,index) in type " :key="index" :class="{action:typeIndex == index}"
-        @click="typeClick(index)">
+        @click.stop="typeClick(index)">
           {{item.name}}
         </div>
       </div>
@@ -81,13 +81,13 @@ export default {
   methods: {
     // scroll下拉刷新
     pullingUp: throttled(async function () {
-      this.page++
-      const { data: { artists } } = await _getArtist(
-        this.area[this.areaIndex].value,
-        this.type[this.typeIndex].value,
-        this.limit * this.page
-      ).then()
-      this.artistList = artists
+      const params = {
+        area: this.area[this.areaIndex].value,
+        type: this.type[this.typeIndex].value,
+        offset: this.artistList.length
+      }
+      const { data: { artists } } = await _getArtist(params)
+      artists.forEach(item => this.artistList.push(item))
       this.$refs.scroll.finishPullUp()
     }, 800),
     areaClick (index) {
@@ -100,7 +100,13 @@ export default {
     },
     // 获取歌手数据
     async getArtist () {
-      const { data: { artists } } = await _getArtist(this.area[this.areaIndex].value, this.type[this.typeIndex].value, this.limit * this.page).then()
+      this.artistList = []
+      const params = {
+        area: this.area[this.areaIndex].value,
+        type: this.type[this.typeIndex].value,
+        offset: this.artistList.length
+      }
+      const { data: { artists } } = await _getArtist(params)
       this.artistList = artists
     }
   }

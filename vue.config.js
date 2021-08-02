@@ -19,6 +19,7 @@ module.exports = {
           deleteOriginalAssets: false // 是否删除原始文件
         })
       )
+      config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
     }
   }
 }

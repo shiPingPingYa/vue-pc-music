@@ -1,17 +1,17 @@
 import { Date } from 'core-js'
 import { request } from './request'
 
-// 登录状态
-export function _getLonginStatus (cookie) {
+/**
+ * @description 根据cookie获取登录状态
+ * @param cookie 二维码登录成功后的cookie
+ */
+export function _getLonginStatus (params) {
   return request({
     url: '/login/status',
-    params: {
-      cookie: cookie,
-      withCredentials: true,
-      timerstamp: Date.now()
-    }
+    params
   })
 }
+
 // 手机号验证,必选参数 :,phone : 手机号码
 export function _VerifyPhone (phone) {
   return request({
@@ -24,14 +24,11 @@ export function _VerifyPhone (phone) {
 }
 
 // 手机登录,必选参数 :phone: 手机号码,password: 密码
-export function _login (phone, password) {
+export function _login (data) {
   return request({
     url: '/login/cellphone',
     method: 'POST',
-    data: {
-      phone: phone,
-      password: password
-    }
+    data
   })
 }
 
@@ -40,7 +37,8 @@ export function _getSongList (id) {
   return request({
     url: '/user/playlist',
     params: {
-      uid: id
+      uid: id,
+      timestamp: Date.now()
     }
   })
 }
@@ -108,5 +106,29 @@ export function _getCheckQrcode (key) {
       timerstamp: Date.now()
     },
     withCredentials: true
+  })
+}
+
+/**
+ *
+ * @description 修改用户头像
+ * @imgSize 图片尺寸 默认300
+ */
+export function _setUserImage (data) {
+  return request({
+    url: '/avatar/upload',
+    method: 'POST',
+    data
+  })
+}
+
+/**
+ * @description 获取用户默认信息
+ * @param uid 用户id
+ */
+export function _getUserInfo (params) {
+  return request({
+    url: '/user/detail',
+    params: params
   })
 }

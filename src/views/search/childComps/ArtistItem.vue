@@ -38,13 +38,8 @@ export default {
       return false
     },
     enterArtistDetail (i) {
-      this.$router.push({
-        path: '/artist',
-        query: {
-          artist: this.artistsList[i]
-        }
-      })
-      this.$store.commit('addArtist', this.artistsList[i])
+      this.$router.push('/artist')
+      localStorage.setItem('artist', JSON.stringify(this.artistsList[i]))
     }
   }
 }

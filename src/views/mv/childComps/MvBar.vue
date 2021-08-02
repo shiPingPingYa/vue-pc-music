@@ -35,15 +35,15 @@ export default {
   methods: {
     areaClick (index) {
       this.areaIndex = index
-      this.$parent.$parent.allMv(this.area[this.areaIndex], this.type[this.typeIndex], this.order[this.orderIndex])
+      this.$parent.$parent.allMv(this.area[this.areaIndex], this.type[this.typeIndex], this.order[this.orderIndex], true)
     },
     typeClick (index) {
       this.typeIndex = index
-      this.$parent.$parent.allMv(this.area[this.areaIndex], this.type[this.typeIndex], this.order[this.orderIndex])
+      this.$parent.$parent.allMv(this.area[this.areaIndex], this.type[this.typeIndex], this.order[this.orderIndex], true)
     },
     orderClick (index) {
       this.orderIndex = index
-      this.$parent.$parent.allMv(this.area[this.areaIndex], this.type[this.typeIndex], this.order[this.orderIndex])
+      this.$parent.$parent.allMv(this.area[this.areaIndex], this.type[this.typeIndex], this.order[this.orderIndex], true)
     }
   }
 }

@@ -23,7 +23,7 @@
                 <td>{{setSerial(index)}}</td>
                 <td>
                   <div class="backMask">
-                    <img :src="item.pic" alt="">
+                    <img :src="item.pic + '?param=50y50'" alt="">
                   <div class="icon">
                        <i class="el-icon-video-play"></i>
                   </div>

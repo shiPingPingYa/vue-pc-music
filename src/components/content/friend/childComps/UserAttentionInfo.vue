@@ -4,8 +4,8 @@
       <div class="user-box">
         <!-- 用户默认信息 -->
        <div class="user-info">
-        <div class="user-image">
-          <img :src="userImage()" alt="">
+        <div class="user-image" >
+          <img :src="getUserImage" alt="" @click="goUserDetail">
         </div>
         <div class="user-id">{{userName}}</div>
         <div class="user-gender">
@@ -31,23 +31,36 @@
            <span>粉丝</span>
          </div>
        </div>
+
       </div>
+      <top-topic :limit="limit" :isTitle='true'></top-topic>
   </div>
 </template>
 <script>
 // 背景混入
 import { mixins } from '../../user/mixins'
 // 解析vuex的state
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
+import TopTopic from './TopTopic.vue'
 export default {
   name: 'UserAttentionInfo',
+  data () {
+    return {
+      limit: 6 // 话题榜个数
+    }
+  },
+  components: { TopTopic },
   mixins: [mixins],
   computed: {
-    ...mapState(['userName', 'userGender', 'userFollows', 'userFolloweds', 'userEventCount'])
+    ...mapState(['userName', 'userGender', 'userFollows', 'userFolloweds', 'userEventCount']),
+    ...mapGetters(['getUserImage'])
   },
   methods: {
     enterUser (path) {
       this.$router.push(path)
+    },
+    goUserDetail () {
+      this.$router.push('/userDetail')
     }
   }
 }
@@ -55,7 +68,7 @@ export default {
 <style lang="less" scoped>
 .user-attention-info{
   position: absolute;
-  width: 20%;
+  width: 30%;
   right: 6px;
   margin-top: -10px;
   > .user-box{

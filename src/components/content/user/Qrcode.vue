@@ -68,15 +68,15 @@ export default {
           clearInterval(this.timer)
           this.$message.warning('登录成功')
           // 根据获取的cookie,获取用户信息
-          _getLonginStatus(this.$store.state.cookie).then(res => {
+          _getLonginStatus({ cookie: this.$store.state.cookie, timestamp: Date.now() }).then(res => {
             const obj = {
               uid: res.data.data.profile.userId,
               cookie: this.$store.state.cookie,
               nickname: res.data.data.profile.nickname,
               image: res.data.data.profile.avatarUrl
             }
-            // 通过webstorag来存储用户信息,以便下次能自动登录
-            window.localStorage.setItem('obj', JSON.stringify(obj))
+            // 通过webstorag来存储用户ID,以便下次根据id获取
+            window.localStorage.setItem('userId', JSON.stringify(obj.uid))
             // 通过vuex来存储数据，获取歌单
             this.$store.commit('addUser', obj)
           })

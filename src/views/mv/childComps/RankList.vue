@@ -2,7 +2,7 @@
   <div class="simi" v-if="item!== null">
     <div class="simi-item" @click="playMv(item.id)">
       <div class="left">
-        <img :src="item.cover" alt="">
+        <img :src="item.cover + '?param=150y85'" alt="">
         <div class="count">
           <img src="../../../assets/img/leftmenu/shiping.svg" alt="">
           <div class="play-count">{{item.count}} </div>

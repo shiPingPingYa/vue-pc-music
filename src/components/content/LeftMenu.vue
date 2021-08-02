@@ -46,13 +46,13 @@ export default {
           icon: false,
           transform: false
         },
-        {
-          link: '/transceiver',
-          class: 'el-icon-bell',
-          title: '电台',
-          icon: false,
-          transform: 'rotate'
-        },
+        // {
+        //   link: '/transceiver',
+        //   class: 'el-icon-bell',
+        //   title: '电台',
+        //   icon: false,
+        //   transform: 'rotate'
+        // },
         {
           link: '/video/allvideo',
           class: 'el-icon-video-camera',

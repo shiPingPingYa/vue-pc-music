@@ -68,11 +68,16 @@ export default {
       }
     }
     > .right{
-      flex: 1;
+      width: calc(100% - 156px);
       padding-left: 10px;
       color: #01060a;
       > .name{
+        display: flex;
+        flex: 1;
         font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         > span{
           padding:1px;
           color: red;

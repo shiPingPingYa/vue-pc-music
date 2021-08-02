@@ -29,6 +29,7 @@ export default {
   methods: {
     playVideo (id) {
       this.$router.push('/playvideo/' + id)
+      console.log(id)
     }
   }
 }
@@ -46,8 +47,9 @@ export default {
 }
 
 .video-list {
-    width: 100%;
     display: flex;
+    width: 100%;
+    padding-right: 20px;
     flex-wrap: wrap;
     justify-content: space-between;
     cursor: pointer;

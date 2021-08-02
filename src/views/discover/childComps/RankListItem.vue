@@ -104,7 +104,7 @@ export default {
     },
     // 跳转到音乐排行榜单详情页面
     enterDetail () {
-      this.$router.push('/musiclistdetail/' + this.rankId + '/' + new Date().getTime())
+      this.$router.push('/musiclistdetail/' + this.rankId)
     },
     // 混入音乐
     rankItemClick () {

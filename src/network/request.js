@@ -1,7 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
-import { Loading, Message } from 'element-ui'
-var loadingStance = Loading.service({ fullscreen: true, background: 'rgba(0,0,0,0.1)' })
+import {
+  Message
+} from 'element-ui'
 
 // 所有请求允许跨域
 axios.defaults.withCredentials = true
@@ -9,37 +10,46 @@ export function request (config) {
   // 设置默认url
   const install = axios.create({
     // 请求地址设置为远程ip
-    baseURL: 'http://81.69.232.192:3000',
+    baseURL: 'http://localhost:3000',
     timeout: 7000,
-    paramsSerializer: (params) => qs.stringify(params, { indices: false }) // 序列化get请求参数数组
+    paramsSerializer: (params) => qs.stringify(params, {
+      indices: false
+    }) // 序列化get请求参数数组
   })
 
   // 配置请求头
   install.interceptors.request.use(data => {
-    loadingStance.close()
     return data
   }, err => {
-    loadingStance.close()
     return Promise.reject(err)
   })
 
   // 配置响应内容
   install.interceptors.response.use(res => {
-    loadingStance.close()
-    const { status } = res
+    const {
+      status
+    } = res
     if (status === 200 && res !== null) {
       return res
-    } else if (status !== 200) {
-      Message.error(res.code)
-      return Promise.reject(new Error(res.message || 'Error'))
+    } else if (res.data.code === 301) {
+      console.log(res)
+      Message.error(res.data.msg)
+    } else if (res.data.code === 404) {
+      Message.error('cookie，失效请重新登录')
     }
   }, err => {
-    Message({
-      type: 'error',
-      message: err.message,
-      center: true
-    })
-    loadingStance.close()
+    if (err.response.data.code === 301) {
+      Message({
+        type: 'error',
+        message: err.response.data.msg
+      })
+    } else {
+      Message({
+        type: 'error',
+        message: err.message,
+        center: true
+      })
+    }
     return Promise.reject(err)
   })
   return install(config)

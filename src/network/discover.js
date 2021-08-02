@@ -1,18 +1,23 @@
 import { request } from './request'
 
-// 歌手分类列表
-export function _getArtist (area, type, limit) {
+/**
+ * @description 获取歌手分类列表
+ * @param  area -1:全部 7华语 96欧美 8:日本 16韩国 0:其他
+ * @param  type  -1:全部 1:男歌手 2:女歌手 3:乐队
+ * @param  limit 歌手数量，默认30
+ * @param  offset 偏移位，取当前歌手列表数组长度，即偏离当前歌手列表
+ */
+export function _getArtist (params) {
   return request({
     url: '/artist/list',
-    params: {
-      area: area,
-      type: type,
-      limit: limit
-    }
+    params
   })
 }
 
-// 新歌速递
+/**
+ * @description 新歌速递
+ * @param  type 地区id 全部:0 华语:7 欧美:96 日本:8 韩国:16
+ */
 export function _getTopSongs (type) {
   return request({
     url: '/top/song',
@@ -22,22 +27,28 @@ export function _getTopSongs (type) {
   })
 }
 
-// 所有榜单
-// 说明 : 调用此接口,可获取所有榜单 接口地址 : /toplist
+/**
+ * @description 所有榜单
+ */
 export function _getRankList () {
   return request({
     url: '/toplist'
   })
 }
 
-// 说明 : 调用此接口 , 可获取 banner( 轮播图 ) 数据
+/**
+ * @description 获取轮播图数据
+ */
 export function _getBanner () {
   return request({
     url: '/banner'
   })
 }
 
-// 推荐歌单
+/**
+ * @description 获取推荐歌单
+ * @param limit 取出数量，默认30
+ */
 export function _getPersonalized (config) {
   return request({
     url: '/personalized',
@@ -47,21 +58,27 @@ export function _getPersonalized (config) {
   })
 }
 
-// 独家放送(入口列表)
+/**
+ * @description 获取独家放送(首页需要独家放送入口)
+ */
 export function _getPrivateContent () {
   return request({
     url: '/personalized/privatecontent'
   })
 }
 
-// 推荐新音乐
+/**
+ * @description 获取推荐音乐
+ */
 export function _getNewSong () {
   return request({
     url: '/personalized/newsong'
   })
 }
 
-// 推荐 mv
+/**
+ * @description 获取推荐mv
+ */
 export function _getPrivateMv () {
   return request({
     url: '/personalized/mv'
