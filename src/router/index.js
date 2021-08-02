@@ -153,7 +153,8 @@ const routes = [{
   path: '/allmv',
   component: () => import('../views/mv/AllMv'),
   meta: {
-    title: '所有MV'
+    title: '所有MV',
+    keepLive: true
   }
 },
 // 歌单详情页面
