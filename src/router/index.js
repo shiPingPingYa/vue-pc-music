@@ -7,6 +7,11 @@ import {
   getPageTitle
 } from '../assets/common/tool'
 
+import {
+  filterPath,
+  isRoute
+} from './isRoute'
+
 // 关于路由重复问题
 const originalPush = VueRouter.prototype.push
 
@@ -36,7 +41,9 @@ const routes = [{
     path: '/discover/individ',
     component: () => import('../views/discover/childRouter/Individuation'),
     meta: {
-      title: '个性推荐'
+      title: '个性推荐',
+      keepLive: true
+
     }
   },
   // 歌单
@@ -44,7 +51,9 @@ const routes = [{
     path: '/discover/category',
     component: () => import('../views/discover/childRouter/MusicListCategory'),
     meta: {
-      title: '歌单'
+      title: '歌单',
+      keepLive: true
+
     }
   },
   // 排行榜
@@ -52,7 +61,9 @@ const routes = [{
     path: '/discover/ranklist',
     component: () => import('../views/discover/childRouter/MusicListRank'),
     meta: {
-      title: '排行榜'
+      title: '排行榜',
+      keepLive: true
+
     }
   },
   // 歌手
@@ -60,7 +71,9 @@ const routes = [{
     path: '/discover/artist',
     component: () => import('../views/discover/childRouter/ArtistCategory'),
     meta: {
-      title: '歌手'
+      title: '歌手',
+      keepLive: true
+
     }
   },
   // 最新音乐
@@ -68,7 +81,8 @@ const routes = [{
     path: '/discover/newsongs',
     component: () => import('../views/discover/childRouter/NewSongs'),
     meta: {
-      title: '最新音乐'
+      title: '最新音乐',
+      keepLive: true
     }
   },
   // MV首页
@@ -76,7 +90,9 @@ const routes = [{
     path: '/discover/mv',
     component: () => import('../views/mv/Mv'),
     meta: {
-      title: 'MV首页'
+      title: 'MV首页',
+      keepLive: true
+
     }
   }
   ]
@@ -153,7 +169,8 @@ const routes = [{
   path: '/playvideo/:id',
   component: () => import('../views/allVideo/childComps/PlayVideo'),
   meta: {
-    title: '视频播放'
+    title: '视频播放',
+    requireLogin: true
   }
 },
 // 所有视频
@@ -167,7 +184,8 @@ const routes = [{
       path: '/video/allvideo',
       component: () => import('../views/allVideo/childComps/AllVideo'),
       meta: {
-        title: '所有视频'
+        title: '所有视频',
+        requireLogin: true
       }
     },
     // 所有mv
@@ -185,30 +203,43 @@ const routes = [{
   path: '/friend',
   component: () => import('../components/content/friend/Friend'),
   meta: {
-    title: '朋友'
+    title: '朋友',
+    requireLogin: true
   },
   children: [{
     path: '/',
     redirect: 'frienddetail'
   },
   {
-    path: 'frienddetail',
-    component: () => import('../components/content/friend/FriendDetail')
+    path: '/friend/frienddetail',
+    component: () => import('../components/content/friend/FriendDetail'),
+    meta: {
+      requireLogin: true
+    }
   },
   // 动态
   {
-    path: 'userdynamic',
-    component: () => import('../components/content/friend/childRouter/UserDynamic')
+    path: '/friend/userdynamic',
+    component: () => import('../components/content/friend/childRouter/UserDynamic'),
+    meta: {
+      requireLogin: true
+    }
   },
   // 粉丝
   {
-    path: 'userfolloweds',
-    component: () => import('../components/content/friend/childRouter/UserFolloweds')
+    path: '/friend/userfolloweds',
+    component: () => import('../components/content/friend/childRouter/UserFolloweds'),
+    meta: {
+      requireLogin: true
+    }
   },
   // 关注
   {
-    path: 'userfollows',
-    component: () => import('../components/content/friend/childRouter/UserFollows')
+    path: '/friend/userfollows',
+    component: () => import('../components/content/friend/childRouter/UserFollows'),
+    meta: {
+      requireLogin: true
+    }
   }
   ]
 },
@@ -217,7 +248,8 @@ const routes = [{
   path: '/transceiver',
   component: () => import('../components/content/friend/Friend.vue'),
   meta: {
-    title: '朋友'
+    title: '电台',
+    requireLogin: true
   }
 },
 // 每日推荐
@@ -232,14 +264,16 @@ const routes = [{
   path: '/hotTopicRankList',
   component: () => import('../components/content/friend/childRouter/HotTopicRankList.vue'),
   meta: {
-    title: '热门话题'
+    title: '热门话题',
+    requireLogin: true
   }
 },
 {
   path: '/topicDetail/:id',
   component: () => import('../components/content/friend/TopicDetail.vue'),
   meta: {
-    title: '话题详情'
+    title: '话题详情',
+    requireLogin: true
   }
 },
 {
@@ -260,7 +294,8 @@ const routes = [{
   path: '/userDetail',
   component: () => import('../components/content/user/UserDetail.vue'),
   meta: {
-    title: '用户详情'
+    title: '用户详情',
+    keepLive: true
   }
 },
 {
@@ -269,6 +304,10 @@ const routes = [{
   meta: {
     title: '用户歌单'
   }
+},
+{
+  path: '/404',
+  component: () => import('../components/common/error/404.vue')
 }
   // {
   //   path: '/ceshi',
@@ -283,19 +322,21 @@ const router = new VueRouter({
   routes
 })
 
+const routerPath = [...new Set(filterPath(routes))]
+
 router.beforeEach((to, from, next) => {
   // 设置网站title
   document.title = getPageTitle(to.meta.title)
-  // 没有登录
+  if (isRoute(to, routerPath) === -1) return next('/404')
+  // 未登录
   if (!window.localStorage.getItem('userId')) {
-    // 访问视频
-    if (to.path === '/video/allvideo' || to.path === '/friend/frienddetail' || to.path === '/transceiver') {
-      Message.info('电台等资源必须登录后才能获取，请先登录')
+    if (to.meta.requireLogin) {
+      Message.info('电台视频等资源须先登录后才能获取，请先登录')
       next('/discover/individ')
     }
   }
-
-  // 其余直接放行
+  // 登录状态下，直接放行
   next()
 })
+
 export default router
