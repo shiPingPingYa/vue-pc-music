@@ -250,7 +250,8 @@ const routes = [{
   component: () => import('../components/content/friend/Friend.vue'),
   meta: {
     title: '电台',
-    requireLogin: true
+    requireLogin: true,
+    keepLive: true
   }
 },
 // 每日推荐
