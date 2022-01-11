@@ -25,9 +25,9 @@
             v-model="phone"
             placeholder="请输入手机号"
             prefix-icon="el-icon-user"
-            @blur="verifyPhone2"
+            @blur="verifyPhone"
           />
-          <p>{{ phoneMessage }}</p>
+          <p>{{ phoneErr }}</p>
         </div>
         <div class="form-item">
           <el-input
@@ -37,13 +37,13 @@
             prefix-icon="el-icon-lock"
             @blur="verifyPassword"
           />
-          <p>{{ passwordMessage }}</p>
+          <p>{{ passwordErr }}</p>
         </div>
         <div class="form-item">
           <div class="user-register">
             <el-button
               type="danger"
-              :disabled="!btnDisabled()"
+              :disabled="btnDisabled"
               @click="enterCaptcha()"
             >
               注册
@@ -72,19 +72,79 @@ import CheckCaptcha from './components/CheckCaptcha'
 import NickName from './components/NickName'
 // 导入二维码组件
 // 导入混入
-import { mixins } from './mixins/mixins'
 import { mapState } from 'vuex'
+import { _VerifyPhone } from 'api/user'
 export default {
   name: 'Register',
   components: { CheckCaptcha, NickName },
-  mixins: [mixins],
-  computed: { ...mapState(['isCaptcha', 'isNickName']) },
+  computed: {
+    ...mapState(['isCaptcha', 'isNickName']),
+    btnDisabled () {
+      return !(this.isPhone && this.isPassword)
+    }
+  },
+  data () {
+    return {
+      isPhone: false,
+      isPassword: false,
+      phoneErr: '',
+      passwordErr: '',
+      phone: '',
+      password: '',
+      passwordExec: /(?!^(\d+|[a-zA-Z]+|[~!@#$%^&*?]+)$)^[\w~!@#$%^&*?]{8,18}$/
+    }
+  },
   watch: {
     phone (newkey) {
       if (newkey.trim().length >= 11) {
         this.$refs.check_captcha.flag = 0
         clearInterval(this.$refs.check_captcha.timer)
       }
+    }
+  },
+  methods: {
+    closeRegister () {
+      // 销毁注册，验证码，昵称页面
+      this.$store.commit('hiddenRegister')
+      this.$store.commit('hiddenCaptcha')
+      this.$store.commit('hiddenNickName')
+      // 清除添加的手机号，密码，验证码
+      this.$store.commit('clearUserRegisterInfo', '')
+    },
+    // 鼠标一聚焦验证手机号
+    async verifyPhone () {
+      this.isPhone = false
+      const { phone } = this
+      // 判断号码是否为空
+      if (!phone) this.phoneErr = '手机号不能为空'
+      else if (isNaN(phone)) this.phoneErr = '手机号码的格式有误,请输入数值'
+      else if (phone.length !== 11) this.phoneErr = '请输入11位手机号'
+      else {
+        // 检测手机号是否已经被注册过了
+        const { data: { exist } } = await _VerifyPhone(this.phone)
+        if (exist !== -1) this.phoneErr = '该手机号已被注册了，请直接登录!!!'
+        else {
+          this.phoneErr = ''
+          this.isPhone = true
+        }
+      }
+    },
+    verifyPassword () {
+      this.isPassword = false
+      const { password } = this
+      // 判断密码 是否为空
+      if (!password) this.passwordErr = '密码不能为空'
+      else if (!this.passwordExec.test(password)) this.passwordErr = '密码格式有误'
+      else {
+        this.passwordErr = ''
+        this.isPassword = true
+      }
+    },
+    // 存储注册账号和密码，去往获取验证码页面校验手机号
+    enterCaptcha () {
+      this.$store.commit('addPhone', this.phone)
+      this.$store.commit('addPassword', this.password)
+      this.$store.commit('showCaptcha')
     }
   }
 

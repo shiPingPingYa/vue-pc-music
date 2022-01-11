@@ -154,6 +154,10 @@ export default {
     z-index: 100;
   }
 
+  .main-container{
+   margin-top: 100px;
+  }
+
   .form-item {
     display: flex;
     position: relative;
@@ -175,15 +179,5 @@ export default {
     > .el-button {
       width: 100%;
     }
-  }
-
-  .capt-enter-active,
-  .capt-leave-active {
-    transition: all 2s ease;
-  }
-
-  .capt-enter,
-  .capt-leave-to {
-    opacity: 0;
   }
 </style>
