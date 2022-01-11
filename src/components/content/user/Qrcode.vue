@@ -1,16 +1,18 @@
 <template>
   <transition name="fade-in-linear">
-    <div class="qrcode">
-      <div class="close" @click="qrcodeClose()">
-        <img src="../../../assets/img/user/x.svg" alt="" />
-      </div>
-      <!-- 二维码 -->
-      <div class="qrcode-back">
-        <img :src="qrImage" alt="" />
-      </div>
-      <!-- 重新获取二维码 -->
-      <div class="reload-qrcode">
-        <el-button type="primary" @click="getQrcode()">重新获取二维码</el-button>
+    <div class="modal">
+      <div class="modal-content">
+        <div class="icon-close-container">
+          <div class="back"></div>
+          <img src="../../../assets/img/user/x.svg" alt="" @click="qrcodeClose()" />
+        </div>
+        <div class="qr-code">
+          <img :src="qrImage" alt="" />
+        </div>
+        <!-- 重新获取二维码 -->
+        <div class="reload-qrcode">
+          <el-button type="primary" @click="getQrcode()">重新获取二维码</el-button>
+        </div>
       </div>
     </div>
   </transition>
@@ -79,36 +81,20 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  .qrcode {
-    position: absolute;
-    width: 400px;
-    height: 360px;
-    top: 50%;
-    z-index: 103;
-    transform: translate(80%, -50%);
-    background-color: #a3b2b8;
-    > .close {
-      width: 18px;
-      height: 18px;
-      position: absolute;
-      right: 8px;
-      top: 8px;
-      img {
-        width: 100%;
-        height: 100%;
-        cursor: pointer;
-      }
-    }
-    > .qrcode-back {
+  .qr-code {
+    width: 100%;
+    height: 180px;
+    margin-top: 40px;
+    text-align: center;
+    & img {
       width: 180px;
       height: 180px;
-      margin: 25% auto 0 auto;
     }
-    > .reload-qrcode {
-      width: 100%;
-      height: 40px;
-      margin-top: 20px;
-      text-align: center;
-    }
+  }
+  .reload-qrcode {
+    width: 100%;
+    height: 40px;
+    margin-top: 20px;
+    text-align: center;
   }
 </style>
