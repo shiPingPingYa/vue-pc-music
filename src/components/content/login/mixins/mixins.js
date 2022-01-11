@@ -66,6 +66,7 @@ export const mixins = {
       // 判断密码是否为空
       if (this.password.trim().length <= 0) {
         this.passwordMessage = '密码不能为空'
+        this.isPassword = false
       } else {
         // 验证密码是否符合格式
         if (!this.passwordExec.test(this.password)) {

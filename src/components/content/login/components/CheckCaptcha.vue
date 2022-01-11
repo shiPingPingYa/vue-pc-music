@@ -1,33 +1,43 @@
 <template>
-  <div class="captcha">
-    <div class="captcha-back">
-      <!-- 上面图标区域 -->
-      <div class="close">
-        <div class="returnR">
-          <i class="el-icon-arrow-left"></i>
-          <span @click="enterRegi()">返回</span>
-        </div>
-        <div class="closeReg" @click="closeRegister">
-          <img src="../../../../assets/img/user/x.svg" alt="">
-        </div>
-      </div>
-      <!-- 图片背景 -->
+  <div class="modal-content">
+    <div class="icon-close-container">
       <div class="back">
-        <img src="../../../../assets/img/user/phone.svg" alt="">
-        <p>为了安全我们会向你的手机发送验证码</p>
+        <i class="el-icon-arrow-left" />
+        <span @click="enterRegi()">返回</span>
       </div>
+      <img
+        src="../../../../assets/img/user/x.svg"
+        alt=""
+        @click="closeRegister"
+      >
     </div>
-    <div class="main">
+    <div class="main-container">
       <div class="form-item">
-        <el-input placeholder="请写验证码" v-model="captcha" prefix-icon="el-icon-key"></el-input>
-        <el-button type="danger" :disabled="btnCaptcha" @click="getCaptcha()">{{startS}}</el-button>
+        <el-input
+          v-model="captcha"
+          placeholder="请写验证码"
+          prefix-icon="el-icon-key"
+        />
+        <el-button
+          type="danger"
+          :disabled="btnCaptcha"
+          @click="getCaptcha()"
+        >
+          {{ startS }}
+        </el-button>
       </div>
       <div class="form-item2">
-        <el-button type="danger" size="medium" :disabled="btnDisabled()" @click="enterNickN()">下一步</el-button>
+        <el-button
+          type="danger"
+          size="medium"
+          :disabled="btnDisabled()"
+          @click="enterNickN()"
+        >
+          下一步
+        </el-button>
       </div>
     </div>
   </div>
-
 </template>
 <script>
 // 混入
@@ -38,6 +48,7 @@ import { _getCaptcha, _getVerifyCaptcha } from 'api/user'
 import { debounce } from 'js/tool'
 export default {
   name: 'CheckCaptcha',
+  mixins: [mixins],
   data () {
     return {
       captcha: '',
@@ -50,7 +61,6 @@ export default {
       message: ''
     }
   },
-  mixins: [mixins],
   watch: {
     // 监听验证码
     captcha (newkey) {
@@ -139,85 +149,31 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  .captcha {
-    position: absolute;
-    width: 400px;
-    height: 360px;
-    margin: auto;
-    top: 0;
-    left: 0;
-    z-index: 100;
+  .modal-content {
     background-color: #a3b2b8;
-    > .captcha-back {
-      position: relative;
-      width: 100%;
-      height: 160px;
-      text-align: center;
-      > .close {
-        display: flex;
-        width: 100%;
-        height: 26px;
-        padding: 8px 10px;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-        > .returnR {
-          font-size: 14px;
-        }
-        > .closeReg {
-          width: 18px;
-          height: 18px;
-          img {
-            width: 100%;
-            height: 100%;
-            background-size: 100%, 100%;
-          }
-        }
-      }
-      > .back {
-        position: absolute;
-        width: 100%;
-        height: 88px;
-        top: 40px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: 50%;
-        p {
-          margin: 6px 0;
-        }
-        img {
-          width: 88px;
-          height: 88px;
-          background-size: 100%, 100%;
-        }
-      }
+    z-index: 100;
+  }
+
+  .form-item {
+    display: flex;
+    position: relative;
+    width: 60%;
+    margin: 0 auto;
+    justify-content: space-between;
+    font-size: 13px;
+    color: red;
+    > .el-input {
+      width: 50%;
     }
-    > .main {
+    > .el-button {
+      width: 46%;
+    }
+  }
+  .form-item2 {
+    width: 60%;
+    margin: 20px auto;
+    > .el-button {
       width: 100%;
-      height: 200px;
-      text-align: center;
-      .form-item {
-        display: flex;
-        position: relative;
-        width: 60%;
-        margin: 0 auto;
-        justify-content: space-between;
-        font-size: 13px;
-        color: red;
-        > .el-input {
-          width: 50%;
-        }
-        > .el-button {
-          width: 46%;
-        }
-      }
-      .form-item2 {
-        width: 60%;
-        margin: 20px auto;
-        > .el-button {
-          width: 100%;
-        }
-      }
     }
   }
 

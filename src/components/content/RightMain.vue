@@ -2,19 +2,19 @@
   <div class="main">
     <!-- 左边导航栏的路由占位符 -->
     <keep-alive include="$route.meta.keepLive">
-      <router-view></router-view>
+      <router-view />
     </keep-alive>
     <transition name="fade-in-linear">
       <!-- 登录组件 -->
-      <login v-show="getLoginStatus"></login>
+      <login v-if="getLoginStatus" />
     </transition>
     <transition name="fade-in-linear">
       <!-- 注册组件 -->
-      <register v-if="isShowRegister"></register>
+      <register v-if="isShowRegister" />
     </transition>
     <transition name="fade-in-linear">
       <!-- 二维码组件 -->
-      <qrcode v-if="isShowQrcode"></qrcode>
+      <qrcode v-if="isShowQrcode" />
     </transition>
   </div>
 </template>

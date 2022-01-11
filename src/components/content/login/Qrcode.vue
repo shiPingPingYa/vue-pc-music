@@ -1,19 +1,31 @@
 <template>
-    <div class="modal">
-      <div class="modal-content">
-        <div class="icon-close-container">
-          <div class="back"></div>
-          <img src="../../../assets/img/user/x.svg" alt="" @click="qrcodeClose()" />
-        </div>
-        <div class="qr-code">
-          <img :src="qrImage" alt="" />
-        </div>
-        <!-- 重新获取二维码 -->
-        <div class="reload-qrcode">
-          <el-button type="primary" @click="getQrcode()">重新获取二维码</el-button>
-        </div>
+  <div class="modal">
+    <div class="modal-content">
+      <div class="icon-close-container">
+        <div class="back" />
+        <img
+          src="../../../assets/img/user/x.svg"
+          alt=""
+          @click="qrcodeClose()"
+        >
+      </div>
+      <div class="qr-code">
+        <img
+          :src="qrImage"
+          alt=""
+        >
+      </div>
+      <!-- 重新获取二维码 -->
+      <div class="reload-qrcode">
+        <el-button
+          type="primary"
+          @click="getQrcode()"
+        >
+          重新获取二维码
+        </el-button>
       </div>
     </div>
+  </div>
 </template>
 <script>
 // 调用二维码接口

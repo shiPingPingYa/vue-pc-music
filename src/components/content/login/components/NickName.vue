@@ -1,32 +1,41 @@
 <template>
-  <div class="nick-name">
-    <div class="nick-back">
-      <!-- 上面图标区域 -->
-      <div class="close">
-        <div class="returnR">
-          <i class="el-icon-arrow-left"></i>
-          <span @click="enterCheC()">返回</span>
-        </div>
-        <div class="closeReg" @click="closeRegister">
-          <img src="../../../../assets/img/user/x.svg" alt="">
-        </div>
-      </div>
-      <!-- 图片背景 -->
+  <div class="modal-content">
+    <div class="icon-close-container">
       <div class="back">
-        <img src="../../../../assets/img/user/phone.svg" alt="">
+        <i class="el-icon-arrow-left" />
+        <span @click="enterCheC()">返回</span>
       </div>
+      <img
+        src="../../../../assets/img/user/x.svg"
+        alt=""
+        @click="closeRegister"
+      >
     </div>
-    <div class="main">
+    <div class="user-img-container">
+      <img
+        src="../../../../assets/img/user/phone.svg"
+        alt=""
+      >
+    </div>
+    <div class="main-container">
       <div class="form-item">
-        <el-input placeholder="请输入呢称" prefix-icon="el-icon-s-custom" v-model="nickName">
-        </el-input>
+        <el-input
+          v-model="nickName"
+          placeholder="请输入呢称"
+          prefix-icon="el-icon-s-custom"
+        />
       </div>
       <div class="form-item">
-        <el-button type="danger" :disabled="btnNickN" @click="nickNC()">立即注册</el-button>
+        <el-button
+          type="danger"
+          :disabled="btnNickN"
+          @click="nickNC()"
+        >
+          立即注册
+        </el-button>
       </div>
     </div>
   </div>
-
 </template>
 <script>
 import { mixins } from '../mixins/mixins'
@@ -74,85 +83,22 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  .nick-name {
-    position: absolute;
-    width: 400px;
-    height: 360px;
-    top: 50%;
-    z-index: 10;
-    transform: translate(80%, -50%);
+  .modal-content {
     background-color: #a3b2b8;
-    > .nick-back {
-      position: relative;
-      width: 100%;
-      height: 160px;
-      text-align: center;
-      > .close {
-        display: flex;
-        width: 100%;
-        height: 26px;
-        padding: 8px 10px;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-        > .returnR {
-          font-size: 14px;
-        }
-        > .closeReg {
-          width: 18px;
-          height: 18px;
-          img {
-            width: 100%;
-            height: 100%;
-            background-size: 100%, 100%;
-          }
-        }
-      }
-      > .back {
-        position: absolute;
-        width: 100%;
-        height: 88px;
-        top: 40px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: 50%;
-        p {
-          margin: 6px 0;
-        }
-        img {
-          width: 88px;
-          height: 88px;
-          background-size: 100%, 100%;
-        }
-      }
-    }
-    > .main {
-      width: 100%;
-      height: 200px;
-      .form-item {
-        display: flex;
-        position: relative;
-        width: 60%;
-        margin: 20px auto;
-        justify-content: space-between;
-        font-size: 13px;
-        color: red;
-        > .el-button {
-          display: block;
-          width: 80%;
-          margin: 0 auto;
-        }
-      }
-    }
+    z-index: 100;
   }
-
-  .nick-enter-active,
-  .nick-leave-active {
-    transition: all 2s ease;
-  }
-
-  .nick-enter,
-  .nick-leave-to {
-    opacity: 0;
+  .form-item {
+    display: flex;
+    position: relative;
+    width: 60%;
+    margin: 20px auto;
+    justify-content: space-between;
+    font-size: 13px;
+    color: red;
+    > .el-button {
+      display: block;
+      width: 80%;
+      margin: 0 auto;
+    }
   }
 </style>
