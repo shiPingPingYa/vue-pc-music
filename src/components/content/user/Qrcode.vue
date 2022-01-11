@@ -1,18 +1,18 @@
 <template>
-  <transition name="qrc">
-  <div class="qrcode">
-    <div class="close" @click="qrcodeClose()">
-      <img src="../../../assets/img/user/x.svg" alt="">
-    </div>
+  <transition name="fade-in-linear">
+    <div class="qrcode">
+      <div class="close" @click="qrcodeClose()">
+        <img src="../../../assets/img/user/x.svg" alt="" />
+      </div>
       <!-- 二维码 -->
-    <div class="qrcode-back">
-      <img :src="qrImage" alt="">
+      <div class="qrcode-back">
+        <img :src="qrImage" alt="" />
+      </div>
+      <!-- 重新获取二维码 -->
+      <div class="reload-qrcode">
+        <el-button type="primary" @click="getQrcode()">重新获取二维码</el-button>
+      </div>
     </div>
-    <!-- 重新获取二维码 -->
-    <div class="reload-qrcode">
-      <el-button type="primary" @click="getQrcode()">重新获取二维码</el-button>
-    </div>
-  </div>
   </transition>
 </template>
 <script>
@@ -24,114 +24,91 @@ export default {
     return {
       // 二维码key
       qrKey: null,
-      // 二维码图片
-      qrImage: null,
+      qrImage: null, // 二维码图片
       status: '',
-      timer: null
+      timer: null // 定时器，
     }
   },
-  created () {
+  mounted () {
     this.getQrcode()
-    clearInterval(this.timer)
+    this.$on('hook:destroyed', () => clearTimeout(this.timer))
   },
   methods: {
-    // 关闭二维码组件
     qrcodeClose () {
-      // 清除一下定时器
-      clearInterval(this.timer)
       this.$store.commit('hiddenQrcode')
     },
     // 获取二维码
     async getQrcode () {
-      clearInterval(this.timer)
-      // 获取二维码的key
-      await _getQrcodeKey().then(res => {
-        this.qrKey = res.data.data.unikey
-        return res.data.data.unikey
-      }).then(async res => {
-      // 根据生成的key，获取图片
-        await _getQrcodeImg(res).then(res => { this.qrImage = res.data.data.qrimg })
-      })
-      // 定时判断是否登录
-      this.timer = setInterval(async () => {
-        await _getCheckQrcode(this.qrKey).then(res => {
-          // 获取code字段
-          this.status = res.data.code
-          // 获取cookie
-          if (res.data.cookit !== null) { this.$store.commit('addCookie', res.data.cookie) }
-        })
-        if (this.status === 800) {
-          // 清除定时器
-          clearInterval(this.timer)
-          this.$message.warning('二维码已经过期，请重新获取')
-        } else if (this.status === 803) {
-          clearInterval(this.timer)
-          this.$message.warning('登录成功')
-          // 根据获取的cookie,获取用户信息
-          _getLonginStatus({ cookie: this.$store.state.cookie, timestamp: Date.now() }).then(res => {
-            const obj = {
-              uid: res.data.data.profile.userId,
-              cookie: this.$store.state.cookie,
-              nickname: res.data.data.profile.nickname,
-              image: res.data.data.profile.avatarUrl
-            }
-            // 通过webstorag来存储用户ID,以便下次根据id获取
-            window.localStorage.setItem('userId', JSON.stringify(obj.uid))
-            // 通过vuex来存储数据，获取歌单
-            this.$store.commit('addUser', obj)
-          })
-          // 销毁二维码页面
-          this.$store.commit('hiddenQrcode')
+      // 获取二维码的key，进而通过key获取二维码图片
+      const { data: { code, data: { unikey } } } = await _getQrcodeKey()
+      if (code === 200) {
+        const { data: { data: { qrimg } } } = await _getQrcodeImg(unikey)
+        this.qrKey = unikey
+        this.qrImage = qrimg
+        this.startCheckScan()
+      }
+    },
+    startCheckScan () {
+      clearTimeout(this.timer)
+      this.timer = setTimeout(this.checkScan, 4000)
+    },
+    async checkScan () {
+      const codeList = [800, 803]
+      const { data: { code, cookie } } = await _getCheckQrcode(this.qrKey)
+      if (!codeList.includes(code)) return this.startCheckScan() // 等待扫码和待确认重新获取二维码扫描状态
+      // code状态800过期，801等待扫码，8002待确认，8003授权成功并返回cookie
+      if (code === 800) {
+        this.$message.warning('二维码已过期，请点击重新获取二维码')
+      } else if (code === 803) {
+        this.$message.warning('登录成功')
+        // 根据返回的cookie获取用户信息
+        const { data: { data } } = await _getLonginStatus({ cookie: cookie, timestamp: Date.now() })
+        const obj = {
+          uid: data.profile.userId,
+          cookie: this.$store.state.cookie,
+          nickname: data.profile.nickname,
+          image: data.profile.avatarUrl
         }
-      }, 4000)
+        window.localStorage.setItem('userId', JSON.stringify(obj.uid)) // 通过webstorag来存储用户ID,以便下次根据id获取
+        this.$store.commit('addUser', obj) // 存储用户信息
+        this.$store.commit('addCookie', cookie) // 设置cookie
+        this.qrcodeClose()
+      }
     }
-  },
-  beforeDestroy () {
-    clearInterval(this.timer)
   }
 }
 </script>
 <style lang="less" scoped>
-.qrcode{
-  position: absolute;
-  width: 400px ;
-  height: 360px;
-  top: 50%;
-  z-index: 103;
-  transform: translate(80%,-50%);
-  background-color: #a3b2b8;
-  > .close{
-    width: 18px;
-    height: 18px;
+  .qrcode {
     position: absolute;
-    right: 8px;
-    top: 8px;
-    img{
+    width: 400px;
+    height: 360px;
+    top: 50%;
+    z-index: 103;
+    transform: translate(80%, -50%);
+    background-color: #a3b2b8;
+    > .close {
+      width: 18px;
+      height: 18px;
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      img {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+    }
+    > .qrcode-back {
+      width: 180px;
+      height: 180px;
+      margin: 25% auto 0 auto;
+    }
+    > .reload-qrcode {
       width: 100%;
-      height: 100%;
-      cursor: pointer;
+      height: 40px;
+      margin-top: 20px;
+      text-align: center;
     }
   }
-  > .qrcode-back{
-    width: 180px;
-    height: 180px;
-    margin: 25% auto 0 auto;
-  }
-  > .reload-qrcode{
-    width: 100%;
-    height: 40px;
-    margin-top: 20px;
-    text-align: center;
-  }
-}
-
-.qrc-enter-active,
-.qrc-leave-active{
-  transition: all 2s ease;
-}
-
-.qrc-enter,
-.qrc-leave-to{
-  opacity: 0;
-}
 </style>

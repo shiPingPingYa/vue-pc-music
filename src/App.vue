@@ -1,7 +1,7 @@
 <template>
   <div id="app" @click="setAsyncShareImag(false)">
     <keep-alive>
-    <tab-bar></tab-bar>
+      <tab-bar></tab-bar>
     </keep-alive>
     <center-content></center-content>
     <play-music ref="play_music"></play-music>
@@ -31,9 +31,7 @@ export default {
     // 路由发生改变时，判断播放组件是不是处于隐藏状态
     $route: {
       handler () {
-        if (this.$refs.play_music.isPlayerShow) {
-          this.$refs.play_music.isPlayerShow = false
-        }
+        if (this.$refs.play_music.isPlayerShow) this.$refs.play_music.isPlayerShow = false
       }
     }
   },
@@ -50,31 +48,27 @@ export default {
     ...mapMutations(['setAsyncShareImag', 'showLogin'])
   },
   mounted () {
-    // 监听键盘空格事件，停止播放音乐
-    document.onkeyup = (e) => {
-      // 触发子组件里面的方法，停止播放音乐
-      if (e.keyCode === 32) {
-        this.$refs.play_music.toggle()
-      }
-    }
+    // 监听键盘输入事件，空格停止音乐播放
+    const stopMusic = (e) => e.keyCode === 32 && this.$refs.play_music.toggle()
+    window.addEventListener('keyup', stopMusic)
   }
 }
 </script>
 
 <style>
-ul li{
-  list-style: none;
-}
-#app {
-  position: relative;
-  margin: 0 10% 0 10%;
-  width: 80%;
-  height: 100%;
-  opacity: 0.9;
-}
+  ul li {
+    list-style: none;
+  }
+  #app {
+    position: relative;
+    margin: 0 10% 0 10%;
+    width: 80%;
+    height: 100%;
+    opacity: 0.9;
+  }
 
-.w-120{
-  width: 120px;
-  margin-top: 10px;
-}
+  .w-120 {
+    width: 120px;
+    margin-top: 10px;
+  }
 </style>

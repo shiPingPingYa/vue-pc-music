@@ -1,4 +1,4 @@
-export default {
+const getters = {
   getLoginStatus: state => state.isShowLogin,
   getUserRegisterInfo (state) {
     const obj = {
@@ -17,3 +17,5 @@ export default {
   getUserImage: state => state.image || 'img/login.128c56ca.jpg',
   isLogin: state => state.isLogin || localStorage.getItem('userId')
 }
+
+export default getters

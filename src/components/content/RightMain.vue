@@ -5,11 +5,11 @@
       <router-view></router-view>
     </keep-alive>
     <!-- 登录组件 -->
-    <login v-show="$store.getters.getLoginStatus"></login>
+    <login v-show="getLoginStatus"></login>
     <!-- 注册组件 -->
-    <register v-if="$store.state.isShowRegister"></register>
+    <register v-if="isShowRegister"></register>
     <!-- 二维码组件 -->
-    <qrcode v-if="$store.state.isShowQrcode"></qrcode>
+    <qrcode v-if="isShowQrcode"></qrcode>
   </div>
 </template>
 <script>
@@ -18,9 +18,15 @@ import Login from '../content/user/Login'
 // 注册组件
 import Register from './user/Register.vue'
 import Qrcode from './user/Qrcode'
+import { mapGetters, mapState } from 'vuex'
+
 export default {
   name: 'RightMain',
-  components: { Login, Register, Qrcode }
+  components: { Login, Register, Qrcode },
+  computed: {
+    ...mapGetters(['getLoginStatus']),
+    ...mapState(['isShowQrcode', 'isShowRegister'])
+  }
 }
 </script>
 <style lang="less" scoped>

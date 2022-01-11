@@ -8,48 +8,33 @@
       <button class="el-icon-arrow-left" @click="preRouter()"></button>
       <button class="el-icon-arrow-right" @click="nextRouter()"></button>
     </div>
+
     <!-- 音乐搜索 -->
     <music-search></music-search>
+
     <!-- 用户登录 -->
     <div class="userlogin">
       <div class="user-img" @click="showLogin()">
         <img :src="getUserImage" />
       </div>
       <div class="user-id">{{ userName }}</div>
-      <div
-        class="news"
-        v-show="isLogin"
-        @click="(isPrivate = !isPrivate), (isHistoryNews = false)"
-      >
+      <div class="news" v-show="isLogin" @click="(isPrivate = !isPrivate), (isHistoryNews = false)">
         <img src="../../../assets/img/news.svg" alt="" />
       </div>
+
       <!-- 退出登录 -->
       <div class="enterLogin" v-show="isLogin">
-        <el-upload
-          action="/avatar/upload"
-          :headers="header"
-          :show-file-list="false"
-          :http-request="httpRequest"
-        >
+        <el-upload action="/avatar/upload" :headers="header" :show-file-list="false" :http-request="httpRequest">
           <i class="el-icon-picture-outline-round"></i>
         </el-upload>
         <i class="el-icon-s-unfold" @click="enterLogin()"></i>
       </div>
     </div>
-    <private-detail
-      class="private_detail"
-      v-show="isPrivate"
-      @privateNewChange="privateNewChange"
-    ></private-detail>
-    <history-news
-      class="private_detail"
-      v-if="isHistoryNews"
-      :historyList="historyList"
-      :more="historyMore"
-      @prePrivateDetail="prePrivateDetail"
-      @cancelHistory="cancelHistory"
-      @hideStatus="(isPrivate = false), (isHistoryNews = false)"
-    ></history-news>
+
+    <!-- 私信 -->
+    <private-detail class="private_detail" v-show="isPrivate" @privateNewChange="privateNewChange"></private-detail>
+
+    <history-news class="private_detail" v-if="isHistoryNews" :historyList="historyList" :more="historyMore" @prePrivateDetail="prePrivateDetail" @cancelHistory="cancelHistory" @hideStatus="(isPrivate = false), (isHistoryNews = false)"></history-news>
   </div>
 </template>
 <script>
@@ -57,10 +42,7 @@ import MusicSearch from '../search/MusicSearch'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import { mixins } from '../user/mixins'
 import { _setUserImage } from '../../../network/user'
-import {
-  _getPrivateHistoryNews,
-  HandlePrivateHistory
-} from '../../../network/privateNews'
+import { _getPrivateHistoryNews, HandlePrivateHistory } from '../../../network/privateNews'
 import privateDetail from '../privateMsg/privateDetail.vue'
 import HistoryNews from '../privateMsg/childComps/HistoryNews.vue'
 export default {
@@ -148,8 +130,8 @@ export default {
       this.historyList = []
       this.privageUserId = userId
       _getPrivateHistoryNews({ uid: this.privageUserId })
-        .then((res) => {
-          res.data.msgs.forEach((item) =>
+        .then(res => {
+          res.data.msgs.forEach(item =>
             this.historyList.push(new HandlePrivateHistory(item))
           )
           this.historyList = this.historyList.reverse()

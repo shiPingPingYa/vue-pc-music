@@ -1,4 +1,4 @@
-export default {
+const mutations = {
   // 更新歌手
   addArtist (state, artist) {
     state.artist = artist
@@ -113,3 +113,5 @@ export default {
     state.isLogin = flag
   }
 }
+
+export default mutations

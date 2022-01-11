@@ -1,26 +1,22 @@
 <template>
   <!-- 私信 -->
   <div class="private_content">
-    <div
-      class="content_item"
-      v-for="item in privateNewsList"
-      :key="item.userId"
-      v-show="privateNewsList.length !== 0"
-      @click="privateNewsChange(item.userId)"
-    >
-      <div class="is_new_private" v-if="item.newMsgCount !== 0"></div>
-      <div class="private_img">
-        <img :src="item.avatarurl + '?param=40y40'" alt="" />
-      </div>
-      <div class="private_header">
-        <div class="private_name">{{ item.userName }}</div>
-        <div class="private_time">
-          {{ handlePrivateTime(item.lasttime) }}
+    <div class="content-list" v-if="list.length">
+      <div class="content_item" v-for="item in list" :key="item.userId" @click="privateNewsChange(item.userId)">
+        <div class="is_new_private" v-if="item.newMsgCount !== 0"></div>
+        <div class="private_img">
+          <img :src="item.avatarurl + '?param=40y40'" alt="" />
         </div>
-        <div class="private_ablum">{{ item.title }}</div>
+        <div class="private_header">
+          <div class="private_name">{{ item.userName }}</div>
+          <div class="private_time">
+            {{ handlePrivateTime(item.lasttime) }}
+          </div>
+          <div class="private_ablum">{{ item.title }}</div>
+        </div>
       </div>
     </div>
-    <div class="foward_prompt" v-show="privateNewsList.length === 0">
+    <div class="foward_prompt" v-else>
       暂无数据
     </div>
   </div>
@@ -30,11 +26,9 @@ import { privateDetailMixin } from '../indexmixin'
 export default {
   name: 'PrivateNewsList',
   props: {
-    privateNewsList: {
+    list: {
       type: Array,
-      default () {
-        return []
-      }
+      default: () => []
     }
   },
   mixins: [privateDetailMixin],
@@ -108,7 +102,7 @@ export default {
     text-align: center;
   }
 
-  .is_new_private{
+  .is_new_private {
     width: 10px;
     height: 10px;
     margin-top: 30px;

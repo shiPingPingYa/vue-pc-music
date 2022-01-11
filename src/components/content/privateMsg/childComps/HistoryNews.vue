@@ -12,32 +12,17 @@
       </div>
     </div>
     <div class="new_container">
-      <scroll
-        ref="history_news_scroll"
-        class="history_news_scroll"
-        :pullDownRefresh="true"
-        scrollbar
-        @pullingDown="pullingDown"
-      >
-        <div
-          class="history_news_list"
-          v-for="(item, index) in historyList"
-          :key="index"
-        >
+      <scroll ref="history_news_scroll" class="history_news_scroll" :pullDownRefresh="true" scrollbar @pullingDown="pullingDown">
+        <div class="history_news_list" v-for="(item, index) in historyList" :key="index">
           <div class="history_time">{{ handleHistoryTime(item.time) }}</div>
           <div class="history_img">
             <img :src="item.avatarUrl + '?param=40y40'" alt="" />
           </div>
           <div class="history_container">
             <div class="share_title">
-              <span v-show="item.text">{{ item.text }}:</span
-              >{{ item.shareTitle }}
+              <span v-show="item.text">{{ item.text }}:</span>{{ item.shareTitle }}
             </div>
-            <div
-              class="share_event_mv"
-              v-if="item.type === 7"
-              @click="goPlayMV(item.mvId)"
-            >
+            <div class="share_event_mv" v-if="item.type === 7" @click="goPlayMV(item.mvId)">
               <img :src="item.userImage" alt="" />
               <div class="share_event_mv_content">
                 <div class="mv_content_title">
@@ -55,24 +40,14 @@
                 </div>
               </div>
             </div>
-            <div
-              class="share_event"
-              v-else
-              @click="goPlayMusic(item.type, item.id)"
-            >
+            <div class="share_event" v-else @click="goPlayMusic(item.type, item.id)">
               <div class="share_event_image">
                 <img :src="item.userImage + '?param=40y40'" alt="" />
               </div>
               <div class="share_event_content">
-                <div
-                  class="user_share_title"
-                  style="height: 54px; overflow: hidden"
-                >
+                <div class="user_share_title" style="height: 54px; overflow: hidden">
                   {{ item.title }}
-                  <div
-                    class="user_share_name"
-                    v-show="item.type === 1 || item.type === 2"
-                  >
+                  <div class="user_share_name" v-show="item.type === 1 || item.type === 2">
                     {{ item.nickname }}
                   </div>
                 </div>

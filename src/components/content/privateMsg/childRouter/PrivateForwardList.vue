@@ -1,17 +1,15 @@
 <template>
   <div class="private_content">
-    <div class="foward_prompt" v-show="forwardsList.length === 0">暂无数据</div>
+    <div class="foward_prompt">暂未处理获取@我数据</div>
   </div>
 </template>
 <script>
 export default {
   name: 'PrivateForwardList',
   props: {
-    forwardsList: {
+    list: {
       type: Array,
-      default () {
-        return []
-      }
+      default: () => []
     }
   }
 }

@@ -1,69 +1,26 @@
 <template>
   <div class="private_container">
     <div class="private_tabar">
-      <div
-        v-for="(item, index) in tabbarList"
-        :key="index"
-        :class="{ tabbar_back: index === isTabber }"
-        @click="isTabber = index"
-      >
+      <div v-for="(item, index) in tabbarList" :key="index" :class="{ tabbar_back: index === isTabber }" @click="isTabber = index">
         {{ item }}
         <p v-if="isTabber === index && isTabber === 0">{{ newMsgCount }}</p>
       </div>
     </div>
-    <scroll
-      class="private_content_scroll"
-      ref="private_content_scroll"
-      :pull-up-load="true"
-      @pullingUp="pullingUp"
-    >
-      <!-- 私信 -->
-      <private-news-list
-        v-if="isTabber === 0"
-        :privateNewsList="privateNewsList"
-      ></private-news-list>
-      <!-- 评论 -->
-      <private-comment-list
-        v-if="isTabber === 1"
-        :privateCommentsList="privateCommentsList"
-      ></private-comment-list>
-      <!-- @我 -->
-      <private-forward-list
-        v-if="isTabber === 2"
-        :forwardsList="forwardsList"
-      ></private-forward-list>
-      <!-- 通知 -->
-      <private-notices-list
-        v-show="isTabber === 3"
-        :privateNoticesList="privateNoticesList"
-      ></private-notices-list>
+    <scroll class="private_content_scroll" ref="private_content_scroll" :pull-up-load="true" @pullingUp="pullingUp">
+      <component :is="currentPage" :list="currentList"></component>
     </scroll>
   </div>
 </template>
 <script>
 import Scroll from '../../common/scroll/Scroll.vue'
-import {
-  _getPrivateMsg,
-  _getPrivateComments,
-  _getPrivateMe,
-  _getPrivateNotices,
-  HandlePrivateMsg,
-  HandlePrivateNotices,
-  HandlePrivateComments
-} from '../../../network/privateNews'
-import PrivateNewsList from './childRouter/PrivateNewsList.vue'
-import PrivateCommentList from './childRouter/PrivateCommentList.vue'
-import PrivateForwardList from './childRouter/PrivateForwardList.vue'
-import PrivateNoticesList from './childRouter/PrivateNoticesList.vue'
+import { _getPrivateMsg, _getPrivateComments, _getPrivateMe, _getPrivateNotices, HandlePrivateMsg, HandlePrivateNotices, HandlePrivateComments } from '../../../network/privateNews'
+import PrivateNewsList from './childRouter/PrivateNewsList.vue' // 私信
+import PrivateCommentList from './childRouter/PrivateCommentList.vue' // 评论
+import PrivateForwardList from './childRouter/PrivateForwardList.vue' // @我
+import PrivateNoticesList from './childRouter/PrivateNoticesList.vue' // 通知
 export default {
   name: 'privateDetail',
-  components: {
-    Scroll,
-    PrivateNewsList,
-    PrivateCommentList,
-    PrivateForwardList,
-    PrivateNoticesList
-  },
+  components: { Scroll, PrivateNewsList, PrivateCommentList, PrivateForwardList, PrivateNoticesList },
   data () {
     return {
       tabbarList: ['私信', '评论', '@我', '通知'],
@@ -93,6 +50,16 @@ export default {
       this.initPrivateDetail(0)
     }
   },
+  computed: {
+    currentPage () {
+      const pageObj = { 0: 'PrivateNewsList', 1: 'PrivateCommentList', 2: 'PrivateForwardList', 3: 'PrivateNoticesList' }
+      return pageObj[this.isTabber]
+    },
+    currentList () {
+      const pageList = { 0: 'privateNewsList', 1: 'privateCommentsList', 2: 'forwardsList', 3: 'privateNoticesList' }
+      return this[pageList[this.isTabber]]
+    }
+  },
   created () {
     this.initPrivateDetail(0)
     this.userId = localStorage.getItem('userId')
@@ -104,9 +71,7 @@ export default {
           // 获取私信数据
           if (flag === 0) {
             this.privateNewsList = []
-            const {
-              data: { msgs, newMsgCount, more }
-            } = await _getPrivateMsg()
+            const { data: { msgs, newMsgCount, more } } = await _getPrivateMsg()
             this.NewsMore = more
             this.newMsgCount = newMsgCount
             msgs.forEach((item) =>
@@ -119,9 +84,7 @@ export default {
             const params = {
               offset: this.privateNewsList.length
             }
-            const {
-              data: { msgs, newMsgCount, more }
-            } = await _getPrivateMsg(params)
+            const { data: { msgs, newMsgCount, more } } = await _getPrivateMsg(params)
             this.NewsMore = more
             this.newMsgCount = newMsgCount
             msgs.forEach((item) =>
@@ -136,9 +99,7 @@ export default {
           }
           if (flag === 0) {
             this.privateCommentsList = []
-            const {
-              data: { comments, more }
-            } = await _getPrivateComments(params)
+            const { data: { comments, more } } = await _getPrivateComments(params)
             this.commentsMore = more
             comments.forEach((item) =>
               this.privateCommentsList.push(new HandlePrivateComments(item))
@@ -147,13 +108,8 @@ export default {
             if (this.commentsMore === false) {
               return this.$message.info('没有更多评论了')
             }
-            params.before =
-              this.privateCommentsList[
-                this.privateCommentsList.length - 1
-              ].lasttime
-            const {
-              data: { comments, more }
-            } = await _getPrivateComments(params)
+            params.before = this.privateCommentsList[this.privateCommentsList.length - 1].lasttime
+            const { data: { comments, more } } = await _getPrivateComments(params)
             this.commentsMore = more
             comments.forEach((item) =>
               this.privateCommentsList.push(new HandlePrivateComments(item))
@@ -164,9 +120,7 @@ export default {
           // 获取@我数据
           if (flag === 0) {
             this.forwardsList = []
-            const {
-              data: { forwards, lasttime, more }
-            } = await _getPrivateMe()
+            const { data: { forwards, lasttime, more } } = await _getPrivateMe()
             this.forWradMore = more
             if (forwards.length === 0) {
               return this.$message.info('暂无@我的消息')
@@ -181,9 +135,7 @@ export default {
             const params = {
               offset: this.forwardsList.length
             }
-            const {
-              data: { forwards, lasttime, more }
-            } = await _getPrivateMe(params)
+            const { data: { forwards, lasttime, more } } = await _getPrivateMe(params)
             this.forWradMore = more
             this.forwardLastTime = lasttime
             forwards.forEach((item) => this.forwardsList.push(item))
@@ -203,14 +155,8 @@ export default {
             if (this.noticesMore === false) {
               return this.$message.info('没有更多通知了')
             }
-            const params = {
-              lasttime:
-                this.privateNoticesList[this.privateNoticesList.length - 1]
-                  .lasttime
-            }
-            const {
-              data: { notices, more }
-            } = await _getPrivateNotices(params)
+            const params = { lasttime: this.privateNoticesList[this.privateNoticesList.length - 1].lasttime }
+            const { data: { notices, more } } = await _getPrivateNotices(params)
             this.noticesMore = more
             notices.forEach((item) =>
               this.privateNoticesList.push(new HandlePrivateNotices(item))

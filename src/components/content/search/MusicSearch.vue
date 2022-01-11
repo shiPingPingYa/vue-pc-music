@@ -2,41 +2,27 @@
   <div class="music-search" @mouseleave="leave()">
     <!-- 搜索框 -->
     <div class="search-item">
-        <form>
-            <input type="text"  class="mess" placeholder="请输入搜索歌曲" v-model="keywords" @focus="focus()" @keydown.enter="keyEnter()">
-        </form>
-        <img src="../../../assets/img/search_svg.svg" @click="keyEnter" alt="">
+      <form>
+        <input type="text" class="mess" placeholder="请输入搜索歌曲" v-model.trim="keywords" @focus="focus()" @keydown.enter="keyEnter()" />
+      </form>
+      <img src="../../../assets/img/search_svg.svg" @click="keyEnter" alt="" />
     </div>
+
     <!-- 热搜榜 -->
-    <hot-search @del="del" :searchList='searchList' v-show="isShow" @recordClick='recordClick($event)'></hot-search>
+    <transition name="fade-in-linear">
+      <hot-search @del="del" :searchList="searchList" v-show="isShow" @recordClick="recordClick($event)"></hot-search>
+    </transition>
+
     <!-- 搜索内容 -->
-    <div class="suggest" v-show="isSuggest">
-      <div class="top">
-        搜索
-        <span>"{{keywords}}"</span>相关的结果>
-      </div>
-      <dl>
-        <!-- 搜索歌曲-->
-        <dt>
-          <div class="icon"><i class="el-icon-user-solid"></i></div>
-          <div class="title">单曲</div>
-        </dt>
-        <dd v-for="(item,index ) in this.sugSongs" :key="index+'song'" @click="enterSongs(item.name)">
-          {{item.name}}——{{item.artists[0].name}}
-        </dd>
-      <!-- 搜索歌手 -->
-        <dt>
-          <div class="icon"><i class="el-icon-bell"></i></div>
-          <div class="title">歌手</div>
-        </dt>
-        <dd v-for="(item,index) in sugArtist" :key="index" @click="enterArtists(item)">{{item.name}}</dd>
-      </dl>
-    </div>
+    <transition name="fade-in-linar">
+      <searchContent v-show="isSuggest" :keywords="keywords" :sugSongs="sugSongs" :sugArtist="sugArtist" />
+    </transition>
   </div>
 </template>
 <script>
 // 热搜榜
-import HotSearch from './Hotsearch'
+import HotSearch from './components/Hotsearch'
+import searchContent from './components/searchContent'
 // 请求数据
 import { _Suggest } from '../../../network/search'
 // 防抖
@@ -53,13 +39,11 @@ export default {
     }
   },
   name: 'MusicSearch',
-  components: {
-    HotSearch
-  },
+  components: { HotSearch, searchContent },
   watch: {
     // 监听keywords的值
-    keywords () {
-      if (this.keywords !== '' && this.keywords !== null) {
+    keywords (newValue) {
+      if (newValue) {
         this.isShow = false
         this.isSuggest = true
         this.suggest()
@@ -84,10 +68,12 @@ export default {
     },
     // 鼠标聚焦input，显示热搜
     focus () {
-      if (this.keywords !== '') {
+      const { keywords } = this
+      if (!keywords) this.isShow = true
+      else {
         this.isSuggest = true
         this.isShow = false
-      } else { this.isShow = true }
+      }
     },
     // 点击删除图标清除热搜内容
     del () {
@@ -95,12 +81,13 @@ export default {
     },
     // 添加热搜记录,并跳转搜索的内容
     keyEnter () {
-      if (this.keywords === '' || this.keywords == null) return this.$message.info('请输入搜索内容')
+      if (this.keywords === '' || this.keywords == null) {
+        return this.$message.info('请输入搜索内容')
+      }
       this.searchList.unshift(this.keywords)
       this.$router.push('/search/' + this.keywords)
       this.keywords = ''
-      this.isSuggest = false
-      this.isShow = false
+      this.isSuggest = this.isShow = false
     },
     // 热搜历史记录的跳转
     recordClick (i) {
@@ -123,123 +110,122 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.music-search{
-  margin-left: 18px;
-  position: relative;
-  float: left;
-  width: 25%;
-  height: 100%;
-  line-height: 54px;
-  opacity: 1;
-}
-.search-item{
-  position: absolute;
-  display: flex;
-  margin: auto;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 50%;
-  justify-content: space-between;
-  line-height: 54px;
-  background-color: rgba(255, 255, 255, 0.966);
-  border-radius: 10px;
-  > img{
-    display: inline-block;
-    width: 20px;
+  .music-search {
+    margin-left: 18px;
+    position: relative;
+    float: left;
+    width: 25%;
     height: 100%;
-    margin-right: 2%;
+    line-height: 54px;
+    opacity: 1;
   }
-  > img:hover{
+  .search-item {
+    position: absolute;
+    display: flex;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50%;
+    justify-content: space-between;
+    line-height: 54px;
+    background-color: rgba(255, 255, 255, 0.966);
+    border-radius: 10px;
+    > img {
+      display: inline-block;
+      width: 20px;
+      height: 100%;
+      margin-right: 2%;
+    }
+    > img:hover {
+      cursor: pointer;
+    }
+  }
+  .mess {
+    position: absolute;
+    width: 80%;
+    height: 100%;
+    padding: 0 10px;
+    border: #f6f6f6;
+    border-radius: 10px;
+    line-height: 16px;
+    color: #333;
+    background-color: transparent;
+    outline-style: none;
+  }
+
+  .icon {
+    position: absolute;
+    right: 6px;
+    bottom: 3px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 20px;
     cursor: pointer;
   }
-}
-.mess{
-  position: absolute;
-  width: 80%;
-  height: 100%;
-  padding: 0 10px;
-  border: #f6f6f6;
-  border-radius: 10px;
-  line-height: 16px;
-  color: #333;
-  background-color: transparent;
-  outline-style: none;
-}
 
-.icon{
-  position: absolute;
-  right: 6px;
-  bottom: 3px;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  line-height: 20px;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.el-icon-zoom-in{
-  width: 20px;
-  height: 20px;
-}
-
-.el-input{
-  width: 100%;
-  height: 30px;
-  border-radius: 20px;
-}
-#el-input{
-  border-radius: 8px;
-}
-
-.suggest{
-  position: absolute;
-  padding: 10px;
-  top: 54px;
-  width: 400px;
-  color: #828385;
-  z-index: 10;
-  background-color: #2d2f33;
-
-}
-
-.top{
-  line-height: 20px;
-  font-size: 13px;
-  >span{
-    color: #2e6bb0;
+  .el-icon-zoom-in {
+    width: 20px;
+    height: 20px;
   }
-}
 
-dl{
-  width: 100%;
-  font-size: 13px;
-}
+  .el-input {
+    width: 100%;
+    height: 30px;
+    border-radius: 20px;
+  }
+  #el-input {
+    border-radius: 8px;
+  }
 
-dl dt{
-  margin-top: 4px;
-  padding: 5px 8px;
-  display: flex;
-  width: 100%;
-  line-height: 20px;
-  align-content: center;
-  background-color: #303236;
-  color: #fff;
-}
+  .suggest {
+    position: absolute;
+    padding: 10px;
+    top: 54px;
+    width: 400px;
+    color: #828385;
+    z-index: 10;
+    background-color: #2d2f33;
+  }
 
-dl dd{
-  padding: 5px 31px;
-  line-height: 20px;
-  cursor: pointer;
-}
+  .top {
+    line-height: 20px;
+    font-size: 13px;
+    > span {
+      color: #2e6bb0;
+    }
+  }
 
-dd:hover{
-  background-color: #2a2c30;
-}
+  dl {
+    width: 100%;
+    font-size: 13px;
+  }
 
-title{
-  margin-left: 8px;
-  color: #dcdde4;
-}
+  dl dt {
+    margin-top: 4px;
+    padding: 5px 8px;
+    display: flex;
+    width: 100%;
+    line-height: 20px;
+    align-content: center;
+    background-color: #303236;
+    color: #fff;
+  }
+
+  dl dd {
+    padding: 5px 31px;
+    line-height: 20px;
+    cursor: pointer;
+  }
+
+  dd:hover {
+    background-color: #2a2c30;
+  }
+
+  title {
+    margin-left: 8px;
+    color: #dcdde4;
+  }
 </style>

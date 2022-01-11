@@ -1,9 +1,5 @@
-import {
-  request
-} from './request'
-import {
-  formDate
-} from '../assets/common/tool'
+import { request } from './request'
+import { formDate } from '../assets/common/tool'
 
 /**
  * @description 获取私信
@@ -141,7 +137,7 @@ export class HandlePrivateHistory {
       case 23:
         this.type = obj.type
         this.shareTitle = obj.msg
-        this.title = (obj.generalMsg.noticeMsg || obj.generalMsg.title || '')
+        this.title = obj.generalMsg.noticeMsg || obj.generalMsg.title || ''
         this.userImage = obj.generalMsg.cover
         this.tag = obj.generalMsg.tag
         break

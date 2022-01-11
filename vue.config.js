@@ -1,5 +1,10 @@
 // 导入compression-webpack-plugin
 const CompressionPlugin = require('compression-webpack-plugin')
+const path = require('path')
+
+function resolve (dir) {
+  return path.join(__dirname, dir)
+}
 
 module.exports = {
   // 这是因为项目打包后，index会白屏，所以把路径改了
@@ -7,7 +12,7 @@ module.exports = {
   outputDir: 'dist',
   // 生产环境报错寻找源码不需要了
   productionSourceMap: false,
-  configureWebpack: (config) => {
+  configureWebpack: config => {
     // 生产环境压缩
     if (process.env.NODE_ENV === 'production') {
       config.plugins.push(
@@ -21,5 +26,12 @@ module.exports = {
       )
       config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
     }
+  },
+  chainWebpack: config => {
+    config.resolve.alias
+      .set('common', resolve('src/components/common'))
+      .set('js', resolve('src/assets/common'))
+      .set('api', resolve('src/network'))
+      .set('@', resolve('src/'))
   }
 }

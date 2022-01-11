@@ -1,26 +1,24 @@
 <template>
   <div class="private_content">
-    <div
-      class="content_item"
-      v-for="item in privateCommentsList"
-      :key="item.id"
-    >
-      <div class="private_img">
-        <img :src="item.avatarUrl + '?param=40y40'" alt="" />
-      </div>
-      <div class="private_header">
-        <div class="private_comments_name">{{ item.nickname }}</div>
-        <div class="private_comments_time">
-          <span>{{ handlePrivateTime(item.lasttime) }}</span>
+    <div class="content-list" v-if="list.length">
+      <div class="content_item" v-for="item in list" :key="item.id">
+        <div class="private_img">
+          <img :src="item.avatarUrl + '?param=40y40'" alt="" />
         </div>
-        <div class="private_title">回复我:{{ item.title }}</div>
-        <div class="private_comments_ablum">{{ item.content }}</div>
-        <div class="private_comments_replay">
-          <img src="../../../../assets/img/replay.svg" alt="" />回复
+        <div class="private_header">
+          <div class="private_comments_name">{{ item.nickname }}</div>
+          <div class="private_comments_time">
+            <span>{{ handlePrivateTime(item.lasttime) }}</span>
+          </div>
+          <div class="private_title">回复我:{{ item.title }}</div>
+          <div class="private_comments_ablum">{{ item.content }}</div>
+          <div class="private_comments_replay">
+            <img src="../../../../assets/img/replay.svg" alt="" />回复
+          </div>
         </div>
       </div>
     </div>
-    <div class="foward_prompt" v-show="privateCommentsList.length === 0">
+    <div class="foward_prompt" v-else>
       暂无数据
     </div>
   </div>
@@ -30,11 +28,9 @@ import { privateDetailMixin } from '../indexmixin'
 export default {
   name: 'PrivateCommentList',
   props: {
-    privateCommentsList: {
+    list: {
       type: Array,
-      default () {
-        return []
-      }
+      default: () => []
     }
   },
   mixins: [privateDetailMixin]

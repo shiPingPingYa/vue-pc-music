@@ -1,26 +1,22 @@
 <template>
   <div class="private_content">
-    <div
-      class="content_item"
-      v-for="item in privateNoticesList"
-      :key="item.id"
-      v-show="privateNoticesList.length !== 0"
-      @click="goNoticesDetail(item.threadId, item.type)"
-    >
-      <div class="private_img">
-        <img :src="item.avatarUrl + '?param=40y40'" alt="" />
-      </div>
-      <div class="private_header">
-        <div class="private_name">
-          {{ item.nickname }}<span>{{ item.title }}</span>
+    <div class="content-list" v-if="list.length">
+      <div class="content_item" v-for="item in list" :key="item.id" @click="goNoticesDetail(item.threadId, item.type)">
+        <div class="private_img">
+          <img :src="item.avatarUrl + '?param=40y40'" alt="" />
         </div>
-        <div class="private_time">
-          {{ handlePrivateTime(item.lasttime) }}
+        <div class="private_header">
+          <div class="private_name">
+            {{ item.nickname }}<span>{{ item.title }}</span>
+          </div>
+          <div class="private_time">
+            {{ handlePrivateTime(item.lasttime) }}
+          </div>
+          <div class="private_ablum">{{ item.content }}</div>
         </div>
-        <div class="private_ablum">{{ item.content }}</div>
       </div>
     </div>
-    <div class="foward_prompt" v-show="privateNoticesList.length === 0">
+    <div class="foward_prompt" v-else>
       暂无数据
     </div>
   </div>
@@ -30,11 +26,9 @@ import { privateDetailMixin } from '../indexmixin'
 export default {
   name: 'PrivateNoticesList',
   props: {
-    privateNoticesList: {
+    list: {
       type: Array,
-      default () {
-        return []
-      }
+      default: () => []
     }
   },
   mixins: [privateDetailMixin],

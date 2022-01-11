@@ -8,16 +8,32 @@ import store from './store'
 import '../src/assets/css/babel.css'
 // 导入elementui
 import '../src/plugins/element'
-import { Message, Pagination, Row, Col, Select, Option, Tag, Form, Upload, Container, Main, Tabs, TabPane, Header, Table, TableColumn, Dialog, FormItem, RadioGroup, Radio, CheckboxGroup, Checkbox } from 'element-ui'
+import {
+  Message,
+  Pagination,
+  Row,
+  Col,
+  Select,
+  Option,
+  Tag,
+  Form,
+  Upload,
+  Container,
+  Main,
+  Tabs,
+  TabPane,
+  Header,
+  Table,
+  TableColumn,
+  Dialog,
+  FormItem,
+  RadioGroup,
+  Radio,
+  CheckboxGroup,
+  Checkbox
+} from 'element-ui'
 import { formDate } from './assets/common/tool'
-Vue.config.productionTip = false
-// 挂载axios
-Vue.prototype.$http = axios
-// 创建事件中心
-Vue.prototype.$bus = new Vue()
-// 挂载消息提示
-Vue.prototype.$Message = Message
-Vue.prototype.formDate = formDate
+
 Vue.use(Pagination)
 Vue.use(Row)
 Vue.use(Col)
@@ -39,6 +55,15 @@ Vue.use(RadioGroup)
 Vue.use(Radio)
 Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
+
+Vue.config.productionTip = false
+// 挂载axios
+Vue.prototype.$http = axios
+// 创建事件中心
+Vue.prototype.$bus = new Vue()
+// 挂载消息提示
+Vue.prototype.$Message = Message
+Vue.prototype.formDate = formDate
 
 new Vue({
   router,

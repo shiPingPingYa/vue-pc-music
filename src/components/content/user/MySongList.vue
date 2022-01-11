@@ -1,17 +1,21 @@
 <template>
   <div class="user-song-lsit">
-  <scroll class="mymusic-scroll">
-     <ul>
-     <li v-for="(item,index) in getUserList" :key="index" @click.stop="enterMusicListDetail(index)"
-     @click="setItemCur(index)"
-     :class="{'cur-song-list':currentIndex == index}">
-       <div class="name">
-         <img :src="item.coverImgUrl  + '?param=50y50'" alt="">
-       </div>
-      <span>{{item.name }}</span>
-     </li>
-   </ul>
-  </scroll>
+    <scroll class="mymusic-scroll">
+      <ul>
+        <li
+          v-for="(item, index) in getUserList"
+          :key="index"
+          @click.stop="enterMusicListDetail(index)"
+          @click="setItemCur(index)"
+          :class="{ 'cur-song-list': currentIndex == index }"
+        >
+          <div class="name">
+            <img :src="item.coverImgUrl + '?param=50y50'" alt="" />
+          </div>
+          <span>{{ item.name }}</span>
+        </li>
+      </ul>
+    </scroll>
   </div>
 </template>
 <script>
@@ -42,27 +46,26 @@ export default {
       this.currentIndex = i
     }
   }
-
 }
 </script>
 
 <style lang="less" scoped>
-.user-song-lsit{
+.user-song-lsit {
   width: 100%;
   height: 100%;
   padding-bottom: 20px;
 }
 
-.mymusic-scroll{
+.mymusic-scroll {
   height: 100%;
   overflow: hidden;
 }
 
-.user-song-lsit ul{
+.user-song-lsit ul {
   height: 100%;
 }
 
-.user-song-lsit ul li{
+.user-song-lsit ul li {
   display: flex;
   height: 30px;
   padding: 2px 15px;
@@ -71,15 +74,15 @@ export default {
   line-height: 30px;
   list-style-type: none;
   opacity: 0.8;
-  > .name{
-    margin:10px 10px 0 0;
-    img{
+  > .name {
+    margin: 10px 10px 0 0;
+    img {
       width: 20px;
       height: 20px;
-      background-size: 100%,100%;
+      background-size: 100%, 100%;
     }
   }
-  span{
+  span {
     display: inline-block;
     height: 100%;
     overflow: hidden;
@@ -88,13 +91,12 @@ export default {
   }
 }
 
-.cur-song-list{
+.cur-song-list {
   opacity: 1;
   background: #e6e7eb;
-
 }
 
-ul li:hover{
+ul li:hover {
   opacity: 1;
   cursor: pointer;
   background-color: #e6e7eb;
