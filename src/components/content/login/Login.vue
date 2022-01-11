@@ -1,51 +1,50 @@
 <template>
-  <transition name="fade-in-linear">
-    <div class="modal">
-      <div class="modal-content">
-        <div class="icon-close-container">
-          <div class="back"></div>
-          <img src="../../../assets/img/user/x.svg" alt="" @click.stop="__hiddenLogin" />
-        </div>
-        <div class="user-img-container">
-          <img :src="userImage()" alt />
-        </div>
-        <!-- 登录信息 -->
-        <div class="main-container">
-          <form>
-            <div>
-              <!-- 手机号码 -->
-              <div class="form-item">
-                <el-input placeholder="请输入账号" prefix-icon="el-icon-user" v-model="phone" @blur="verifyPhone"></el-input>
-                <p>{{ phoneMessage }}</p>
-              </div>
-              <!-- 密码 -->
-              <div class="form-item">
-                <el-input placeholder="请输入密码" type="password" prefix-icon="el-icon-user" v-model="password" @blur="verifyPassword"></el-input>
-                <p>{{ passwordMessage }}</p>
-              </div>
-              <!-- 登录 -->
-              <div class="form-item">
-                <input ref="btn" @click.stop="userLogin()" type="button" :disabled="!btnDisabled()" value="登陆" :class="{
+
+  <div class="modal">
+    <div class="modal-content">
+      <div class="icon-close-container">
+        <div class="back"></div>
+        <img src="../../../assets/img/user/x.svg" alt="" @click.stop="__hiddenLogin" />
+      </div>
+      <div class="user-img-container">
+        <img :src="userImage()" alt />
+      </div>
+      <!-- 登录信息 -->
+      <div class="main-container">
+        <form>
+          <div>
+            <!-- 手机号码 -->
+            <div class="form-item">
+              <el-input placeholder="请输入账号" prefix-icon="el-icon-user" v-model="phone" @blur="verifyPhone"></el-input>
+              <p>{{ phoneMessage }}</p>
+            </div>
+            <!-- 密码 -->
+            <div class="form-item">
+              <el-input placeholder="请输入密码" type="password" prefix-icon="el-icon-user" v-model="password" @blur="verifyPassword"></el-input>
+              <p>{{ passwordMessage }}</p>
+            </div>
+            <!-- 登录 -->
+            <div class="form-item">
+              <input ref="btn" @click.stop="userLogin()" type="button" :disabled="!btnDisabled()" value="登陆" :class="{
                   'btn-login': btnDisabled(),
                   'disabled-btn': !btnDisabled()
                 }" />
-              </div>
-              <!-- 注册 -->
-              <div class="form-item">
-                <div class="register" @click.stop="registerC()">注册</div>
-              </div>
-              <div class="form-item" @click.stop="qrcodeClick()">
-                <span>二维码登录</span>
-              </div>
             </div>
-          </form>
-        </div>
+            <!-- 注册 -->
+            <div class="form-item">
+              <div class="register" @click.stop="registerC()">注册</div>
+            </div>
+            <div class="form-item" @click.stop="qrcodeClick()">
+              <span>二维码登录</span>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 <script>
-import { mixins } from './mixins'
+import { mixins } from './mixins/mixins'
 import { mapMutations } from 'vuex'
 export default {
   name: 'Login',

@@ -1,43 +1,41 @@
 <template>
-  <transition name="capt">
-    <div class="captcha">
-      <div class="captcha-back">
-        <!-- 上面图标区域 -->
-        <div class="close">
-          <div class="returnR">
-            <i class="el-icon-arrow-left"></i>
-            <span @click="enterRegi()">返回</span>
-          </div>
-          <div class="closeReg" @click="closeRegister">
-            <img src="../../../assets/img/user/x.svg" alt="">
-          </div>
+  <div class="captcha">
+    <div class="captcha-back">
+      <!-- 上面图标区域 -->
+      <div class="close">
+        <div class="returnR">
+          <i class="el-icon-arrow-left"></i>
+          <span @click="enterRegi()">返回</span>
         </div>
-        <!-- 图片背景 -->
-        <div class="back">
-          <img src="../../../assets/img/user/phone.svg" alt="">
-          <p>为了安全我们会向你的手机发送验证码</p>
+        <div class="closeReg" @click="closeRegister">
+          <img src="../../../../assets/img/user/x.svg" alt="">
         </div>
       </div>
-      <div class="main">
-        <div class="form-item">
-          <el-input placeholder="请写验证码" v-model="captcha" prefix-icon="el-icon-key"></el-input>
-          <el-button type="danger" :disabled="btnCaptcha" @click="getCaptcha()">{{startS}}</el-button>
-        </div>
-        <div class="form-item2">
-          <el-button type="danger" size="medium" :disabled="btnDisabled()" @click="enterNickN()">下一步</el-button>
-        </div>
+      <!-- 图片背景 -->
+      <div class="back">
+        <img src="../../../../assets/img/user/phone.svg" alt="">
+        <p>为了安全我们会向你的手机发送验证码</p>
       </div>
     </div>
-  </transition>
+    <div class="main">
+      <div class="form-item">
+        <el-input placeholder="请写验证码" v-model="captcha" prefix-icon="el-icon-key"></el-input>
+        <el-button type="danger" :disabled="btnCaptcha" @click="getCaptcha()">{{startS}}</el-button>
+      </div>
+      <div class="form-item2">
+        <el-button type="danger" size="medium" :disabled="btnDisabled()" @click="enterNickN()">下一步</el-button>
+      </div>
+    </div>
+  </div>
 
 </template>
 <script>
 // 混入
-import { mixins } from './mixins'
+import { mixins } from '../mixins/mixins'
 // 导入数据接口，获取验证码
-import { _getCaptcha, _getVerifyCaptcha } from '../../../network/user'
+import { _getCaptcha, _getVerifyCaptcha } from 'api/user'
 // 输入验证码防抖
-import { debounce } from '../../../assets/common/tool'
+import { debounce } from 'js/tool'
 export default {
   name: 'CheckCaptcha',
   data () {

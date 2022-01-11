@@ -1,5 +1,4 @@
 <template>
-  <transition name="fade-in-linear">
     <div class="modal">
       <div class="modal-content">
         <div class="icon-close-container">
@@ -15,11 +14,10 @@
         </div>
       </div>
     </div>
-  </transition>
 </template>
 <script>
 // 调用二维码接口
-import { _getQrcodeImg, _getQrcodeKey, _getCheckQrcode, _getLonginStatus } from '../../../network/user'
+import { _getQrcodeImg, _getQrcodeKey, _getCheckQrcode, _getLonginStatus } from 'api/user'
 export default {
   name: 'Qrcode',
   data () {

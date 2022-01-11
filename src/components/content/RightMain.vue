@@ -4,20 +4,26 @@
     <keep-alive include="$route.meta.keepLive">
       <router-view></router-view>
     </keep-alive>
-    <!-- 登录组件 -->
-    <login v-show="getLoginStatus"></login>
-    <!-- 注册组件 -->
-    <register v-if="isShowRegister"></register>
-    <!-- 二维码组件 -->
-    <qrcode v-if="isShowQrcode"></qrcode>
+    <transition name="fade-in-linear">
+      <!-- 登录组件 -->
+      <login v-show="getLoginStatus"></login>
+    </transition>
+    <transition name="fade-in-linear">
+      <!-- 注册组件 -->
+      <register v-if="isShowRegister"></register>
+    </transition>
+    <transition name="fade-in-linear">
+      <!-- 二维码组件 -->
+      <qrcode v-if="isShowQrcode"></qrcode>
+    </transition>
   </div>
 </template>
 <script>
 // 导入登录页面
-import Login from '../content/user/Login'
+import Login from '../content/login/Login'
 // 注册组件
-import Register from './user/Register.vue'
-import Qrcode from './user/Qrcode'
+import Register from '../content/login/Register'
+import Qrcode from '../content/login/Qrcode'
 import { mapGetters, mapState } from 'vuex'
 
 export default {
