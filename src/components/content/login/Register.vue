@@ -77,12 +77,6 @@ import { _VerifyPhone } from 'api/user'
 export default {
   name: 'Register',
   components: { CheckCaptcha, NickName },
-  computed: {
-    ...mapState(['isCaptcha', 'isNickName']),
-    btnDisabled () {
-      return !(this.isPhone && this.isPassword)
-    }
-  },
   data () {
     return {
       isPhone: false,
@@ -92,6 +86,12 @@ export default {
       phone: '',
       password: '',
       passwordExec: /(?!^(\d+|[a-zA-Z]+|[~!@#$%^&*?]+)$)^[\w~!@#$%^&*?]{8,18}$/
+    }
+  },
+  computed: {
+    ...mapState(['isCaptcha', 'isNickName']),
+    btnDisabled () {
+      return !(this.isPhone && this.isPassword)
     }
   },
   watch: {
