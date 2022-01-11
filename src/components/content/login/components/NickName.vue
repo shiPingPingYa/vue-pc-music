@@ -38,12 +38,9 @@
   </div>
 </template>
 <script>
-import { mixins } from '../mixins/mixins'
-// 导入数据接口
 import { _registerPhone } from 'api/user'
 export default {
   name: 'NickName',
-  mixins: [mixins],
   data () {
     return {
       nickName: '',
@@ -62,6 +59,14 @@ export default {
     // 回退到验证码
     enterCheC () {
       this.$store.commit('hiddenNickName')
+    },
+    closeRegister () {
+      // 销毁注册，验证码，昵称页面
+      this.$store.commit('hiddenRegister')
+      this.$store.commit('hiddenCaptcha')
+      this.$store.commit('hiddenNickName')
+      // 清除添加的手机号，密码，验证码
+      this.$store.commit('clearUserRegisterInfo', '')
     },
     // 确认注册
     async nickNC () {

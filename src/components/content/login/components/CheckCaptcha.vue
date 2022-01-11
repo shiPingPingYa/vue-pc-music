@@ -14,7 +14,7 @@
     <div class="main-container">
       <div class="form-item">
         <el-input
-          v-model="captcha"
+          v-model.trim="captcha"
           placeholder="请写验证码"
           prefix-icon="el-icon-key"
         />
@@ -40,15 +40,10 @@
   </div>
 </template>
 <script>
-// 混入
-import { mixins } from '../mixins/mixins'
-// 导入数据接口，获取验证码
 import { _getCaptcha, _getVerifyCaptcha } from 'api/user'
-// 输入验证码防抖
-import { debounce } from 'js/tool'
+import { debounce } from 'js/tool' // 防抖
 export default {
   name: 'CheckCaptcha',
-  mixins: [mixins],
   data () {
     return {
       captcha: '',
@@ -73,6 +68,14 @@ export default {
     // 退回注册页
     enterRegi () {
       this.$store.commit('hiddenCaptcha')
+    },
+    closeRegister () {
+      // 销毁注册，验证码，昵称页面
+      this.$store.commit('hiddenRegister')
+      this.$store.commit('hiddenCaptcha')
+      this.$store.commit('hiddenNickName')
+      // 清除添加的手机号，密码，验证码
+      this.$store.commit('clearUserRegisterInfo', '')
     },
     // 获取验证码和获取验证时间
     async getCaptcha () {
@@ -134,11 +137,7 @@ export default {
     }, 800),
     // 是否禁用按钮
     btnDisabled () {
-      if (this.captcha.trim().length === 4 && this.exit) {
-        return false
-      } else {
-        return true
-      }
+      return !(this.captcha.trim().length === 4 && this.exit)
     },
     // 显示呢称组件
     enterNickN () {
@@ -154,8 +153,8 @@ export default {
     z-index: 100;
   }
 
-  .main-container{
-   margin-top: 100px;
+  .main-container {
+    margin-top: 100px;
   }
 
   .form-item {
