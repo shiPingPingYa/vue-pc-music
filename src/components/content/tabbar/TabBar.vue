@@ -1,40 +1,89 @@
 <template>
-  <div class="header" ref="tabBar">
+  <div
+    ref="tabBar"
+    class="header"
+  >
     <div class="logo">
-      <img src="../../../assets/img/webSiteIcon.svg" title="小拳拳锤你" />
-      <div class="title">覃覃音乐</div>
+      <img
+        src="../../../assets/img/webSiteIcon.svg"
+        title="小拳拳锤你"
+      >
+      <div class="title">
+        覃覃音乐
+      </div>
     </div>
     <div class="buttons">
-      <button class="el-icon-arrow-left" @click="preRouter()"></button>
-      <button class="el-icon-arrow-right" @click="nextRouter()"></button>
+      <button
+        class="el-icon-arrow-left"
+        @click="preRouter()"
+      />
+      <button
+        class="el-icon-arrow-right"
+        @click="nextRouter()"
+      />
     </div>
 
     <!-- 音乐搜索 -->
-    <music-search></music-search>
+    <music-search />
 
     <!-- 用户登录 -->
     <div class="userlogin">
-      <div class="user-img" @click="showLogin()">
-        <img :src="getUserImage" />
+      <div
+        class="user-img"
+        @click="showLogin()"
+      >
+        <img :src="getUserImage">
       </div>
-      <div class="user-id">{{ userName }}</div>
-      <div class="news" v-show="isLogin" @click="(isPrivate = !isPrivate), (isHistoryNews = false)">
-        <img src="../../../assets/img/news.svg" alt="" />
+      <div class="user-id">
+        {{ userName }}
+      </div>
+      <div
+        v-show="isLogin"
+        class="news"
+        @click="(isPrivate = !isPrivate), (isHistoryNews = false)"
+      >
+        <img
+          src="../../../assets/img/news.svg"
+          alt=""
+        >
       </div>
 
       <!-- 退出登录 -->
-      <div class="enterLogin" v-show="isLogin">
-        <el-upload action="/avatar/upload" :headers="header" :show-file-list="false" :http-request="httpRequest">
-          <i class="el-icon-picture-outline-round"></i>
+      <div
+        v-show="isLogin"
+        class="enterLogin"
+      >
+        <el-upload
+          action="/avatar/upload"
+          :headers="header"
+          :show-file-list="false"
+          :http-request="httpRequest"
+        >
+          <i class="el-icon-picture-outline-round" />
         </el-upload>
-        <i class="el-icon-s-unfold" @click="enterLogin()"></i>
+        <i
+          class="el-icon-s-unfold"
+          @click="enterLogin()"
+        />
       </div>
     </div>
 
     <!-- 私信 -->
-    <private-detail class="private_detail" v-show="isPrivate" @privateNewChange="privateNewChange"></private-detail>
+    <private-detail
+      v-show="isPrivate"
+      class="private_detail"
+      @privateNewChange="privateNewChange"
+    />
 
-    <history-news class="private_detail" v-if="isHistoryNews" :historyList="historyList" :more="historyMore" @prePrivateDetail="prePrivateDetail" @cancelHistory="cancelHistory" @hideStatus="(isPrivate = false), (isHistoryNews = false)"></history-news>
+    <history-news
+      v-if="isHistoryNews"
+      class="private_detail"
+      :history-list="historyList"
+      :more="historyMore"
+      @prePrivateDetail="prePrivateDetail"
+      @cancelHistory="cancelHistory"
+      @hideStatus="(isPrivate = false), (isHistoryNews = false)"
+    />
   </div>
 </template>
 <script>

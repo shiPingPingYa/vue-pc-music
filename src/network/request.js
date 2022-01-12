@@ -7,7 +7,7 @@ axios.defaults.withCredentials = true
 const request = axios.create({
   // 请求地址设置为远程ip
   baseURL: 'http://localhost:3000',
-  timeout: 7000,
+  timeout: 1000 * 30,
   paramsSerializer: params =>
     qs.stringify(params, {
       indices: false
