@@ -1,11 +1,10 @@
 <template>
   <div ref="tabBar" class="header">
     <div class="logo">
-      <img src="../../../assets/img/webSiteIcon.svg" title="小拳拳锤你">
-      <div class="title">
-        覃覃音乐
-      </div>
+      <img src="../../../assets/img/webSiteIcon.svg" title="小拳拳锤你" />
+      <div class="title">覃覃音乐</div>
     </div>
+    <!-- 两个回退按钮 -->
     <div class="buttons">
       <button class="el-icon-arrow-left" @click="preRouter()" />
       <button class="el-icon-arrow-right" @click="nextRouter()" />
@@ -17,24 +16,25 @@
     <!-- 用户登录 -->
     <div class="user-group">
       <div class="img-container">
-        <img :src="getUserImage" @click="showLogin()">
+        <img :src="getUserImage" @click="showLogin()" />
       </div>
       <div>{{ userName }}</div>
       <div v-if="isLogin">
-        <el-dropdown @command="handleDropClick">
+        <el-dropdown @command="handleDropClick" @visible-change="handleDropMenuVisible">
           <span class="el-dropdown-link">
             <div class="droupdown-container">
-              设置<i class="el-icon-arrow-down el-icon--right" />
+              设置<i :class="[dropVisiable? 'el-icon-arrow-up': 'el-icon-arrow-down', 'el-icon--right']" />
             </div>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="(item,index ) in droupMenuList " :key="index" :command="item.value">
+            <el-dropdown-item v-for="(item, index) in droupMenuList" :key="index" :command="item.value">
               <label v-if="index === 0" class="droup-label" @click.stop>
                 <el-upload action="/avatar/upload" :headers="header" :show-file-list="false" :http-request="httpRequest">
                   <i class="el-icon-picture-outline-round" />{{ item.label }}
                 </el-upload>
               </label>
-              <label v-else class="droup-label"> <i :class="item.icon" /> {{ item.label }}</label>
+              <label v-else class="droup-label">
+                <i :class="item.icon" /> {{ item.label }}</label>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -43,7 +43,7 @@
       <!-- 用户的其他信息，比如粉丝，动态，关注等等-->
       <div class="info-container">
         <div class="user-info">
-          <img :src="getUserImage" alt="登录头像">
+          <img :src="getUserImage" alt="登录头像" />
           <div class="user-name">
             {{ userName }}
           </div>
@@ -62,7 +62,10 @@ import MusicSearch from '../search/MusicSearch'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import { mixins } from '../user/mixins'
 import { _setUserImage } from '../../../network/user'
-import { _getPrivateHistoryNews, HandlePrivateHistory } from '../../../network/privateNews'
+import {
+  _getPrivateHistoryNews,
+  HandlePrivateHistory
+} from '../../../network/privateNews'
 import privateDetail from '../privateMsg/privateDetail.vue'
 import HistoryNews from '../privateMsg/childComps/HistoryNews.vue'
 export default {
@@ -74,12 +77,21 @@ export default {
       header: {
         'Content-Type': 'multipart/form-data'
       },
-      droupMenuList: [{ icon: 'el-icon-picture-outline-round', value: 'editImg', label: '修改头像' }, { icon: 'el-icon-message', value: 'messageNotify', label: '消息通知' }, { icon: 'el-icon-s-home', value: 'layout', label: '退出登录' }],
+      droupMenuList: [
+        {
+          icon: 'el-icon-picture-outline-round',
+          value: 'editImg',
+          label: '修改头像'
+        },
+        { icon: 'el-icon-message', value: 'messageNotify', label: '消息通知' },
+        { icon: 'el-icon-s-home', value: 'layout', label: '退出登录' }
+      ],
       isPrivate: false,
       isHistoryNews: false,
       historyList: [],
       privageUserId: '',
-      historyMore: false
+      historyMore: false,
+      dropVisiable: false
     }
   },
   computed: {
@@ -115,6 +127,9 @@ export default {
           break
       }
     },
+    handleDropMenuVisible (flag) {
+      this.dropVisiable = flag
+    },
     // 隐藏登录页面
     showLogin () {
       this.$store.commit('showLogin', !this.$store.state.isShowLogin)
@@ -148,7 +163,11 @@ export default {
       if (!isType) return this.$message.error('请选择正确的文件')
       var uploadImage = new FormData()
       uploadImage.append('imgFile', item.file)
-      const { data: { data: { code } } } = await _setUserImage(uploadImage)
+      const {
+        data: {
+          data: { code }
+        }
+      } = await _setUserImage(uploadImage)
       if (code === 200) {
         this.$message.success('头像修改成功')
         await this._GETUSERINFO(localStorage.getItem('userId'))
@@ -201,7 +220,7 @@ export default {
       z-index: 10000;
     }
     > img:hover {
-      transform: translateY(60px) scale(4) rotate(360deg);
+      transform: translate(600px, 600px) scale(20) rotate(360deg);
       transition: 3s all;
     }
     > .title {

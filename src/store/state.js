@@ -48,4 +48,10 @@ const state = {
   level: ''
 }
 
+try {
+  if (localStorage.getItem('userId')) state.uid = localStorage.getItem('userId')
+} catch (e) {
+  console.log('获取用户id错误')
+}
+
 export default state
