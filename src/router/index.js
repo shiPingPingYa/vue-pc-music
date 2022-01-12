@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { Message } from 'element-ui'
-import { getPageTitle } from '../assets/common/tool'
-
-import { filterPath, isRoute } from './isRoute'
 
 // 关于路由重复问题
 const originalPush = VueRouter.prototype.push
@@ -24,7 +21,8 @@ const routes = [
     // 首页
     component: () => import('../views/discover/DiscoverMusic'),
     meta: {
-      title: '首页'
+      title: '首页',
+      requireLogin: false
     },
     children: [
       {
@@ -37,7 +35,8 @@ const routes = [
         component: () => import('../views/discover/childRouter/Individuation'),
         meta: {
           title: '个性推荐',
-          keepLive: true
+          keepLive: true,
+          requireLogin: false
         }
       },
       // 歌单
@@ -47,7 +46,8 @@ const routes = [
           import('../views/discover/childRouter/MusicListCategory'),
         meta: {
           title: '歌单',
-          keepLive: true
+          keepLive: true,
+          requireLogin: false
         }
       },
       // 排行榜
@@ -56,7 +56,8 @@ const routes = [
         component: () => import('../views/discover/childRouter/MusicListRank'),
         meta: {
           title: '排行榜',
-          keepLive: true
+          keepLive: true,
+          requireLogin: false
         }
       },
       // 歌手
@@ -65,7 +66,8 @@ const routes = [
         component: () => import('../views/discover/childRouter/ArtistCategory'),
         meta: {
           title: '歌手',
-          keepLive: true
+          keepLive: true,
+          requireLogin: false
         }
       },
       // 最新音乐
@@ -74,7 +76,8 @@ const routes = [
         component: () => import('../views/discover/childRouter/NewSongs'),
         meta: {
           title: '最新音乐',
-          keepLive: true
+          keepLive: true,
+          requireLogin: false
         }
       },
       // MV首页
@@ -83,7 +86,8 @@ const routes = [
         component: () => import('../views/mv/Mv'),
         meta: {
           title: 'MV首页',
-          keepLive: true
+          keepLive: true,
+          requireLogin: false
         }
       }
     ]
@@ -94,7 +98,8 @@ const routes = [
     // 歌手详细信息开始
     component: () => import('../views/artistDetail/ArtistDetail'),
     meta: {
-      title: '歌手信息'
+      title: '歌手信息',
+      requireLogin: false
     },
     children: [
       {
@@ -130,7 +135,8 @@ const routes = [
     path: '/search/:id',
     component: () => import('../views/search/SearchList'),
     meta: {
-      title: '搜索内容'
+      title: '搜索内容',
+      requireLogin: false
     }
   },
   // mv播放跳转,
@@ -138,7 +144,8 @@ const routes = [
     path: '/playmv/:id',
     component: () => import('../views/mv/PlayMv'),
     meta: {
-      title: 'MV播放'
+      title: 'MV播放',
+      requireLogin: false
     }
   },
   // 所有mv
@@ -147,7 +154,8 @@ const routes = [
     component: () => import('../views/mv/AllMv'),
     meta: {
       title: '所有MV',
-      keepLive: true
+      keepLive: true,
+      requireLogin: false
     }
   },
   // 歌单详情页面
@@ -155,7 +163,8 @@ const routes = [
     path: '/musicListDetail/:id',
     component: () => import('../views/musicListDetail/MusicListDetail'),
     meta: {
-      title: '歌单页面'
+      title: '歌单页面',
+      requireLogin: false
     }
   },
   // 播放视频
@@ -256,7 +265,8 @@ const routes = [
     path: '/daymusic',
     component: () => import('../views/musicListDetail/childComps/DayMusic.vue'),
     meta: {
-      title: '每日歌曲推荐'
+      title: '每日歌曲推荐',
+      requireLogin: false
     }
   },
   {
@@ -281,14 +291,17 @@ const routes = [
     component: () =>
       import('../components/content/privateMsg/childComps/NoticesDetail.vue'),
     meta: {
-      title: '通知详情'
+      title: '通知详情',
+      requireLogin: true
+
     }
   },
   {
     path: '/artist/albumDetail/:id',
     component: () => import('../views/AlbumDetail/ArtistAlbumDetail.vue'),
     meta: {
-      title: '歌手专辑'
+      title: '歌手专辑',
+      requireLogin: false
     }
   },
   {
@@ -296,7 +309,9 @@ const routes = [
     component: () => import('../components/content/user/UserDetail.vue'),
     meta: {
       title: '用户详情',
-      keepLive: true
+      keepLive: true,
+      requireLogin: true
+
     }
   },
   {
@@ -304,41 +319,47 @@ const routes = [
     component: () =>
       import('../components/content/user/childRoute/OtherUserDetail.vue'),
     meta: {
-      title: '用户歌单'
+      title: '用户歌单',
+      requireLogin: true
     }
   },
   {
     path: '/404',
     component: () => import('../components/common/error/404.vue')
   }
-  // {
-  //   path: '/ceshi',
-  //   component: () => import('../components/yunying/itemBankManage.vue'),
-  //   meta: {
-  //     title: '测试'
-  //   }
-  // }
 ]
 
 const router = new VueRouter({
   routes
 })
 
-const routerPath = [...new Set(filterPath(routes))]
-
-router.beforeEach((to, from, next) => {
-  // 设置网站title
-  document.title = getPageTitle(to.meta.title)
-  if (isRoute(to, routerPath) === -1) return next('/404')
-  // 未登录
-  if (!window.localStorage.getItem('userId')) {
-    if (to.meta.requireLogin) {
-      Message.info('电台视频等资源须先登录后才能获取，请先登录')
-      next('/discover/individ')
+const filterPath = routes => {
+  const routerPath = []
+  routes.forEach(item => {
+    if (item.children) {
+      routerPath.push(...filterPath(item.children))
+    } else {
+      routerPath.push(item.path)
     }
-  }
-  // 登录状态下，直接放行
-  next()
+  })
+  return routerPath
+}
+
+const setWebsiteTitle = (title) => { document.title = title }
+
+const routerPath = [...new Set(filterPath(routes))]
+router.beforeEach((to, from, next) => {
+  setWebsiteTitle(to.meta.title || '覃覃音乐')
+  if (!routerPath.find(item => item === to.path)) return next('/404')
+  // 判断是否需要登录鉴权(requireLogin),不需要直接放行。需要登录鉴权判断是否登录，未登录提示无权限访问页面，并且回退前一个页面，登录放行
+  if (to.meta.requireLogin) {
+    if (window.localStorage.getItem('userId')) next()
+    else {
+      Message.info('电台，视频等资源需登录后，才能获取数据，请先登录~~~~')
+      setWebsiteTitle(from.meta.title || '覃覃音乐')
+      next({ path: from.path })
+    }
+  } else next()
 })
 
 export default router

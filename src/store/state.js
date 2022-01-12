@@ -30,7 +30,7 @@ const state = {
   // 用户背景图片
   image: null,
   // 用户id
-  userName: '点击左侧头像登录',
+  userName: '点击登录',
   // 用户的关注
   userFollows: '',
   // 用户的粉丝

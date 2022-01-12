@@ -148,11 +148,7 @@ export default {
       if (!isType) return this.$message.error('请选择正确的文件')
       var uploadImage = new FormData()
       uploadImage.append('imgFile', item.file)
-      const {
-        data: {
-          data: { code }
-        }
-      } = await _setUserImage(uploadImage)
+      const { data: { data: { code } } } = await _setUserImage(uploadImage)
       if (code === 200) {
         this.$message.success('头像修改成功')
         await this._GETUSERINFO(localStorage.getItem('userId'))
