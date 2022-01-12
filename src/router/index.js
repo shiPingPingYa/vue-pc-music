@@ -333,24 +333,24 @@ const router = new VueRouter({
   routes
 })
 
-const filterPath = routes => {
-  const routerPath = []
-  routes.forEach(item => {
-    if (item.children) {
-      routerPath.push(...filterPath(item.children))
-    } else {
-      routerPath.push(item.path)
-    }
-  })
-  return routerPath
-}
+// const filterPath = routes => {
+//   const routerPath = []
+//   routes.forEach(item => {
+//     if (item.children) {
+//       routerPath.push(...filterPath(item.children))
+//     } else {
+//       routerPath.push(item.path)
+//     }
+//   })
+//   return routerPath
+// }
 
 const setWebsiteTitle = (title) => { document.title = title }
 
-const routerPath = [...new Set(filterPath(routes))]
+// const routerPath = [...new Set(filterPath(routes))]
 router.beforeEach((to, from, next) => {
   setWebsiteTitle(to.meta.title || '覃覃音乐')
-  if (!routerPath.find(item => item === to.path)) return next('/404')
+  // if (!routerPath.find(item => item === to.path)) return next('/404')
   // 判断是否需要登录鉴权(requireLogin),不需要直接放行。需要登录鉴权判断是否登录，未登录提示无权限访问页面，并且回退前一个页面，登录放行
   if (to.meta.requireLogin) {
     if (window.localStorage.getItem('userId')) next()

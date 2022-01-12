@@ -48,6 +48,14 @@ export default {
       type: Array,
       default: () => []
     }
+  },
+  methods: {
+    enterArtists (item) {
+      this.$emit('enterArtists', item)
+    },
+    enterSongs (name) {
+      this.$emit('enterSongs', name)
+    }
   }
 }
 </script>

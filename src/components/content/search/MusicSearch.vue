@@ -15,7 +15,7 @@
 
     <!-- 搜索内容 -->
     <transition name="fade-in-linar">
-      <searchContent v-show="isSuggest" :keywords="keywords" :sugSongs="sugSongs" :sugArtist="sugArtist" />
+      <searchContent v-show="isSuggest" :keywords="keywords" :sugSongs="sugSongs" :sugArtist="sugArtist" @enterArtists="enterArtists" @enterSongs="enterSongs" />
     </transition>
   </div>
 </template>
