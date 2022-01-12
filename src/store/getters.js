@@ -14,7 +14,7 @@ const getters = {
   // 获取歌单路由
   getSongListPath: state => state.songListPath,
   getAsyncShareImag: state => state.asyncShareImag,
-  getUserImage: state => state.image || 'img/login.128c56ca.jpg',
+  getUserImage: state => state.image || require('../assets/img/login.jpg'),
   isLogin: state => state.isLogin || localStorage.getItem('userId')
 }
 

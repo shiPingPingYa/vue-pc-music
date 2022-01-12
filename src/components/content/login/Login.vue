@@ -11,7 +11,7 @@
       </div>
       <div class="user-img-container">
         <img
-          :src="image || logImg"
+          :src="getUserImage"
           alt
         >
       </div>
@@ -68,7 +68,7 @@
 </template>
 <script>
 // import { mixins } from './mixins/mixins'
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapGetters } from 'vuex'
 import { _VerifyPhone } from 'api/user'
 export default {
   name: 'Login',
@@ -81,12 +81,12 @@ export default {
       passwordErr: '',
       phone: '',
       password: '',
-      passwordExec: /(?!^(\d+|[a-zA-Z]+|[~!@#$%^&*?]+)$)^[\w~!@#$%^&*?]{8,18}$/,
-      logImg: require('../../../assets/img/login.jpg')
+      passwordExec: /(?!^(\d+|[a-zA-Z]+|[~!@#$%^&*?]+)$)^[\w~!@#$%^&*?]{8,18}$/
     }
   },
   computed: {
     ...mapState(['image']),
+    ...mapGetters(['getUserImage']),
     btnDisabled () {
       return this.isPhone && this.isPassword
     }
