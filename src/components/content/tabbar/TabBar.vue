@@ -69,7 +69,7 @@ export default {
   name: 'TabBar',
   components: { MusicSearch, privateDetail, HistoryNews },
   mixins: [mixins],
-  data() {
+  data () {
     return {
       header: {
         'Content-Type': 'multipart/form-data'
@@ -89,7 +89,7 @@ export default {
   watch: {
     // 隐藏消息和私信内容
     $route: {
-      handler() {
+      handler () {
         this.isPrivate = false
         this.isHistoryNews = false
       },
@@ -98,13 +98,13 @@ export default {
   },
   methods: {
     ...mapActions(['_GETUSERINFO']),
-    preRouter() {
+    preRouter () {
       this.$router.go(-1)
     },
-    nextRouter() {
+    nextRouter () {
       this.$router.go(+1)
     },
-    handleDropClick(v) {
+    handleDropClick (v) {
       switch (v) {
         case 'messageNotify':
           this.isPrivate = !this.isPrivate
@@ -116,13 +116,13 @@ export default {
       }
     },
     // 隐藏登录页面
-    showLogin() {
+    showLogin () {
       this.$store.commit('showLogin', !this.$store.state.isShowLogin)
       // 隐藏注册页面
       this.$store.commit('hiddenRegister')
     },
     // 退出登录
-    enterLogin() {
+    enterLogin () {
       // 判断是否登录
       if (window.localStorage.getItem('userId')) {
         this.$confirm('此操作会退出登录,是否继续?', '提示', {
@@ -142,7 +142,7 @@ export default {
         this.$message.warning('还未登录')
       }
     },
-    async httpRequest(item) {
+    async httpRequest (item) {
       const isType =
         item.file.type === 'image/jpeg' || item.file.type === 'image/png'
       if (!isType) return this.$message.error('请选择正确的文件')
@@ -158,7 +158,7 @@ export default {
         await this._GETUSERINFO(localStorage.getItem('userId'))
       }
     },
-    privateNewChange(userId) {
+    privateNewChange (userId) {
       this.historyList = []
       this.privageUserId = userId
       _getPrivateHistoryNews({ uid: this.privageUserId })
@@ -173,10 +173,10 @@ export default {
           this.isHistoryNews = true
         })
     },
-    prePrivateDetail() {
+    prePrivateDetail () {
       this.isPrivate = true
       this.isHistoryNews = false
-    },
+    }
   }
 }
 </script>
