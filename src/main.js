@@ -31,31 +31,39 @@ import {
   RadioGroup,
   Radio,
   CheckboxGroup,
-  Checkbox
+  Tooltip,
+  Checkbox,
+  DropdownMenu,
+  DropdownItem,
+  Dropdown
 } from 'element-ui'
 import { formDate } from './assets/common/tool'
 
+Vue.use(Upload)
+Vue.use(Tooltip)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
+Vue.use(Dropdown)
 Vue.use(Pagination)
 Vue.use(Row)
 Vue.use(Col)
-Vue.use(Select)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)
 Vue.use(Option)
 Vue.use(Tag)
 Vue.use(Form)
-Vue.use(FormItem)
-Vue.use(Upload)
-Vue.use(Container)
-Vue.use(Main)
-Vue.use(Tabs)
-Vue.use(TabPane)
 Vue.use(Header)
 Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Dialog)
 Vue.use(RadioGroup)
 Vue.use(Radio)
-Vue.use(CheckboxGroup)
-Vue.use(Checkbox)
+Vue.use(FormItem)
+Vue.use(Container)
+Vue.use(Main)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Select)
 
 Vue.config.productionTip = false
 // 挂载axios

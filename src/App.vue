@@ -1,7 +1,7 @@
 <template>
-  <div id="app" @click="setAsyncShareImag(false)">
+  <div id="app">
     <keep-alive>
-      <tab-bar></tab-bar>
+      <tab-bar ref="tabBar"></tab-bar>
     </keep-alive>
     <center-content></center-content>
     <play-music ref="play_music"></play-music>
@@ -30,12 +30,12 @@ export default {
   watch: {
     // 路由发生改变时，判断播放组件是不是处于隐藏状态
     $route: {
-      handler () {
+      handler() {
         if (this.$refs.play_music.isPlayerShow) this.$refs.play_music.isPlayerShow = false
       }
     }
   },
-  created () {
+  created() {
     // 获取localstorage里面的用户id
     if (localStorage.getItem('userId')) {
       this.$store.dispatch('_GETUSERINFO', localStorage.getItem('userId'))
@@ -45,12 +45,18 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setAsyncShareImag', 'showLogin'])
+    ...mapMutations(['showLogin'])
   },
-  mounted () {
-    // 监听键盘输入事件，空格停止音乐播放
+  mounted() {
+    const app = document.getElementById('app')
+    const handleImgAndMessageClick = () => {
+      this.$store.commit('setAsyncShareImag', false)
+      this.$refs.tabBar._data.isPrivate = false
+      this.$refs.tabBar._data.isisHistoryNewsPrivate = false
+    }
     const stopMusic = (e) => e.keyCode === 32 && this.$refs.play_music.toggle()
-    window.addEventListener('keyup', stopMusic)
+    window.addEventListener('keyup', stopMusic) //监听键盘输入事件，空格停止音乐播放
+    app.addEventListener('click', handleImgAndMessageClick) //点击页面隐藏朋友圈图片和消息通知
   }
 }
 </script>

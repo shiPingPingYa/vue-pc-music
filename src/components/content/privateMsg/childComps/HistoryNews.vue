@@ -7,7 +7,7 @@
       <div>
         {{ historyList[0].nickname }}
       </div>
-      <div @click="cancelHistory">
+      <div @click="prePrivateDetail">
         <img src="../../../../assets/img/privateNews/replay_privateNews.svg" alt="" />
       </div>
     </div>
@@ -66,50 +66,47 @@ import { formDate } from '../../../../assets/common/tool'
 import { indexMixin } from '../../../../views/musicListDetail/indexMixin'
 export default {
   name: 'HistoryNews',
+  components: { Scroll },
+  mixins: [indexMixin],
   props: {
     historyList: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
     more: {
       type: Boolean,
-      default () {
+      default() {
         return false
       }
     }
   },
-  data () {
+  data() {
     return {
       isPlay: false,
       musicList: []
     }
   },
-  components: { Scroll },
-  mixins: [indexMixin],
   methods: {
-    prePrivateDetail () {
+    prePrivateDetail() {
       this.$emit('prePrivateDetail')
     },
-    cancelHistory () {
-      this.$emit('cancelHistory')
-    },
-    pullingDown () {
+    pullingDown() {
       if (!this.more) return this.$message.info('没有更多历史记录了')
       else {
       }
       this.$refs.history_news_scroll.finishPullDown()
       console.log('history', '获取更多历史记录')
     },
-    handleHistoryTime (time) {
+    handleHistoryTime(time) {
       return formDate(new Date(time), 'f:mm:dd-hh:mm')
     },
-    goPlayMV (id) {
+    goPlayMV(id) {
+      this.$emit('visiableMessage')
       this.$router.push('/playmv/' + id)
-      this.$emit('hideStatus')
     },
-    goPlayMusic (type, id) {
+    goPlayMusic(type, id) {
       if (type === 12 || type === 23) return true
       // 12和23是网易云推出活动不用管，1歌曲，7mv，2专辑
       switch (type) {
@@ -124,7 +121,7 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     if (this.$refs.history_news_scroll !== undefined) {
       const maxY = this.$refs.history_news_scroll.getMaxScrollY()
       this.$refs.history_news_scroll.scrollTo(0, maxY, 0)

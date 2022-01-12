@@ -21,7 +21,7 @@ import PrivateNoticesList from './childRouter/PrivateNoticesList.vue' // 通知
 export default {
   name: 'privateDetail',
   components: { Scroll, PrivateNewsList, PrivateCommentList, PrivateForwardList, PrivateNoticesList },
-  data () {
+  data() {
     return {
       tabbarList: ['私信', '评论', '@我', '通知'],
       isTabber: 0,
@@ -45,27 +45,27 @@ export default {
       userId: ''
     }
   },
-  watch: {
-    isTabber () {
-      this.initPrivateDetail(0)
-    }
-  },
   computed: {
-    currentPage () {
+    currentPage() {
       const pageObj = { 0: 'PrivateNewsList', 1: 'PrivateCommentList', 2: 'PrivateForwardList', 3: 'PrivateNoticesList' }
       return pageObj[this.isTabber]
     },
-    currentList () {
+    currentList() {
       const pageList = { 0: 'privateNewsList', 1: 'privateCommentsList', 2: 'forwardsList', 3: 'privateNoticesList' }
       return this[pageList[this.isTabber]]
     }
   },
-  created () {
+  watch: {
+    isTabber() {
+      this.initPrivateDetail(0)
+    }
+  },
+  created() {
     this.initPrivateDetail(0)
     this.userId = localStorage.getItem('userId')
   },
   methods: {
-    async initPrivateDetail (flag) {
+    async initPrivateDetail(flag) {
       switch (this.isTabber) {
         case 0:
           // 获取私信数据
@@ -165,7 +165,7 @@ export default {
       }
       this.$refs.private_content_scroll.finishPullUp()
     },
-    pullingUp () {
+    pullingUp() {
       this.initPrivateDetail(1)
     }
   }
