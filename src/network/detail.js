@@ -262,6 +262,6 @@ export class BaseInfo {
     this.subscribedCount = playlist.subscribedCount
     this.playCount = playlist.playCount
     this.trackCount = playlist.trackCount
-    this.tags = playlist.tags[0]
+    this.tags = playlist.tags
   }
 }
