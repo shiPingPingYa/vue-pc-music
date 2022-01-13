@@ -6,8 +6,8 @@
     </div>
     <!-- 两个回退按钮 -->
     <div class="buttons">
-      <button class="el-icon-arrow-left" @click="preRouter()" />
-      <button class="el-icon-arrow-right" @click="nextRouter()" />
+      <button class="el-icon-arrow-left" @click="handleChangeRouter(-1)" />
+      <button class="el-icon-arrow-right" @click="handleChangeRouter(1)" />
     </div>
 
     <!-- 音乐搜索 -->
@@ -110,11 +110,9 @@ export default {
   },
   methods: {
     ...mapActions(['_GETUSERINFO']),
-    preRouter () {
-      this.$router.go(-1)
-    },
-    nextRouter () {
-      this.$router.go(+1)
+    handleChangeRouter (i) {
+      this.$router.go(i)
+      this.$parent.$refs.play_music.isPlayerShow = false
     },
     handleDropClick (v) {
       switch (v) {
@@ -138,24 +136,19 @@ export default {
     },
     // 退出登录
     enterLogin () {
-      // 判断是否登录
-      if (window.localStorage.getItem('userId')) {
-        this.$confirm('此操作会退出登录,是否继续?', '提示', {
-          confirmButtonText: '确认',
-          cancelButtonText: '取消',
-          type: 'warning'
+      this.$confirm('此操作会退出登录,是否继续?', '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$store.commit('setIslogin', false)
+          window.localStorage.clear('userId')
+          window.location.reload()
         })
-          .then(() => {
-            this.$store.commit('setIslogin', false)
-            window.localStorage.clear('userId')
-            window.location.reload()
-          })
-          .catch(() => {
-            this.$message({ type: 'info', message: '已取消' })
-          })
-      } else {
-        this.$message.warning('还未登录')
-      }
+        .catch(() => {
+          this.$message({ type: 'info', message: '已取消' })
+        })
     },
     async httpRequest (item) {
       const isType =

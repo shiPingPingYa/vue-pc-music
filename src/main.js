@@ -35,7 +35,10 @@ import {
   Checkbox,
   DropdownMenu,
   DropdownItem,
-  Dropdown
+  Dropdown,
+  Menu,
+  MenuItem,
+  Submenu
 } from 'element-ui'
 import { formDate } from './assets/common/tool'
 
@@ -64,6 +67,9 @@ Vue.use(Main)
 Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Select)
+Vue.use(Menu)
+Vue.use(MenuItem)
+Vue.use(Submenu)
 
 Vue.config.productionTip = false
 // 挂载axios
