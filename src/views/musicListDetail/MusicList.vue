@@ -10,12 +10,7 @@
       <div class="day_music_title">每日歌曲推荐</div>
     </div>
     <!-- 歌单列表 -->
-    <div
-      class="song-item"
-      v-for="(item, index) in totalList"
-      :key="index"
-      @click="enterDetail(index)"
-    >
+    <div class="song-item" v-for="(item, index) in totalList" :key="index" @click="enterDetail(index)">
       <!-- 背景图 -->
       <img :src="getImgUrl(item) + '?param=230y230'" alt="" />
       <!-- 标题 -->
@@ -37,9 +32,7 @@ export default {
   props: {
     totalList: {
       type: Array,
-      default () {
-        return []
-      }
+      default: () => []
     }
   },
   computed: {
@@ -50,7 +43,6 @@ export default {
       getDate: '',
       getDay: '',
       isDayMusic: true
-
     }
   },
   watch: {
@@ -80,20 +72,29 @@ export default {
     },
     // 条状到音乐详情页
     enterDetail (index) {
-      this.$router.push({ path: '/musiclistdetail/' + this.totalList[index].id, query: { songId: this.totalList[index].id } })
+      this.$router.push({
+        path: '/musiclistdetail/' + this.totalList[index].id,
+        query: { songId: this.totalList[index].id }
+      })
     },
     isGetDay (day) {
       switch (day) {
-        case 0: return '星期天'
-        case 1: return '星期一'
-        case 2: return '星期二'
-        case 3: return '星期三'
-        case 4: return '星期四'
-        case 5: return '星期五'
-        case 6: return '星期六'
+        case 0:
+          return '星期天'
+        case 1:
+          return '星期一'
+        case 2:
+          return '星期二'
+        case 3:
+          return '星期三'
+        case 4:
+          return '星期四'
+        case 5:
+          return '星期五'
+        case 6:
+          return '星期六'
       }
     }
-
   }
 }
 </script>

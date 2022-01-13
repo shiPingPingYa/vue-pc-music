@@ -6,8 +6,8 @@
     </div>
     <!-- 两个回退按钮 -->
     <div class="buttons">
-      <button class="el-icon-arrow-left" @click="handleChangeRouter(-1)" />
-      <button class="el-icon-arrow-right" @click="handleChangeRouter(1)" />
+      <button class="el-icon-arrow-left" @click.stop="handleChangeRouter(-1)" />
+      <button class="el-icon-arrow-right" @click.stop="handleChangeRouter(1)" />
     </div>
 
     <!-- 音乐搜索 -->

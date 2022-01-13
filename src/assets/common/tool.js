@@ -69,11 +69,3 @@ export function throttled (fn, delay) {
     }
   }
 }
-
-const title = '覃覃音乐'
-
-export function getPageTitle (pageTile) {
-  if (pageTile) {
-    return pageTile
-  } else return title
-}

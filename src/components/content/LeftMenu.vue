@@ -1,44 +1,48 @@
 <template>
   <div class="left-menu" ref="left_menu" @click.stop @mouseenter="handleMenuMouseEnter">
-    <el-menu :unique-opened="true" mode="vertical" :show-timeout="200" active-text-color="#409EFF" :default-active="activeIndex" :collapse="isCollapse">
-      <template v-for="(item,index) in list ">
-        <el-submenu v-if="item.children" :key="index" :index="index.toString()">
+    <scroll class="left-menu-container">
+      <el-menu :unique-opened="true" mode="vertical" :show-timeout="200" active-text-color="#409EFF" :default-active="activeIndex" :collapse="isCollapse">
+        <template v-for="(item,index) in list ">
+          <el-submenu v-if="item.children" :key="index" :index="index.toString()">
+            <template slot="title">
+              <div class="menu-title">{{item.label}}</div>
+            </template>
+            <template v-for="(itemChildren,indexChildren) in item.children">
+              <router-link :to="itemChildren.path" :key="indexChildren">
+                <el-menu-item :index="`${index.toString()}-${indexChildren.toString()}`" :key="indexChildren" @click="handleMenuItemClick(`${index.toString()}-${indexChildren.toString()}`)">
+                  <i :class="itemChildren.icon"></i><span>{{itemChildren.label}}</span>
+                </el-menu-item>
+              </router-link>
+            </template>
+          </el-submenu>
+        </template>
+      </el-menu>
+      <el-menu class="song-menu" :unique-opened="true" mode="vertical" :show-timeout="200" active-text-color="#409EFF" :default-active="songListIndex" :collapse="isCollapse">
+        <el-submenu :index="'0'">
           <template slot="title">
-            <div class="menu-title">{{item.label}}</div>
+            <div class="menu-title">我的歌单</div>
           </template>
-          <template v-for="(itemChildren,indexChildren) in item.children">
-            <router-link :to="itemChildren.path" :key="indexChildren">
-              <el-menu-item :index="`${index.toString()}-${indexChildren.toString()}`" :key="indexChildren" @click="handleMenuItemClick(`${index.toString()}-${indexChildren.toString()}`)">
-                <i :class="itemChildren.icon"></i><span>{{itemChildren.label}}</span>
-              </el-menu-item>
-            </router-link>
+          <template v-for="(item,index) in userSongList">
+            <el-menu-item :index="index.toString()" :key="index" @click="handleSongItemClick(index)">
+              <div class="music-item">
+                <img :src="item.coverImgUrl + '?param=50y50'" alt="" />
+                <el-tooltip :content="item.name" placement="right" effect="dark">
+                  <div class="song-name">{{item.name}}</div>
+                </el-tooltip>
+              </div>
+            </el-menu-item>
           </template>
         </el-submenu>
-      </template>
-    </el-menu>
-    <el-menu class="song-menu" :unique-opened="true" mode="vertical" :show-timeout="200" active-text-color="#409EFF" :default-active="songListIndex" :collapse="isCollapse">
-      <el-submenu :index="'0'">
-        <template slot="title">
-          <div class="menu-title">我的歌单</div>
-        </template>
-        <template v-for="(item,index) in userSongList">
-          <el-menu-item :index="index.toString()" :key="index" @click="handleSongItemClick(index)">
-            <div class="music-item">
-              <img :src="item.coverImgUrl + '?param=50y50'" alt="" />
-              <el-tooltip :content="item.name" placement="right" effect="dark">
-                <div class="song-name">{{item.name}}</div>
-              </el-tooltip>
-            </div>
-          </el-menu-item>
-        </template>
-      </el-submenu>
-    </el-menu>
+      </el-menu>
+    </scroll>
   </div>
 </template>
 <script>
+import Scroll from 'common/scroll/Scroll.vue'
 import { mapState } from 'vuex'
 export default {
   name: 'LeftMenu',
+  components: { Scroll },
   data () {
     return {
       activeIndex: '0-0',
@@ -86,7 +90,7 @@ export default {
       return document.getElementsByClassName('main')[0]
     },
     left_menu () {
-      return document.getElementsByClassName('left-menu')[0]
+      return document.getElementsByClassName('left-menu ')[0]
     }
   },
   watch: {
@@ -133,7 +137,7 @@ export default {
     },
     handleMenuMouseEnter () {
       this.isCollapse = false
-      this.$refs.left_menu.style.width = '18%'
+      this.left_menu.style.width = '18%'
       this.right_menu.style.width = '82%'
     },
     // 网页刷新后设置歌单列表的选中
@@ -166,19 +170,22 @@ export default {
   a {
     text-decoration: none;
   }
-
   .left-menu {
-    width: 68px;
+    width: 100%;
     height: 100%;
-    overflow-y: auto;
+    overflow: hidden;
     color: #0a0a0a;
     background: #f5f5f7;
     user-select: none;
     opacity: 0.8;
 
-    ::-webkit-scrollbar {
-      width: 200px;
-      height: 200px;
+    .left-menu-container {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      div {
+        width: 100%;
+      }
     }
   }
 
@@ -197,6 +204,7 @@ export default {
     }
 
     .song-name {
+      flex: 1;
       margin-left: 6px;
       line-height: 100%;
       overflow: hidden;
