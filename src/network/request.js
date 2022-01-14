@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from '../store'
 import qs from 'qs'
 import { Message } from 'element-ui'
 
@@ -17,6 +18,9 @@ const request = axios.create({
 // 配置请求头
 request.interceptors.request.use(
   data => {
+    if (JSON.parse(localStorage.getItem('setIslogin'))) {
+      data.headers.Cookie = localStorage.getItem('tt_cookie')
+    }
     return data
   },
   err => {
@@ -31,6 +35,7 @@ request.interceptors.response.use(
       return res
     } else if (res.data.code === 301) {
       Message.error(res.data.msg)
+      store.dispatch('_Layout')
     } else if (res.data.code === 404) {
       Message.error('cookie，失效请重新登录')
     }

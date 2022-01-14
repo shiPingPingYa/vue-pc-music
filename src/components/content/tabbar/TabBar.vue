@@ -136,19 +136,7 @@ export default {
     },
     // 退出登录
     enterLogin () {
-      this.$confirm('此操作会退出登录,是否继续?', '提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.$store.commit('setIslogin', false)
-          window.localStorage.clear('userId')
-          window.location.reload()
-        })
-        .catch(() => {
-          this.$message({ type: 'info', message: '已取消' })
-        })
+      this.$store.dispatch('_Layout')
     },
     async httpRequest (item) {
       const isType =
