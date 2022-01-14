@@ -32,7 +32,7 @@
         </div>
         <!-- 中间三按钮 -->
         <div class="center">
-          <div class="play" @click="palyMusic()">
+          <div class="play" @click="playMusic()">
             <i class="el-icon-video-play"></i>
             播放全部
           </div>
@@ -69,7 +69,7 @@ export default {
     }
   },
   methods: {
-    palyMusic () {
+    playMusic () {
       this.$parent.$parent.musicItemClick()
     }
   }

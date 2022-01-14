@@ -4,13 +4,14 @@
       <!-- 音乐榜单默认信息 -->
       <music-base-info :baseInfo="baseInfo"></music-base-info>
       <!-- 音乐榜单导航条 -->
-      <music-bar :bar="bar" @mlBarClick="mlBarClick"></music-bar>
+      <music-bar :bar="bar" @handleTabClick="handleTabClick"></music-bar>
       <!-- 音乐榜单列表 -->
       <music-item @musicItemClick="musicItemClick" :musicList="musicList" v-show="isShow == 'music'"></music-item>
       <!-- 音乐榜单评论信息 -->
       <song-list-recommends ref="songList_recommends" :recommends="recommends" :hotComments="hotComments" :id="id" :Type="2" v-show="isShow == 'recommends'" @moreComments="moreComments" @getCommends="getCommends"></song-list-recommends>
       <!-- 音乐榜单收藏者 -->
       <music-list-like :subs="subs" v-show="isShow == 'like'"></music-list-like>
+
     </scroll>
   </div>
 </template>
@@ -88,7 +89,7 @@ export default {
     this.musicListDetailInit()
   },
   methods: {
-    mlBarClick (str) {
+    handleTabClick (str) {
       this.isShow = str
     },
     // 子组件上面的歌曲点击事件传递音乐下标
