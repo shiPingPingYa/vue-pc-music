@@ -3,7 +3,7 @@
     <video-bar ref="video_bar" :videoBar="videoBar"></video-bar>
     <div class="content">
       <keep-alive>
-      <router-view></router-view>
+        <router-view></router-view>
       </keep-alive>
     </div>
   </div>
@@ -24,14 +24,14 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.all-video-detail{
-  margin: 20px 20px ;
-  width: 100%;
-  height: calc(100% - 30px);
-  overflow: hidden;
-  > .content{
+  .all-video-detail {
+    margin: 20px 20px;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 30px);
+    overflow: hidden;
+    > .content {
+      width: 100%;
+      height: 100%;
+    }
   }
-}
 </style>

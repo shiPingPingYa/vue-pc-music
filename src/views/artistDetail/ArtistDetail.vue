@@ -1,10 +1,10 @@
 <template>
   <div class="artist-detail">
-      <scroll class="artist-swiper">
-        <artist-base-info :desc="artistDesc" :baseInfo="getArtist()"></artist-base-info>
-        <artist-bar  ref="artistBar" :barList="barList"></artist-bar>
-        <router-view></router-view>
-      </scroll>
+    <scroll class="artist-swiper">
+      <artist-base-info :desc="artistDesc"></artist-base-info>
+      <artist-bar ref="artistBar"></artist-bar>
+      <router-view></router-view>
+    </scroll>
   </div>
 </template>
 <script>
@@ -32,44 +32,30 @@ export default {
     ArtistBar,
     Scroll
   },
-  watch: {
-    // 修改歌手默认信息
-    $route: {
-      handler (val) {
-        if (val.path === '/artist/album') {
-          this.getArtist()
-          this.getArtistDesc()
-        }
-      }
-    }
-  },
   created () {
     this.getArtistDesc()
   },
   methods: {
-    getArtistDesc () {
-      this.artist = JSON.parse(localStorage.getItem('artist'))
-      _getArtistDesc(this.artist.id).then(res => {
-        this.artistDesc = res.data.briefDesc
-      })
-    },
-    getArtist () {
-      return JSON.parse(localStorage.getItem('artist'))
+    async getArtistDesc () {
+      const { id } = JSON.parse(localStorage.getItem('artist'))
+      const {
+        data: { briefDesc }
+      } = await _getArtistDesc({ id })
+      this.artistDesc = briefDesc
     }
   }
 }
-
 </script>
 
 <style lang="less" scoped>
-.artist-detail{
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
+  .artist-detail {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 
-.artist-swiper{
-  width: 100%;
-  height: calc(100% - 40px);
-}
+  .artist-swiper {
+    width: 100%;
+    height: calc(100% - 40px);
+  }
 </style>

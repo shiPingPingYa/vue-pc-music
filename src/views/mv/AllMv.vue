@@ -1,23 +1,17 @@
 <template>
   <div class="all-mv">
     <scroll ref="scroll" class="scroll">
-     <div class="title">
-         这是全部mv
-     </div>
-   <div class="content">
-      <mv-bar></mv-bar>
-      <mv-item class="mv_item" :mvList="mvList"></mv-item>
-   </div>
-     <div class="mv_pagination">
-     <el-pagination
-     v-show="mvList.length === 40"
-     :current-page="page"
-      @current-change="handleCurrentChange"
-      background
-      layout="prev, pager, next"
-      :total="1000">
-  </el-pagination>
-  </div>
+      <div class="title">
+        这是全部mv
+      </div>
+      <div class="content">
+        <mv-bar></mv-bar>
+        <mv-item class="mv_item" :mvList="mvList"></mv-item>
+      </div>
+      <div class="mv_pagination">
+        <el-pagination v-show="mvList.length === 40" :current-page="page" @current-change="handleCurrentChange" background layout="prev, pager, next" :total="1000">
+        </el-pagination>
+      </div>
     </scroll>
 
   </div>
@@ -52,7 +46,7 @@ export default {
     this.allMv()
   },
   methods: {
-    async  allMv (area, type, order, flag = false) {
+    async allMv (area, type, order, flag = false) {
       // 导航条点击后才将修改请求参数
       if (flag) {
         this.mvList = []
@@ -73,7 +67,7 @@ export default {
         res.data.data.forEach(item => this.mvList.push(new MV(item)))
       })
     },
-    async  handleCurrentChange (val) {
+    async handleCurrentChange (val) {
       const params = {
         type: this.type,
         area: this.area,
@@ -82,7 +76,9 @@ export default {
         offset: this.mvList.length * (val - 1)
       }
       this.mvList = []
-      const { data: { data } } = await _AllMv(params)
+      const {
+        data: { data }
+      } = await _AllMv(params)
       data.forEach(item => this.mvList.push(new MV(item)))
       this.$refs.scroll.scrollTo(0, 0, 0)
       this.$refs.scroll.finishPullUp()
@@ -91,39 +87,37 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.all-mv{
-  padding: 0 20px 60px;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.scroll{
-  height:100%;
-}
-
-.mv_item{
-  margin-bottom: 20px;
-}
-
-.title{
-  margin-top: 10px;
-  padding: 0 20px;
-  font-size: 18px;
-  color: #01060a;
-  > .title-boder{
-  margin-top: 10px;
-  width: 100%;
-  height: 1px;
-  border-bottom: 1px solid #23262c;
-
+  .all-mv {
+    padding: 0 20px 60px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
-}
 
+  .scroll {
+    height: 100%;
+  }
+
+  .mv_item {
+    margin-bottom: 20px;
+  }
+
+  .title {
+    margin-top: 10px;
+    padding: 0 20px;
+    font-size: 18px;
+    color: #01060a;
+    > .title-boder {
+      margin-top: 10px;
+      width: 100%;
+      height: 1px;
+      border-bottom: 1px solid #23262c;
+    }
+  }
 </style>
 <style>
-.mv_pagination{
-  display: flex;
-  justify-content: flex-end;
-}
+  .mv_pagination {
+    display: flex;
+    justify-content: flex-end;
+  }
 </style>

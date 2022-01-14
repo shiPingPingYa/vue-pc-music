@@ -38,7 +38,8 @@ import {
   Dropdown,
   Menu,
   MenuItem,
-  Submenu
+  Submenu,
+  Backtop
 } from 'element-ui'
 import { formDate } from './assets/common/tool'
 
@@ -70,6 +71,7 @@ Vue.use(Select)
 Vue.use(Menu)
 Vue.use(MenuItem)
 Vue.use(Submenu)
+Vue.use(Backtop)
 
 Vue.config.productionTip = false
 // 挂载axios

@@ -171,7 +171,7 @@ export default {
     text-decoration: none;
   }
   .left-menu {
-    width: 100%;
+    width: 68px;
     height: calc(100% - 58px);
     overflow: hidden;
     color: #0a0a0a;

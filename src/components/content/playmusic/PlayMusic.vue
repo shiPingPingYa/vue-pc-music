@@ -1,20 +1,16 @@
 <template>
-    <div class="play-music" v-if="playList !== null" >
+  <div class="play-music" v-if="playList !== null">
     <!-- 播放条上面的内容区域 -->
-    <div class="top" >
+    <div class="top">
       <!-- 播放内容图片 -->
-      <div class="music-top-icon"
-      v-if="playList[currentIndex] !== null"
-      @mouseenter="isShade = true"
-      @mouseleave="isShade = false"
-      @click="playerShow()">
-      <img :src="playList[currentIndex].pic" alt="">
-      <div class="music-max" v-show="isShade">
-        <img src="../../../assets/img/playmusic/max.svg" alt="">
-      </div>
+      <div class="music-top-icon" v-if="playList[currentIndex] !== null" @mouseenter="isShade = true" @mouseleave="isShade = false" @click="playerShow()">
+        <img :src="playList[currentIndex].pic" alt="">
+        <div class="music-max" v-show="isShade">
+          <img src="../../../assets/img/playmusic/max.svg" alt="">
+        </div>
       </div>
       <!-- 播放内容 -->
-      <div class="music-top-center"  v-if="playList[currentIndex] !== null">
+      <div class="music-top-center" v-if="playList[currentIndex] !== null">
         <div class="music-title">{{playList[currentIndex].title}} </div>
         <div class="music-artist">{{playList[currentIndex].artist}}</div>
       </div>
@@ -25,27 +21,18 @@
     <div class="play-music-left">
       <!-- 开始按钮 -->
       <div class="play" @click="toggle()">
-       <i class="el-icon-video-play" v-show="!isPlayer"></i>
-       <i class="el-icon-video-pause" v-show="isPlayer"></i>
+        <i class="el-icon-video-play" v-show="!isPlayer"></i>
+        <i class="el-icon-video-pause" v-show="isPlayer"></i>
       </div>
       <!-- 下一首按钮 -->
       <div class="next" @click="nextMusic()">
-         <i class="el-icon-caret-right"></i>
+        <i class="el-icon-caret-right"></i>
       </div>
     </div>
     <!-- 播放条右边区域 -->
-    <div class="play-music-right" v-if="playList[currentIndex] !== null" >
+    <div class="play-music-right" v-if="playList[currentIndex] !== null">
       <!-- audio音频标签 -->
-      <audio :src="playList[currentIndex].src"
-      autoplay
-      ref="audio"
-      @timeupdate="audioTimeUpdate()"
-      @pause="musicPause()"
-      @play="playLoad()"
-      @ended="musicEnded()"
-      @playing="musicPlaying()"
-      @error="musicErr()"
-      ></audio>
+      <audio :src="playList[currentIndex].src" autoplay ref="audio" @timeupdate="audioTimeUpdate()" @pause="musicPause()" @play="playLoad()" @ended="musicEnded()" @playing="musicPlaying()" @error="musicErr()"></audio>
       <!-- 进度条 -->
       <div class="music-progress">
         <music-progress ref="music_pro" class="music-progress-children" @childClickScale="setMusicProgress"></music-progress>
@@ -87,7 +74,7 @@
         </div>
         <!-- 音乐列表按钮 -->
         <div class="music-list" @click="toggleMusicList()">
-           <a href="javascript:;" title="歌单">
+          <a href="javascript:;" title="歌单">
             <img src="../../../assets/img/playmusic/list.svg" alt />
           </a>
         </div>
@@ -105,7 +92,13 @@ import Player from './Player'
 // 导入封装的处理时间函数
 import { formDate } from '../../../assets/common/tool'
 // 导入歌曲网络请求
-import { _getLyric, _getIntelligenceList, _getSongsDetail, AllSongDetail, _getMusicUrl } from '../../../network/detail'
+import {
+  _getLyric,
+  _getIntelligenceList,
+  _getSongsDetail,
+  AllSongDetail,
+  _getMusicUrl
+} from '../../../network/detail'
 import { PlayList } from './playList'
 // 导入进度条
 import MusicProgress from './Progress'
@@ -194,11 +187,11 @@ export default {
       this.$refs.music_volumn.setAudioProgress(0.8)
     })
     // 监听歌曲列表的点击,设置index
-    this.$bus.$on('playMusicListItem', (index) => {
+    this.$bus.$on('playMusicListItem', index => {
       this.setCurrentIndex(index)
     })
     // 播放视频的时候，停止音乐播放
-    this.$bus.$on('stopMusic', (flag) => {
+    this.$bus.$on('stopMusic', flag => {
       this.stopMusic(flag)
     })
   },
@@ -207,7 +200,7 @@ export default {
     setCurrentIndex (index) {
       var that = this
       for (var i in this.playList) {
-        (function (e) {
+        ;(function (e) {
           if (that.playList[e].index === index) {
             that.currentIndex = e
           }
@@ -245,9 +238,15 @@ export default {
     audioTimeUpdate () {
       if (this.$refs.audio !== null) {
         // 获取当前正在播放的时间
-        this.currentTime = formDate(new Date(this.$refs.audio.currentTime * 1000), 'mm:ss')
+        this.currentTime = formDate(
+          new Date(this.$refs.audio.currentTime * 1000),
+          'mm:ss'
+        )
         // 获取总时长
-        this.duration = formDate(new Date(this.$refs.audio.duration * 1000), 'mm:ss')
+        this.duration = formDate(
+          new Date(this.$refs.audio.duration * 1000),
+          'mm:ss'
+        )
         // 获取比例
         var scale = this.$refs.audio.currentTime / this.$refs.audio.duration
         // 设置比例
@@ -258,7 +257,9 @@ export default {
           // 首页歌词
           this.$refs.lyric.scrollLyric(this.$refs.audio.currentTime)
           // 播放页面歌词
-          this.$refs.player.$refs.playerLyric.maxScroll(this.$refs.audio.currentTime)
+          this.$refs.player.$refs.playerLyric.maxScroll(
+            this.$refs.audio.currentTime
+          )
         }
       }
     },
@@ -288,14 +289,16 @@ export default {
         this.currentIndex = 0
       } else {
         switch (this.schemaIndex) {
-          case 0: this.currentIndex++
+          case 0:
+            this.currentIndex++
             break
           case 1:
             this.currentIndex = Math.floor(Math.random() * this.playList.length)
             break
           case 2:
             break
-          case 3: this.playModeIntellgence()
+          case 3:
+            this.playModeIntellgence()
             break
         }
         this.$refs.audio.src = this.playList[this.currentIndex].src
@@ -323,7 +326,9 @@ export default {
     // 通过改变schema的值来实现音乐播放顺序设置
     toggleSchema () {
       if (this.schemaIndex >= 3) this.schemaIndex = 0
-      else { this.schemaIndex++ }
+      else {
+        this.schemaIndex++
+      }
     },
     // 是否在首页显示歌词
     toggleLyric () {
@@ -361,7 +366,8 @@ export default {
         this.currentIndex = 0
       } else {
         switch (this.schemaIndex) {
-          case 0: this.currentIndex++
+          case 0:
+            this.currentIndex++
             break
           case 1:
             this.currentIndex = Math.floor(Math.random() * this.playList.length)
@@ -381,9 +387,14 @@ export default {
         pid: localStorage.getItem('pid'),
         id: this.playList[this.currentIndex].id
       }
-      const { data: { data } } = await _getIntelligenceList(params)
+      const {
+        data: { data }
+      } = await _getIntelligenceList(params)
       // 音乐id
-      const ids = data.slice(0, 60).map(item => item.id).join(',')
+      const ids = data
+        .slice(0, 60)
+        .map(item => item.id)
+        .join(',')
       const mulistItem = this.musicList[this.currentIndex]
       const playListItem = this.playList[this.currentIndex]
       this.musicList = []
@@ -391,13 +402,19 @@ export default {
       this.playList.push(playListItem)
       this.musicList.push(mulistItem)
       try {
-        const { data: { data: musicUrlList } } = await _getMusicUrl(ids)
-        const { data: { songs } } = await _getSongsDetail(ids)
+        const {
+          data: { data: musicUrlList }
+        } = await _getMusicUrl(ids)
+        const {
+          data: { songs }
+        } = await _getSongsDetail(ids)
         songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
         if (songs.length === this.musicList.length) {
           this.musicList.forEach((item, index) => {
             if (Number(index) >= 1) {
-              this.playList.push(new PlayList(index + 1, item, musicUrlList[index].url, item.id))
+              this.playList.push(
+                new PlayList(index + 1, item, musicUrlList[index].url, item.id)
+              )
             }
           })
         }
@@ -411,165 +428,164 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.play-music{
-  position: relative;
-  width: 100%;
-  height: 58px;
-  background-color: #a3b2b8;
-  z-index: 3;
-  bottom: 0;
-  user-select: none;
-  >  .top{
-    position: absolute;
-    left: 0;
-    bottom: 58px;
-    width: 18%;
-    height: 100%;
-    display: flex;
-    color: #000a0d;
-    background: #f0f0f8;
-    z-index: 1;
-  }
-  > .play-music-left{
-    float: left;
-    width: 15%;
-    height: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    color: rgb(103, 197, 235);
-    > div{
-      font-size: 46px;
-      cursor: pointer;
-    }
-    > .play{
-      width: 50px;
-      height: 50px;
-      font-size: 38px  !important;
-    }
-  }
-  > .play-music-right{
-    float: right;
-    width: 85%;
-    height: 100%;
-    > .music-progress{
-    float: left;;
-    width: 70%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    > .music-currtTime{
-      width: 100px;
-      color: #fff;
-    }
-    > .music-progress-children{
-      flex: 1;
-    }
-    }
-    > .volumn{
-      float: left;
-      width: 10%;
+  .play-music {
+    position: relative;
+    width: 100%;
+    height: 58px;
+    background-color: #a3b2b8;
+    z-index: 3;
+    bottom: 0;
+    user-select: none;
+    > .top {
+      position: absolute;
+      left: 0;
+      bottom: 58px;
+      width: 18%;
       height: 100%;
       display: flex;
-      align-items: center;
-      user-select: none;
+      color: #000a0d;
+      background: #f0f0f8;
+      z-index: 1;
     }
-    > .music-icon{
+    > .play-music-left {
       float: left;
-      padding: 0 20px;
-      margin-left: 1%;
-      width: 19%;
+      width: 15%;
       height: 100%;
       display: flex;
       justify-content: space-around;
       align-items: center;
+      color: rgb(103, 197, 235);
+      > div {
+        font-size: 46px;
+        cursor: pointer;
+      }
+      > .play {
+        width: 50px;
+        height: 50px;
+        font-size: 38px !important;
+      }
+    }
+    > .play-music-right {
+      float: right;
+      width: 85%;
+      height: 100%;
+      > .music-progress {
+        float: left;
+        width: 70%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        > .music-currtTime {
+          width: 100px;
+          color: #fff;
+        }
+        > .music-progress-children {
+          flex: 1;
+        }
+      }
+      > .volumn {
+        float: left;
+        width: 10%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        user-select: none;
+      }
+      > .music-icon {
+        float: left;
+        padding: 0 20px;
+        margin-left: 1%;
+        width: 19%;
+        height: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+    }
+    > .play-music-lyric {
+      position: absolute;
+      margin: auto;
+      bottom: 60px;
+      left: 50%;
+      right: 50%;
+      width: 460px;
+      height: 30px;
+      z-index: 100;
+    }
+    > .play-music-list {
+      position: absolute;
+      bottom: 58px;
+      right: 0;
     }
   }
-  > .play-music-lyric{
-    position: absolute;
-    margin: auto;
-    bottom: 60px;
-    left: 50%;
-    right: 50%;
-    width: 460px;
-    height: 30px;
-    z-index: 100;
 
+  .volumb-icon {
+    cursor: pointer;
+    > img {
+      margin-right: 10px;
+      width: 16px;
+    }
   }
-  > .play-music-list{
-    position: absolute;
-    bottom: 58px;
-    right: 0;
-  }
-}
 
-.volumb-icon{
-  cursor: pointer;
-  > img{
-  margin-right: 10px;
-  width: 16px;
+  .schema {
+    width: 30px;
+    img {
+      width: 20px;
+      height: 20px;
+    }
   }
-}
 
-.schema{
-  width: 30px;
-  img{
-   width: 20px;
-   height: 20px;
-  }
-}
-
-.music-lyric{
-  width: 20px;
-  img{
+  .music-lyric {
     width: 20px;
-    height: 20px;
-    background-size: 100%,100%;
+    img {
+      width: 20px;
+      height: 20px;
+      background-size: 100%, 100%;
+    }
   }
-}
 
-.music-list{
-  width: 20px;
-  img{
+  .music-list {
     width: 20px;
-    height: 20px;
-    background-size: 100%,100%;
+    img {
+      width: 20px;
+      height: 20px;
+      background-size: 100%, 100%;
+    }
   }
-}
 
-.music-top-icon{
-  height: 100%;
-  cursor: pointer;
-  img{
+  .music-top-icon {
     height: 100%;
+    cursor: pointer;
+    img {
+      height: 100%;
+    }
+    > .music-max {
+      position: relative;
+      bottom: 61px;
+      width: 58px;
+      height: 100%;
+      z-index: 4;
+      background: rgba(0, 0, 0, 0.4);
+    }
   }
-  > .music-max{
+
+  .music-top-center {
     position: relative;
-    bottom: 61px;
-    width: 58px;
-    height: 100%;
-    z-index: 4;
-    background: rgba(0, 0, 0, 0.4);
+    left: 5px;
+    width: 120px;
+    font-size: 12px;
+    color: #000a0d;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    > .music-title {
+      position: absolute;
+      top: 0;
+    }
+    > .music-artist {
+      position: absolute;
+      bottom: 0;
+    }
   }
-}
-
-.music-top-center {
-  position: relative;
-  left: 5px;
-  width: 120px;
-  font-size: 12px;
-  color: #000a0d;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  > .music-title{
-    position: absolute;
-    top: 0;
-  }
-  > .music-artist{
-    position: absolute;
-    bottom: 0;
-  }
-}
 </style>

@@ -12,12 +12,10 @@
       <!-- 右边内容区域 -->
       <div class="right">
         <!-- 通过下面toggle-fold来动态切换类名fold(flold写死了高320) -->
-        <div class="music" :class="{fold:fold}">
+        <div class="music" :class="{'fold':fold}">
           <table>
             <tbody>
-              <tr v-for="(item,index) in musicList" :key="index"
-              :class="{backColor:setBackColor(index),curMusicItem:playIndex == index}"
-              @dblclick="handleCurrentIndex(index)">
+              <tr v-for="(item,index) in musicList" :key="index" :class="{backColor:setBackColor(index),curMusicItem:playIndex == index}" @dblclick="handleCurrentIndex(index)">
                 <td :class="{curFont:playIndex == index}">
                   {{setSerial(index)}}
                   <div class="curPlay" v-show="playIndex == index">
@@ -25,7 +23,7 @@
                   </div>
                 </td>
                 <td>
-                    <img src="../../../assets/img/leftmenu/live.svg" alt class="live" />
+                  <img src="../../../assets/img/leftmenu/live.svg" alt class="live" />
                   <img src="../../../assets/img/leftmenu/xiazai.svg" alt class="download" />
                 </td>
                 <td>{{item.name}}</td>
@@ -35,12 +33,12 @@
             </tbody>
           </table>
         </div>
-        <div class="toggle-fold" @click="handleFold()">
+        <div class="toggle-fold" @click="fold = !fold">
           <span v-if="fold">查看全部</span>
-          <span v-if="!fold">收起</span>
+          <span v-else>收起</span>
         </div>
       </div>
-<div class="clear"></div>
+      <div class="clear"></div>
     </div>
   </div>
 </template>
@@ -65,10 +63,6 @@ export default {
   },
   mixins: [tableMixin, playMinxin, indexMixin],
   methods: {
-    // 动态处理fold
-    handleFold () {
-      this.fold = !this.fold
-    },
     // 处理音乐小喇叭
     handleCurrentIndex (i) {
       this.playMusic(i)
@@ -77,135 +71,135 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.artist-album{
-  width: 100%;
-  > .top{
-    padding-left: 26%;
-    display: block;
-    height: 20px;
-    color: #0a0a0a;
-    font-size: 14px;
-  }
-  > .hot50{
-    display: flex;
+  .artist-album {
     width: 100%;
-    justify-content: flex-start;
-    >.left{
-      width: 20%;
-      > .icon{
-        width: 100%;
-        > img{
-          padding: 0 0 0 20px;
+    > .top {
+      padding-left: 26%;
+      display: block;
+      height: 20px;
+      color: #0a0a0a;
+      font-size: 14px;
+    }
+    > .hot50 {
+      display: flex;
+      width: 100%;
+      justify-content: flex-start;
+      > .left {
+        width: 20%;
+        > .icon {
           width: 100%;
+          > img {
+            padding: 0 0 0 20px;
+            width: 100%;
+          }
         }
       }
-    }
-    > .right{
-      position: relative;
-      margin-left: 40px;
-      width: 75%;
+      > .right {
+        position: relative;
+        margin-left: 40px;
+        width: 75%;
+      }
     }
   }
-}
 
-.music > table{
-  margin-top: 4px;
-  width: 100%;
-  border: 1px solid #eceff5;
-}
+  .music > table {
+    margin-top: 4px;
+    width: 100%;
+    border: 1px solid #eceff5;
+  }
 
-.music tbody {
-  color: #0a0a0a;
-}
-.music tbody tr td{
+  .music tbody {
+    color: #0a0a0a;
+  }
+  .music tbody tr td {
     border: none;
-}
-
-.music tr td{
-  position: relative;
-  border: 1px solid #23262c;
-}
-
-.musci tr{
-  height: 30px;
-  text-align: left;
-}
-
-.music tr:hover{
-  background-color: #e6e7eb;
-  cursor: pointer;
-}
-
-.music tr td:nth-child(1){
-  width: 10%;
-  text-align: center;
-  color: rgb(36, 199, 240);
-}
-
-.music tr td:nth-child(2){
-  width: 12%;
-  >img{
-    width: 20px;
-    opacity: 0.4;
   }
-}
 
-.music tr td .live{
+  .music tr td {
+    position: relative;
+    border: 1px solid #23262c;
+  }
+
+  .musci tr {
+    height: 30px;
+    text-align: left;
+  }
+
+  .music tr:hover {
+    background-color: #e6e7eb;
+    cursor: pointer;
+  }
+
+  .music tr td:nth-child(1) {
+    width: 10%;
+    text-align: center;
+    color: rgb(36, 199, 240);
+  }
+
+  .music tr td:nth-child(2) {
+    width: 12%;
+    > img {
+      width: 20px;
+      opacity: 0.4;
+    }
+  }
+
+  .music tr td .live {
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
     margin: auto;
-}
+  }
 
-.music tr td .download{
+  .music tr td .download {
     margin-left: 26px;
-}
-.music tbody tr td:nth-child(3){
+  }
+  .music tbody tr td:nth-child(3) {
     width: 24%;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     color: #0a0a0a;
-}
+  }
 
-.music tr td:nth-child(4){
+  .music tr td:nth-child(4) {
     width: 16%;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-}
-.music tr td:nth-child(5){
+  }
+  .music tr td:nth-child(5) {
     width: 16%;
-}
-.music tr td:nth-child(6){
+  }
+  .music tr td:nth-child(6) {
     width: 16%;
-}
+  }
 
-.live{
-  width: 20px !important;
-  height: 26px  !important;
-  vertical-align: 2px;
-}
-.download{
-  width: 20px  !important;
-  height: 26px  !important;
-}
+  .live {
+    width: 20px !important;
+    height: 26px !important;
+    vertical-align: 2px;
+  }
 
-.fold{
-  height: 320px;
-  overflow: hidden;
-}
+  .download {
+    width: 20px !important;
+    height: 26px !important;
+  }
 
-.toggle-fold{
-  position: absolute;
-  bottom: -30px;
-  color: #828385;
-  cursor: pointer;
-}
+  .fold {
+    height: 320px;
+    overflow: hidden;
+  }
 
-.toggle-fold:hover{
-  color: whitesmoke;
-}
+  .toggle-fold {
+    position: absolute;
+    bottom: -30px;
+    color: #828385;
+    cursor: pointer;
+  }
 
+  .toggle-fold:hover {
+    color: whitesmoke;
+  }
 </style>

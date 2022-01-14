@@ -11,27 +11,12 @@
         </div>
         <!-- 中间video视频播放标签 -->
         <div class="video">
-          <video
-            :src="url"
-            class="video-play"
-            width="100%"
-            autoplay
-            controls
-            @ended="handleVideoEnd"
-          ></video>
+          <video :src="url" class="video-play" width="100%" autoplay controls @ended="handleVideoEnd"></video>
         </div>
         <!-- 下面评论区 -->
         <div class="recommend">
           <p class="p">评论</p>
-          <mv-recommends
-            class="recds"
-            ref="songList_recommends"
-            @moreComments="moreComments"
-            @getCommends="getCommends"
-            :id="String(id)"
-            :Type="1"
-            :recommends="recommends"
-          ></mv-recommends>
+          <mv-recommends class="recds" ref="songList_recommends" @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="1" :recommends="recommends"></mv-recommends>
         </div>
       </div>
       <!-- 右边内容布局 -->
@@ -46,12 +31,7 @@
           </div>
           <div class="mv-desc">
             <!-- 防止鼠标下滑的时候，重新调用方法，mv会重复 -->
-            <scroll
-              class="desc-scroll"
-              ref="descScroll"
-              @mouseenter="enter()"
-              @mouseleave="leave()"
-            >
+            <scroll class="desc-scroll" ref="descScroll" @mouseenter="enter()" @mouseleave="leave()">
               <span>简介:</span>
               {{ isDescription(detail.desc) }}
             </scroll>
@@ -129,14 +109,14 @@ export default {
         _getMvUrl({ id: this.id }),
         _getMvComment({ id: this.id, limit: this.limit }),
         _getSimiMv({ mvid: this.id })
-      ]).then((res) => {
+      ]).then(res => {
         this.detail = res[0].data.data
         this.url = res[1].data.data.url
         this.recommends = res[2].data.comments
         this.notSimiMv = res[3].data.mvs
       })
       // 处理相似mv，获取新的mv对象(id，名字，标题,url,播放数量)
-      this.notSimiMv.forEach((item) => this.simiMv.push(new MV(item)))
+      this.notSimiMv.forEach(item => this.simiMv.push(new MV(item)))
     },
     // 判断是否有简介
     isDescription (desc) {
@@ -166,15 +146,15 @@ export default {
           '评论加载完毕，暂无更多.....'
       } else {
         // 遍历添加请求成功后的歌单评论
-        comments.forEach((item) => this.recommends.push(item))
+        comments.forEach(item => this.recommends.push(item))
       }
     },
     // 发送评论后，重新获取评论
     getCommends () {
       // 清除评论数据
       this.recommends = []
-      _getMvComment({ id: this.id, limit: this.limit }).then((res) => {
-        res.data.comments.forEach((item) => this.recommends.push(item))
+      _getMvComment({ id: this.id, limit: this.limit }).then(res => {
+        res.data.comments.forEach(item => this.recommends.push(item))
       })
     },
     // 视频播放完毕自动播放相似视频

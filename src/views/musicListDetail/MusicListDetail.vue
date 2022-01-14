@@ -6,22 +6,9 @@
       <!-- 音乐榜单导航条 -->
       <music-bar :bar="bar" @mlBarClick="mlBarClick"></music-bar>
       <!-- 音乐榜单列表 -->
-      <music-item
-        @musicItemClick="musicItemClick"
-        :musicList="musicList"
-        v-show="isShow == 'music'"
-      ></music-item>
+      <music-item @musicItemClick="musicItemClick" :musicList="musicList" v-show="isShow == 'music'"></music-item>
       <!-- 音乐榜单评论信息 -->
-      <song-list-recommends
-        ref="songList_recommends"
-        :recommends="recommends"
-        :hotComments="hotComments"
-        :id="id"
-        :Type="2"
-        v-show="isShow == 'recommends'"
-        @moreComments="moreComments"
-        @getCommends="getCommends"
-      ></song-list-recommends>
+      <song-list-recommends ref="songList_recommends" :recommends="recommends" :hotComments="hotComments" :id="id" :Type="2" v-show="isShow == 'recommends'" @moreComments="moreComments" @getCommends="getCommends"></song-list-recommends>
       <!-- 音乐榜单收藏者 -->
       <music-list-like :subs="subs" v-show="isShow == 'like'"></music-list-like>
     </scroll>
@@ -135,47 +122,43 @@ export default {
       this.bar = ['歌曲列表', str, '收藏者']
 
       // 拼接id ,获取歌曲，处理歌曲信息
-      const ids = trackIds.map((item) => item.id).join(',')
-      _getSongsDetail(ids).then((res) => {
-        res.data.songs.forEach((item) =>
+      const ids = trackIds.map(item => item.id).join(',')
+      _getSongsDetail(ids).then(res => {
+        res.data.songs.forEach(item =>
           this.musicList.push(new AllSongDetail(item))
         )
       })
 
       // // 获取评论内容
-      _getRecommends(this.id, this.limit, this.recommends.length).then(
-        (res) => {
-          this.recommends = res.data.comments
-          this.hotComments = res.data.hotComments
-        }
-      )
+      _getRecommends(this.id, this.limit, this.recommends.length).then(res => {
+        this.recommends = res.data.comments
+        this.hotComments = res.data.hotComments
+      })
 
       // 获取歌单收藏者
-      _getSub(this.id).then((res) => {
+      _getSub(this.id).then(res => {
         this.subs = res.data.subscribers
       })
     },
     // 评论组件的获取更多评论方法
     moreComments () {
-      _getRecommends(this.id, this.limit, this.recommends.length).then(
-        (res) => {
-          if (res.data.comments.length === 0) {
-            Message.info('评论已经加载完毕，暂无更多评论')
-            // 修改评论组件，的评论提示消息
-            this.$refs.songList_recommends.recommendTitle =
-              '评论加载完毕，暂无更多.....'
-          } else {
-            res.data.comments.forEach((item) => this.recommends.push(item))
-          }
+      _getRecommends(this.id, this.limit, this.recommends.length).then(res => {
+        if (res.data.comments.length === 0) {
+          Message.info('评论已经加载完毕，暂无更多评论')
+          // 修改评论组件，的评论提示消息
+          this.$refs.songList_recommends.recommendTitle =
+            '评论加载完毕，暂无更多.....'
+        } else {
+          res.data.comments.forEach(item => this.recommends.push(item))
         }
-      )
+      })
     },
     // 发送评论后，重新获取评论
     getCommends () {
       // 清除评论数据
       this.recommends = []
-      _getRecommends(this.id, this.limit, 0).then((res) => {
-        res.data.comments.forEach((item) => this.recommends.push(item))
+      _getRecommends(this.id, this.limit, 0).then(res => {
+        res.data.comments.forEach(item => this.recommends.push(item))
       })
     }
   }
