@@ -1,6 +1,6 @@
 <template>
   <div class="detail-bar">
-    <div class="bar-item" v-for="(item, index) in barList" :key="index" :class="{'action':currentIndex == index}" @click="handelTabsClick(index)">
+    <div class="bar-item" v-for="(item, index) in tabList" :key="index" :class="{'action':currentIndex == index}" @click="handelTabsClick(index)">
       {{item}}
     </div>
   </div>
@@ -11,8 +11,11 @@ export default {
   data () {
     return {
       currentIndex: 0,
-      barList: ['专辑', 'MV', '歌手详情', '相似歌手']
+      tabList: ['专辑', 'MV', '歌手详情', '相似歌手']
     }
+  },
+  mounted () {
+    this.initTabCurrentIndex()
   },
   methods: {
     handelTabsClick (i) {
@@ -31,6 +34,20 @@ export default {
           this.$router.push('/artist/similar')
           break
       }
+    },
+    initTabCurrentIndex () {
+      const { path } = this.$route
+      const tabList = [
+        '/artist/album',
+        '/artist/artistmv',
+        '/artist/desc',
+        '/artist/similar'
+      ]
+      tabList.some((item, index) => {
+        if (item === path) {
+          return (this.currentIndex = index)
+        }
+      })
     }
   }
 }

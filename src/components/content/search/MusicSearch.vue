@@ -9,7 +9,7 @@
     </div>
     <!-- 搜索内容 -->
     <transition name="fade-in-linar">
-      <searchContent v-show="isSuggest" :keywords="keywords" :sugSongs="sugSongs" :sugArtist="sugArtist" @goSearchDetail="goSearchDetail" />
+      <searchContent v-show="isSuggest" :keywords="keywords" :sugSongs="sugSongs" :sugArtist="sugArtist" @goSearchDetail="goSearchDetail" @goArtistDetail="handleInputBlur" />
     </transition>
     <!-- 热搜榜 -->
     <transition name="fade-in-linear">

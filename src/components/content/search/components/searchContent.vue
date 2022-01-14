@@ -46,6 +46,7 @@ export default {
       this.$emit('goSearchDetail', item)
     },
     goArtistDetail (item) {
+      this.$emit('goArtistDetail')
       localStorage.setItem('artist', JSON.stringify(item))
       this.$router.push('/artist')
     }
