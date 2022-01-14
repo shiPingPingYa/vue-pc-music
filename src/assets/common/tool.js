@@ -6,8 +6,9 @@ export function formDate (date, str, all) {
   const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`
   const dateO = date.getDate()
   const hours = date.getHours() > 9 ? date.getHours() : `0${date.getHours()}`
-  const minutes = date.getMinutes() > 9 ? date.getMinutes() : `0${date.getMinutes()}`
-  const seconds = date.getSeconds() > 9 ? date.getSeconds() : `0${date.getSeconds()}`
+  const minutes = date.getMinutes() > 9 ? date.getMinutes() : `0${date.getMinutes() || 0}`
+  const seconds = date.getSeconds() > 9 ? date.getSeconds() : `0${date.getSeconds() || 0}`
+
   if (str === 'mm:ss') {
     return `${minutes}:${seconds}`
   } else if (str === 'mm月dd日') {

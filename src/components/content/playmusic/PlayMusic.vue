@@ -21,8 +21,7 @@
     <div class="play-music-left">
       <!-- 开始按钮 -->
       <div class="play" @click="toggle()">
-        <i class="el-icon-video-play" v-show="!isPlayer"></i>
-        <i class="el-icon-video-pause" v-show="isPlayer"></i>
+        <i :class="!isPlayer ? 'el-icon-video-play' : 'el-icon-video-pause'"></i>
       </div>
       <!-- 下一首按钮 -->
       <div class="next" @click="nextMusic()">
@@ -41,35 +40,22 @@
       <!-- 音量 -->
       <div class="volumn">
         <div class="volumb-icon" @click="toggleVolumn">
-          <img src="../../../assets/img/playmusic/volumn.svg" alt="" v-show="!isVolumn">
-          <img src="../../../assets/img/playmusic/novolumn.svg" alt="" v-show="isVolumn">
+          <img :src="!isVolumn ? volumnIcon : noVolumnIcon" alt="">
         </div>
         <music-progress ref="music_volumn" @childClickScale="setVolumn"></music-progress>
       </div>
       <!-- 歌词,歌曲列表,播放顺序 -->
       <div class="music-icon">
         <!-- 播放顺序按钮 -->
-        <div class="schema" @click="toggleSchema()">
-          <a href="#" title="顺序播放" v-show="schemaIndex==0">
-            <img src="../../../assets/img/playmusic/sunxubofang.svg" />
-          </a>
-          <a href="#" title="随机播放" v-show="schemaIndex==1">
-            <img src="../../../assets/img/playmusic/suijibofang.svg" />
-          </a>
-          <a href="#" title="单曲循环" v-show="schemaIndex==2">
-            <img src="../../../assets/img/playmusic/danquxunhuan.svg" />
-          </a>
-          <a href="#" title="心动模式" v-show="schemaIndex == 3">
-            <img src="../../../assets/img/heart.svg" alt="">
+        <div class="schema" @click="schemaIndex >=3 ? schemaIndex = 0 : schemaIndex ++">
+          <a href="#" :title="currentPlayImg.title">
+            <img :src="currentPlayImg.img" />
           </a>
         </div>
         <!-- 歌词按钮 -->
-        <div class="music-lyric" @click="toggleLyric()">
+        <div class="music-lyric" @click="isLyric = !isLyric">
           <a href="javascript:;" title="歌词">
-            <img src="../../../assets/img/playmusic/lyric.svg" v-show="!isLyric" />
-          </a>
-          <a href="#" title="歌词">
-            <img src="../../../assets/img/playmusic/lyric-click.svg" v-show="isLyric" />
+            <img :src="!isLyric ? lyricIcon : cLyricIcon" />
           </a>
         </div>
         <!-- 音乐列表按钮 -->
@@ -139,34 +125,37 @@ export default {
       lyric: '',
       // 处理好的歌曲信息
       musicList: [],
+      lyricIcon: require('assets/img/playmusic/lyric.svg'),
+      cLyricIcon: require('assets/img/playmusic/lyric-click.svg'),
+      volumnIcon: require('assets/img/playmusic/volumn.svg'),
+      noVolumnIcon: require('assets/img/playmusic/novolumn.svg'),
+      playIcon: require('assets/img/playmusic/sunxubofang.svg'),
+      playIcon1: require('assets/img/playmusic/suijibofang.svg'),
+      playIcon2: require('assets/img/playmusic/danquxunhuan.svg'),
+      playIcon3: require('assets/img/heart.svg'),
       playList: [
         {
           title: '说散就散(抖音完整版)',
           artist: 'yasenjan',
           index: 0,
           id: 1818690420,
-          src:
-            'http://m701.music.126.net/20210401170701/9290add54f39749184e2adb863956371/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/7354163734/999a/1cdf/5b29/77e0ceef7990395739432c4d77e3edf7.mp3',
+          src: '',
           pic:
             'https://p1.music.126.net/J94zxjSMe5IjNABnpdOPew==/109951165670275788.jpg?param=50y50'
         }
       ]
     }
   },
-  watch: {
-    music () {
-      if (this.$refs.audio != null) {
-        this.$refs.audio.load()
-      }
+  computed: {
+    currentPlayImg () {
+      if (this.schemaIndex === 0) {
+        return { img: this.playIcon, title: '顺序播放' }
+      } else if (this.schemaIndex === 1) {
+        return { img: this.playIcon1, title: '随机播放' }
+      } else if (this.schemaIndex === 2) {
+        return { img: this.playIcon2, title: '单曲循环' }
+      } else return { img: this.playIcon3, title: '心动模式' }
     }
-  },
-  async created () {
-    // 播放默认的歌曲
-    // if (this.playList.length === 1) {
-    //   await _getMusicUrl(this.playList[0].id).then(res => {
-    //     this.playList[0].src = res.data.data[0].url
-    //   })
-    // }
   },
   mounted () {
     // 音乐数据
@@ -177,11 +166,6 @@ export default {
       this.path = path
       this.musicList = musicList
       this.playList = playList
-
-      // 排序(升序)
-      this.playList.sort((a, b) => {
-        return a.index - b.index
-      })
       // 设置index
       this.setCurrentIndex(0)
       this.$refs.music_volumn.setAudioProgress(0.8)
@@ -194,8 +178,18 @@ export default {
     this.$bus.$on('stopMusic', flag => {
       this.stopMusic(flag)
     })
+    this.initHomeMusic()
   },
   methods: {
+    // 修改首页默认播放音乐的url地址(但是不能自动播放了，因为现在浏览器都是禁止了自动播放音乐，必须要用户主动触发)
+    async initHomeMusic () {
+      const {
+        data: {
+          data: [data]
+        }
+      } = await _getMusicUrl(this.playList[0].id)
+      this.playList[0].src = data.url
+    },
     // 改变currentindex,重新设置播放音乐
     setCurrentIndex (index) {
       var that = this
@@ -322,17 +316,6 @@ export default {
     musicErr () {
       this.$message.error('当前音频不可用')
       // this.currentIndex++
-    },
-    // 通过改变schema的值来实现音乐播放顺序设置
-    toggleSchema () {
-      if (this.schemaIndex >= 3) this.schemaIndex = 0
-      else {
-        this.schemaIndex++
-      }
-    },
-    // 是否在首页显示歌词
-    toggleLyric () {
-      this.isLyric = !this.isLyric
     },
     // 是否在首页显示音乐列表
     toggleMusicList () {

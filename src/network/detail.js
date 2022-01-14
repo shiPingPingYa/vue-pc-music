@@ -81,15 +81,10 @@ export function _getSub (id, limit) {
  * @param  before  分页参数,取上一页最后一项的 time 获取下一页数据(获取超过5000条评论的时候需要用到)
  */
 // 获取歌单的评论内容
-export function _getRecommends (id, limit, offset) {
+export function _getRecommends (params) {
   return request({
     url: '/comment/playlist',
-    params: {
-      id: id,
-      limit: limit,
-      offset: offset,
-      timestamp: Date.now()
-    }
+    params
   })
 }
 

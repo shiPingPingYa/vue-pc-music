@@ -30,11 +30,11 @@ import {
   BaseInfo,
   _getSongsDetail,
   _getRecommends,
-  _getSub,
-  AllSongDetail
+  _getSub
 } from '../../network/detail'
 // 混入
 import { indexMixin } from './indexMixin'
+import { formDate } from 'js/tool'
 import { Message } from 'element-ui'
 // 导入歌单评论组件
 const songListRecommends = () => import('./childComps/Recommends.vue')
@@ -83,18 +83,9 @@ export default {
     }
   },
   created () {
-    this.threadId = this.$route.params.id
-    // 获取歌单Id
-    if (
-      this.$route.params.id !== null &&
-      this.$route.params.id !== '' &&
-      Number(this.$route.params.id) !== Number
-    ) {
-      this.id = this.$route.params.id
-      // 存储歌单id，心动模式必需
-      localStorage.setItem('pid', this.id)
-      this.musicListDetailInit()
-    }
+    this.id = this.$route.params.id
+    localStorage.setItem('pid', this.id) // 存储歌单id，心动模式必需
+    this.musicListDetailInit()
   },
   methods: {
     mlBarClick (str) {
@@ -125,12 +116,24 @@ export default {
       const ids = trackIds.map(item => item.id).join(',')
       _getSongsDetail(ids).then(res => {
         res.data.songs.forEach(item =>
-          this.musicList.push(new AllSongDetail(item))
+          this.musicList.push({
+            id: item.id,
+            name: item.name,
+            album: item.al.name,
+            song: item.ar[0].name,
+            pic: item.al.picUrl,
+            time: formDate(new Date(item.dt), 'mm:ss')
+          })
         )
       })
 
       // // 获取评论内容
-      _getRecommends(this.id, this.limit, this.recommends.length).then(res => {
+      _getRecommends({
+        id: this.id,
+        limit: this.limit,
+        offset: this.recommends.length,
+        timestamp: Date.now()
+      }).then(res => {
         this.recommends = res.data.comments
         this.hotComments = res.data.hotComments
       })
@@ -142,7 +145,12 @@ export default {
     },
     // 评论组件的获取更多评论方法
     moreComments () {
-      _getRecommends(this.id, this.limit, this.recommends.length).then(res => {
+      _getRecommends({
+        id: this.id,
+        limit: this.limit,
+        offset: this.recommends.length,
+        timestamp: Date.now()
+      }).then(res => {
         if (res.data.comments.length === 0) {
           Message.info('评论已经加载完毕，暂无更多评论')
           // 修改评论组件，的评论提示消息
@@ -157,7 +165,12 @@ export default {
     getCommends () {
       // 清除评论数据
       this.recommends = []
-      _getRecommends(this.id, this.limit, 0).then(res => {
+      _getRecommends({
+        id: this.id,
+        limit: this.limit,
+        offset: 0,
+        timestamp: Date.now()
+      }).then(res => {
         res.data.comments.forEach(item => this.recommends.push(item))
       })
     }

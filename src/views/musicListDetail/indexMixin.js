@@ -26,6 +26,8 @@ export const indexMixin = {
         })
       })
 
+      // 排序(升序)
+      playList.sort((a, b) => a.index - b.index)
       this.$bus.$emit('PlayMusic', index, path, musicList, playList) // 触发播放音乐方法
     },
     play (index) {

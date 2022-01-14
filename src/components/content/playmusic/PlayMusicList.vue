@@ -26,9 +26,7 @@ export default {
   props: {
     musicList: {
       type: Array,
-      default () {
-        return []
-      }
+      default: () => []
     }
   },
   components: { Scroll, MusicItem },
@@ -44,47 +42,46 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.play-music-list{
-  width: 50%;
-  height: 600px;
-  box-shadow: -1px -1px 6px rgb(49, 166, 245);
-  color: #0a0a0a;
-  background:#f5f5f7 ;
-  > .top{
-    width: 100%;
-    font-size: 14px;
-    background-color: #a3b2b8  !important;
-    > .title{
-      float: left;
-      width: calc(100% - 30px);
-      text-align: center;
-    }
-    > .cancel{
-      float: right;
-      margin: 2px 10px 0 0;
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-      > img{
-        width: 100%;
-        height: 100%;
-        background-size: 100%,100%;
+  .play-music-list {
+    width: 50%;
+    height: 600px;
+    box-shadow: -1px -1px 6px rgb(49, 166, 245);
+    color: #0a0a0a;
+    background: #f5f5f7;
+    > .top {
+      width: 100%;
+      font-size: 14px;
+      background-color: #a3b2b8 !important;
+      > .title {
+        float: left;
+        width: calc(100% - 30px);
+        text-align: center;
+      }
+      > .cancel {
+        float: right;
+        margin: 2px 10px 0 0;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        > img {
+          width: 100%;
+          height: 100%;
+          background-size: 100%, 100%;
+        }
+      }
+      > .clear {
+        clear: both;
       }
     }
-    > .clear{
-      clear: both;
-    }
   }
-}
 
-.play-music-list-scroll{
-  height: calc(100% - 24px);
-  overflow: hidden;
-}
+  .play-music-list-scroll {
+    height: calc(100% - 24px);
+    overflow: hidden;
+  }
 
-.list{
-  width: 100%;
-  height: 100%;
-}
-
+  .list {
+    width: 100%;
+    height: 100%;
+  }
 </style>

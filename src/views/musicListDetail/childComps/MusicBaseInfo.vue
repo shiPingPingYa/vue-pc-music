@@ -47,7 +47,10 @@
         </div>
         <!-- 歌单描述 -->
         <div class="desc">
-          <div class="item">标签:</div>
+          <div class="tag-item">
+            <label>标签：</label>
+            <label class="title">{{baseInfo.tags.join('、')}}</label>
+          </div>
           <div class="desc-item">{{baseInfo.title}}</div>
         </div>
       </div>
@@ -155,15 +158,17 @@ export default {
     bottom: 0;
     height: 50px;
     font-size: 14px;
-    > .item {
-      display: inline-block;
+    .tag-item {
+      & .title {
+        font-size: 16px;
+        font-weight: bold;
+      }
     }
-    > .desc-item {
+    .desc-item {
       line-height: 30px;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 1;
       overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 </style>>
