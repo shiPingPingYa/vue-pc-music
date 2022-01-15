@@ -18,9 +18,6 @@ const request = axios.create({
 // 配置请求头
 request.interceptors.request.use(
   data => {
-    if (JSON.parse(localStorage.getItem('setIslogin'))) {
-      data.headers.Cookie = localStorage.getItem('tt_cookie')
-    }
     return data
   },
   err => {
