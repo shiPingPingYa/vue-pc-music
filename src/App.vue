@@ -23,19 +23,20 @@ export default {
     PlayMusic
     // HomePageRecommends
   },
-  created () {
-    // 获取localstorage里面的用户id
-    if (localStorage.getItem('userId')) {
-      this.$store.dispatch('_GETUSERINFO', localStorage.getItem('userId'))
-    } else {
-      this.$message.info('已退出登录')
-      this.showLogin()
+  methods: {
+    ...mapMutations(['showLogin']),
+    initUserSongList () {
+      // 判断是否有userid有userid，通过userid获取下用户歌单和用户信息
+      if (localStorage.getItem('userId')) {
+        this.$store.dispatch('_GETUSERINFO', localStorage.getItem('userId'))
+      } else {
+        this.$message.info('已退出登录,如需获取用户歌单请重新登录')
+        this.showLogin(true)
+      }
     }
   },
-  methods: {
-    ...mapMutations(['showLogin'])
-  },
   mounted () {
+    this.initUserSongList()
     const app = document.getElementById('app')
     const handleImgAndMessageClick = () => {
       this.$store.commit('setAsyncShareImag', false) // 隐藏朋友圈图片
