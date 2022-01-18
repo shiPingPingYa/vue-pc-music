@@ -98,11 +98,6 @@ export default {
       this.keywords = ''
       this.isSuggest = false
     },
-    enterArtists (artist) {
-      this.$router.push('/artist')
-      this.keywords = ''
-      localStorage.setItem('artist', JSON.stringify(artist))
-    },
     goSearchDetail (val = '') {
       this.$router.push('/search/' + val)
       this.handleInputBlur()

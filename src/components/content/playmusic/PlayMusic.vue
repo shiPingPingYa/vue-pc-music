@@ -178,7 +178,7 @@ export default {
     this.$bus.$on('stopMusic', flag => {
       this.stopMusic(flag)
     })
-    this.initHomeMusic()
+    // this.initHomeMusic()
   },
   methods: {
     // 修改首页默认播放音乐的url地址(但是不能自动播放了，因为现在浏览器都是禁止了自动播放音乐，必须要用户主动触发)

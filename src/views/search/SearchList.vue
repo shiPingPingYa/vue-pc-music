@@ -5,7 +5,7 @@
         搜索<span>"{{keywords}}"</span>,找到<span>{{this.musicList.length}}</span>首单曲
       </div>
       <div class="bar">
-        <div class="bar-item" :class="{'action':currentIndex == index}" v-for="(item, index) in tabList" :key="index" @click="handleTabClick(index)">{{item}}</div>
+        <div class="bar-item" :class="{'active-tab':currentIndex == index}" v-for="(item, index) in tabList" :key="index" @click="handleTabClick(index)">{{item}}</div>
       </div>
       <transition name="fade-in-linear">
         <music-item :musicList='musicList' @musicItemClick="musicItemClick" v-show="currentIndex == 0"></music-item>
@@ -125,7 +125,7 @@ export default {
     padding: 0 20px;
     cursor: pointer;
   }
-  .action {
+  .active-tab {
     color: #b82525;
     border-bottom: 3px solid #b82525;
   }

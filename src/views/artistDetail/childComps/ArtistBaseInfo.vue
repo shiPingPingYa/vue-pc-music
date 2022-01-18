@@ -1,7 +1,7 @@
 <template>
   <div class="base">
     <div class="title">
-      <img :src="baseInfo.picUrl || picUrl">
+      <img :src="baseInfo.cover +'?param=200y168'">
     </div>
     <div class="content">
       <div class="top">
@@ -22,44 +22,50 @@
       <div class="describe">
         <div class="introduce">
           个人介绍:
-          <span>{{desc}}</span>
+          <span>{{artistDes}}</span>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { _getArtistDetail } from '../../../network/artist'
+import { _getArtistDetail, _getArtistDesc } from 'api/artist'
 export default {
   name: 'ArtistBaseInfo',
-  props: {
-    desc: {
-      type: String,
-      default () {
-        return ''
+  data () {
+    return {
+      baseInfo: null,
+      artistDes: ''
+    }
+  },
+  watch: {
+    '$route.query.id': {
+      handler (oldId) {
+        this.id = oldId
+        this.initArtistInfo()
+        this.initArtistDes()
       }
     }
   },
-  data () {
-    return {
-      picUrl: '',
-      baseInfo: ''
-    }
-  },
-  async created () {
-    this.baseInfo = JSON.parse(localStorage.getItem('artist'))
-    this.initBaseInfo()
+  created () {
+    this.id = this.$route.query.id
+    this.initArtistInfo()
+    this.initArtistDes()
   },
   methods: {
-    async initBaseInfo () {
+    async initArtistInfo () {
       const {
         data: {
-          data: {
-            artist: { cover }
-          }
+          data: { artist }
         }
-      } = await _getArtistDetail({ id: this.baseInfo.id })
-      this.picUrl = cover
+      } = await _getArtistDetail({ id: this.id })
+      this.baseInfo = artist
+    },
+    async initArtistDes () {
+      const {
+        data: { briefDesc }
+      } = await _getArtistDesc({ id: this.id })
+      this.artistDes = briefDesc
     }
   }
 }

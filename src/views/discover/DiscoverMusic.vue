@@ -3,7 +3,9 @@
     <nav-bar ref="nav"></nav-bar>
     <div class="content">
       <keep-alive>
-        <router-view></router-view>
+        <transition name="fade-in-linear">
+          <router-view></router-view>
+        </transition>
       </keep-alive>
     </div>
   </div>
@@ -12,9 +14,7 @@
 import NavBar from './childComps/NavBar'
 export default {
   name: 'DisoverMusic',
-  components: {
-    NavBar
-  }
+  components: { NavBar }
 }
 </script>
 <style lang="less" scoped>

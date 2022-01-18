@@ -1,4 +1,4 @@
-// 把传进来的歌曲的时间进行处理(mm:ss)
+// 把传进来的歌曲的时间进行处理(date:日期，str获取的时间字符串形式，all：区别获取年月日)
 export function formDate (date, str, all) {
   // 获取时间
   const fullyear = date.getFullYear()
@@ -27,25 +27,6 @@ export function formDate (date, str, all) {
   } else {
     return `${fullyear}年${month}月${dateO}日 ${hours}:${minutes}`
   }
-}
-
-// 把传递进来的歌曲标题名进行处理(前后两首歌，标题名不能一样) (暂时放弃使用)
-export function distinct (arr) {
-  var newArr = []
-  let isExist = false
-  for (let i = 0, length = arr.length; i < length; i++) {
-    for (let j = i + 1; j < length; j++) {
-      if (arr[i].name === arr[j].name) {
-        isExist = true
-        break
-      }
-    }
-    if (!isExist) {
-      newArr.push(arr[i])
-    }
-    isExist = false
-  }
-  return newArr
 }
 
 // 防抖

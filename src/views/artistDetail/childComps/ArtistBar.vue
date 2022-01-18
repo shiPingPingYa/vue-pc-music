@@ -10,11 +10,23 @@ export default {
   name: 'ArtistBar',
   data () {
     return {
+      id: '',
       currentIndex: 0,
       tabList: ['专辑', 'MV', '歌手详情', '相似歌手']
     }
   },
+  watch: {
+    '$route.query.id': {
+      handler (oldId) {
+        this.currentIndex = 0
+        this.id = oldId
+        this.initTabCurrentIndex()
+      }
+    }
+  },
   mounted () {
+    this.currentIndex = 0 // 右侧基本上所有路由都是缓存的，所以tabbar的index是不会重置的，手动刷新下
+    this.id = this.$route.query.id
     this.initTabCurrentIndex()
   },
   methods: {
@@ -22,21 +34,24 @@ export default {
       this.currentIndex = i
       switch (i) {
         case 0:
-          this.$router.push('/artist/album')
+          this.$router.push({ path: '/artist/album', query: { id: this.id } })
           break
         case 1:
-          this.$router.push('/artist/artistmv')
+          this.$router.push({
+            path: '/artist/artistmv',
+            query: { id: this.id }
+          })
           break
         case 2:
-          this.$router.push('/artist/desc')
+          this.$router.push({ path: '/artist/desc', query: { id: this.id } })
           break
         case 3:
-          this.$router.push('/artist/similar')
+          this.$router.push({ path: '/artist/similar', query: { id: this.id } })
           break
       }
     },
     initTabCurrentIndex () {
-      const { path } = this.$route
+      const path = this.$route.path.split('?')[0]
       const tabList = [
         '/artist/album',
         '/artist/artistmv',

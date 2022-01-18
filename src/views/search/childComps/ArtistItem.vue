@@ -31,8 +31,10 @@ export default {
       return i % 2 !== 0
     },
     goArtistDetail (i) {
-      this.$router.push('/artist')
-      localStorage.setItem('artist', JSON.stringify(this.artistsList[i]))
+      this.$router.push({
+        path: '/artist',
+        query: { id: this.artistsList[i].id }
+      })
     }
   }
 }

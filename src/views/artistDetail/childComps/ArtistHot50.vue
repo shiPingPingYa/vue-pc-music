@@ -15,8 +15,8 @@
         <div class="music" :class="{'fold':fold}">
           <table>
             <tbody>
-              <tr v-for="(item,index) in musicList" :key="index" :class="{backColor:setBackColor(index),curMusicItem:playIndex == index}" @dblclick="handleCurrentIndex(index)">
-                <td :class="{curFont:playIndex == index}">
+              <tr v-for="(item,index) in musicList" :key="index" :class="{'backColor':setBackColor(index),'curMusicItem':playIndex == index}" @dblclick="handleCurrentIndex(index)">
+                <td :class="{'curFont':playIndex == index}">
                   {{setSerial(index)}}
                   <div class="curPlay" v-show="playIndex == index">
                     <img src="../../../assets/img/playmusic/currentplay.svg" alt="">
@@ -48,6 +48,7 @@ import { playMinxin } from '../../musicListDetail/playMixin'
 import { indexMixin } from '../../musicListDetail/indexMixin'
 export default {
   name: 'ArtistHot',
+  mixins: [tableMixin, playMinxin, indexMixin],
   props: {
     musicList: {
       type: Array,
@@ -61,7 +62,6 @@ export default {
       fold: true
     }
   },
-  mixins: [tableMixin, playMinxin, indexMixin],
   methods: {
     // 处理音乐小喇叭
     handleCurrentIndex (i) {

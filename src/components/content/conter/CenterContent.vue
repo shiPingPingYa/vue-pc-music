@@ -1,8 +1,6 @@
 <template>
   <div class="content">
-    <keep-alive include="allmv">
-      <left-menu ref="left_menu"></left-menu>
-    </keep-alive>
+    <left-menu ref="left_menu"></left-menu>
     <right-main ref="right_menu"></right-main>
   </div>
 </template>

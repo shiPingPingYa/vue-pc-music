@@ -6,10 +6,7 @@ export const tableMixin = {
     },
     // 设置音乐列表的背景
     setBackColor (i) {
-      if (i % 2 !== 0) {
-        return true
-      }
-      return false
+      return i % 2 !== 0
     },
     // 音乐条目点击事件
     musicItemClick (index) {
