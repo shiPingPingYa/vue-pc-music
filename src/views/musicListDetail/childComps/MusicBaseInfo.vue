@@ -49,9 +49,9 @@
         <div class="desc">
           <div class="tag-item">
             <label>标签：</label>
-            <label class="title">{{baseInfo.tags.join('、')}}</label>
+            <label class="title">{{baseInfo.tags.join('、') || '暂无标签信息'}}</label>
           </div>
-          <div class="desc-item">{{baseInfo.title}}</div>
+          <div class="desc-item">{{baseInfo.title || '暂无歌单描述'}}</div>
         </div>
       </div>
     </div>
@@ -63,9 +63,7 @@ export default {
   props: {
     baseInfo: {
       type: Object,
-      default () {
-        return {}
-      }
+      default: () => {}
     }
   },
   methods: {
@@ -160,7 +158,6 @@ export default {
     font-size: 14px;
     .tag-item {
       & .title {
-        font-size: 16px;
         font-weight: bold;
       }
     }

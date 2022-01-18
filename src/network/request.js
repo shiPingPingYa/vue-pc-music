@@ -33,8 +33,11 @@ request.interceptors.response.use(
     } else if (res.data.code === 301) {
       Message.error(res.data.msg)
       store.dispatch('_Layout')
-    } else if (res.data.code === 404) {
-      Message.error('cookie，失效请重新登录')
+    } else {
+      Message.error(res.data.msg)
+      if (res.data.data.dialog) {
+        Message.error(res.data.msg + res.data.data.dialog.title + res.data.data.dialog.subtitle)
+      }
     }
   },
   err => {

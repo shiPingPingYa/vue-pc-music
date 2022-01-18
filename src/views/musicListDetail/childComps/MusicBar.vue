@@ -1,6 +1,6 @@
 <template>
   <div class="musiclsit-bar" v-if="bar !== null">
-    <div class="item" v-for="(item,index) in bar " :key="index" :class="{action:currentIndex == index}" @click="currentIndexClick(index)">
+    <div class="item" v-for="(item,index) in bar " :key="index" :class="{'action':currentIndex == index}" @click="currentIndexClick(index)">
       {{item}}
     </div>
   </div>
@@ -11,9 +11,7 @@ export default {
   props: {
     bar: {
       type: Array,
-      default () {
-        return []
-      }
+      default: () => []
     }
   },
   data () {
@@ -26,13 +24,13 @@ export default {
       this.currentIndex = index
       switch (index) {
         case 0:
-          this.$emit('handleTabClick', 'music')
+          this.$emit('handleTabClick', 0)
           break
         case 1:
-          this.$emit('handleTabClick', 'recommends')
+          this.$emit('handleTabClick', 1)
           break
         case 2:
-          this.$emit('handleTabClick', 'like')
+          this.$emit('handleTabClick', 2)
           break
       }
     }
