@@ -1,40 +1,21 @@
 <template>
-  <div class="play-mv" v-if="id !== null && detail !== null">
-    <scroll
-      class="play-mv-scroll"
-      ref="scroll"
-      :pull-up-load="true"
-      @pullingUp="pullingUp()"
-    >
+  <div class="play-mv">
+    <scroll class="play-mv-scroll" ref="scroll" :pull-up-load="true" @pullingUp="pullingUp()" v-if="!pageLoading">
       <!-- 左边内容布局 -->
       <div class="left-layout">
         <!-- 左边头部标题-->
-        <div class="title" v-if="detail !== null">
+        <div class="title">
           <div class="left-mv">MV</div>
           <div class="name">{{ detail.title }}</div>
         </div>
         <!-- 中间video视频播放标签 -->
         <div class="video">
-          <video
-            :src="url"
-            class="video-play"
-            width="100%"
-            autoplay
-            controls
-            @ended="handleVideoEnd"
-          ></video>
+          <video :src="url" class="video-play" width="100%" autoplay controls @ended="handleVideoEnd"></video>
         </div>
         <!-- 下面评论区 -->
         <div class="recommend">
           <p class="p">评论</p>
-          <video-recommends
-            class="recds"
-            @moreComments="moreComments"
-            @getCommends="getCommends"
-            :id="String(id)"
-            :Type="5"
-            :recommends="recommends"
-          ></video-recommends>
+          <video-recommends class="recds" @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="5" :recommends="recommends"></video-recommends>
         </div>
       </div>
       <!-- 右边内容布局 -->
@@ -43,18 +24,13 @@
         <div class="desc">
           <p class="p">视频介绍</p>
           <div class="base">
-            <div class="data">发布时间:{{ formating(detail.publishTime) }}</div>
+            <div class="data">发布时间:{{ _formatDate(detail.publishTime) }}</div>
             <div class="playCount">播放次数:{{ detail.playTime }}次</div>
             <div class="clear"></div>
           </div>
           <div class="mv-desc" v-if="detail.desc !== null">
             <!-- 防止鼠标下滑的时候，重新调用方法，mv会重复 -->
-            <scroll
-              class="desc-scroll"
-              ref="descScroll"
-              @mouseenter="enter()"
-              @mouseleave="leave()"
-            >
+            <scroll class="desc-scroll" ref="descScroll" @mouseenter="enter()" @mouseleave="leave()">
               <span>简介:</span>
               {{ isDescription(detail.description) }}
             </scroll>
@@ -63,10 +39,7 @@
         <!-- 相关视频推荐 -->
         <div class="alia">
           <p class="p">相关推荐</p>
-          <si-mi-video-item
-            ref="simi_video_item"
-            :videoList="simiVideo"
-          ></si-mi-video-item>
+          <si-mi-video-item ref="simi_video_item" :videoList="simiVideo"></si-mi-video-item>
         </div>
       </div>
     </scroll>
@@ -74,19 +47,18 @@
 </template>
 <script>
 // 导入封装好的better-scroll
-import Scroll from '../../../components/common/scroll/Scroll'
+import Scroll from 'common/scroll/Scroll'
 // 导入推荐video组件
 import SiMiVideoItem from './SiMiVideoItem'
 // 导入video的数据请求接口
 import {
-  Video,
   _getVideoDetail,
   _getVideoUrl,
   _getVideoComment,
   _getRelatedVideo
-} from '../../../network/video'
+} from 'api/video'
 // 导入工具函数处理时间,导入节流函数
-import { formDate } from '../../../assets/common/tool'
+import { formDate } from 'js/tool'
 // 导入评论组件
 const videoRecommends = () =>
   import('../../musicListDetail/childComps/Recommends.vue')
@@ -106,54 +78,52 @@ export default {
       offset: 1,
       limit: 20,
       simiVideo: [],
-      notSimiVideo: [],
-      simiVideoIndex: 0
+      simiVideoIndex: 0,
+      pageLoading: false
     }
   },
   watch: {
-    $route: {
+    ' $route.params.id': {
       handler (val) {
-        if (val.params.id !== undefined && val.params.id !== null) {
-          this.id = this.$route.params.id
-          this.getBaseInfo()
-        }
+        this.id = val
+        this.getBaseInfo()
       },
       deep: true
     }
   },
   created () {
     this.id = this.$route.params.id
-    if (this.id !== null) {
-      this.getBaseInfo()
-    }
-    // 触发停止音乐播放的方法
+    this.id && this.getBaseInfo()
+    // 停止播放音乐
     this.$emit('stopMusic')
   },
   methods: {
     async getBaseInfo () {
-      // 清空上一次的数据
-      this.notSimiVideo = []
-      this.simiVideo = []
+      this.pageLoading = true
       // 获取video的详情，播放地址，评论，推荐视频
       await Promise.all([
         _getVideoDetail(this.id),
         _getVideoUrl(this.id),
         _getVideoComment(this.id, this.limit),
         _getRelatedVideo(this.id)
-      ]).then((res) => {
+      ]).then(res => {
+        this.pageLoading = false
         this.detail = res[0].data.data
         this.url = res[1].data.urls[0].url
         this.recommends = res[2].data.comments
-        this.notSimiVideo = res[3].data.data
+        this.simiVideo = res[3].data.data.map(item => {
+          return {
+            id: item.vid,
+            cover: item.coverUrl,
+            title: item.title,
+            count: item.playTime,
+            user: item.creator
+          }
+        })
       })
-      // 处理相关视频
-      for (var i in this.notSimiVideo) {
-        var mv = new Video(this.notSimiVideo[i])
-        this.simiVideo.push(mv)
-      }
     },
     // 格式化时间
-    formating (time) {
+    _formatDate (time) {
       return formDate(new Date(time), 'ff:mm:yy')
     },
     // 判断是否有简历
@@ -179,15 +149,15 @@ export default {
           '评论加载完毕，暂无更多.....'
       } else {
         // 遍历添加请求成功后的歌单评论
-        comments.forEach((item) => this.recommends.push(item))
+        comments.forEach(item => this.recommends.push(item))
       }
     },
     // 发送评论后，重新获取评论
     getCommends () {
       // 清除评论数据
       this.recommends = []
-      _getVideoComment(this.id, this.limit, 0).then((res) => {
-        res.data.comments.forEach((item) => this.recommends.push(item))
+      _getVideoComment(this.id, this.limit, 0).then(res => {
+        res.data.comments.forEach(item => this.recommends.push(item))
       })
     },
     // 视频播放完毕自动播放相似视频
