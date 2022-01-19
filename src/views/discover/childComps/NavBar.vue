@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <div class="content">
-      <router-link :to="item.link" v-for="(item, index) in list" :key="index">
+      <router-link :to="item.link" v-for="(item, index) in tabList" :key="index">
         <div class="item" @click="currentIndex = index" :class="{'action':currentIndex == index}">{{item.name}}</div>
       </router-link>
     </div>
@@ -13,7 +13,7 @@ export default {
   data () {
     return {
       currentIndex: 0,
-      list: [
+      tabList: [
         { link: '/discover/individ', name: '个性推荐' },
         { link: '/discover/category', name: '歌单' },
         { link: '/discover/ranklist', name: '排行榜' },
@@ -23,11 +23,18 @@ export default {
       ]
     }
   },
+  watch: {
+    '$route.path': {
+      handler () {
+        this.initTabIndex()
+      }
+    }
+  },
   methods: {
     // 处理页面刷新后，路由与tab导航栏对应不上
     initTabIndex () {
       const { path } = this.$route
-      this.list.some((item, index) => {
+      this.tabList.some((item, index) => {
         if (item.link === path) {
           return (this.currentIndex = index)
         }

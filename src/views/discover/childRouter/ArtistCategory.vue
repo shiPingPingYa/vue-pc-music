@@ -4,13 +4,13 @@
     <div class="category">
       <div class="area">
         语种:
-        <div class="area-item" v-for="(item,index) in area" :key="index" :class="{action:areaIndex == index}" @click.stop="areaClick(index)">
+        <div class="area-item" v-for="(item,index) in area" :key="index" :class="{'action':areaIndex == index}" @click.stop="handleAreaClick(index)">
           {{item.name}}
         </div>
       </div>
       <div class="type">
         分类:
-        <div class="type-item" v-for="(item,index) in type " :key="index" :class="{action:typeIndex == index}" @click.stop="typeClick(index)">
+        <div class="type-item" v-for="(item,index) in type " :key="index" :class="{'action':typeIndex == index}" @click.stop="handleTypeClick(index)">
           {{item.name}}
         </div>
       </div>
@@ -41,8 +41,6 @@ export default {
     return {
       areaIndex: 0,
       typeIndex: 0,
-      limit: 15,
-      page: 1,
       artistList: [],
       area: [
         { value: -1, name: '全部' },
@@ -63,18 +61,20 @@ export default {
   created () {
     this.getArtist()
   },
-  watch: {
-    // 标签改变后，重置页码和大小
-    areaIndex () {
-      this.limit = 15
-      this.page = 1
-    },
-    typeIndex () {
-      this.limit = 15
-      this.page = 1
-    }
-  },
   methods: {
+    // 获取默认全部的歌手数据
+    async getArtist () {
+      this.artistList = []
+      const params = {
+        area: this.area[this.areaIndex].value,
+        type: this.type[this.typeIndex].value,
+        offset: this.artistList.length
+      }
+      const {
+        data: { artists }
+      } = await _getArtist(params)
+      this.artistList = artists
+    },
     // scroll下拉刷新
     pullingUp: throttled(async function () {
       const params = {
@@ -88,26 +88,17 @@ export default {
       artists.forEach(item => this.artistList.push(item))
       this.$refs.scroll.finishPullUp()
     }, 800),
-    areaClick (index) {
+    handleAreaClick (index) {
       this.areaIndex = index
+      this.resetIndex()
+      this.$refs.scroll.scrollTo(0, 0, 200)
       this.getArtist()
     },
-    typeClick (index) {
+    handleTypeClick (index) {
       this.typeIndex = index
+      this.resetIndex()
+      this.$refs.scroll.scrollTo(0, 0, 200)
       this.getArtist()
-    },
-    // 获取歌手数据
-    async getArtist () {
-      this.artistList = []
-      const params = {
-        area: this.area[this.areaIndex].value,
-        type: this.type[this.typeIndex].value,
-        offset: this.artistList.length
-      }
-      const {
-        data: { artists }
-      } = await _getArtist(params)
-      this.artistList = artists
     }
   }
 }

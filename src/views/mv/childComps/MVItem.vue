@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="mv-list " v-if="Array.isArray(mvList) && mvList.length !== 0 ">
-      <div class=" mv-item" v-for="(item,index) in mvList" :key="index" @click="playMv(item.id)">
+      <div class=" mv-item" v-for="(item,index) in mvList" :key="index" @click="goPlayMvDetail(item.id)">
         <div class="count">
           <img src="../../../assets/img/leftmenu/shiping.svg" alt="">
           <div class="play-count">{{item.count}} </div>
@@ -24,13 +24,11 @@ export default {
   props: {
     mvList: {
       type: Array,
-      default () {
-        return []
-      }
+      default: () => []
     }
   },
   methods: {
-    playMv (id) {
+    goPlayMvDetail (id) {
       this.$router.push('/playmv/' + id)
     }
   }

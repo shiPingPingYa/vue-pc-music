@@ -13,29 +13,21 @@ export default {
     // 滚动时是否派发scroll事件
     probeType: {
       type: Number,
-      default () {
-        return 0
-      }
+      default: () => 0
     },
     // 配置下拉功能
     pullUpLoad: {
       type: Boolean,
-      default () {
-        return false
-      }
+      default: () => false
     },
     pullDownRefresh: {
       type: Boolean,
-      default () {
-        return false
-      }
+      default: () => false
     },
     // 滚动条
     scrollbar: {
       type: [Boolean, Object],
-      dafault () {
-        return false
-      }
+      default: () => false || {}
     }
   },
   data () {
@@ -99,7 +91,7 @@ export default {
       }
     })
     // 是否派发滚动事件
-    this.scroll.on('scroll', (position) => {
+    this.scroll.on('scroll', position => {
       this.$emit('scroll', position)
     })
     // 是否派发下拉加载事件
@@ -111,7 +103,6 @@ export default {
       this.$emit('pullingDown')
     })
   }
-
 }
 </script>
 <style lang="less" scoped>

@@ -170,7 +170,7 @@ export default {
       this.setCurrentIndex(0)
       this.$refs.music_volumn.setAudioProgress(0.8)
     })
-    // 监听歌曲列表的点击,设置index
+    // 监听歌曲列表的点击,设置index,修改播放音乐
     this.$bus.$on('playMusicListItem', index => {
       this.setCurrentIndex(index)
     })

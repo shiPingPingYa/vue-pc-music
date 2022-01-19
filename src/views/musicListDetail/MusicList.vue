@@ -1,7 +1,7 @@
 <template>
   <div class="music-lsit">
     <!-- 每日推荐 -->
-    <div class="day_music" v-show="isLogin && isDayMusic" @click="enterDayDetail()">
+    <div class="day_music" v-show="isLogin && isDayMusic" @click="goDayMusicListDetail()">
       <div class="day_music_back"></div>
       <div class="day_music_time">
         <div class="day_music_date">{{ getDay }}</div>
@@ -10,13 +10,11 @@
       <div class="day_music_title">每日歌曲推荐</div>
     </div>
     <!-- 歌单列表 -->
-    <div class="song-item" v-for="(item, index) in totalList" :key="index" @click="enterDetail(index)">
+    <div class="song-item" v-for="(item, index) in totalList" :key="index" @click="goMusicListDetail(index)">
       <!-- 背景图 -->
       <img :src="getImgUrl(item) + '?param=230y230'" alt="" />
       <!-- 标题 -->
-      <div class="title">
-        {{ item.name }}
-      </div>
+      <div class="title">{{ item.name }}</div>
       <!-- 右上背景 -->
       <div class="count">
         <img src="../../assets/img/content/erji.svg" alt="" />
@@ -46,11 +44,10 @@ export default {
     }
   },
   watch: {
-    $route: {
-      handler (val) {
-        if (val.path === '/discover/individ') {
-          this.isDayMusic = true
-        } else {
+    '$route.path': {
+      handler (newPath) {
+        if (newPath === '/discover/individ') this.isDayMusic = true
+        else {
           this.isDayMusic = false
         }
       },
@@ -64,14 +61,14 @@ export default {
   },
   methods: {
     // 跳转到推荐详情页
-    enterDayDetail () {
+    goDayMusicListDetail () {
       this.$router.push('/daymusic')
     },
     getImgUrl (item) {
       return item.picUrl || item.coverImgUrl
     },
     // 条状到音乐详情页
-    enterDetail (index) {
+    goMusicListDetail (index) {
       this.$router.push({
         path: '/musiclistdetail/' + this.totalList[index].id,
         query: { songId: this.totalList[index].id }

@@ -124,14 +124,10 @@ export function _getMusicListHot () {
  * @param  limit 取出歌单数量 , 默认为 20
  * @param  before: 分页参数,取上一页最后一个歌单的 updateTime 获取下一页数据
  */
-export function _getHighquality (cat, limit) {
+export function _getHighquality (params) {
   return request({
     url: '/top/playlist/highquality',
-    params: {
-      cat: cat,
-      limit: limit,
-      time: new Date().getTime()
-    }
+    params
   })
 }
 
