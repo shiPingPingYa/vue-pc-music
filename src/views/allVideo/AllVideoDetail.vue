@@ -1,6 +1,6 @@
 <template>
   <div class="all-video-detail">
-    <video-bar ref="video_bar" :videoBar="videoBar"></video-bar>
+    <video-bar ref="video_bar"></video-bar>
     <div class="content">
       <keep-alive>
         <router-view></router-view>
@@ -12,15 +12,7 @@
 import VideoBar from './childComps/VideoBar'
 export default {
   name: 'AllVideoDetail',
-  components: {
-    VideoBar
-  },
-  data () {
-    return {
-      videoBar: ['视频', '所有MV'],
-      videoLink: ['/video/allvideo', '/video/allmv']
-    }
-  }
+  components: { VideoBar }
 }
 </script>
 <style lang="less" scoped>
