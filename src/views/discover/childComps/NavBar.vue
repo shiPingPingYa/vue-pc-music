@@ -1,11 +1,8 @@
 <template>
   <div class="navbar">
     <div class="content">
-      <router-link :to="item.link" v-for="(item, index) in list" :key="index">
-        <div class="item"
-        @click="barClick(index)"
-        :class="{action:currentIndex == index}">
-        {{item.name}}</div>
+      <router-link :to="item.link" v-for="(item, index) in tabList" :key="index">
+        <div class="item" @click="currentIndex = index" :class="{'action':currentIndex == index}">{{item.name}}</div>
       </router-link>
     </div>
   </div>
@@ -13,42 +10,56 @@
 <script>
 export default {
   name: 'NavBar',
-  props: {
-    list: {
-      type: Array,
-      default () {
-        return []
+  data () {
+    return {
+      currentIndex: 0,
+      tabList: [
+        { link: '/discover/individ', name: '个性推荐' },
+        { link: '/discover/category', name: '歌单' },
+        { link: '/discover/ranklist', name: '排行榜' },
+        { link: '/discover/artist', name: '歌手' },
+        { link: '/discover/newsongs', name: '最新音乐' },
+        { link: '/discover/mv', name: 'MV' }
+      ]
+    }
+  },
+  watch: {
+    '$route.path': {
+      handler () {
+        this.initTabIndex()
       }
     }
   },
-  data () {
-    return {
-      currentIndex: 0
+  methods: {
+    // 处理页面刷新后，路由与tab导航栏对应不上
+    initTabIndex () {
+      const { path } = this.$route
+      this.tabList.some((item, index) => {
+        if (item.link === path) {
+          return (this.currentIndex = index)
+        }
+      })
     }
   },
-  methods: {
-    barClick (index) {
-      this.currentIndex = index
-    }
+  mounted () {
+    this.initTabIndex()
   }
-
 }
-
 </script>
 <style lang="less" scoped>
-.navbar{
-  width: 100%;
-  height: 49px;
-}
+  .navbar {
+    width: 100%;
+    height: 49px;
+  }
 
-.content{
-  display: flex;
-  margin: 0 auto;
-  width: 60%;
-  height: 100%;
-}
+  .content {
+    display: flex;
+    margin: 0 auto;
+    width: 60%;
+    height: 100%;
+  }
 
-.content > a{
+  .content > a {
     flex: 1;
     height: 100%;
     line-height: 49px;
@@ -57,10 +68,10 @@ export default {
     opacity: 0.6;
     text-decoration: none;
     font-size: 14px;
-}
+  }
 
-.action{
+  .action {
     opacity: 1;
     border-bottom: 2px solid #5c5e61;
-}
+  }
 </style>

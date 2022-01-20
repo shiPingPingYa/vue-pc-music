@@ -1,37 +1,22 @@
 <template>
-  <div class="play-mv" v-if="id !== null && detail !== null">
-    <scroll class="play-mv-scroll" ref="scroll" :pull-up-load="true">
+  <div class="play-mv">
+    <scroll class="play-mv-scroll" ref="scroll" :pull-up-load="true" v-if="!pageLoading">
       <!-- 左边内容布局 -->
       <div class="left-layout">
         <!-- 左边头部标题-->
-        <div class="title" v-if="detail !== null">
+        <div class="title">
           <div class="left-mv">MV</div>
           <div class="name">{{ detail.name }}</div>
           <div class="artist">{{ detail.artistName }}</div>
         </div>
         <!-- 中间video视频播放标签 -->
         <div class="video">
-          <video
-            :src="url"
-            class="video-play"
-            width="100%"
-            autoplay
-            controls
-            @ended="handleVideoEnd"
-          ></video>
+          <video :src="url" class="video-play" width="100%" autoplay controls @ended="handleVideoEnd"></video>
         </div>
         <!-- 下面评论区 -->
         <div class="recommend">
           <p class="p">评论</p>
-          <mv-recommends
-            class="recds"
-            ref="songList_recommends"
-            @moreComments="moreComments"
-            @getCommends="getCommends"
-            :id="String(id)"
-            :Type="1"
-            :recommends="recommends"
-          ></mv-recommends>
+          <mv-recommends class="recds" ref="songList_recommends" @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="1" :recommends="recommends"></mv-recommends>
         </div>
       </div>
       <!-- 右边内容布局 -->
@@ -46,12 +31,7 @@
           </div>
           <div class="mv-desc">
             <!-- 防止鼠标下滑的时候，重新调用方法，mv会重复 -->
-            <scroll
-              class="desc-scroll"
-              ref="descScroll"
-              @mouseenter="enter()"
-              @mouseleave="leave()"
-            >
+            <scroll class="desc-scroll" ref="descScroll" @mouseenter="enter()" @mouseleave="leave()">
               <span>简介:</span>
               {{ isDescription(detail.desc) }}
             </scroll>
@@ -68,17 +48,11 @@
 </template>
 <script>
 // 导入封装好的better-scroll
-import Scroll from '../../components/common/scroll/Scroll'
+import Scroll from 'common/scroll/Scroll'
 // mv的相关推荐
 import SimiMvItem from '../mv/childComps/SimiMvItem'
 // 导入mv的数据请求接口
-import {
-  _getMvDetail,
-  _getMvComment,
-  _getMvUrl,
-  _getSimiMv,
-  MV
-} from '../../network/mv'
+import { _getMvDetail, _getMvComment, _getMvUrl, _getSimiMv } from 'api/mv'
 // 评论组件
 const mvRecommends = () => import('../musicListDetail/childComps/Recommends')
 export default {
@@ -96,32 +70,29 @@ export default {
       recommends: null,
       limit: 30,
       simiMv: [],
-      notSimiMv: [],
-      simiMvIndex: 0
+      simiMvIndex: 0,
+      pageLoading: false
     }
   },
   watch: {
-    $route: {
+    '$route.params.id': {
       handler (val) {
-        if (val.params.id !== undefined && val.params.id !== null) {
-          this.id = this.$route.params.id
-          this.getBaseInfo()
-        }
+        this.id = val
+        this.getBaseInfo()
       },
       deep: true
     }
   },
-  created () {
+  mounted () {
     this.id = this.$route.params.id
-    if (this.id !== null) {
-      this.getBaseInfo()
-    }
-    // 触发停止音乐播放的方法
+    this.id && this.getBaseInfo()
+    // 停止播放音乐
     this.$bus.$emit('stopMusic', false)
   },
   methods: {
     // 获取播放mv默认信息
     async getBaseInfo () {
+      this.pageLoading = true
       this.simiMv = []
       // 分别是mv的详情，地址，评论，相似mv
       await Promise.all([
@@ -129,14 +100,21 @@ export default {
         _getMvUrl({ id: this.id }),
         _getMvComment({ id: this.id, limit: this.limit }),
         _getSimiMv({ mvid: this.id })
-      ]).then((res) => {
+      ]).then(res => {
+        this.pageLoading = false
         this.detail = res[0].data.data
         this.url = res[1].data.data.url
         this.recommends = res[2].data.comments
-        this.notSimiMv = res[3].data.mvs
+        this.simiMv = res[3].data.mvs.map(item => {
+          return {
+            id: item.id,
+            cover: item.cover || item.imgurl || item.picUrl,
+            name: item.name,
+            artist: item.artistName,
+            count: item.playCount
+          }
+        })
       })
-      // 处理相似mv，获取新的mv对象(id，名字，标题,url,播放数量)
-      this.notSimiMv.forEach((item) => this.simiMv.push(new MV(item)))
     },
     // 判断是否有简介
     isDescription (desc) {
@@ -166,15 +144,15 @@ export default {
           '评论加载完毕，暂无更多.....'
       } else {
         // 遍历添加请求成功后的歌单评论
-        comments.forEach((item) => this.recommends.push(item))
+        comments.forEach(item => this.recommends.push(item))
       }
     },
     // 发送评论后，重新获取评论
     getCommends () {
       // 清除评论数据
       this.recommends = []
-      _getMvComment({ id: this.id, limit: this.limit }).then((res) => {
-        res.data.comments.forEach((item) => this.recommends.push(item))
+      _getMvComment({ id: this.id, limit: this.limit }).then(res => {
+        res.data.comments.forEach(item => this.recommends.push(item))
       })
     },
     // 视频播放完毕自动播放相似视频

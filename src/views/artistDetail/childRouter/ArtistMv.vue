@@ -1,42 +1,48 @@
 <template>
   <div class="artist-mv">
-  <mv-item class="mv" :mvList="mvList"></mv-item>
+    <mv-item class="mv" :mvList="mvList"></mv-item>
   </div>
 </template>
 <script>
-// 导入mv条目
-import MvItem from '../../mv/childComps/MVItem'
-// 导入获取mv数据接口
-import { _getArtistMv } from '../../../network/artist'
-// 导入，mv数据接口，把获取的mv数据处理获取想要的mv对象(id,cover,name,artist,count)
-import { MV } from '../../../network/mv'
+import MvItem from '../../mv/childComps/MVItem' // mv组件
+import { _getArtistMv } from '../../../network/artist' // 获取mv数据接口
 export default {
   name: 'ArtistMv',
   data () {
     return {
-      artist: null,
       mvList: []
     }
   },
-  components: {
-    MvItem
-  },
+  components: { MvItem },
   created () {
-    this.artist = JSON.parse(localStorage.getItem('artist'))
-    // 调用获取mv数据接口传入用户id，拿到返回的歌手mv数据
-    _getArtistMv(this.artist.id).then(res => {
-      res.data.mvs.forEach(item => this.mvList.push(new MV(item)))
-    })
+    this.initMvList()
+  },
+  methods: {
+    async initMvList () {
+      const { id } = this.$route.query
+      // 调用获取mv数据接口传入用户id，拿到返回的歌手mv数据
+      const {
+        data: { mvs }
+      } = await _getArtistMv(id)
+      this.mvList = mvs.map(item => {
+        return {
+          id: item.id,
+          cover: item.cover || item.imgurl || item.picUrl,
+          name: item.name,
+          artist: item.artistName,
+          count: item.playCount
+        }
+      })
+    }
   }
-
 }
 </script>
 <style lang="less" scoped>
-.artist-mv{
-  margin-top: 4px;
-  width: 100%;
-}
-.mv {
-  margin-right: 40px;
-}
+  .artist-mv {
+    margin-top: 4px;
+    width: 100%;
+  }
+  .mv {
+    margin-right: 40px;
+  }
 </style>

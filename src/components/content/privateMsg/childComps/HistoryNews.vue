@@ -7,7 +7,7 @@
       <div>
         {{ historyList[0].nickname }}
       </div>
-      <div @click="cancelHistory">
+      <div @click="prePrivateDetail">
         <img src="../../../../assets/img/privateNews/replay_privateNews.svg" alt="" />
       </div>
     </div>
@@ -66,6 +66,8 @@ import { formDate } from '../../../../assets/common/tool'
 import { indexMixin } from '../../../../views/musicListDetail/indexMixin'
 export default {
   name: 'HistoryNews',
+  components: { Scroll },
+  mixins: [indexMixin],
   props: {
     historyList: {
       type: Array,
@@ -86,14 +88,9 @@ export default {
       musicList: []
     }
   },
-  components: { Scroll },
-  mixins: [indexMixin],
   methods: {
     prePrivateDetail () {
       this.$emit('prePrivateDetail')
-    },
-    cancelHistory () {
-      this.$emit('cancelHistory')
     },
     pullingDown () {
       if (!this.more) return this.$message.info('没有更多历史记录了')
@@ -106,8 +103,8 @@ export default {
       return formDate(new Date(time), 'f:mm:dd-hh:mm')
     },
     goPlayMV (id) {
+      this.$emit('visiableMessage')
       this.$router.push('/playmv/' + id)
-      this.$emit('hideStatus')
     },
     goPlayMusic (type, id) {
       if (type === 12 || type === 23) return true

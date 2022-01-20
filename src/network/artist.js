@@ -4,12 +4,10 @@ import { request } from './request'
  * @description 获取歌手详情
  * @param id 歌手id
  */
-export function _getArtistDetail (id) {
+export function _getArtistDetail (params) {
   return request({
     url: '/artist/detail',
-    params: {
-      id: id
-    }
+    params
   })
 }
 
@@ -17,12 +15,10 @@ export function _getArtistDetail (id) {
  * @description 获取歌手描述
  * @param  id 歌手id
  */
-export function _getArtistDesc (id) {
+export function _getArtistDesc (params) {
   return request({
     url: '/artist/desc',
-    params: {
-      id: id
-    }
+    params
   })
 }
 

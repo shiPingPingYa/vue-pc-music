@@ -38,7 +38,7 @@ export default {
 <style lang="less" scoped>
   .main {
     position: relative;
-    width: 82%;
+    width: calc(100% - 68px);
     height: 100%;
     color: #01060a;
     background: #f5f5f7;

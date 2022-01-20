@@ -12,7 +12,7 @@ newValue<template>
         </h3>
         <!-- 搜索历史内容 -->
         <div class="record-content">
-          <div class="search-item" v-for="(item, index) in searchList" :key="index" @click="recordClick(index)">
+          <div class="search-item" v-for="(item, index) in searchList" :key="index" @click="goSearchDetail(index)">
             {{ item }}
           </div>
         </div>
@@ -24,7 +24,7 @@ newValue<template>
         <h3>热搜榜</h3>
         <!-- 热搜列表 -->
         <table>
-          <tr v-for="(item, index) in hotList" :key="index" @click="searchSongDetail(index)">
+          <tr v-for="(item, index) in hotList" :key="index" @click="handleHotSearchClick(index)">
             <!-- 热搜列表排名 -->
             <td :class="{ red: index <= 2 }">{{ index + 1 }}</td>
             <!-- 热搜列表上面的名字，次数，以及下面的内容 -->
@@ -54,14 +54,10 @@ export default {
   props: {
     searchList: {
       type: Array,
-      dufault () {
-        return []
-      }
+      dufault: () => []
     }
   },
-  components: {
-    Scroll
-  },
+  components: { Scroll },
   data () {
     return {
       hotList: [],
@@ -79,13 +75,12 @@ export default {
       this.$emit('del')
     },
     // 点击热搜记录，触发父组件recordClick方法
-    recordClick (i) {
-      this.$emit('recordClick', i)
+    goSearchDetail (i) {
+      this.$emit('goSearchDetail', this.searchList[i])
     },
     // 热搜榜的跳转
-    searchSongDetail (i) {
-      this.$router.push('/search/' + this.hotList[i].searchWord)
-      this.$parent.isShow = false
+    handleHotSearchClick (i) {
+      this.$emit('goSearchDetail', this.hotList[i].searchWord)
     }
   }
 }

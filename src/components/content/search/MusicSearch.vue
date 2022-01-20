@@ -3,20 +3,19 @@
     <!-- 搜索框 -->
     <div class="search-item">
       <form>
-        <input type="text" class="mess" placeholder="请输入搜索歌曲" v-model.trim="keywords" @focus="focus()" @keydown.enter="keyEnter()" />
+        <input type="text" ref="keyword_input" class="mess" placeholder="请输入搜索歌曲" v-model.trim="keywords" @focus="focus()" @keydown.enter="keyEnter()" />
       </form>
       <img src="../../../assets/img/search_svg.svg" @click="keyEnter" alt="" />
     </div>
-
-    <!-- 热搜榜 -->
-    <transition name="fade-in-linear">
-      <hot-search @del="del" :searchList="searchList" v-show="isShow" @recordClick="recordClick($event)"></hot-search>
-    </transition>
-
     <!-- 搜索内容 -->
     <transition name="fade-in-linar">
-      <searchContent v-show="isSuggest" :keywords="keywords" :sugSongs="sugSongs" :sugArtist="sugArtist" />
+      <searchContent v-show="isSuggest" :keywords="keywords" :sugSongs="sugSongs" :sugArtist="sugArtist" @goSearchDetail="goSearchDetail" @goArtistDetail="handleInputBlur" />
     </transition>
+    <!-- 热搜榜 -->
+    <transition name="fade-in-linear">
+      <hot-search @del="del" :searchList="searchList" v-show="isShow" @goSearchDetail="goSearchDetail"></hot-search>
+    </transition>
+
   </div>
 </template>
 <script>
@@ -81,13 +80,11 @@ export default {
     },
     // 添加热搜记录,并跳转搜索的内容
     keyEnter () {
-      if (this.keywords === '' || this.keywords == null) {
-        return this.$message.info('请输入搜索内容')
+      if ((this.keywords ?? '') === '') {
+        return this.$message.info('搜索内容不能为空，请输入搜索内容!!!')
       }
       this.searchList.unshift(this.keywords)
-      this.$router.push('/search/' + this.keywords)
-      this.keywords = ''
-      this.isSuggest = this.isShow = false
+      this.goSearchDetail(this.keywords)
     },
     // 热搜历史记录的跳转
     recordClick (i) {
@@ -101,10 +98,14 @@ export default {
       this.keywords = ''
       this.isSuggest = false
     },
-    enterArtists (artist) {
-      this.$router.push('/artist')
+    goSearchDetail (val = '') {
+      this.$router.push('/search/' + val)
+      this.handleInputBlur()
+    },
+    handleInputBlur () {
+      this.$refs.keyword_input.blur()
       this.keywords = ''
-      localStorage.setItem('artist', JSON.stringify(artist))
+      this.isSuggest = this.isShow = false
     }
   }
 }

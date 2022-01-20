@@ -1,7 +1,6 @@
 <template>
   <div class="musiclsit-bar" v-if="bar !== null">
-    <div class="item" v-for="(item,index) in bar " :key="index" :class="{action:currentIndex == index}"
-    @click="currentIndexClick(index)">
+    <div class="item" v-for="(item,index) in bar " :key="index" :class="{'action':currentIndex == index}" @click="currentIndexClick(index)">
       {{item}}
     </div>
   </div>
@@ -12,9 +11,7 @@ export default {
   props: {
     bar: {
       type: Array,
-      default () {
-        return []
-      }
+      default: () => []
     }
   },
   data () {
@@ -26,29 +23,35 @@ export default {
     currentIndexClick (index) {
       this.currentIndex = index
       switch (index) {
-        case 0: this.$emit('mlBarClick', 'music'); break
-        case 1: this.$emit('mlBarClick', 'recommends'); break
-        case 2: this.$emit('mlBarClick', 'like'); break
+        case 0:
+          this.$emit('handleTabClick', 0)
+          break
+        case 1:
+          this.$emit('handleTabClick', 1)
+          break
+        case 2:
+          this.$emit('handleTabClick', 2)
+          break
       }
     }
   }
 }
 </script>
 <style lang="less" scoped>
-.musiclsit-bar{
-  padding-top: 10px;
-  width: 100%;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  > .item{
-    padding: 5px  20px;
-    cursor: pointer;
+  .musiclsit-bar {
+    padding-top: 10px;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    > .item {
+      padding: 5px 20px;
+      cursor: pointer;
+    }
   }
-}
 
-.action{
-  border-bottom: 3px solid #b82525;
-}
+  .action {
+    border-bottom: 3px solid #b82525;
+  }
 </style>>

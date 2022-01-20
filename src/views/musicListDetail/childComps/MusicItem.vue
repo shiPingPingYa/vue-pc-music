@@ -14,15 +14,10 @@
       </thead>
       <!-- 内容 -->
       <tbody>
-        <tr
-          v-for="(item, index) in musicList"
-          :key="index"
-          :class="{
-            backColor: setBackColor(index),
-            curMusicItem: playIndex == index,
-          }"
-          @dblclick="musicItemClick(index)"
-        >
+        <tr v-for="(item, index) in musicList" :key="index" :class="{
+            'backColor': setBackColor(index),
+            'curMusicItem': playIndex == index,
+          }" @dblclick="musicItemClick(index)">
           <td :class="{ curFont: playIndex == index }">
             {{ setSerial(index) }}
             <div class="curPlay" v-show="playIndex == index">
@@ -30,16 +25,8 @@
             </div>
           </td>
           <td>
-            <img
-              src="../../../assets/img/leftmenu/live.svg"
-              alt=""
-              class="live"
-            />
-            <img
-              src="../../../assets/img/leftmenu/xiazai.svg"
-              alt=""
-              class="download"
-            />
+            <img src="../../../assets/img/leftmenu/live.svg" alt="" class="live" />
+            <img src="../../../assets/img/leftmenu/xiazai.svg" alt="" class="download" />
           </td>
           <td>{{ item.name }}</td>
           <td>{{ item.song }}</td>
@@ -51,10 +38,7 @@
   </div>
 </template>
 <script>
-// 处理音乐列表的背景和序号
-import { tableMixin } from '../tableMixin'
-// 音乐的显示与否playIndex
-import { playMinxin } from '../playMixin'
+import { mapGetters } from 'vuex'
 export default {
   name: 'MusicItem',
   props: {
@@ -65,12 +49,39 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['getSongListPath'])
+  },
   data () {
     return {
-      path: null
+      playIndex: ''
     }
   },
-  mixins: [tableMixin, playMinxin]
+  mounted () {
+    // 设置下标
+    this.$bus.$on('Playing', (path, index) => {
+      this.playIndex = index
+    })
+  },
+  methods: {
+    // 设置音乐列表的序号
+    setSerial (i) {
+      return i + 1 <= 9 ? '0' + (i + 1) : i + 1
+    },
+    // 设置音乐列表的背景
+    setBackColor (i) {
+      return i % 2 !== 0
+    },
+    // 音乐条目点击事件
+    musicItemClick (index) {
+      // 判断是否在同一歌单下面，是则不修改音乐列表，而是切换播放音乐下标
+      if (this.$route.path === this.getSongListPath) {
+        this.$bus.$emit('playMusicListItem', index) // 触发播放方法，传递index，把播放音乐下标换了
+      } else {
+        this.$emit('musicItemClick', index) // 触发父组件上面的方法，重新获取音乐
+      }
+    }
+  }
 }
 </script>
 <style lang="less" scoped>

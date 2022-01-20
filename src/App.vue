@@ -1,22 +1,18 @@
 <template>
-  <div id="app" @click="setAsyncShareImag(false)">
+  <div id="app">
     <keep-alive>
-      <tab-bar></tab-bar>
+      <tab-bar ref="tabBar"></tab-bar>
     </keep-alive>
-    <center-content></center-content>
+    <center-content ref="center_content"></center-content>
     <play-music ref="play_music"></play-music>
     <!-- <home-page-recommends></home-page-recommends> -->
   </div>
 </template>
 
 <script>
-// 头部导航栏区域
 import TabBar from '../src/components/content/tabbar/TabBar'
-// 中间内容区域(包含左边菜单和右边内容)
 import CenterContent from '../src/components/content/conter/CenterContent'
-// 底部区域
 import PlayMusic from '../src/components/content/playmusic/PlayMusic'
-// 导入首页评论组件
 // import HomePageRecommends from '../src/components/HomePageRecommends'
 import { mapMutations } from 'vuex'
 export default {
@@ -27,30 +23,30 @@ export default {
     PlayMusic
     // HomePageRecommends
   },
-  watch: {
-    // 路由发生改变时，判断播放组件是不是处于隐藏状态
-    $route: {
-      handler () {
-        if (this.$refs.play_music.isPlayerShow) this.$refs.play_music.isPlayerShow = false
+  methods: {
+    ...mapMutations(['showLogin']),
+    initUserSongList () {
+      // 判断是否有userid有userid，通过userid获取下用户歌单和用户信息
+      if (localStorage.getItem('userId')) {
+        this.$store.dispatch('_GETUSERINFO', localStorage.getItem('userId'))
+      } else {
+        this.$message.info('已退出登录,如需获取用户歌单请重新登录')
+        this.showLogin(true)
       }
     }
   },
-  created () {
-    // 获取localstorage里面的用户id
-    if (localStorage.getItem('userId')) {
-      this.$store.dispatch('_GETUSERINFO', localStorage.getItem('userId'))
-    } else {
-      this.$message.info('已退出登录')
-      this.showLogin()
-    }
-  },
-  methods: {
-    ...mapMutations(['setAsyncShareImag', 'showLogin'])
-  },
   mounted () {
-    // 监听键盘输入事件，空格停止音乐播放
-    const stopMusic = (e) => e.keyCode === 32 && this.$refs.play_music.toggle()
-    window.addEventListener('keyup', stopMusic)
+    this.initUserSongList()
+    const app = document.getElementById('app')
+    const handleImgAndMessageClick = () => {
+      this.$store.commit('setAsyncShareImag', false) // 隐藏朋友圈图片
+      this.$refs.tabBar._data.isPrivate = false // 隐藏消息通知
+      this.$refs.tabBar._data.isisHistoryNewsPrivate = false
+      this.$bus.$emit('handleMenuMouseLeave') // 收起左侧路由导航栏
+    }
+    const stopMusic = e => e.keyCode === 32 && this.$refs.play_music.toggle()
+    window.addEventListener('keyup', stopMusic) // 监听键盘输入事件，空格停止音乐播放
+    app.addEventListener('click', handleImgAndMessageClick)
   }
 }
 </script>

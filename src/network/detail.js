@@ -81,15 +81,10 @@ export function _getSub (id, limit) {
  * @param  before  分页参数,取上一页最后一项的 time 获取下一页数据(获取超过5000条评论的时候需要用到)
  */
 // 获取歌单的评论内容
-export function _getRecommends (id, limit, offset) {
+export function _getRecommends (params) {
   return request({
     url: '/comment/playlist',
-    params: {
-      id: id,
-      limit: limit,
-      offset: offset,
-      timestamp: Date.now()
-    }
+    params
   })
 }
 
@@ -129,14 +124,10 @@ export function _getMusicListHot () {
  * @param  limit 取出歌单数量 , 默认为 20
  * @param  before: 分页参数,取上一页最后一个歌单的 updateTime 获取下一页数据
  */
-export function _getHighquality (cat, limit) {
+export function _getHighquality (params) {
   return request({
     url: '/top/playlist/highquality',
-    params: {
-      cat: cat,
-      limit: limit,
-      time: new Date().getTime()
-    }
+    params
   })
 }
 
@@ -262,6 +253,6 @@ export class BaseInfo {
     this.subscribedCount = playlist.subscribedCount
     this.playCount = playlist.playCount
     this.trackCount = playlist.trackCount
-    this.tags = playlist.tags[0]
+    this.tags = playlist.tags
   }
 }

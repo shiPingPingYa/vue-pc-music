@@ -1,15 +1,9 @@
 <template>
-<!-- 暂时 -->
+  <!-- 暂时 -->
   <div class="notices_detail">
     通知详情页面
     <scroll class="notices_detail">
-      <notices-recommends
-        ref="notices_recommends"
-        :recommends="recommends"
-        :hotComments="hotComments"
-        @moreComments="moreComments"
-        @getCommends="getCommends"
-      ></notices-recommends>
+      <notices-recommends ref="notices_recommends" :recommends="recommends" :hotComments="hotComments" @moreComments="moreComments" @getCommends="getCommends"></notices-recommends>
     </scroll>
   </div>
 </template>
@@ -54,13 +48,17 @@ export default {
       switch (Number(this.type)) {
         case 6:
           console.log('aaa')
-          _getCommentEvent({ threadId: this.threadId }).then((res) => {
+          _getCommentEvent({ threadId: this.threadId }).then(res => {
             this.recommends = res.data.comments
             this.hotComments = res.data.hotComments
           })
           break
         case 2:
-          _getRecommends(this.threadId, this.limit).then((res) => {
+          _getRecommends({
+            id: this.threadId,
+            limit: this.limit,
+            timestamp: Date.now()
+          }).then(res => {
             this.recommends = res.data.comments
             this.hotComments = res.data.hotComments
           })
@@ -70,32 +68,43 @@ export default {
       switch (Number(this.type)) {
         case 6:
           console.log('aaa')
-          _getCommentEvent({ threadId: this.threadId, offset: this.recommends.length }).then((res) => {
+          _getCommentEvent({
+            threadId: this.threadId,
+            offset: this.recommends.length
+          }).then(res => {
             res.data.comments.forEach(item => this.recommends.push(item))
             this.hotComments = res.data.hotComments.forEach
           })
           break
         case 2:
-          _getRecommends(this.id, this.limit, this.recommends.length).then(
-            (res) => {
-              console.log(res)
-              if (res.data.comments.length === 0) {
-                this.$message.info('评论已经加载完毕，暂无更多评论')
-                // 修改评论组件，的评论提示消息
-                this.$refs.notices_recommends.recommendTitle =
-                  '评论加载完毕，暂无更多.....'
-              } else {
-                res.data.comments.forEach((item) => this.recommends.push(item))
-              }
+          _getRecommends({
+            id: this.id,
+            limit: this.limit,
+            offset: this.recommends.length,
+            timestamp: Date.now()
+          }).then(res => {
+            console.log(res)
+            if (res.data.comments.length === 0) {
+              this.$message.info('评论已经加载完毕，暂无更多评论')
+              // 修改评论组件，的评论提示消息
+              this.$refs.notices_recommends.recommendTitle =
+                '评论加载完毕，暂无更多.....'
+            } else {
+              res.data.comments.forEach(item => this.recommends.push(item))
             }
-          )
+          })
       }
     },
     getCommends () {
       // 清除评论数据
       this.recommends = []
-      _getRecommends(this.id, this.limit, 0).then((res) => {
-        res.data.comments.forEach((item) => this.recommends.push(item))
+      _getRecommends({
+        id: this.id,
+        limit: this.limit,
+        offset: 0,
+        timestamp: Date.now()
+      }).then(res => {
+        res.data.comments.forEach(item => this.recommends.push(item))
       })
     }
   }

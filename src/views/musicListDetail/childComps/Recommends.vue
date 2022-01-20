@@ -2,15 +2,7 @@
   <div class="recommond">
     <div class="desc">
       <div class="language">
-        <textarea
-          ref="textarea_comments"
-          @keypress.enter="submitCommends"
-          name
-          id
-          cols="30"
-          rows="10"
-          v-model.trim="params.content"
-        >
+        <textarea ref="textarea_comments" @keypress.enter="submitCommends" name id cols="30" rows="10" v-model.trim="params.content">
         </textarea>
       </div>
       <div class="sub" @click="submitCommends">评论</div>
@@ -25,11 +17,7 @@
         <p>精彩评论</p>
         <div class="item" v-for="(item, index) in recommends" :key="index">
           <div class="icon">
-            <img
-              :src="item.user.avatarUrl + '?param=40y40'"
-              alt=""
-              @click="goOtherUserDetail(item.user.userId)"
-            />
+            <img :src="item.user.avatarUrl + '?param=40y40'" alt="" @click="goOtherUserDetail(item.user.userId)" />
           </div>
           <div class="mess">
             <div class="top">
@@ -37,54 +25,33 @@
               {{ item.content }}
             </div>
             <!-- 楼层评论 -->
-            <div
-              v-if="item.parentCommentId !== 0"
-              :class="{
-                noneComments: noneRecoments !== index,
-                noneComments_noHeight: item.parentCommentId === 0,
-              }"
-            >
-              <song-list-comment
-                :ref="`parentCommentId${item.commentId}`"
-                class="parentCommend"
-                :id="id"
-                :Type="Type"
-                :parentCommentId="item.parentCommentId"
-              ></song-list-comment>
+            <div v-if="item.parentCommentId !== 0" :class="{
+                'noneComments': noneRecoments !== index,
+                'noneComments_noHeight': item.parentCommentId === 0,
+              }">
+              <song-list-comment :ref="`parentCommentId${item.commentId}`" class="parentCommend" :id="id" :Type="Type" :parentCommentId="item.parentCommentId"></song-list-comment>
               <div class="shaer_start" @click="setNoneComments(index)">
                 {{ getCommentTitle(index) }}
               </div>
             </div>
             <div class="bottom">
               <div class="item_time">{{ _formatDate(item.time) }}</div>
-              <div
-                class="item_right"
-                @mouseenter="showReport = index"
-                @mouseleave="showReport = -1"
-              >
+              <div class="item_right" @mouseenter="showReport = index" @mouseleave="showReport = -1">
                 <div :class="{ comments_report: showReport === index }">
                   举报
                 </div>
-                <div
-                  class="like_count"
-                  @click="setCommentsLikedCount(item.commentId)"
-                >
-                  <span v-if="likeCount !== item.commentId"
-                    ><img src="../../../assets/img/clickLike.svg" alt="" />{{
+                <div class="like_count" @click="setCommentsLikedCount(item.commentId)">
+                  <span v-if="likeCount !== item.commentId"><img src="../../../assets/img/clickLike.svg" alt="" />{{
                       item.likedCount
                     }}
                   </span>
-                  <span v-else style="color: red"
-                    ><img src="../../../assets/img/is_clickLike.svg" alt="" />{{
+                  <span v-else style="color: red"><img src="../../../assets/img/is_clickLike.svg" alt="" />{{
                       item.likedCount
                     }}
                   </span>
                 </div>
                 <div class="comments_share">分享</div>
-                <div
-                  class="reply"
-                  @click="replyComments(item.commentId, item.user.nickname)"
-                >
+                <div class="reply" @click="replyComments(item.commentId, item.user.nickname)">
                   回复
                 </div>
               </div>
@@ -102,13 +69,9 @@
 </template>
 <script>
 // 导入工具函数,处理日期
-import { formDate } from '../../../assets/common/tool'
-import {
-  sendAndRemoveComment,
-  _setCommentsLikedCount
-} from '../../../network/comment'
-const commentsContent = () =>
-  import('../../../components/common/scroll/Scroll.vue')
+import { formDate } from 'js/tool'
+import { sendAndRemoveComment, _setCommentsLikedCount } from 'api/comment'
+const commentsContent = () => import('common/scroll/Scroll.vue')
 // 楼中楼评论组件，用异步调用声明一个新的组件实例
 const songListComment = () => import('./ParentCommentId.vue')
 // 热门评论
@@ -119,27 +82,19 @@ export default {
   props: {
     recommends: {
       type: Array,
-      default () {
-        return []
-      }
+      default: () => []
     },
     hotComments: {
       type: Array,
-      default () {
-        return []
-      }
+      default: () => []
     },
     id: {
       type: String,
-      default () {
-        return ''
-      }
+      default: () => ''
     },
     Type: {
       type: Number,
-      default () {
-        return 0
-      }
+      default: () => 0
     }
   },
   data () {
@@ -223,18 +178,14 @@ export default {
     // 评论方法封装
     async _sendAndRemoveComment () {
       this.params.t = 1
-      try {
-        const {
-          data: { code }
-        } = await sendAndRemoveComment(this.params)
-        if (code === 200) {
-          this.$message.success('评论发表成功')
-          this.params.content = ''
-          this.params.commentId = ''
-          this.$emit('getCommends')
-        }
-      } catch (e) {
-        this.$message.error(e.response.data.message)
+      const {
+        data: { code }
+      } = await sendAndRemoveComment(this.params)
+      if (code === 200) {
+        this.$message.success('评论发表成功')
+        this.params.content = ''
+        this.params.commentId = ''
+        this.$emit('getCommends')
       }
     },
     // 评论点赞
@@ -255,10 +206,9 @@ export default {
       }
     },
     setNoneComments (index) {
-      if (this.noneRecoments === index) this.noneRecoments = -1
-      else {
-        this.noneRecoments = index
-      }
+      this.noneRecoments === index
+        ? (this.noneRecoments = -1)
+        : (this.noneRecoments = index)
     },
     getCommentTitle (index) {
       return this.noneRecoments === index ? '收起' : '展开'

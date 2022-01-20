@@ -3,25 +3,9 @@
     <scroll class="artist_album_scroll">
       <album-info :albumInfo="albumInfo"></album-info>
       <album-bar :tabBarList="tabBarList" @albumClick="albumClick"></album-bar>
-      <music-item
-        v-show="isShow === '歌曲列表'"
-        :musicList="musicList"
-        @musicItemClick="musicItemClick"
-      ></music-item>
-      <recommends
-        ref="artist_album_detail"
-        v-show="isShow === tabBarList[1]"
-        :recommends="recommends"
-        :hotComments="hotComments"
-        :id="id"
-        :Type="3"
-        @moreComments="moreComments"
-        @getCommends="getCommends"
-      ></recommends>
-      <album-detail
-        v-show="isShow === '专辑详情'"
-        :albumDescription="albumDescription"
-      ></album-detail>
+      <music-item v-show="isShow === '歌曲列表'" :musicList="musicList" @musicItemClick="musicItemClick"></music-item>
+      <recommends ref="artist_album_detail" v-show="isShow === tabBarList[1]" :recommends="recommends" :hotComments="hotComments" :id="id" :Type="3" @moreComments="moreComments" @getCommends="getCommends"></recommends>
+      <album-detail v-show="isShow === '专辑详情'" :albumDescription="albumDescription"></album-detail>
     </scroll>
   </div>
 </template>
@@ -78,8 +62,8 @@ export default {
   methods: {
     async initPage () {
       // 专辑详细信息，不包括动态消息(如收藏，分享等等)
-      _getAlbumDeatil({ id: this.id }).then((res) => {
-        res.data.songs.forEach((item) =>
+      _getAlbumDeatil({ id: this.id }).then(res => {
+        res.data.songs.forEach(item =>
           this.musicList.push(new AllSongDetail(item))
         )
         this.albumDescription = res.data.album.description
@@ -88,7 +72,7 @@ export default {
         this.albumInfo.albumName = res.data.album.name
         this.albumInfo.albumPublishTime = res.data.album.publishTime
       })
-      _getAlbumDynamicDetail({ id: this.id }).then((res) => {
+      _getAlbumDynamicDetail({ id: this.id }).then(res => {
         this.$nextTick(() => {
           this.tabBarList = [
             '歌曲列表',
@@ -100,7 +84,7 @@ export default {
         this.albumInfo.shareCount = `(${res.data.shareCount})`
       })
       // 评论
-      _getAlbumComments({ id: this.id }).then((res) => {
+      _getAlbumComments({ id: this.id }).then(res => {
         this.recommends = res.data.comments
         this.hotComments = res.data.hotComments
         this.commentMore = res.data.more
@@ -124,16 +108,16 @@ export default {
         id: this.id,
         limit: this.limit,
         before: this.commentTime
-      }).then((res) => {
-        res.data.comments.forEach((item) => this.recommends.push(item))
+      }).then(res => {
+        res.data.comments.forEach(item => this.recommends.push(item))
       })
     },
     // 发送评论后，重新获取评论
     getCommends () {
       // 清除评论数据
       this.recommends = []
-      _getAlbumComments({ id: this.id, limit: this.limit }).then((res) => {
-        res.data.comments.forEach((item) => this.recommends.push(item))
+      _getAlbumComments({ id: this.id, limit: this.limit }).then(res => {
+        res.data.comments.forEach(item => this.recommends.push(item))
       })
     }
   }

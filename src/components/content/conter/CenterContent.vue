@@ -1,9 +1,7 @@
 <template>
-      <div class="content">
-      <keep-alive include="allmv">
-      <left-menu ref="left_menu"></left-menu>
-      </keep-alive>
-      <right-main></right-main>
+  <div class="content">
+    <left-menu ref="left_menu"></left-menu>
+    <right-main ref="right_menu"></right-main>
   </div>
 </template>
 <script>
@@ -26,7 +24,7 @@ export default {
     emitCheckClick (path) {
       var that = this
       for (var i in that.$refs.left_menu.list) {
-        (function (e) {
+        ;(function (e) {
           if (that.$refs.left_menu.list[e].link === path) {
             setTimeout(() => {
               that.$refs.left_menu.checkClick(e)
@@ -39,11 +37,11 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.content{
-  position: relative;
-  width: 100%;
-  height: calc(100% - 54px - 58px);
-  display: flex;
-  justify-content: flex-start;
-}
+  .content {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 54px - 58px);
+    display: flex;
+    justify-content: flex-start;
+  }
 </style>

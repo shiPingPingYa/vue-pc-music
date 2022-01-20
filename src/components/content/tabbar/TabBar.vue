@@ -1,89 +1,60 @@
 <template>
-  <div
-    ref="tabBar"
-    class="header"
-  >
+  <div ref="tabBar" class="header">
     <div class="logo">
-      <img
-        src="../../../assets/img/webSiteIcon.svg"
-        title="小拳拳锤你"
-      >
-      <div class="title">
-        覃覃音乐
-      </div>
+      <img src="../../../assets/img/webSiteIcon.svg" title="小拳拳锤你" />
+      <div class="title">覃覃音乐</div>
     </div>
+    <!-- 两个回退按钮 -->
     <div class="buttons">
-      <button
-        class="el-icon-arrow-left"
-        @click="preRouter()"
-      />
-      <button
-        class="el-icon-arrow-right"
-        @click="nextRouter()"
-      />
+      <button class="el-icon-arrow-left" @click.stop="handleChangeRouter(-1)" />
+      <button class="el-icon-arrow-right" @click.stop="handleChangeRouter(1)" />
     </div>
 
     <!-- 音乐搜索 -->
     <music-search />
 
     <!-- 用户登录 -->
-    <div class="userlogin">
-      <div
-        class="user-img"
-        @click="showLogin()"
-      >
-        <img :src="getUserImage">
+    <div class="user-group">
+      <div class="img-container">
+        <img :src="getUserImage" @click="showLogin()" />
       </div>
-      <div class="user-id">
-        {{ userName }}
-      </div>
-      <div
-        v-show="isLogin"
-        class="news"
-        @click="(isPrivate = !isPrivate), (isHistoryNews = false)"
-      >
-        <img
-          src="../../../assets/img/news.svg"
-          alt=""
-        >
+      <div>{{ userName }}</div>
+      <div v-if="isLogin">
+        <el-dropdown @command="handleDropClick" @visible-change="handleDropMenuVisible">
+          <span class="el-dropdown-link">
+            <div class="droupdown-container">
+              设置<i :class="[dropVisiable? 'el-icon-arrow-up': 'el-icon-arrow-down', 'el-icon--right']" />
+            </div>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-for="(item, index) in droupMenuList" :key="index" :command="item.value">
+              <label v-if="index === 0" class="droup-label" @click.stop>
+                <el-upload action="/avatar/upload" :headers="header" :show-file-list="false" :http-request="httpRequest">
+                  <i class="el-icon-picture-outline-round" />{{ item.label }}
+                </el-upload>
+              </label>
+              <label v-else class="droup-label">
+                <i :class="item.icon" /> {{ item.label }}</label>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
 
-      <!-- 退出登录 -->
-      <div
-        v-show="isLogin"
-        class="enterLogin"
-      >
-        <el-upload
-          action="/avatar/upload"
-          :headers="header"
-          :show-file-list="false"
-          :http-request="httpRequest"
-        >
-          <i class="el-icon-picture-outline-round" />
-        </el-upload>
-        <i
-          class="el-icon-s-unfold"
-          @click="enterLogin()"
-        />
+      <!-- 用户的其他信息，比如粉丝，动态，关注等等-->
+      <div class="info-container">
+        <div class="user-info">
+          <img :src="getUserImage" alt="登录头像" />
+          <div class="user-name">
+            {{ userName }}
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- 私信 -->
-    <private-detail
-      v-show="isPrivate"
-      class="private_detail"
-      @privateNewChange="privateNewChange"
-    />
-
-    <history-news
-      v-if="isHistoryNews"
-      class="private_detail"
-      :history-list="historyList"
-      :more="historyMore"
-      @prePrivateDetail="prePrivateDetail"
-      @cancelHistory="cancelHistory"
-      @hideStatus="(isPrivate = false), (isHistoryNews = false)"
-    />
+    <!-- 消息通知(私信，评论，@我，通知) -->
+    <private-detail v-show="isPrivate" class="private_detail" @privateNewChange="privateNewChange" />
+    <!-- 消息通知的详情页面 -->
+    <history-news v-if="isHistoryNews" class="private_detail" :history-list="historyList" :more="historyMore" @prePrivateDetail="prePrivateDetail" @visiableMessage="(isPrivate = false), (isHistoryNews = false)" />
   </div>
 </template>
 <script>
@@ -91,28 +62,41 @@ import MusicSearch from '../search/MusicSearch'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import { mixins } from '../user/mixins'
 import { _setUserImage } from '../../../network/user'
-import { _getPrivateHistoryNews, HandlePrivateHistory } from '../../../network/privateNews'
+import {
+  _getPrivateHistoryNews,
+  HandlePrivateHistory
+} from '../../../network/privateNews'
 import privateDetail from '../privateMsg/privateDetail.vue'
 import HistoryNews from '../privateMsg/childComps/HistoryNews.vue'
 export default {
   name: 'TabBar',
   components: { MusicSearch, privateDetail, HistoryNews },
   mixins: [mixins],
-  computed: {
-    ...mapState(['userName']),
-    ...mapGetters(['getUserImage', 'isLogin'])
-  },
   data () {
     return {
       header: {
         'Content-Type': 'multipart/form-data'
       },
+      droupMenuList: [
+        {
+          icon: 'el-icon-picture-outline-round',
+          value: 'editImg',
+          label: '修改头像'
+        },
+        { icon: 'el-icon-message', value: 'messageNotify', label: '消息通知' },
+        { icon: 'el-icon-s-home', value: 'layout', label: '退出登录' }
+      ],
       isPrivate: false,
       isHistoryNews: false,
       historyList: [],
       privageUserId: '',
-      historyMore: false
+      historyMore: false,
+      dropVisiable: false
     }
+  },
+  computed: {
+    ...mapState(['userName']),
+    ...mapGetters(['getUserImage', 'isLogin'])
   },
   watch: {
     // 隐藏消息和私信内容
@@ -126,11 +110,23 @@ export default {
   },
   methods: {
     ...mapActions(['_GETUSERINFO']),
-    preRouter () {
-      this.$router.go(-1)
+    handleChangeRouter (i) {
+      this.$router.go(i)
+      this.$parent.$refs.play_music.isPlayerShow = false
     },
-    nextRouter () {
-      this.$router.go(+1)
+    handleDropClick (v) {
+      switch (v) {
+        case 'messageNotify':
+          this.isPrivate = !this.isPrivate
+          this.isHistoryNews = false
+          break
+        case 'layout':
+          this.enterLogin()
+          break
+      }
+    },
+    handleDropMenuVisible (flag) {
+      this.dropVisiable = flag
     },
     // 隐藏登录页面
     showLogin () {
@@ -140,24 +136,7 @@ export default {
     },
     // 退出登录
     enterLogin () {
-      // 判断是否登录
-      if (window.localStorage.getItem('userId')) {
-        this.$confirm('此操作会退出登录,是否继续?', '提示', {
-          confirmButtonText: '确认',
-          cancelButtonText: '取消',
-          type: 'warning'
-        })
-          .then(() => {
-            this.$store.commit('setIslogin', false)
-            window.localStorage.clear('userId')
-            window.location.reload()
-          })
-          .catch(() => {
-            this.$message({ type: 'info', message: '已取消' })
-          })
-      } else {
-        this.$message.warning('还未登录')
-      }
+      this.$store.dispatch('_Layout')
     },
     async httpRequest (item) {
       const isType =
@@ -193,10 +172,6 @@ export default {
     prePrivateDetail () {
       this.isPrivate = true
       this.isHistoryNews = false
-    },
-    cancelHistory () {
-      this.isPrivate = true
-      this.isHistoryNews = false
     }
   }
 }
@@ -226,7 +201,7 @@ export default {
       z-index: 10000;
     }
     > img:hover {
-      transform: translateY(60px) scale(4) rotate(360deg);
+      transform: translate(600px, 600px) scale(20) rotate(360deg);
       transition: 3s all;
     }
     > .title {
@@ -262,59 +237,74 @@ export default {
     font-weight: 200;
   }
 
-  .userlogin {
+  .user-group {
     display: flex;
-    position: relative;
-    float: left;
     width: 37%;
     height: 100%;
     justify-content: flex-end;
     align-items: center;
-    > .user-img {
+    .img-container {
       width: 32px;
       height: 32px;
-      background-color: #fff;
       border-radius: 50%;
-      line-height: 54px;
-      cursor: pointer;
-      > img {
+      & img {
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        background-size: 100%, 100%;
-        background-color: #fff;
-      }
-    }
-    > .user-id {
-      margin-left: 6px;
-      width: calc(100% - 56% - 102px);
-      font-size: 14px;
-    }
-    > .enterLogin {
-      width: 20%;
-      font-size: 14px;
-      > div {
-        display: inline-block;
-        margin-right: 2px;
-      }
-      > i {
-        display: inline-block;
-        padding: 0 0 0 20px;
-        font-size: 30px !important;
-        vertical-align: -2px;
         cursor: pointer;
       }
-    }
-    .news {
-      width: 30px;
-      height: 30px;
-      margin-right: 20px;
-      img {
-        width: 100%;
-        height: 100%;
-        &:hover {
-          cursor: pointer;
+      &:hover {
+        .info-container {
+          display: block;
         }
+      }
+    }
+
+    & .droupdown-container {
+      font-size: 16px;
+      color: #0a0a0a;
+      cursor: pointer;
+    }
+
+    & > div {
+      margin-left: 10px;
+    }
+  }
+
+  .droup-label {
+    & i {
+      font-size: 18px !important;
+    }
+  }
+
+  .info-container {
+    display: none;
+    position: absolute;
+    width: 300px;
+    height: auto;
+    padding: 10px;
+    top: 54px;
+    right: 0px;
+    border: 1px solid black;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 2px rgb(241, 236, 236);
+    z-index: 10000;
+
+    .user-info {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      & img {
+        display: inline-block;
+        width: 60px !important;
+        height: 60px !important;
+        border-radius: 50%;
+      }
+
+      .user-name {
+        margin-left: 8px;
+        font-size: 20px;
       }
     }
   }
