@@ -2,17 +2,8 @@
   <div class="me-song-list-container">
     <scroll class="me-song-list-scroll">
       <div class="music-list" v-show="isTable === 0">
-        <div
-          class="musicCategary"
-          v-for="(item, index) in songList"
-          :key="index"
-        >
-          <img
-            :src="item.coverImgUrl"
-            @click="goMusicListDetail(item.id)"
-            @mouseenter.stop="isMusicPlayIcon = index"
-            @mouseout="isMusicPlayIcon = -1"
-          />
+        <div class="musicCategary" v-for="(item, index) in songList" :key="index">
+          <img :src="item.coverImgUrl" @click="goMusicListDetail(item.id)" @mouseenter.stop="isMusicPlayIcon = index" @mouseout="isMusicPlayIcon = -1" />
           <div class="musicCategary_playCount">
             <img src="../../../../assets/img/content/erji.svg" alt="" />
             {{ item.playCount }}
@@ -23,33 +14,18 @@
               {{ item.trackCount }}
             </div>
           </div>
-          <div
-            class="music_play_icon"
-            v-show="isMusicPlayIcon === index"
-            @mouseenter.stop="isMusicPlayIcon = index"
-            @click="getMusicList(item.id)"
-          >
+          <div class="music_play_icon" v-show="isMusicPlayIcon === index" @mouseenter.stop="isMusicPlayIcon = index" @click="getMusicList(item.id)">
             <i class="el-icon-video-play"></i>
           </div>
         </div>
       </div>
       <el-row>
-        <el-table
-          :data="songList"
-          v-show="isTable === 1"
-          :show-header="isTableHeader"
-        >
+        <el-table :data="songList" v-show="isTable === 1" :show-header="isTableHeader">
           <el-table-column max-height="40px">
             <template slot-scope="scope">
               <div class="table-02-image">
-                <img
-                  :src="scope.row.coverImgUrl + '?param=60y60'"
-                  @click="goMusicListDetail(scope.row.id)"
-                />
-                <i
-                  class="el-icon-video-play"
-                  @click="getMusicList(scope.row.id)"
-                ></i>
+                <img :src="scope.row.coverImgUrl + '?param=60y60'" @click="goMusicListDetail(scope.row.id)" />
+                <i class="el-icon-video-play" @click="getMusicList(scope.row.id)"></i>
               </div>
             </template>
           </el-table-column>
@@ -67,8 +43,7 @@
           </el-table-column>
           <el-table-column>
             <template slot-scope="scope">
-              <i class="i-b-rp-4 el-icon-video-play"></i
-              >{{ scope.row.playCount }}
+              <i class="i-b-rp-4 el-icon-video-play"></i>{{ scope.row.playCount }}
             </template>
           </el-table-column>
         </el-table>
@@ -83,21 +58,11 @@
               <div>{{ item.name }}</div>
               <div class="table_03_icon">
                 <i class="el-icon-folder-add"></i>
-                <i
-                  class="el-icon-video-play"
-                  @click="getMusicList(item.id)"
-                ></i>
+                <i class="el-icon-video-play" @click="getMusicList(item.id)"></i>
               </div>
             </div>
-            <el-table
-              v-if="typeof allMusicList[item.id] == 'object'"
-              :data="allMusicList[item.id].slice(0, 5)"
-              :show-header="isTableHeader"
-            >
-              <el-table-column
-                type="index"
-                :index="indexMethod"
-              ></el-table-column>
+            <el-table v-if="typeof allMusicList[item.id] == 'object'" :data="allMusicList[item.id].slice(0, 5)" :show-header="isTableHeader">
+              <el-table-column type="index" :index="indexMethod"></el-table-column>
               <el-table-column>
                 <template>
                   <i class="el-icon-video-play i-f-r"></i>
@@ -105,11 +70,7 @@
               </el-table-column>
               <el-table-column prop="name"></el-table-column>
             </el-table>
-            <p
-              class="p-f14-c"
-              @click="goMusicListDetail(item.id)"
-              v-if="typeof allMusicList[item.id] == 'object'"
-            >
+            <p class="p-f14-c" @click="goMusicListDetail(item.id)" v-if="typeof allMusicList[item.id] == 'object'">
               查看全部{{ allMusicList[item.id].length }}首
             </p>
           </el-col>
@@ -160,19 +121,17 @@ export default {
   methods: {
     // 初始化所有歌单的音乐
     async initAllMusicList () {
-      this.songList.forEach(async (item) => {
+      this.songList.forEach(async item => {
         const {
           data: {
             playlist: { trackIds }
           }
         } = await _getMusicListDetail(item.id)
-        const ids = trackIds.map((item) => item.id).join(',')
+        const ids = trackIds.map(item => item.id).join(',')
         const {
           data: { songs }
         } = await _getSongsDetail(ids)
-        this.allMusicList[item.id] = songs.map(
-          (item) => new AllSongDetail(item)
-        )
+        this.allMusicList[item.id] = songs.map(item => new AllSongDetail(item))
       })
     },
     goMusicListDetail (id) {
@@ -199,7 +158,7 @@ export default {
   }
   .me-song-list-scroll {
     width: 100%;
-    height: 64vh;
+    height: 50vh;
     overflow: hidden;
   }
   .music-list {

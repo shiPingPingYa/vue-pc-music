@@ -3,25 +3,16 @@
     <el-header class="el_header">
       <el-row type="flex" justify="space-between">
         <el-col :span="4">
-          <img
-            class="user_image"
-            :src="getUserImage + '?param=200y200'"
-            alt=""
-          />
+          <img class="user_image" :src="getUserImage + '?param=200y200'" alt="" />
         </el-col>
         <el-col :span="19" :offset="1">
           <el-row class="header" type="flex" justify="space-between">
-            <el-col class="user_name" :span="10"
-              >{{ userName }}
-              <i :class="{ 'el-icon-male': userGender == 2 }"></i>
-              <i
-                :class="{ 'el-icon-female': userGender == 1 }"
-                style="color: #f50707"
-              ></i>
+            <el-col class="user_name" :span="10">{{ userName }}
+              <i :class="[userGender == 2 ?'el-icon-male':'el-icon-female c-r']"></i>
               <label class="user_level">Lv.{{ level }}</label>
             </el-col>
-            <el-col class="user_icon t_r" :span="9"
-              ><el-button>编辑个人信息</el-button>
+            <el-col class="user_icon t_r" :span="9">
+              <el-button>编辑个人信息</el-button>
             </el-col>
           </el-row>
           <el-row type="flex" justify="start">
@@ -45,23 +36,12 @@
       <el-row class="b-a" type="flex" justify="space-between">
         <el-col :span="4">我创建的歌单</el-col>
         <el-col class="t_r" :span="8" :offset="12">
-          <label
-            :class="[
-              'table-item',
-              tableImageIcon === index ? 'is-table-item' : '',
-            ]"
-            v-for="(item, index) in tableImageList"
-            :key="index"
-            @click="tableImageChange(index)"
-          >
+          <label :class="['table-item',tableIconIndex === index ? 'is-table-item' : '',]" v-for="(item, index) in tableIconList" :key="index" @click="handleTableIconClick(index)">
             <img :src="item.img" alt="" />
           </label>
         </el-col>
       </el-row>
-      <me-song-list
-        :songList="userSongList"
-        :isTable="tableImageIcon"
-      ></me-song-list>
+      <me-song-list :songList="userSongList" :isTable="tableIconIndex"></me-song-list>
     </el-main>
   </el-container>
 </template>
@@ -76,7 +56,7 @@ export default {
     return {
       createSongList: [],
       collectSongList: [],
-      tableImageList: [
+      tableIconList: [
         {
           img: require('../../../assets/img/table01.svg')
         },
@@ -88,7 +68,7 @@ export default {
         }
       ],
       tableImageIndex: -1,
-      tableImageIcon: 0
+      tableIconIndex: 0
     }
   },
   computed: {
@@ -104,8 +84,8 @@ export default {
     ...mapGetters(['getUserImage'])
   },
   methods: {
-    tableImageChange (i) {
-      this.tableImageIcon = i
+    handleTableIconClick (i) {
+      this.tableIconIndex = i
     }
   }
 }
@@ -181,5 +161,9 @@ export default {
   .is-table-item {
     color: white;
     background-color: #dfd9d9;
+  }
+
+  .c-r {
+    color: #f50707;
   }
 </style>

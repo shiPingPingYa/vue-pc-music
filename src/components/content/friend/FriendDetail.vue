@@ -2,7 +2,7 @@
   <div class="friend-detail">
     <!-- 左边动态区域 -->
     <attention-dynamic></attention-dynamic>
-     <!-- 右边用户关注区域 -->
+    <!-- 右边用户关注区域 -->
     <user-attention-info></user-attention-info>
   </div>
 </template>
@@ -17,10 +17,10 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.friend-detail{
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: flex-start;
-}
+  .friend-detail {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+  }
 </style>
