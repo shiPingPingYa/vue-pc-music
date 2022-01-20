@@ -11,9 +11,7 @@
     </div>
     <!-- 音乐列表区域 -->
     <scroll ref="play_music_scroll" class="play-music-list-scroll">
-      <div class="list">
-        <music-item @musicItemClick="musicItemClick" :musicList="musicList"></music-item>
-      </div>
+      <music-item @musicItemClick="musicItemClick" :musicList="musicList"></music-item>
     </scroll>
   </div>
 </template>
@@ -23,13 +21,13 @@ import Scroll from '../../common/scroll/Scroll'
 import MusicItem from '../../../views/musicListDetail/childComps/MusicItem'
 export default {
   name: 'PlayMusicList',
+  components: { Scroll, MusicItem },
   props: {
     musicList: {
       type: Array,
       default: () => []
     }
   },
-  components: { Scroll, MusicItem },
   methods: {
     cancel () {
       this.$parent.isMusicList = false
@@ -38,6 +36,9 @@ export default {
     musicItemClick (index) {
       this.$bus.$emit('playMusicListItem', index)
     }
+  },
+  updated () {
+    this.$refs.play_music_scroll.refresh()
   }
 }
 </script>
@@ -45,9 +46,9 @@ export default {
   .play-music-list {
     width: 50%;
     height: 600px;
-    box-shadow: -1px -1px 6px rgb(49, 166, 245);
     color: #0a0a0a;
     background: #f5f5f7;
+    box-shadow: -1px -1px 6px rgb(49, 166, 245);
     > .top {
       width: 100%;
       font-size: 14px;
@@ -77,11 +78,7 @@ export default {
 
   .play-music-list-scroll {
     height: calc(100% - 24px);
+    padding: 6px;
     overflow: hidden;
-  }
-
-  .list {
-    width: 100%;
-    height: 100%;
   }
 </style>

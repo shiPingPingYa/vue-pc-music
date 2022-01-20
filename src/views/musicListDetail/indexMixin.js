@@ -20,7 +20,7 @@ export const indexMixin = {
         // 获取的音乐地址并不是按照音乐的顺序返回的，所以当歌曲id和音乐地址id，一致时再把其地址添加到播放音乐列表，免得播放地址对不上
         data.some(item2 => {
           if (item2.id === item.id) {
-            playList.push({ index: item.index, title: item.name, artist: item.song, pic: item.pic, id: item.id, src: item2.url })
+            playList.push({ index: index, title: item.name, artist: item.song, pic: item.pic, id: item.id, src: item2.url })
             return true
           }
         })
@@ -28,10 +28,6 @@ export const indexMixin = {
       // 排序(升序)
       playList.sort((a, b) => a.index - b.index)
       this.$bus.$emit('PlayMusic', index, path, musicList, playList) // 触发播放音乐方法
-    },
-    play (index) {
-      console.log(this.musicList)
-      console.log(index)
     }
   }
 }

@@ -45,7 +45,8 @@ const state = {
   asyncShareImag: false,
   isLogin: false,
   // 用户等级
-  level: ''
+  level: '',
+  songListPath: '' // 播放音乐时存储的path，用于区分是否是在统一页面下面，是则不再请求接口修改音乐数据而是直接修改音乐播放列表的下标
 }
 
 try {

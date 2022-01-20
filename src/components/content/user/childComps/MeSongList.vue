@@ -80,13 +80,10 @@
   </div>
 </template>
 <script>
-import {
-  AllSongDetail,
-  _getMusicListDetail,
-  _getSongsDetail
-} from '../../../../network/detail'
-import Scroll from '../../../common/scroll/Scroll.vue'
-import { indexMixin } from '../../../../views/musicListDetail/indexMixin'
+import { _getMusicListDetail, _getSongsDetail } from 'api/detail'
+import Scroll from 'common/scroll/Scroll.vue'
+import { formDate } from 'js/tool'
+import { indexMixin } from '@/views/musicListDetail/indexMixin'
 export default {
   components: { Scroll },
   name: 'MeSongList',
@@ -131,7 +128,16 @@ export default {
         const {
           data: { songs }
         } = await _getSongsDetail(ids)
-        this.allMusicList[item.id] = songs.map(item => new AllSongDetail(item))
+        this.allMusicList[item.id] = songs.map(item => {
+          return {
+            id: item.id,
+            name: item.name,
+            album: item.al.name,
+            song: item.ar[0].name,
+            pic: item.al.picUrl,
+            time: formDate(new Date(item.dt), 'mm:ss')
+          }
+        })
       })
     },
     goMusicListDetail (id) {

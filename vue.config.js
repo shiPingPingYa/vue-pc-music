@@ -13,7 +13,7 @@ module.exports = {
   outputDir: 'dist',
 
   // 生产环境报错寻找源码不需要了
-  productionSourceMap: false,
+  productionSourceMap: process.env.NODE_ENV === 'production',
 
   configureWebpack: config => {
     // 生产环境压缩

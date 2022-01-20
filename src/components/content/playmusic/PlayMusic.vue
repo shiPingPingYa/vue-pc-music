@@ -167,7 +167,7 @@ export default {
       this.musicList = musicList
       this.playList = playList
       // 设置index
-      this.setCurrentIndex(0)
+      this.setCurrentIndex(index)
       this.$refs.music_volumn.setAudioProgress(0.8)
     })
     // 监听歌曲列表的点击,设置index,修改播放音乐
@@ -192,14 +192,11 @@ export default {
     },
     // 改变currentindex,重新设置播放音乐
     setCurrentIndex (index) {
-      var that = this
-      for (var i in this.playList) {
-        ;(function (e) {
-          if (that.playList[e].index === index) {
-            that.currentIndex = e
-          }
-        })(i)
-      }
+      this.playList.some((item, i) => {
+        if (item.index === index) {
+          return (this.currentIndex = i)
+        }
+      })
     },
     // 显示歌词组件
     playerShow () {
@@ -498,8 +495,8 @@ export default {
     }
     > .play-music-list {
       position: absolute;
-      bottom: 58px;
-      right: 0;
+      bottom: 60px;
+      right: 2px;
     }
   }
 
