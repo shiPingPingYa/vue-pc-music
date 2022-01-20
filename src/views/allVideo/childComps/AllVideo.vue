@@ -55,26 +55,29 @@ export default {
       this.initVideoList(false)
     },
     async initVideoList (flag) {
-      var params = {
-        offset: this.videoList.length
-      }
+      this.$refs.scroll.scrollTo(0, 0, 0)
+      var id
       flag
-        ? (params.id = this.videoGroupListTagId)
-        : (params.id = this.videoGroupList[this.currentIndex].id)
+        ? (id = this.videoGroupListTagId)
+        : (id = this.videoGroupList[this.currentIndex].id)
       // 清空视频列表
       this.videoList = []
-      const {
-        data: { datas }
-      } = await _getGroupVideo(params)
-      this.videoList = datas.map(item => {
-        return {
-          id: item.data.vid,
-          cover: item.data.coverUrl,
-          title: item.data.title,
-          count: item.data.playTime,
-          user: item.data.creator
-        }
-      })
+      // 之所以加for循环5次获取数据，是因为视频数据一次请求只是会返回8条视频数据
+      for (let i = 0; i < 5; i++) {
+        const {
+          data: { datas }
+        } = await _getGroupVideo({ id, offset: i * 8 + (this.page - 1) * 40 })
+        datas.forEach(item => {
+          this.videoList.push({
+            id: item.data.vid,
+            cover: item.data.coverUrl,
+            title: item.data.title,
+            count: item.data.playTime,
+            user: item.data.creator
+          })
+        })
+      }
+
       this.$refs.scroll.refresh()
     },
     // 导航条点击事件，重新修改导航条显示下标
@@ -84,17 +87,16 @@ export default {
       this.page = 1
       this.initVideoList(false)
     },
-    // 获取对应页码数据
-    handleCurrentChange (val) {
-      this.$refs.scroll.refresh()
-      this.page = val
-      this.initVideoList(false)
-    },
     // 热门视频标签的点击
     handleSelectChange () {
       this.currentIndex = -1
       this.page = 1
       this.initVideoList(true)
+    },
+    // 获取对应页码数据
+    handleCurrentChange (val) {
+      this.page = val
+      this.initVideoList(false)
     }
   }
 }
