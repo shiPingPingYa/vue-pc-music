@@ -23,7 +23,7 @@
     <!--卡片区域的表格-->
     <div class="center">
       <table cellspacing="0">
-        <tr v-for="(item,index) in musicList" :key="index" :class="{backColor:setBackColor(index)}">
+        <tr v-for="(item,index) in musicList" :key="index" :class="{backColor:setMusicItemBack(index)}">
           <td>{{setSerial(index)}} </td>
           <td>{{item.name}} </td>
           <td>{{item.song}} </td>
@@ -36,9 +36,9 @@
 </template>
 <script>
 import { _getMusicListDetail, _getSongsDetail } from 'api/detail'
-// // 格式化日期
+// 格式化日期
 import { formDate } from 'js/tool'
-// // 处理隔行变色
+// 处理隔行变色
 import { tableMixin } from '../../musicListDetail/tableMixin'
 // 音乐混入
 import { indexMixin } from '../../musicListDetail/indexMixin'
@@ -116,6 +116,9 @@ export default {
     // 混入音乐
     handlePlayIconClick () {
       this.playMusic()
+    },
+    setMusicItemBack (i) {
+      return i % 2 !== 0
     }
   }
 }
