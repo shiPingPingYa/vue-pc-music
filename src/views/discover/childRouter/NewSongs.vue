@@ -16,8 +16,8 @@
         <div class="music">
           <table>
             <tbody>
-              <tr v-for="(item,index) in musicList" :key="index" :class="{'backColor':setBackColor(index)}" @click="playMusicItem(index)">
-                <td>{{setSerial(index)}}</td>
+              <tr v-for="(item,index) in musicList" :key="index" :class="{'backColor':setMusicItemBack(index)}" @click="playMusicItem(index)">
+                <td>{{setMusicItemIndex(index)}}</td>
                 <td>
                   <div class="backMask">
                     <img :src="item.pic + '?param=50y50'" alt="">
@@ -42,7 +42,6 @@ import Scroll from 'common/scroll/Scroll'
 import { _getTopSongs } from 'api/discover'
 import { _getSongsDetail } from 'api/detail'
 import { formDate } from 'js/tool'
-import { tableMixin } from '../../musicListDetail/tableMixin' // 设置音乐条目背景方法混入
 import { indexMixin } from '../../musicListDetail/indexMixin' // 播放音乐方法混入
 export default {
   name: 'NewSongs',
@@ -65,7 +64,7 @@ export default {
       musicList: []
     }
   },
-  mixins: [tableMixin, indexMixin],
+  mixins: [indexMixin],
   created () {
     this.initNewMusicList()
   },
@@ -109,6 +108,12 @@ export default {
     // 播放选中音乐
     playMusicItem (index) {
       this.$bus.$emit('playMusicListItem', index)
+    },
+    setMusicItemBack (i) {
+      return i % 2 !== 0
+    },
+    setMusicItemIndex (i) {
+      return i + 1 <= 9 ? `0${i + 1}` : i + 1
     }
   }
 }
