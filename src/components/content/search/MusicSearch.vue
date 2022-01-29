@@ -29,7 +29,7 @@ import { debounce } from '../../../assets/common/tool'
 export default {
   data () {
     return {
-      searchList: ['海底', '世间美好与你环环相扣', '灰狼'],
+      searchList: [],
       keywords: '',
       isShow: false,
       isSuggest: false,
@@ -49,6 +49,11 @@ export default {
       }
     }
   },
+  created () {
+    var searchList = localStorage.getItem('searchList')
+    if (searchList) this.searchList = searchList.split(',')
+    else this.searchList = ['海底', '世间美好与你环环相扣', '灰狼']
+  },
   methods: {
     // input输入内容后，发送请求,防抖输入值的时候多次向服务器请求数据
     suggest: debounce(async function () {
@@ -59,7 +64,7 @@ export default {
         })
         this.isSuggest = true
       }
-    }, 200),
+    }, 400),
     // 鼠标离开input，隐藏热搜
     leave () {
       this.isShow = false
@@ -77,13 +82,13 @@ export default {
     // 点击删除图标清除热搜内容
     del () {
       this.searchList = []
+      localStorage.setItem('searchList', '')
     },
     // 添加热搜记录,并跳转搜索的内容
     keyEnter () {
       if ((this.keywords ?? '') === '') {
         return this.$message.info('搜索内容不能为空，请输入搜索内容!!!')
       }
-      this.searchList.unshift(this.keywords)
       this.goSearchDetail(this.keywords)
     },
     // 热搜历史记录的跳转
@@ -99,6 +104,9 @@ export default {
       this.isSuggest = false
     },
     goSearchDetail (val = '') {
+      this.searchList.unshift(val)
+      this.searchList = [...new Set(this.searchList)]
+      localStorage.setItem('searchList', this.searchList)
       this.$router.push('/search/' + val)
       this.handleInputBlur()
     },

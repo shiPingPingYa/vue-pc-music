@@ -30,8 +30,8 @@ export default {
   data () {
     return {
       hoverBtnDisplay: 'none',
-      index: '',
-      list: []
+      index: 0,
+      list: ['']
     }
   },
   created () {
@@ -61,8 +61,11 @@ export default {
     .alert_container {
       position: relative;
       width: 100%;
+      height: 600px;
+      background: black;
       img {
         width: 100%;
+        height: 600px;
       }
     }
 
@@ -72,10 +75,11 @@ export default {
       position: absolute;
       width: 60px;
       height: 60px;
-      top: 50%;
+      top: 270px;
       z-index: 10;
       img {
-        background-size: 100%, 100%;
+        width: 60px;
+        height: 60px;
         color: #fff;
       }
       &:hover {
