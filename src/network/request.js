@@ -32,7 +32,6 @@ request.interceptors.response.use(
       return res
     } else if (res.data.code === 301) {
       Message.error(res.data.msg)
-      store.dispatch('_Layout')
     } else {
       Message.error(res.data.msg)
       if (res.data.data.dialog) {
@@ -48,6 +47,7 @@ request.interceptors.response.use(
         type: 'error',
         message: err.response.data.msg
       })
+      store.dispatch('_Layout')
     } else {
       Message({
         type: 'error',
