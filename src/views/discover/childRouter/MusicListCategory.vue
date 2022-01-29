@@ -42,7 +42,8 @@ export default {
       page: 1,
       musicList: [],
       HighqualityOptions: '',
-      HighqualityName: ''
+      HighqualityName: '',
+      more: true // 加载后，判断有无数据还未加载
     }
   },
   components: {
@@ -74,6 +75,7 @@ export default {
     },
     // 获取音乐歌单
     getMusicSongSheet: throttled(async function (flag) {
+      if (!this.more) return this.$message.info('暂无更多歌单！！！')
       this.page++
       var params = {
         limit: this.limit * this.page
@@ -84,9 +86,10 @@ export default {
         : (params.cat = this.tags[this.currentIndex].name)
 
       const {
-        data: { playlists }
+        data: { playlists, more }
       } = await _getHighquality(params)
       this.musicList = playlists
+      this.more = more
       this.$refs.scroll.finishPullUp()
     }, 800),
     // 导航栏的点击事件
