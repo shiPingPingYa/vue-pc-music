@@ -24,13 +24,14 @@ export default {
     // HomePageRecommends
   },
   methods: {
-    ...mapMutations(['showLogin']),
+    ...mapMutations(['showLogin', 'setIslogin']),
     initUserSongList () {
       // 判断是否有userid有userid，通过userid获取下用户歌单和用户信息
       if (localStorage.getItem('userId')) {
         this.$store.dispatch('_GETUSERINFO', localStorage.getItem('userId'))
       } else {
         this.$message.info('已退出登录,如需获取用户歌单请重新登录')
+        this.setIslogin(false)
         this.showLogin(true)
       }
     }
