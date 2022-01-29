@@ -42,19 +42,10 @@ request.interceptors.response.use(
   },
   err => {
     if (!err.response) return Message.error('网络错误，请检查网络!!!')
-    const { code } = err.response.data
-    if (code === 301) {
-      Message({
-        type: 'error',
-        message: err.response.data.msg
-      })
-    } else {
-      Message({
-        type: 'error',
-        message: err.message,
-        center: true
-      })
-    }
+    Message({
+      type: 'error',
+      message: err.response.data.message || err.message
+    })
     return Promise.reject(err)
   }
 )

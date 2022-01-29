@@ -7,12 +7,7 @@
           <div class="topic_detail_content">
             <div class="topic_text">#{{ title }}#</div>
             <div class="topic_count">{{ participateCount }}人参与</div>
-            <el-button
-              icon="el-icon-edit"
-              style="width: 80%; margin-left: 10%; color: red"
-              @click="shareTopicEvent('参与')"
-              >立即参与</el-button
-            >
+            <el-button icon="el-icon-edit" style="width: 80%; margin-left: 10%; color: red" @click="shareTopicEvent('参与')">立即参与</el-button>
           </div>
           <div class="share_topic" @click="shareTopicEvent('分享')">
             <img src="../../../assets/img/share_topic.svg" alt="" />
@@ -20,10 +15,7 @@
         </div>
         <p>热门动态</p>
         <div>
-          <event-dynamic
-            :dynamicList="dynamicList"
-            @shaerContentImageChange="shaerContentImageChange"
-          ></event-dynamic>
+          <event-dynamic :dynamicList="dynamicList" @shaerContentImageChange="shaerContentImageChange"></event-dynamic>
         </div>
         <div class="dynamic-over" v-show="dynamicList.length === 0">
           该话题暂无动态
@@ -34,11 +26,7 @@
       <top-topic :isTitle="true" :limit="10"></top-topic>
     </div>
     <!-- 展示分享图片 -->
-    <alert-image
-      v-if="asyncShareImag"
-      :index="shareContentImgIndex"
-      :urlList="shareContentImg"
-    ></alert-image>
+    <alert-image v-if="asyncShareImag" :imgIndex="imgIndex" :imgList="imgList"></alert-image>
   </div>
 </template>
 <script>
@@ -59,8 +47,8 @@ export default {
       title: '',
       id: '',
       dynamicList: [],
-      shareContentImgIndex: 0,
-      shareContentImg: []
+      imgIndex: 0,
+      imgList: []
     }
   },
   watch: {
@@ -91,15 +79,15 @@ export default {
       this.coverPCListUrl = coverPCListUrl
       this.participateCount = participateCount
       this.title = title
-      _getTopicEvent({ actid: this.id }).then((res) => {
-        res.data.events.forEach((item) =>
+      _getTopicEvent({ actid: this.id }).then(res => {
+        res.data.events.forEach(item =>
           this.dynamicList.push(new AttentionDynamic(item))
         )
       })
     },
     shaerContentImageChange (urlIndex, urlList) {
-      this.shareContentImgIndex = urlIndex
-      this.shareContentImg = urlList
+      this.imgIndex = urlIndex
+      this.imgList = urlList
     },
     shareTopicEvent (msg) {
       this.$message.info(`暂无${msg}动态功能`)
@@ -194,7 +182,7 @@ export default {
 
   .dynamic-over {
     width: 100%;
-    padding: 100px ;
+    padding: 100px;
     font-size: 28px;
   }
 </style>
