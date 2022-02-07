@@ -13,14 +13,22 @@
 
       <transition name="fade-in-linear">
         <!-- 音乐榜单评论信息 -->
-        <song-list-recommends ref="songList_recommends" :recommends="recommends" :hotComments="hotComments" :id="id" :Type="2" v-show="tabBarIndex == 1" @moreComments="moreComments" @getCommends="getCommends"></song-list-recommends>
+        <song-list-recommends
+          ref="songList_recommends"
+          :recommends="recommends"
+          :hotComments="hotComments"
+          :id="id"
+          :Type="2"
+          v-show="tabBarIndex == 1"
+          @moreComments="moreComments"
+          @getCommends="getCommends"
+        ></song-list-recommends>
       </transition>
 
       <transition name="fade-in-linear">
         <!-- 音乐榜单收藏者 -->
         <music-list-like :subs="subs" v-show="tabBarIndex == 2"></music-list-like>
       </transition>
-
     </scroll>
   </div>
 </template>
@@ -35,12 +43,7 @@ import MusicItem from './childComps/MusicItem'
 // 导入歌单收藏组件
 import MusicListLike from './childComps/MusicListLike'
 // 导入数据请求
-import {
-  _getMusicListDetail,
-  _getSongsDetail,
-  _getRecommends,
-  _getSub
-} from 'api/detail'
+import { _getMusicListDetail, _getSongsDetail, _getRecommends, _getSub } from 'api/detail'
 // 混入
 import { indexMixin } from './indexMixin'
 import { formDate } from 'js/tool'
@@ -174,8 +177,7 @@ export default {
       if (comments.length === 0) {
         this.$message.info('评论已经加载完毕，暂无更多评论')
         // 修改评论组件，的评论提示消息
-        this.$refs.songList_recommends.recommendTitle =
-          '评论加载完毕，暂无更多.....'
+        this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....'
       } else comments.forEach(item => this.recommends.push(item))
     },
     // 发送评论后，重新获取评论
@@ -200,16 +202,16 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  .music-list-detail {
-    margin: 4% auto;
-    width: 90%;
-    height: 94%;
-    color: #01060a;
-    overflow: hidden;
-  }
+.music-list-detail {
+  margin: 4% auto;
+  width: 90%;
+  height: 94%;
+  color: #01060a;
+  overflow: hidden;
+}
 
-  .musiclist-detail {
-    height: 100%;
-    overflow: hidden;
-  }
+.musiclist-detail {
+  height: 100%;
+  overflow: hidden;
+}
 </style>
