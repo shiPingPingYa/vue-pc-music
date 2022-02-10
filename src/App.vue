@@ -1,28 +1,13 @@
 <template>
   <div id="app">
-    <keep-alive>
-      <tab-bar ref="tabBar"></tab-bar>
-    </keep-alive>
-    <center-content ref="center_content"></center-content>
-    <play-music ref="play_music"></play-music>
-    <!-- <home-page-recommends></home-page-recommends> -->
+    <router-view />
   </div>
 </template>
 
 <script>
-import TabBar from '../src/components/content/tabbar/TabBar'
-import CenterContent from '../src/components/content/conter/CenterContent'
-import PlayMusic from '../src/components/content/playmusic/PlayMusic'
-// import HomePageRecommends from '../src/components/HomePageRecommends'
 import { mapMutations } from 'vuex'
 export default {
   name: 'App',
-  components: {
-    TabBar,
-    CenterContent,
-    PlayMusic
-    // HomePageRecommends
-  },
   methods: {
     ...mapMutations(['showLogin', 'setIslogin']),
     initUserSongList () {
@@ -53,19 +38,19 @@ export default {
 </script>
 
 <style>
-  ul li {
-    list-style: none;
-  }
-  #app {
-    position: relative;
-    margin: 0 10% 0 10%;
-    width: 80%;
-    height: 100%;
-    opacity: 0.9;
-  }
+ul li {
+  list-style: none;
+}
+#app {
+  position: relative;
+  margin: 0 10% 0 10%;
+  width: 80%;
+  height: 100%;
+  opacity: 0.9;
+}
 
-  .w-120 {
-    width: 120px;
-    margin-top: 10px;
-  }
+.w-120 {
+  width: 120px;
+  margin-top: 10px;
+}
 </style>
