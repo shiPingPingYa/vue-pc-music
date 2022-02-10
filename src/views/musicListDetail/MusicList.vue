@@ -36,7 +36,7 @@ export default {
   computed: {
     ...mapGetters(['isLogin'])
   },
-  data () {
+  data() {
     return {
       getDate: '',
       getDay: '',
@@ -45,7 +45,7 @@ export default {
   },
   watch: {
     '$route.path': {
-      handler (newPath) {
+      handler(newPath) {
         if (newPath === '/discover/individ') this.isDayMusic = true
         else {
           this.isDayMusic = false
@@ -54,27 +54,27 @@ export default {
       deep: true
     }
   },
-  created () {
+  created() {
     const date = new Date()
     this.getDate = date.getDate()
     this.getDay = this.isGetDay(date.getDay())
   },
   methods: {
     // 跳转到推荐详情页
-    goDayMusicListDetail () {
+    goDayMusicListDetail() {
       this.$router.push('/daymusic')
     },
-    getImgUrl (item) {
+    getImgUrl(item) {
       return item.picUrl || item.coverImgUrl
     },
     // 条状到音乐详情页
-    goMusicListDetail (index) {
+    goMusicListDetail(index) {
       this.$router.push({
         path: '/musiclistdetail/' + this.totalList[index].id,
         query: { songId: this.totalList[index].id }
       })
     },
-    isGetDay (day) {
+    isGetDay(day) {
       switch (day) {
         case 0:
           return '星期天'
@@ -96,68 +96,68 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  .music-lsit {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
+.music-lsit {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 
-  .song-item {
-    padding-bottom: 10px;
-    position: relative;
-    width: 24%;
-    max-width: 230px;
-    font-size: 13px;
-    color: #01060a;
+.song-item {
+  padding-bottom: 10px;
+  position: relative;
+  width: 24%;
+  max-width: 230px;
+  font-size: 13px;
+  color: #01060a;
+  cursor: pointer;
+  > img {
+    width: 100%;
+    max-height: 250px;
+    background-size: 100%, 100%;
+  }
+}
+
+.count {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  text-align: right;
+  color: #fafbf5;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
+  > img {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-size: 100%, 100%;
+  }
+}
+
+.day_music {
+  position: relative;
+  width: 230px;
+  height: 267px;
+  text-align: center;
+  &&:hover {
     cursor: pointer;
-    > img {
-      width: 100%;
-      max-height: 250px;
-      background-size: 100%, 100%;
-    }
   }
-
-  .count {
+  .day_music_back {
+    width: 229px;
+    height: 229px;
+    border: 1px solid #b8b6b6;
+  }
+  .day_music_time {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 20px;
-    line-height: 20px;
-    text-align: right;
-    color: #fafbf5;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
-    > img {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      background-size: 100%, 100%;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    .day_music_day {
+      font-size: 100px;
+      color: red;
     }
   }
-
-  .day_music {
-    position: relative;
-    width: 230px;
-    height: 267px;
-    text-align: center;
-    &&:hover {
-      cursor: pointer;
-    }
-    .day_music_back {
-      width: 229px;
-      height: 229px;
-      border: 1px solid #b8b6b6;
-    }
-    .day_music_time {
-      position: absolute;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      .day_music_day {
-        font-size: 100px;
-        color: red;
-      }
-    }
-  }
+}
 </style>
