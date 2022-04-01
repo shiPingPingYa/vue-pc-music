@@ -5,7 +5,7 @@
       <div class="content_item" v-for="item in list" :key="item.userId" @click="privateNewsChange(item.userId)">
         <div class="is_new_private" v-if="item.newMsgCount !== 0"></div>
         <div class="private_img">
-          <img :src="item.avatarurl + '?param=40y40'" alt="" />
+          <img src="" :data-src="item.avatarurl + '?param=40y40'" alt="" v-imgLazy />
         </div>
         <div class="private_header">
           <div class="private_name">{{ item.userName }}</div>
