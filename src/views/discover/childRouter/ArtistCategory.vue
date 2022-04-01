@@ -90,13 +90,11 @@ export default {
     }, 800),
     handleAreaClick (index) {
       this.areaIndex = index
-      this.resetIndex()
       this.$refs.scroll.scrollTo(0, 0, 200)
       this.getArtist()
     },
     handleTypeClick (index) {
       this.typeIndex = index
-      this.resetIndex()
       this.$refs.scroll.scrollTo(0, 0, 200)
       this.getArtist()
     }

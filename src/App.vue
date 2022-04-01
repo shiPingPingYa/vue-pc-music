@@ -28,19 +28,19 @@ export default {
 </script>
 
 <style>
-ul li {
-  list-style: none;
-}
-#app {
-  position: relative;
-  margin: 0 10% 0 10%;
-  width: 80%;
-  height: 100%;
-  opacity: 0.9;
-}
+  ul li {
+    list-style: none;
+  }
+  #app {
+    position: relative;
+    margin: 0 10% 0 10%;
+    width: 80%;
+    height: 100%;
+    opacity: 0.9;
+  }
 
-.w-120 {
-  width: 120px;
-  margin-top: 10px;
-}
+  .w-120 {
+    width: 120px;
+    margin-top: 10px;
+  }
 </style>

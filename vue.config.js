@@ -16,6 +16,34 @@ module.exports = {
     open: true,
     port: '8080'
   },
+  lintOnSave: false, // 是否需要eslint提示
+  chainWebpack: config => {
+    config.when(process.env.NODE_ENV === 'production', config => {
+      config.optimization.minimizer('terser').tap(args => {
+        // 注释console.*
+        args[0].terserOptions.compress.drop_console = true
+        // remove debugger
+        args[0].terserOptions.compress.drop_debugger = true
+        // 移除 console.log
+        args[0].terserOptions.compress.pure_funcs = ['console.log']
+        // 去掉注释 如果需要看chunk-vendors公共部分插件，可以注释掉就可以看到注释了
+        args[0].terserOptions.output = {
+          comments: false
+        }
+        return args
+      })
+    })
+    config.resolve.alias
+      .set('common', resolve('src/components/common'))
+      .set('js', resolve('src/assets/common'))
+      .set('assets', resolve('src/assets'))
+      .set('api', resolve('src/network'))
+      .set('@', resolve('src/'))
+      .end()
+  }
+
+  // config.plugin('webpack-bundle-analyzer') //首页文件大小检测
+  //   .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
   // configureWebpack: config => {
   //   // 生产环境压缩
   //   if (process.env.NODE_ENV === 'production') {
@@ -31,17 +59,4 @@ module.exports = {
   //     config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
   //   }
   // },
-
-  chainWebpack: config => {
-    config.resolve.alias
-      .set('common', resolve('src/components/common'))
-      .set('js', resolve('src/assets/common'))
-      .set('assets', resolve('src/assets'))
-      .set('api', resolve('src/network'))
-      .set('@', resolve('src/')).end()
-    // config.plugin('webpack-bundle-analyzer') //首页文件大小检测
-    //   .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
-  },
-
-  lintOnSave: false
 }
