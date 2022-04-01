@@ -17,7 +17,7 @@
         <p>精彩评论</p>
         <div class="item" v-for="(item, index) in recommends" :key="index">
           <div class="icon">
-            <img :src="item.user.avatarUrl + '?param=40y40'" alt="" @click="goOtherUserDetail(item.user.userId)" />
+            <img src="" :data-src="item.user.avatarUrl + '?param=40y40'" alt="" @click="goOtherUserDetail(item.user.userId)" v-imgLazy />
           </div>
           <div class="mess">
             <div class="top">
@@ -154,9 +154,7 @@ export default {
         ) {
           this._sendAndRemoveComment()
         } else {
-          this.$message.info(
-            '内容不能为空，且必须按照@：name名，形式来评论,请重新点击回复'
-          )
+          this.$message.info('内容不能为空，且必须按照@：name名，形式来评论,请重新点击回复')
           this.params.content = ''
           this.reply = 0
         }
@@ -206,9 +204,7 @@ export default {
       }
     },
     setNoneComments (index) {
-      this.noneRecoments === index
-        ? (this.noneRecoments = -1)
-        : (this.noneRecoments = index)
+      this.noneRecoments === index ? (this.noneRecoments = -1) : (this.noneRecoments = index)
     },
     getCommentTitle (index) {
       return this.noneRecoments === index ? '收起' : '展开'
@@ -325,7 +321,7 @@ export default {
       padding: 0 10px;
     }
     div::after {
-      content: "";
+      content: '';
       position: absolute;
       display: inline-block;
       width: 1px;

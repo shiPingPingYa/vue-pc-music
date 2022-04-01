@@ -3,7 +3,7 @@
     <div class="content-list" v-if="list.length">
       <div class="content_item" v-for="item in list" :key="item.id">
         <div class="private_img">
-          <img :src="item.avatarUrl + '?param=40y40'" alt="" />
+          <img src="" :data-src="item.avatarUrl + '?param=40y40'" alt="" v-imgLazy />
         </div>
         <div class="private_header">
           <div class="private_comments_name">{{ item.nickname }}</div>

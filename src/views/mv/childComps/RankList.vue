@@ -2,7 +2,7 @@
   <div class="simi">
     <div class="simi-item" @click="goPlayMvDetail(item.id)">
       <div class="left">
-        <img :src="item.cover + '?param=150y85'" alt="">
+        <img src="" :data-src="item.cover + '?param=150y85'" alt="" v-imgLazy>
         <div class="count">
           <img src="../../../assets/img/leftmenu/shiping.svg" alt="">
           <div class="play-count">{{item.count}} </div>
@@ -53,6 +53,7 @@ export default {
       width: 150px;
       > img {
         width: 100%;
+        min-height: 60px;
       }
       > .count {
         position: absolute;

@@ -10,6 +10,7 @@ import 'assets/css/index.css'
 // 导入elementui
 import '../src/plugins/element'
 import { formDate } from './assets/common/tool'
+import imgLazy from './dirctives/imgLazy'
 
 Vue.config.productionTip = false
 // 挂载axios
@@ -17,6 +18,7 @@ Vue.prototype.$http = axios
 // 创建事件中心
 Vue.prototype.$bus = new Vue()
 Vue.prototype.formDate = formDate
+Vue.directive('imgLazy', imgLazy)
 
 new Vue({
   router,

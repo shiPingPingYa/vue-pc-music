@@ -6,7 +6,7 @@
           <img src="../../../assets/img/leftmenu/shiping.svg" alt="">
           <div class="play-count">{{item.count}} </div>
         </div>
-        <img :src="item.cover + '?param=321y181'" alt="">
+        <img src="" :data-src="item.cover + '?param=321y181'" alt="" v-imgLazy>
         <div class="desc">
           <p>{{item.name}} </p>
           <span>{{item.artist}} </span>
@@ -65,6 +65,7 @@ export default {
     font-size: 14px;
     > img {
       width: 100%;
+      min-height: 100px;
       background-size: 100%, 100%;
       cursor: pointer;
     }

@@ -6,7 +6,7 @@
           <img src="../../../assets/img/leftmenu/shiping.svg" alt="">
           <div class="play-count">{{item.count}} </div>
         </div>
-        <img :src="item.cover" alt="">
+        <img src="" :data-src="item.cover" alt="" v-imgLazy>
         <div class="desc">
           <p>{{item.title}} </p>
         </div>
@@ -54,18 +54,19 @@ export default {
     display: flex;
     width: 100%;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
   .video-item {
     position: relative;
     margin-top: 8px;
-    width: 230px;
+    margin-right: 1%;
+    width: 23%;
     font-size: 14px;
     cursor: pointer;
     > img {
-      width: 230px;
-      height: 130px;
+      width: 100%;
+      min-height: 100px;
       background-size: 100%, 100%;
     }
   }
