@@ -1,7 +1,7 @@
 <template>
   <div class="music-list">
     <div class="music-item" v-for="(item,index) in artistList" :key="index" @click="goArtistDetail(item)">
-      <img :src="item.picUrl +'?param=326y286' ">
+      <img src="" :data-src="item.picUrl +'?param=326y286'" v-imgLazy>
       <div class="name">{{item.name}} </div>
     </div>
   </div>
@@ -45,6 +45,7 @@ export default {
       > img {
         width: 100%;
         height: 100%;
+        min-height: 100px;
         background-size: 100%, 100%;
       }
     }

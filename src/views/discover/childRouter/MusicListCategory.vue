@@ -25,11 +25,7 @@ import Scroll from '../../../components/common/scroll/Scroll'
 // 导入歌单列表
 import MusicList from '../../musicListDetail/MusicList'
 // 导入数据接口，获取热门标签，获取热门标签歌单列表
-import {
-  _getHighquality,
-  _getMusicListHot,
-  _getHighqualityTags
-} from '../../../network/detail'
+import { _getHighquality, _getMusicListHot, _getHighqualityTags } from '../../../network/detail'
 // 歌单节流
 import { throttled } from '../../../assets/common/tool'
 export default {
@@ -62,10 +58,7 @@ export default {
       this.tags = tags
       const {
         data: { playlists }
-      } = await _getHighquality(
-        this.tags[this.currentIndex].name,
-        this.limit * this.page
-      )
+      } = await _getHighquality(this.tags[this.currentIndex].name, this.limit * this.page)
       // 获取精品歌单标签
       const {
         data: { tags: otherTags }
@@ -81,9 +74,7 @@ export default {
         limit: this.limit * this.page
       }
       // flag区分是精品歌单标签还是普通的tabbar
-      flag
-        ? (params.cat = this.HighqualityName)
-        : (params.cat = this.tags[this.currentIndex].name)
+      flag ? (params.cat = this.HighqualityName) : (params.cat = this.tags[this.currentIndex].name)
 
       const {
         data: { playlists, more }
@@ -94,6 +85,8 @@ export default {
     }, 800),
     // 导航栏的点击事件
     handleTabClick (index) {
+      this.musicList = []
+      this.more = true
       this.currentIndex = index
       this.page = 1
       this.$refs.scroll.scrollTo(0, 0, 200)
@@ -101,6 +94,8 @@ export default {
     },
     // 下拉列表点击事件
     handleSelectChange () {
+      this.musicList = []
+      this.more = true
       this.currentIndex = -1
       this.page = 1
       this.$refs.scroll.scrollTo(0, 0, 200)

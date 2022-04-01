@@ -13,16 +13,8 @@
 
       <transition name="fade-in-linear">
         <!-- 音乐榜单评论信息 -->
-        <song-list-recommends
-          ref="songList_recommends"
-          :recommends="recommends"
-          :hotComments="hotComments"
-          :id="id"
-          :Type="2"
-          v-show="tabBarIndex == 1"
-          @moreComments="moreComments"
-          @getCommends="getCommends"
-        ></song-list-recommends>
+        <song-list-recommends ref="songList_recommends" :recommends="recommends" :hotComments="hotComments" :id="id" :Type="2" v-show="tabBarIndex == 1"
+          @moreComments="moreComments" @getCommends="getCommends"></song-list-recommends>
       </transition>
 
       <transition name="fade-in-linear">
@@ -202,16 +194,16 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.music-list-detail {
-  margin: 4% auto;
-  width: 90%;
-  height: 94%;
-  color: #01060a;
-  overflow: hidden;
-}
+  .music-list-detail {
+    margin: 4% auto;
+    width: 90%;
+    height: 94%;
+    color: #01060a;
+    overflow: hidden;
+  }
 
-.musiclist-detail {
-  height: 100%;
-  overflow: hidden;
-}
+  .musiclist-detail {
+    height: 100%;
+    overflow: hidden;
+  }
 </style>

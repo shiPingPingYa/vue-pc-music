@@ -3,7 +3,7 @@
     <div class="musiclist-like" v-if="subs.length !== 0">
       <div class="content">
         <div class="item" v-for="(item,index) in subs " :key="index">
-          <img :src="item.avatarUrl + '?param=60y60'" alt="">
+          <img src="" :data-src="item.avatarUrl + '?param=60y60'" alt="" v-imgLazy>
           <div>{{item.nickname}}</div>
         </div>
       </div>

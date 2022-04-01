@@ -3,8 +3,8 @@
     <p class="top">{{privateContent.name}} </p>
     <div class="content">
       <div class="private-item" v-for="(item,index) in privateContent.result" :key="index" @click="goPlayMVDetail(item.id)">
-        <img :src="item.picUrl + '?param=300y111'" alt="">
-        <div class="icon">
+        <img src='' :data-src=" item.picUrl + '?param=300y111'" alt="" v-imgLazy>
+        <div class=" icon">
           <img src="../../../assets/img/leftmenu/shiping.svg" alt="">
         </div>
         <div class="desc">

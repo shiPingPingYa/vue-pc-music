@@ -12,7 +12,7 @@
     <!-- 歌单列表 -->
     <div class="song-item" v-for="(item, index) in totalList" :key="index" @click="goMusicListDetail(index)">
       <!-- 背景图 -->
-      <img :src="getImgUrl(item) + '?param=230y230'" alt="" />
+      <img src="" :data-src="getImgUrl(item) + '?param=230y230'" alt="" v-imgLazy />
       <!-- 标题 -->
       <div class="title">{{ item.name }}</div>
       <!-- 右上背景 -->
@@ -96,68 +96,69 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.music-lsit {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.song-item {
-  padding-bottom: 10px;
-  position: relative;
-  width: 24%;
-  max-width: 230px;
-  font-size: 13px;
-  color: #01060a;
-  cursor: pointer;
-  > img {
+  .music-lsit {
     width: 100%;
-    max-height: 250px;
-    background-size: 100%, 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
-}
 
-.count {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 20px;
-  line-height: 20px;
-  text-align: right;
-  color: #fafbf5;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
-  > img {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    background-size: 100%, 100%;
-  }
-}
-
-.day_music {
-  position: relative;
-  width: 230px;
-  height: 267px;
-  text-align: center;
-  &&:hover {
+  .song-item {
+    padding-bottom: 10px;
+    position: relative;
+    width: 24%;
+    max-width: 230px;
+    font-size: 13px;
+    color: #01060a;
     cursor: pointer;
-  }
-  .day_music_back {
-    width: 229px;
-    height: 229px;
-    border: 1px solid #b8b6b6;
-  }
-  .day_music_time {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    .day_music_day {
-      font-size: 100px;
-      color: red;
+    > img {
+      width: 100%;
+      max-height: 250px;
+      min-height: 180px;
+      background-size: 100%, 100%;
     }
   }
-}
+
+  .count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    text-align: right;
+    color: #fafbf5;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
+    > img {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background-size: 100%, 100%;
+    }
+  }
+
+  .day_music {
+    position: relative;
+    width: 230px;
+    height: 267px;
+    text-align: center;
+    &&:hover {
+      cursor: pointer;
+    }
+    .day_music_back {
+      width: 229px;
+      height: 229px;
+      border: 1px solid #b8b6b6;
+    }
+    .day_music_time {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      .day_music_day {
+        font-size: 100px;
+        color: red;
+      }
+    }
+  }
 </style>

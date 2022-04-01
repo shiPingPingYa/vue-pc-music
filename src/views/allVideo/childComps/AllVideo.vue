@@ -57,9 +57,7 @@ export default {
     async initVideoList (flag) {
       this.$refs.scroll.scrollTo(0, 0, 0)
       var id
-      flag
-        ? (id = this.videoGroupListTagId)
-        : (id = this.videoGroupList[this.currentIndex].id)
+      flag ? (id = this.videoGroupListTagId) : (id = this.videoGroupList[this.currentIndex].id)
       // 清空视频列表
       this.videoList = []
       // 之所以加for循环5次获取数据，是因为视频数据一次请求只是会返回8条视频数据

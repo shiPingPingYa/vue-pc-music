@@ -54,28 +54,26 @@ export default {
   methods: {
     async initMvAndMvRank () {
       // 获取最新mv和mv排行榜
-      Promise.all([_getNewMV({ limit: 10 }), _getTopMv({ limit: 10 })]).then(
-        res => {
-          this.mvList = res[0].data.data.map(item => {
-            return {
-              id: item.id,
-              cover: item.cover || item.imgurl || item.picUrl,
-              name: item.name,
-              artist: item.artistName,
-              count: item.playCount
-            }
-          })
-          this.topMv = res[1].data.data.map(item => {
-            return {
-              id: item.id,
-              cover: item.cover || item.imgurl || item.picUrl,
-              name: item.name,
-              artist: item.artistName,
-              count: item.playCount
-            }
-          })
-        }
-      )
+      Promise.all([_getNewMV({ limit: 10 }), _getTopMv({ limit: 10 })]).then(res => {
+        this.mvList = res[0].data.data.map(item => {
+          return {
+            id: item.id,
+            cover: item.cover || item.imgurl || item.picUrl,
+            name: item.name,
+            artist: item.artistName,
+            count: item.playCount
+          }
+        })
+        this.topMv = res[1].data.data.map(item => {
+          return {
+            id: item.id,
+            cover: item.cover || item.imgurl || item.picUrl,
+            name: item.name,
+            artist: item.artistName,
+            count: item.playCount
+          }
+        })
+      })
     },
     goAllMvDetail () {
       this.$router.push('/allmv')
