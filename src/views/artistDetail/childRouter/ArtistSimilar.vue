@@ -2,7 +2,7 @@
   <div class="similar_artist">
     <el-row type="flex" justify="space-around" style="flex-wrap: wrap; flex-direction: row">
       <el-col :span="5" v-for="item in similarArtistList" :key="item.id">
-        <img :src="item.img1v1Url + '?param=260y260'" alt="" @click="goArtistDetail(item)">
+        <img src="" :data-src="item.img1v1Url + '?param=260y260'" alt="" @click="goArtistDetail(item)" v-imgLazy>
         <div class="artist_name">{{item.name}}</div>
       </el-col>
     </el-row>
