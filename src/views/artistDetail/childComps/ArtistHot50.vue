@@ -6,7 +6,7 @@
       <div class="left">
         <!-- //专辑图片 -->
         <div class="icon">
-          <img :src="musicList[0].pic  + '?param=280y260'" alt="">
+          <img src="" :data-src="musicList[0].pic  + '?param=280y260'" alt="" v-imgLazy>
         </div>
       </div>
       <!-- 右边内容区域 -->
@@ -91,6 +91,7 @@ export default {
           > img {
             padding: 0 0 0 20px;
             width: 100%;
+            min-height: 100px;
           }
         }
       }

@@ -4,7 +4,7 @@
     <div class="album">
       <div class="left">
         <div class="icon">
-          <img :src="album.picUrl + '?param=280y260'" alt="">
+          <img src="" :data-src="album.picUrl + '?param=280y260'" alt="" v-imgLazy>
         </div>
       </div>
       <div class="right">
@@ -43,11 +43,7 @@ import { tableMixin } from '../../musicListDetail/tableMixin'
 // 导入获取专辑接口
 import { _getAlbum } from '../../../network/artist'
 // 导入获取歌曲信息接口
-import {
-  SongDetail,
-  _getSongsDetail,
-  AllSongDetail
-} from '../../../network/detail'
+import { SongDetail, _getSongsDetail, AllSongDetail } from '../../../network/detail'
 // 音乐混入
 import { indexMixin } from '../../musicListDetail/indexMixin'
 // 列表下标
@@ -79,9 +75,7 @@ export default {
         } else {
           const ids = res.data.songs.map(item => item.id).join(',')
           _getSongsDetail(ids).then(res => {
-            res.data.songs.forEach(item =>
-              this.musicList.push(new AllSongDetail(item))
-            )
+            res.data.songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
           })
         }
       })
@@ -117,6 +111,7 @@ export default {
           > img {
             padding: 0 0 0 20px;
             width: 100%;
+            min-height: 100px;
           }
         }
       }

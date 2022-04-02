@@ -6,7 +6,7 @@
       <div class="topic_content" v-for="(item,index) in topicList" :key="item.actId" @click="goTopicDetail(item.actId)">
         <div class="topic_index"  :class="{text_red:index < 3}">{{index + 1}}</div>
         <div class="topic_content_image">
-          <img :src="item.sharePicUrl+ '?param=100y100' " alt="">
+          <img src="" :data-src="item.sharePicUrl+ '?param=100y100' " alt="" v-imgLazy>
         </div>
         <div class="topic_content_text">
           <div class="topic_title">#{{item.title}}#</div>
