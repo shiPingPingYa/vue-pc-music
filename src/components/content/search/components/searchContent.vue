@@ -1,11 +1,7 @@
 <template>
   <div class="suggest">
-    <div class="top">
-      搜索
-      <span>"{{ keywords }}"</span>相关的结果>
-    </div>
+    <div class="top">搜索<span>"{{ keywords }}"</span>相关的结果></div>
     <dl>
-      <!-- 搜索歌曲-->
       <dt>
         <div class="icon"><i class="el-icon-user-solid"></i></div>
         <div class="title">单曲</div>
@@ -13,7 +9,6 @@
       <dd v-for="(item, index) in this.sugSongs" :key="index + 'song'" @click="goSearchDetail(item.name)">
         {{ item.name }}——{{ item.artists[0].name }}
       </dd>
-      <!-- 搜索歌手 -->
       <dt>
         <div class="icon"><i class="el-icon-bell"></i></div>
         <div class="title">歌手</div>
@@ -42,10 +37,10 @@ export default {
     }
   },
   methods: {
-    goSearchDetail (item) {
+    goSearchDetail(item) {
       this.$emit('goSearchDetail', item)
     },
-    goArtistDetail (item) {
+    goArtistDetail(item) {
       this.$emit('goArtistDetail')
       this.$router.push({ path: '/artist/album', query: { id: item.id } })
     }

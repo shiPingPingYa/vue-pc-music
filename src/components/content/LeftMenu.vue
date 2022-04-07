@@ -9,7 +9,8 @@
             </template>
             <template v-for="(itemChildren,indexChildren) in item.children">
               <router-link :to="itemChildren.path" :key="indexChildren">
-                <el-menu-item :index="`${index.toString()}-${indexChildren.toString()}`" :key="indexChildren" @click="handleMenuItemClick(`${index.toString()}-${indexChildren.toString()}`)">
+                <el-menu-item :index="`${index.toString()}-${indexChildren.toString()}`" :key="indexChildren"
+                  @click="handleMenuItemClick(`${index.toString()}-${indexChildren.toString()}`)">
                   <i :class="itemChildren.icon"></i><span>{{itemChildren.label}}</span>
                 </el-menu-item>
               </router-link>
@@ -43,7 +44,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'LeftMenu',
   components: { Scroll },
-  data () {
+  data() {
     return {
       activeIndex: '0-0',
       songListIndex: '',
@@ -86,17 +87,17 @@ export default {
   },
   computed: {
     ...mapState(['isSongList', 'userSongList']),
-    right_menu () {
+    right_menu() {
       return document.getElementsByClassName('main')[0]
     },
-    left_menu () {
+    left_menu() {
       return document.getElementsByClassName('left-menu ')[0]
     }
   },
   watch: {
     // 网页刷新后设置左侧路由和音乐列表的选中
     $route: {
-      handler (newV) {
+      handler(newV) {
         const pathList = newV.path.split('/')
         if (pathList.includes('musicListDetail')) {
           this.initMusicListIndex()
@@ -105,10 +106,7 @@ export default {
           this.list.some((item, index) => {
             return item.children.some((itemChildren, indexChildren) => {
               if (itemChildren.path.split('/')[1] === currtPanth) {
-                return (
-                  (this.activeIndex = `${index.toString()}-${indexChildren.toString()}`),
-                  (this.songListIndex = '')
-                )
+                return (this.activeIndex = `${index.toString()}-${indexChildren.toString()}`), (this.songListIndex = '')
               }
             })
           })
@@ -117,44 +115,42 @@ export default {
     }
   },
   methods: {
-    checkClick (index) {
+    checkClick(index) {
       if (this.list[index].icon) return
       this.currentIndex = index
     },
     // 显示喜欢歌单
-    isMML (flag) {
+    isMML(flag) {
       this.icon = !this.icon
       this.$store.commit('userSongList', !flag)
     },
-    handleMenuItemClick (i) {
+    handleMenuItemClick(i) {
       this.activeIndex = i
       this.songListIndex = ''
     },
-    handleSongItemClick (i) {
+    handleSongItemClick(i) {
       this.songListIndex = i.toString()
       this.activeIndex = ''
       this.$router.push('/musicListDetail/' + this.userSongList[i].id) // 跳转音乐详情页面
     },
-    handleMenuMouseEnter () {
+    handleMenuMouseEnter() {
       this.isCollapse = false
       this.left_menu.style.width = '18%'
       this.right_menu.style.width = '82%'
     },
     // 网页刷新后设置歌单列表的选中
-    initMusicListIndex () {
+    initMusicListIndex() {
       const pathList = location.href.split('#')[1].split('/')
       if (pathList.includes('musicListDetail')) {
         this.userSongList.some((item, index) => {
           if (item.id === Number(pathList[2])) {
-            return (
-              (this.songListIndex = index.toString()), (this.activeIndex = '')
-            )
+            return (this.songListIndex = index.toString()), (this.activeIndex = '')
           }
         })
       }
     }
   },
-  mounted () {
+  mounted() {
     this.$bus.$on('handleMenuMouseLeave', () => {
       this.isCollapse = true
       this.$nextTick(() => {

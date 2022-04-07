@@ -1,14 +1,9 @@
 newValue<template>
   <div class="hot">
     <scroll class="hot-scroll">
-      <!-- 搜索历史 -->
       <div class="record">
-        <!-- 搜索历史头 -->
         <h3>
-          搜索历史
-          <div class="icon">
-            <i class="el-icon-delete" @click="del()"></i>
-          </div>
+          搜索历史<div class="icon"><i class="el-icon-delete" @click="del()"></i></div>
         </h3>
         <!-- 搜索历史内容 -->
         <div class="record-content">
@@ -58,28 +53,28 @@ export default {
     }
   },
   components: { Scroll },
-  data () {
+  data() {
     return {
       hotList: [],
       isImg: 2
     }
   },
-  created () {
+  created() {
     _hotSearchDetail().then(res => {
       this.hotList = res.data.data
     })
   },
   methods: {
     // 点击热搜小图标，删除数据
-    del () {
+    del() {
       this.$emit('del')
     },
     // 点击热搜记录，触发父组件recordClick方法
-    goSearchDetail (i) {
+    goSearchDetail(i) {
       this.$emit('goSearchDetail', this.searchList[i])
     },
     // 热搜榜的跳转
-    handleHotSearchClick (i) {
+    handleHotSearchClick(i) {
       this.$emit('goSearchDetail', this.hotList[i].searchWord)
     }
   }
