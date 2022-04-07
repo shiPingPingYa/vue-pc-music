@@ -1,0 +1,9 @@
+/build/
+/config/
+/dist/
+/node_modules/
+*.vue
+*.js
+.DS_Store
+jsconfig.json
+README.md

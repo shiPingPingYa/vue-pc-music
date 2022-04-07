@@ -27,7 +27,7 @@ import { _Suggest } from '../../../network/search'
 // 防抖
 import { debounce } from '../../../assets/common/tool'
 export default {
-  data () {
+  data() {
     return {
       searchList: [],
       keywords: '',
@@ -41,7 +41,7 @@ export default {
   components: { HotSearch, searchContent },
   watch: {
     // 监听keywords的值
-    keywords (newValue) {
+    keywords(newValue) {
       if (newValue) {
         this.isShow = false
         this.isSuggest = true
@@ -49,7 +49,7 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     var searchList = localStorage.getItem('searchList')
     if (searchList) this.searchList = searchList.split(',')
     else this.searchList = ['海底', '世间美好与你环环相扣', '灰狼']
@@ -66,12 +66,12 @@ export default {
       }
     }, 400),
     // 鼠标离开input，隐藏热搜
-    leave () {
+    leave() {
       this.isShow = false
       this.isSuggest = false
     },
     // 鼠标聚焦input，显示热搜
-    focus () {
+    focus() {
       const { keywords } = this
       if (!keywords) this.isShow = true
       else {
@@ -80,37 +80,37 @@ export default {
       }
     },
     // 点击删除图标清除热搜内容
-    del () {
+    del() {
       this.searchList = []
       localStorage.setItem('searchList', '')
     },
     // 添加热搜记录,并跳转搜索的内容
-    keyEnter () {
+    keyEnter() {
       if ((this.keywords ?? '') === '') {
         return this.$message.info('搜索内容不能为空，请输入搜索内容!!!')
       }
       this.goSearchDetail(this.keywords)
     },
     // 热搜历史记录的跳转
-    recordClick (i) {
+    recordClick(i) {
       this.$router.push('/search/' + this.searchList[i])
       this.keywords = ''
       this.isShow = false
     },
     // 搜索内容歌曲点击跳转
-    enterSongs (song) {
+    enterSongs(song) {
       this.$router.push('/search/' + song)
       this.keywords = ''
       this.isSuggest = false
     },
-    goSearchDetail (val = '') {
+    goSearchDetail(val = '') {
       this.searchList.unshift(val)
       this.searchList = [...new Set(this.searchList)]
       localStorage.setItem('searchList', this.searchList)
       this.$router.push('/search/' + val)
       this.handleInputBlur()
     },
-    handleInputBlur () {
+    handleInputBlur() {
       this.$refs.keyword_input.blur()
       this.keywords = ''
       this.isSuggest = this.isShow = false
