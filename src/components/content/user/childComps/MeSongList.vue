@@ -3,7 +3,7 @@
     <scroll class="me-song-list-scroll">
       <div class="music-list" v-show="isTable === 0">
         <div class="musicCategary" v-for="(item, index) in songList" :key="index">
-          <img :src="item.coverImgUrl" @click="goMusicListDetail(item.id)" @mouseenter.stop="isMusicPlayIcon = index" @mouseout="isMusicPlayIcon = -1" />
+          <img v-imgLazy :data-src="item.coverImgUrl" src="" @click="goMusicListDetail(item.id)" @mouseenter.stop="isMusicPlayIcon = index" @mouseout="isMusicPlayIcon = -1" />
           <div class="musicCategary_playCount">
             <img src="../../../../assets/img/content/erji.svg" alt="" />
             {{ item.playCount }}
@@ -24,7 +24,7 @@
           <el-table-column max-height="40px">
             <template slot-scope="scope">
               <div class="table-02-image">
-                <img :src="scope.row.coverImgUrl + '?param=60y60'" @click="goMusicListDetail(scope.row.id)" />
+                <img v-imgLazy src="" :data-src="scope.row.coverImgUrl + '?param=60y60'" @click="goMusicListDetail(scope.row.id)" />
                 <i class="el-icon-video-play" @click="getMusicList(scope.row.id)"></i>
               </div>
             </template>
@@ -51,7 +51,7 @@
       <el-row v-show="isTable === 2">
         <el-row v-for="item in songList" :key="item.id">
           <el-col :span="8">
-            <img :src="item.coverImgUrl + '?param=200y200'" />
+            <img v-imgLazy:data-src="item.coverImgUrl + '?param=200y200'" src="" />
           </el-col>
           <el-col :span="14" :offset="2">
             <div class="table_03_header">
@@ -90,19 +90,19 @@ export default {
   props: {
     songList: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
     isTable: {
       type: Number,
-      default () {
+      default() {
         return 0
       }
     }
   },
   mixins: [indexMixin],
-  data () {
+  data() {
     return {
       isMusicItemPlay: -1,
       isMusicPlayIcon: -1,
@@ -112,12 +112,12 @@ export default {
       isTableHeader: false
     }
   },
-  created () {
+  created() {
     this.initAllMusicList()
   },
   methods: {
     // 初始化所有歌单的音乐
-    async initAllMusicList () {
+    async initAllMusicList() {
       this.songList.forEach(async item => {
         const {
           data: {
@@ -140,11 +140,11 @@ export default {
         })
       })
     },
-    goMusicListDetail (id) {
+    goMusicListDetail(id) {
       this.$router.push('/musiclistdetail/' + id)
     },
     // 获取音乐列表
-    getMusicList (id) {
+    getMusicList(id) {
       for (const key in this.allMusicList) {
         if (String(id) === key) {
           this.musicList = this.allMusicList[key]
@@ -152,7 +152,7 @@ export default {
         }
       }
     },
-    indexMethod (i) {
+    indexMethod(i) {
       return i < 9 ? `0${i + 1}` : i + 1
     }
   }
