@@ -34,7 +34,8 @@
 
         <!-- 下面评论组件 -->
         <div class="player-bottom">
-          <music-recommends ref="music_recommends" @moreComments="moreComments" @getCommends="getCommends" :id="String(music.id)" :Type="0" :recommends="recommends"></music-recommends>
+          <music-recommends ref="music_recommends" @moreComments="moreComments" @getCommends="getCommends" :id="String(music.id)" :Type="0" :recommends="recommends">
+          </music-recommends>
         </div>
       </scroll>
     </div>
@@ -59,18 +60,18 @@ export default {
   props: {
     music: {
       type: Object,
-      default () {
+      default() {
         return {}
       }
     },
     lyric: {
       type: String,
-      default () {
+      default() {
         return ''
       }
     }
   },
-  data () {
+  data() {
     return {
       limit: 40,
       recommends: [],
@@ -78,7 +79,7 @@ export default {
     }
   },
   watch: {
-    lyric () {
+    lyric() {
       if (this.$refs.playerLyric.$refs.scroll != null) {
         this.$refs.playerLyric.$refs.scroll.scrollTo(0, 0, 0)
         this.$refs.scroll.scrollTo(0, 0, 0)
@@ -88,15 +89,12 @@ export default {
       })
     }
   },
-  created () {
-    _musicRecommend(this.music.id, this.limit).then(res => {
-      this.recommends = res.data.comments
-    })
-  },
   methods: {
     // 加载更多评论
-    async moreComments () {
-      const { data: { comments } } = await _musicRecommend(this.music.id, this.limit, this.recommends.length)
+    async moreComments() {
+      const {
+        data: { comments }
+      } = await _musicRecommend(this.music.id, this.limit, this.recommends.length)
       // 评论已经被请求完毕
       if (comments.length === 0) {
         this.$Message.info('评论已经加载完毕，暂无更多评论')
@@ -108,7 +106,7 @@ export default {
       }
     },
     // 发送评论后，重新获取评论
-    getCommends () {
+    getCommends() {
       // 清除评论数据
       this.recommends = []
       _musicRecommend(this.music.id, this.limit, 0).then(res => {
