@@ -22,6 +22,6 @@ Vue.directive('imgLazy', imgLazy)
 
 new Vue({
   router,
-  render: h => h(App),
-  store
+  store,
+  render: h => h(App)
 }).$mount('#app')
