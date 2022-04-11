@@ -87,11 +87,8 @@ export default {
   },
   computed: {
     ...mapState(['isSongList', 'userSongList']),
-    right_menu() {
-      return document.getElementsByClassName('main')[0]
-    },
     left_menu() {
-      return document.getElementsByClassName('left-menu ')[0]
+      return document.getElementsByClassName('left-menu-container ')[0]
     }
   },
   watch: {
@@ -135,8 +132,7 @@ export default {
     },
     handleMenuMouseEnter() {
       this.isCollapse = false
-      this.left_menu.style.width = '18%'
-      this.right_menu.style.width = '82%'
+      this.left_menu.style.width = '188px'
     },
     // 网页刷新后设置歌单列表的选中
     initMusicListIndex() {
@@ -155,7 +151,6 @@ export default {
       this.isCollapse = true
       this.$nextTick(() => {
         this.left_menu.style.width = '68px'
-        this.right_menu.style.width = 'calc(100% - 68px)'
       })
     })
     this.initMusicListIndex()
@@ -169,22 +164,22 @@ export default {
   .left-menu {
     width: 68px;
     height: calc(100% - 58px);
-    overflow: hidden;
+    overflow-x: auto;
     color: #0a0a0a;
     background: #f5f5f7;
     user-select: none;
-    opacity: 0.8;
-
-    .left-menu-container {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      div {
-        width: 100%;
-      }
-    }
   }
 
+  .left-menu-container {
+    position: fixed;
+    width: 188px;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1000;
+    div {
+      width: 100%;
+    }
+  }
   .music-item {
     display: flex;
     justify-content: flex-start;
