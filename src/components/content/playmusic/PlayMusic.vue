@@ -31,7 +31,8 @@
     <!-- 播放条右边区域 -->
     <div class="play-music-right" v-if="playList[currentIndex] !== null">
       <!-- audio音频标签 -->
-      <audio :src="playList[currentIndex].src" autoplay ref="audio" @timeupdate="audioTimeUpdate()" @pause="musicPause()" @play="playLoad()" @ended="musicEnded()" @playing="musicPlaying()" @error="musicErr()"></audio>
+      <audio :src="playList[currentIndex].src" autoplay ref="audio" @timeupdate="audioTimeUpdate()" @pause="musicPause()" @play="playLoad()" @ended="musicEnded()"
+        @playing="musicPlaying()" @error="musicErr()"></audio>
       <!-- 进度条 -->
       <div class="music-progress">
         <music-progress ref="music_pro" class="music-progress-children" @childClickScale="setMusicProgress"></music-progress>
@@ -78,13 +79,7 @@ import Player from './Player'
 // 导入封装的处理时间函数
 import { formDate } from '../../../assets/common/tool'
 // 导入歌曲网络请求
-import {
-  _getLyric,
-  _getIntelligenceList,
-  _getSongsDetail,
-  AllSongDetail,
-  _getMusicUrl
-} from '../../../network/detail'
+import { _getLyric, _getIntelligenceList, _getSongsDetail, AllSongDetail, _getMusicUrl } from '../../../network/detail'
 import { PlayList } from './playList'
 // 导入进度条
 import MusicProgress from './Progress'
@@ -101,7 +96,7 @@ export default {
     Lyric,
     PlayMusicList
   },
-  data () {
+  data() {
     return {
       // 歌曲图片是否显示
       isShade: false,
@@ -135,19 +130,18 @@ export default {
       playIcon3: require('assets/img/heart.svg'),
       playList: [
         {
-          title: '说散就散(抖音完整版)',
-          artist: 'yasenjan',
+          title: '南 海 花 痴（PLUS版） ',
+          artist: 'UmzBeatz',
           index: 0,
-          id: 1818690420,
+          id: 1430989428,
           src: '',
-          pic:
-            'https://p1.music.126.net/J94zxjSMe5IjNABnpdOPew==/109951165670275788.jpg?param=50y50'
+          pic: 'https://p2.music.126.net/VLgHixU0mvXYvnL8hi_l0A==/109951164804177794.jpg'
         }
       ]
     }
   },
   computed: {
-    currentPlayImg () {
+    currentPlayImg() {
       if (this.schemaIndex === 0) {
         return { img: this.playIcon, title: '顺序播放' }
       } else if (this.schemaIndex === 1) {
@@ -157,7 +151,7 @@ export default {
       } else return { img: this.playIcon3, title: '心动模式' }
     }
   },
-  mounted () {
+  mounted() {
     // 音乐数据
     this.$bus.$on('PlayMusic', (index, path, musicList, playList) => {
       // 存储歌单路由
@@ -178,11 +172,11 @@ export default {
     this.$bus.$on('stopMusic', flag => {
       this.stopMusic(flag)
     })
-    // this.initHomeMusic()
+    this.initHomeMusic()
   },
   methods: {
     // 修改首页默认播放音乐的url地址(但是不能自动播放了，因为现在浏览器都是禁止了自动播放音乐，必须要用户主动触发)
-    async initHomeMusic () {
+    async initHomeMusic() {
       const {
         data: {
           data: [data]
@@ -191,7 +185,7 @@ export default {
       this.playList[0].src = data.url
     },
     // 改变currentindex,重新设置播放音乐
-    setCurrentIndex (index) {
+    setCurrentIndex(index) {
       this.playList.some((item, i) => {
         if (item.index === index) {
           return (this.currentIndex = i)
@@ -199,11 +193,11 @@ export default {
       })
     },
     // 显示歌词组件
-    playerShow () {
+    playerShow() {
       this.isPlayerShow = !this.isPlayerShow
     },
     // 播放音乐
-    toggle () {
+    toggle() {
       // 设置音量进度条
       this.$refs.music_volumn.setAudioProgress(0.8)
       // 替换图片
@@ -216,7 +210,7 @@ export default {
       }
     },
     // 播放视频的时候停止播放音乐
-    stopMusic (flag) {
+    stopMusic(flag) {
       // 音乐处于播放状态
       if (this.isPlayer && this.$refs.audio.readyState === 4) {
         // 切换播放值和图片
@@ -226,18 +220,12 @@ export default {
       }
     },
     // 播放音乐的位置
-    audioTimeUpdate () {
+    audioTimeUpdate() {
       if (this.$refs.audio !== null) {
         // 获取当前正在播放的时间
-        this.currentTime = formDate(
-          new Date(this.$refs.audio.currentTime * 1000),
-          'mm:ss'
-        )
+        this.currentTime = formDate(new Date(this.$refs.audio.currentTime * 1000), 'mm:ss')
         // 获取总时长
-        this.duration = formDate(
-          new Date(this.$refs.audio.duration * 1000),
-          'mm:ss'
-        )
+        this.duration = formDate(new Date(this.$refs.audio.duration * 1000), 'mm:ss')
         // 获取比例
         var scale = this.$refs.audio.currentTime / this.$refs.audio.duration
         // 设置比例
@@ -248,33 +236,27 @@ export default {
           // 首页歌词
           this.$refs.lyric.scrollLyric(this.$refs.audio.currentTime)
           // 播放页面歌词
-          this.$refs.player.$refs.playerLyric.maxScroll(
-            this.$refs.audio.currentTime
-          )
+          this.$refs.player.$refs.playerLyric.maxScroll(this.$refs.audio.currentTime)
         }
       }
     },
     // 音乐停止了
-    musicPause () {
+    musicPause() {
       this.isPlayer = false
       // 切换歌词组件的isPlayer,滚动图片
       if (this.$refs.player !== null) this.$refs.player.isPlayer = false
     },
     // 音乐因缓存停止,或停止后已就绪时触发。
-    musicPlaying () {
+    musicPlaying() {
       this.isPlayer = true
       // 触发播放方法，把下标传递过去
-      this.$bus.$emit(
-        'Playing',
-        this.path,
-        this.playList[this.currentIndex].index
-      )
+      this.$bus.$emit('Playing', this.path, this.playList[this.currentIndex].index)
       // 触发评论内容方法
       // this.$bus.$emit('changeRecommends', this.playList[this.currentIndex].id)
       if (this.$refs.player !== null) this.$refs.player.isPlayer = true
     },
     // 音乐播放完毕
-    musicEnded () {
+    musicEnded() {
       // 判断播放音乐是否存在
       if (this.currentIndex >= this.playList.length - 1) {
         this.currentIndex = 0
@@ -296,7 +278,7 @@ export default {
       }
     },
     // 加载播放音频
-    async playLoad () {
+    async playLoad() {
       // 设置音量进度条
       this.$refs.music_volumn.setAudioProgress(0.8)
       // 获取歌词
@@ -310,24 +292,24 @@ export default {
       })
     },
     // 音乐获取失败
-    musicErr () {
+    musicErr() {
       this.$message.error('当前音频不可用')
       // this.currentIndex++
     },
     // 是否在首页显示音乐列表
-    toggleMusicList () {
+    toggleMusicList() {
       this.isMusicList = !this.isMusicList
     },
     // 设置歌曲播放的声音
-    setVolumn (scale) {
+    setVolumn(scale) {
       this.$refs.audio.volume = scale
     },
     // 设置进度条的点击，歌曲时间对应跳转
-    setMusicProgress (scale) {
+    setMusicProgress(scale) {
       this.$refs.audio.currentTime = scale * this.$refs.audio.duration
     },
     // 设置音乐音量
-    toggleVolumn () {
+    toggleVolumn() {
       this.isVolumn = !this.isVolumn
       // 音量 == 0
       if (this.isVolumn) {
@@ -340,7 +322,7 @@ export default {
       }
     },
     // 切换下一首音乐
-    nextMusic () {
+    nextMusic() {
       // 判断播放音乐是否存在
       if (this.currentIndex >= this.playList.length - 1) {
         this.currentIndex = 0
@@ -362,7 +344,7 @@ export default {
       }
     },
     // 心动模式
-    async playModeIntellgence () {
+    async playModeIntellgence() {
       const params = {
         pid: localStorage.getItem('pid'),
         id: this.playList[this.currentIndex].id
@@ -392,9 +374,7 @@ export default {
         if (songs.length === this.musicList.length) {
           this.musicList.forEach((item, index) => {
             if (Number(index) >= 1) {
-              this.playList.push(
-                new PlayList(index + 1, item, musicUrlList[index].url, item.id)
-              )
+              this.playList.push(new PlayList(index + 1, item, musicUrlList[index].url, item.id))
             }
           })
         }
