@@ -173,7 +173,7 @@ export default {
   .left-menu-container {
     position: fixed;
     width: 188px;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
     z-index: 1000;
     div {
