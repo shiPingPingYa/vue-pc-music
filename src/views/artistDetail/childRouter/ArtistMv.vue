@@ -8,17 +8,17 @@ import MvItem from '../../mv/childComps/MVItem' // mv组件
 import { _getArtistMv } from '../../../network/artist' // 获取mv数据接口
 export default {
   name: 'ArtistMv',
-  data () {
+  data() {
     return {
       mvList: []
     }
   },
   components: { MvItem },
-  created () {
+  created() {
     this.initMvList()
   },
   methods: {
-    async initMvList () {
+    async initMvList() {
       const { id } = this.$route.query
       // 调用获取mv数据接口传入用户id，拿到返回的歌手mv数据
       const {

@@ -33,7 +33,7 @@ export default {
   },
   mixins: [privateDetailMixin],
   methods: {
-    goNoticesDetail (id, type) {
+    goNoticesDetail(id, type) {
       if (id === '' || id === undefined) return true
       else {
         this.$router.push('/noticesDetail/' + id + '/' + type)

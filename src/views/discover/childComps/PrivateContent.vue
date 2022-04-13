@@ -24,7 +24,7 @@ export default {
     }
   },
   methods: {
-    goPlayMVDetail (id) {
+    goPlayMVDetail(id) {
       this.$router.push('/playmv/' + id)
     }
   }

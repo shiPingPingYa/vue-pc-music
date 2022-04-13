@@ -3,24 +3,14 @@
     <div class="modal-content">
       <div class="icon-close-container">
         <div class="back" />
-        <img
-          src="../../../assets/img/user/x.svg"
-          alt=""
-          @click="qrcodeClose()"
-        >
+        <img src="../../../assets/img/user/x.svg" alt="" @click="qrcodeClose()">
       </div>
       <div class="qr-code">
-        <img
-          :src="qrImage"
-          alt=""
-        >
+        <img :src="qrImage" alt="">
       </div>
       <!-- 重新获取二维码 -->
       <div class="reload-qrcode">
-        <el-button
-          type="primary"
-          @click="getQrcode()"
-        >
+        <el-button type="primary" @click="getQrcode()">
           重新获取二维码
         </el-button>
       </div>
@@ -32,7 +22,7 @@
 import { _getQrcodeImg, _getQrcodeKey, _getCheckQrcode, _getLonginStatus } from 'api/user'
 export default {
   name: 'Qrcode',
-  data () {
+  data() {
     return {
       // 二维码key
       qrKey: null,
@@ -41,32 +31,43 @@ export default {
       timer: null // 定时器，
     }
   },
-  mounted () {
+  mounted() {
     this.getQrcode()
     this.$on('hook:destroyed', () => clearTimeout(this.timer))
   },
   methods: {
-    qrcodeClose () {
+    qrcodeClose() {
       this.$store.commit('hiddenQrcode')
     },
     // 获取二维码
-    async getQrcode () {
+    async getQrcode() {
       // 获取二维码的key，进而通过key获取二维码图片
-      const { data: { code, data: { unikey } } } = await _getQrcodeKey()
+      const {
+        data: {
+          code,
+          data: { unikey }
+        }
+      } = await _getQrcodeKey()
       if (code === 200) {
-        const { data: { data: { qrimg } } } = await _getQrcodeImg(unikey)
+        const {
+          data: {
+            data: { qrimg }
+          }
+        } = await _getQrcodeImg(unikey)
         this.qrKey = unikey
         this.qrImage = qrimg
         this.startCheckScan()
       }
     },
-    startCheckScan () {
+    startCheckScan() {
       clearTimeout(this.timer)
       this.timer = setTimeout(this.checkScan, 4000)
     },
-    async checkScan () {
+    async checkScan() {
       const codeList = [800, 803]
-      const { data: { code, cookie } } = await _getCheckQrcode(this.qrKey)
+      const {
+        data: { code, cookie }
+      } = await _getCheckQrcode(this.qrKey)
       if (!codeList.includes(code)) return this.startCheckScan() // 等待扫码和待确认重新获取二维码扫描状态
       // code状态800过期，801等待扫码，8002待确认，8003授权成功并返回cookie
       if (code === 800) {
@@ -74,7 +75,9 @@ export default {
       } else if (code === 803) {
         this.$message.warning('登录成功')
         // 根据返回的cookie获取用户信息
-        const { data: { data } } = await _getLonginStatus({ cookie: cookie, timestamp: Date.now() })
+        const {
+          data: { data }
+        } = await _getLonginStatus({ cookie: cookie, timestamp: Date.now() })
         const obj = {
           uid: data.profile.userId,
           cookie: this.$store.state.cookie,

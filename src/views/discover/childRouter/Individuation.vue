@@ -17,25 +17,18 @@
   </div>
 </template>
 <script>
-import Scroll from 'common/scroll/Scroll'
 import Swiper from 'common/swiper/Swiper'
 import MusicList from '../../musicListDetail/MusicList'
 import PrivateContent from '../childComps/PrivateContent'
 import NewSongs from '../childComps/NewSongs'
 import MvItem from '../../mv/childComps/MVItem'
-import {
-  _getBanner,
-  _getPersonalized,
-  _getPrivateContent,
-  _getNewSong,
-  _getPrivateMv
-} from 'api/discover'
+import { _getBanner, _getPersonalized, _getPrivateContent, _getNewSong, _getPrivateMv } from 'api/discover'
 import { _getSongsDetail } from 'api/detail'
 import { indexMixin } from '../../musicListDetail/indexMixin'
 import { formDate } from 'js/tool'
 export default {
   name: 'Individuation',
-  data () {
+  data() {
     return {
       banner: null,
       limit: 10,
@@ -47,20 +40,13 @@ export default {
       notMvList: null
     }
   },
-  components: {
-    Swiper,
-    Scroll,
-    MusicList,
-    PrivateContent,
-    NewSongs,
-    MvItem
-  },
+  components: { Swiper, MusicList, PrivateContent, NewSongs, MvItem },
   mixins: [indexMixin],
-  created () {
+  created() {
     this.initIndividuation()
   },
   methods: {
-    async initIndividuation () {
+    async initIndividuation() {
       // 获取首页轮播图,最新音乐，最新歌单，最新mv等等数据
       const [
         {
@@ -99,7 +85,7 @@ export default {
       })
     },
     // 播放最新音乐
-    async playNewsong (index) {
+    async playNewsong(index) {
       this.musicList = []
       // 拼接歌曲id
       const ids = this.songList.map(item => item.id).join(',')

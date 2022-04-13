@@ -25,7 +25,6 @@
   </div>
 </template>
 <script>
-import Scroll from 'common/scroll/Scroll'
 // 导入歌单默认信息
 import MusicBaseInfo from './childComps/MusicBaseInfo'
 // 导入歌单导航条
@@ -46,15 +45,8 @@ export default {
   name: 'MusicListDetail',
   // 音乐混入
   mixins: [indexMixin],
-  components: {
-    MusicBaseInfo,
-    MusicBar,
-    MusicListLike,
-    MusicItem,
-    songListRecommends,
-    Scroll
-  },
-  data () {
+  components: { MusicBaseInfo, MusicBar, MusicListLike, MusicItem, songListRecommends },
+  data() {
     return {
       id: '',
       tabBarIndex: 0,
@@ -70,7 +62,7 @@ export default {
 
   watch: {
     '$route.params.id': {
-      handler (oldId) {
+      handler(oldId) {
         if ((oldId ?? '') !== '') {
           this.id = oldId
           this.tabBarIndex = 0
@@ -81,13 +73,13 @@ export default {
       deep: true
     }
   },
-  created () {
+  created() {
     this.id = this.$route.params.id
     localStorage.setItem('pid', this.id) // 存储歌单id，心动模式必需
     this.initMusicListAndTabbar()
   },
   methods: {
-    handleTabClick (str) {
+    handleTabClick(str) {
       this.tabBarIndex = str
       if (str === 1) this.initMusicListComments()
       else {
@@ -95,7 +87,7 @@ export default {
       }
     },
     // 初始化音乐列表
-    async initMusicListAndTabbar () {
+    async initMusicListAndTabbar() {
       this.musicList = []
       // 获取歌单id，获取歌单数据，commentCount:评论数量，trackIds:歌曲id，playlist:歌曲信息
       const {
@@ -137,7 +129,7 @@ export default {
       )
     },
     // 获取歌单评论内容
-    async initMusicListComments () {
+    async initMusicListComments() {
       const {
         data: { comments, hotComments }
       } = await _getRecommends({
@@ -149,7 +141,7 @@ export default {
       this.recommends = comments
       this.hotComments = hotComments
     },
-    async initMusicListLike () {
+    async initMusicListLike() {
       // 获取歌单收藏者
       const {
         data: { subscribers }
@@ -157,7 +149,7 @@ export default {
       this.subs = subscribers
     },
     // 获取更多评论
-    async moreComments () {
+    async moreComments() {
       const {
         data: { comments }
       } = await _getRecommends({
@@ -173,7 +165,7 @@ export default {
       } else comments.forEach(item => this.recommends.push(item))
     },
     // 发送评论后，重新获取评论
-    async getCommends () {
+    async getCommends() {
       // 清除评论数据
       this.recommends = []
       const {
@@ -187,7 +179,7 @@ export default {
       this.recommends = comments
     },
     // 子组件上面的歌曲点击事件传递音乐下标
-    musicItemClick (index) {
+    musicItemClick(index) {
       this.playMusic(index)
     }
   }

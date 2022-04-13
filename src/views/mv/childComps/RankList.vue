@@ -29,7 +29,7 @@ export default {
     }
   },
   methods: {
-    goPlayMvDetail (id) {
+    goPlayMvDetail(id) {
       this.$router.push('/playmv/' + id)
     }
   }

@@ -30,52 +30,52 @@ export default {
       default: () => false || {}
     }
   },
-  data () {
+  data() {
     return {
       scroll: null
     }
   },
   methods: {
     // better-scroll内置方法滚动到指定位置
-    scrollTo (x, y, timer = 500) {
+    scrollTo(x, y, timer = 500) {
       this.scroll.scrollTo(x, y, timer) // better-scroll内置方法，回到指定位置
     },
-    scrollBy (x, y, timer = 500) {
+    scrollBy(x, y, timer = 500) {
       this.scroll.scrollBy(x, y, timer)
     },
     // 下拉调用refresh方法，重新获取x，y
-    finishPullUp () {
+    finishPullUp() {
       this.refresh()
       this.scroll.finishPullUp()
     },
-    finishPullDown () {
+    finishPullDown() {
       this.refresh()
       this.scroll.finishPullDown()
     },
-    refresh () {
+    refresh() {
       this.scroll.refresh()
     },
     // 获取y的坐标
-    getScrollY () {
+    getScrollY() {
       return this.scroll ? this.scroll.y : 0
     },
     // 启用better-scroll
-    enable () {
+    enable() {
       this.scroll && this.scroll.enable()
     },
     // 停止scroll的动画
-    stop () {
+    stop() {
       this.scroll.stop()
     },
     // 禁用better-scroll
-    disable () {
+    disable() {
       this.scroll && this.scroll.disable()
     },
-    getMaxScrollY () {
+    getMaxScrollY() {
       return this.scroll && this.scroll.maxScrollY
     }
   },
-  mounted () {
+  mounted() {
     // 实例化better-scorll
     this.scroll = new Bscroll(this.$refs.swiper, {
       click: false,

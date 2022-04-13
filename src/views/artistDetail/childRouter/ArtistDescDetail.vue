@@ -17,22 +17,22 @@
 import { _getArtistDescDetail } from '../../../network/artist'
 export default {
   name: 'AristDescDetail',
-  data () {
+  data() {
     return {
       descDetail: null
     }
   },
-  created () {
+  created() {
     this.initArtistDesc()
   },
   methods: {
-    async initArtistDesc () {
+    async initArtistDesc() {
       const { id } = this.$route.query
       // 根据用户id请求数据
       const { data } = await _getArtistDescDetail(id)
       this.descDetail = data
     },
-    formatText (text) {
+    formatText(text) {
       return text !== null && text !== undefined ? text.split('\n') : '暂无信息'
     }
   }

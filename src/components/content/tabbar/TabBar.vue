@@ -54,7 +54,8 @@
     <!-- 消息通知(私信，评论，@我，通知) -->
     <private-detail v-show="isPrivate" class="private_detail" @privateNewChange="privateNewChange" />
     <!-- 消息通知的详情页面 -->
-    <history-news v-if="isHistoryNews" class="private_detail" :history-list="historyList" :more="historyMore" @prePrivateDetail="prePrivateDetail" @visiableMessage="(isPrivate = false), (isHistoryNews = false)" />
+    <history-news v-if="isHistoryNews" class="private_detail" :history-list="historyList" :more="historyMore" @prePrivateDetail="prePrivateDetail"
+      @visiableMessage="(isPrivate = false), (isHistoryNews = false)" />
   </div>
 </template>
 <script>
@@ -62,17 +63,14 @@ import MusicSearch from '../search/MusicSearch'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import { mixins } from '../user/mixins'
 import { _setUserImage } from '../../../network/user'
-import {
-  _getPrivateHistoryNews,
-  HandlePrivateHistory
-} from '../../../network/privateNews'
+import { _getPrivateHistoryNews, HandlePrivateHistory } from '../../../network/privateNews'
 import privateDetail from '../privateMsg/privateDetail.vue'
 import HistoryNews from '../privateMsg/childComps/HistoryNews.vue'
 export default {
   name: 'TabBar',
   components: { MusicSearch, privateDetail, HistoryNews },
   mixins: [mixins],
-  data () {
+  data() {
     return {
       header: {
         'Content-Type': 'multipart/form-data'
@@ -101,7 +99,7 @@ export default {
   watch: {
     // 隐藏消息和私信内容
     $route: {
-      handler () {
+      handler() {
         this.isPrivate = false
         this.isHistoryNews = false
       },
@@ -110,11 +108,11 @@ export default {
   },
   methods: {
     ...mapActions(['_GETUSERINFO']),
-    handleChangeRouter (i) {
+    handleChangeRouter(i) {
       this.$router.go(i)
       this.$parent.$refs.play_music.isPlayerShow = false
     },
-    handleDropClick (v) {
+    handleDropClick(v) {
       switch (v) {
         case 'messageNotify':
           this.isPrivate = !this.isPrivate
@@ -125,22 +123,21 @@ export default {
           break
       }
     },
-    handleDropMenuVisible (flag) {
+    handleDropMenuVisible(flag) {
       this.dropVisiable = flag
     },
     // 隐藏登录页面
-    showLogin () {
+    showLogin() {
       this.$store.commit('showLogin', !this.$store.state.isShowLogin)
       // 隐藏注册页面
       this.$store.commit('hiddenRegister')
     },
     // 退出登录
-    enterLogin () {
+    enterLogin() {
       this.$store.dispatch('_Layout')
     },
-    async httpRequest (item) {
-      const isType =
-        item.file.type === 'image/jpeg' || item.file.type === 'image/png'
+    async httpRequest(item) {
+      const isType = item.file.type === 'image/jpeg' || item.file.type === 'image/png'
       if (!isType) return this.$message.error('请选择正确的文件')
       var uploadImage = new FormData()
       uploadImage.append('imgFile', item.file)
@@ -154,14 +151,12 @@ export default {
         await this._GETUSERINFO(localStorage.getItem('userId'))
       }
     },
-    privateNewChange (userId) {
+    privateNewChange(userId) {
       this.historyList = []
       this.privageUserId = userId
       _getPrivateHistoryNews({ uid: this.privageUserId })
         .then(res => {
-          res.data.msgs.forEach(item =>
-            this.historyList.push(new HandlePrivateHistory(item))
-          )
+          res.data.msgs.forEach(item => this.historyList.push(new HandlePrivateHistory(item)))
           this.historyList = this.historyList.reverse()
           this.historyMore = res.data.more
         })
@@ -169,7 +164,7 @@ export default {
           this.isHistoryNews = true
         })
     },
-    prePrivateDetail () {
+    prePrivateDetail() {
       this.isPrivate = true
       this.isHistoryNews = false
     }

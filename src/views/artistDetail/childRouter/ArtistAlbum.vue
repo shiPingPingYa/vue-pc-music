@@ -16,17 +16,17 @@ export default {
     ArtistHot50,
     ArtistAlbumList
   },
-  data () {
+  data() {
     return {
       musicList: [],
       albumList: []
     }
   },
-  created () {
+  created() {
     this.initMusicListAndAlbum()
   },
   methods: {
-    async initMusicListAndAlbum () {
+    async initMusicListAndAlbum() {
       const { id } = this.$route.query
       // 获取用户的热门50首音乐id
       const {

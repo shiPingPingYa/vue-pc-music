@@ -1,10 +1,11 @@
 <template>
-  <div  class="floor_comment" v-if="parentCommentId !== 0" >
-  <div class="floor_comment_list" v-for="(item,index) in floorComments" :key="index">
-  <span>@{{item.user.nickname}}: </span>
-  <div>{{item.content}}</div>
-  </div>
-  <div :class="{'more_floor_comments':floorCommentsTitle === '获取更多....','no_more_floor_comments':floorCommentsTitle ==='暂无更多评论，快去评论吧....'}" @click="moreFloorComments">{{floorCommentsTitle}} </div>
+  <div class="floor_comment" v-if="parentCommentId !== 0">
+    <div class="floor_comment_list" v-for="(item,index) in floorComments" :key="index">
+      <span>@{{item.user.nickname}}: </span>
+      <div>{{item.content}}</div>
+    </div>
+    <div :class="{'more_floor_comments':floorCommentsTitle === '获取更多....','no_more_floor_comments':floorCommentsTitle ==='暂无更多评论，快去评论吧....'}" @click="moreFloorComments">
+      {{floorCommentsTitle}} </div>
   </div>
 </template>
 <script>
@@ -14,19 +15,19 @@ export default {
   props: {
     parentCommentId: {
       type: Number,
-      default () {
+      default() {
         return 0
       }
     }
   },
-  data () {
+  data() {
     return {
       floorComments: [],
       floorCommentsTitle: '获取更多....',
       lastTime: ''
     }
   },
-  created () {
+  created() {
     if (this.parentCommentId !== 0) {
       const params = {
         id: this.$parent.$parent.id,
@@ -48,7 +49,7 @@ export default {
   },
   methods: {
     // 获取更多的楼层评论
-    async  moreFloorComments () {
+    async moreFloorComments() {
       const params = {
         id: this.$parent.$parent.id,
         type: this.$parent.$parent.Type,
@@ -56,7 +57,11 @@ export default {
         time: this.lastTime, // 评论楼层最后一个评论消息的时间,
         timestamp: Date.now() // 不缓存楼层消息
       }
-      const { data: { data: { comments } } } = await _getFloorComment(params)
+      const {
+        data: {
+          data: { comments }
+        }
+      } = await _getFloorComment(params)
       if (comments.length === 0) {
         this.$message.info('暂无更多楼层评论')
         this.floorCommentsTitle = '暂无更多评论，快去评论吧....'
@@ -66,7 +71,7 @@ export default {
       }
     },
     // 回复用户消息后，重新获取楼中楼评论
-    getFloorComments () {
+    getFloorComments() {
       const params = {
         id: this.$parent.$parent.id,
         type: this.$parent.$parent.Type,
@@ -80,37 +85,36 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.floor_comment{
-  background: #e2e4eb;
-  >.floor_comment_list{
-  display: flex;
-  padding: 4px 0;
-  span{
+  .floor_comment {
+    background: #e2e4eb;
+    > .floor_comment_list {
+      display: flex;
+      padding: 4px 0;
+      span {
+        color: #1989f1;
+        cursor: pointer;
+      }
+      div {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .more_floor_comments {
+    padding: 0 20px 10px;
+    float: right;
     color: #1989f1;
-    cursor: pointer;
+    &&:hover {
+      cursor: pointer;
+    }
   }
-  div{
-    margin-left: 10px;
-  }
-  }
-}
 
-.more_floor_comments{
-  padding:0 20px 10px;
-  float: right;
-  color: #1989f1;
-  &&:hover{
-  cursor: pointer;
+  .no_more_floor_comments {
+    padding: 0 20px 10px;
+    float: right;
+    color: red;
+    &&:hover {
+      cursor: pointer;
+    }
   }
-}
-
-.no_more_floor_comments{
-   padding:0 20px 10px;
-  float: right;
-  color: red;
-  &&:hover{
-    cursor: pointer;
-  }
-}
-
 </style>

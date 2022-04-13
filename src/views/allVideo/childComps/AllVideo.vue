@@ -26,12 +26,11 @@
 <script>
 // 导入数据接口
 import { _getGroupList, _getGroupVideo } from 'api/video'
-import Scroll from 'common/scroll/Scroll.vue'
 import VideoItem from './VideoItem.vue'
 export default {
   name: 'AllVideo',
-  components: { Scroll, VideoItem },
-  data () {
+  components: { VideoItem },
+  data() {
     return {
       page: 1,
       videoList: [],
@@ -41,12 +40,12 @@ export default {
       videoGroupListTag: ''
     }
   },
-  created () {
+  created() {
     // 获取导航条
     this.initGroupList()
   },
   methods: {
-    async initGroupList () {
+    async initGroupList() {
       const {
         data: { data }
       } = await _getGroupList()
@@ -54,7 +53,7 @@ export default {
       this.videoGroupListTag = data.slice(10, data.length - 1)
       this.initVideoList(false)
     },
-    async initVideoList (flag) {
+    async initVideoList(flag) {
       this.$refs.scroll.scrollTo(0, 0, 0)
       var id
       flag ? (id = this.videoGroupListTagId) : (id = this.videoGroupList[this.currentIndex].id)
@@ -79,20 +78,20 @@ export default {
       this.$refs.scroll.refresh()
     },
     // 导航条点击事件，重新修改导航条显示下标
-    handleGroupClick (i) {
+    handleGroupClick(i) {
       this.currentIndex = i
       this.videoGroupListTagId = ''
       this.page = 1
       this.initVideoList(false)
     },
     // 热门视频标签的点击
-    handleSelectChange () {
+    handleSelectChange() {
       this.currentIndex = -1
       this.page = 1
       this.initVideoList(true)
     },
     // 获取对应页码数据
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       this.page = val
       this.initVideoList(false)
     }

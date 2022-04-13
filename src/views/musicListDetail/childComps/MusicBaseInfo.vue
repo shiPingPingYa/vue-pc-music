@@ -67,7 +67,7 @@ export default {
     }
   },
   methods: {
-    playMusic () {
+    playMusic() {
       this.$parent.$parent.musicItemClick()
     }
   }

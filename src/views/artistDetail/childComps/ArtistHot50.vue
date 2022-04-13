@@ -52,19 +52,19 @@ export default {
   props: {
     musicList: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     }
   },
-  data () {
+  data() {
     return {
       fold: true
     }
   },
   methods: {
     // 处理音乐小喇叭
-    handleCurrentIndex (i) {
+    handleCurrentIndex(i) {
       this.playMusic(i)
     }
   }

@@ -61,7 +61,7 @@ export default {
       default: () => []
     }
   },
-  data () {
+  data() {
     return {
       musicList: [],
       musicListDetail: null,
@@ -70,17 +70,17 @@ export default {
     }
   },
   mixins: [tableMixin, indexMixin],
-  created () {
+  created() {
     this.initMusicRankList()
   },
   computed: {
-    getUpdateTime () {
+    getUpdateTime() {
       return formDate(new Date(this.updateTime), 'mm月dd日')
     }
   },
   methods: {
     // 获取音乐榜单数据
-    async initMusicRankList () {
+    async initMusicRankList() {
       // 根据榜单id获取榜单id和时间
       const {
         data: {
@@ -110,14 +110,14 @@ export default {
       })
     },
     // 跳转到音乐排行榜单详情页面
-    goMusicListDetail () {
+    goMusicListDetail() {
       this.$router.push('/musiclistdetail/' + this.rankId)
     },
     // 混入音乐
-    handlePlayIconClick () {
+    handlePlayIconClick() {
       this.playMusic()
     },
-    setMusicItemBack (i) {
+    setMusicItemBack(i) {
       return i % 2 !== 0
     }
   }

@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import {
-  Button, Input, Message, MessageBox,
+  Button,
+  Input,
+  Message,
+  MessageBox,
   Pagination,
   Row,
   Col,

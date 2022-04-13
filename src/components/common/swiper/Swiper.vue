@@ -35,22 +35,18 @@
 // 导入封装的轮播图函数
 import { _Swiper } from './indexSwper'
 import { indexMixin } from '../../../views/musicListDetail/indexMixin'
-import {
-  _getCheckMusic,
-  _getSongsDetail,
-  SongDetail
-} from '../../../network/detail' //
+import { _getCheckMusic, _getSongsDetail, SongDetail } from '../../../network/detail' //
 export default {
   name: 'Swiper',
   props: {
     banner: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     }
   },
-  data () {
+  data() {
     return {
       musicList: []
     }
@@ -58,7 +54,7 @@ export default {
   // 混入音乐播放方法
   mixins: [indexMixin],
   methods: {
-    async swiperMusic (item) {
+    async swiperMusic(item) {
       // 清空音乐列表
       this.musicList = []
       // 判断音乐有无版权再做处理
@@ -79,7 +75,7 @@ export default {
       }
     }
   },
-  updated () {
+  updated() {
     // 把swiper这个dom对象传递函数
     if (this.$refs.swiper !== null) {
       _Swiper(this.$refs.swiper)
@@ -223,7 +219,7 @@ export default {
     z-index: 0;
     opacity: 0.5;
   }
-  [class*="list"] {
+  [class*='list'] {
     transition: transform 0.8s;
   }
 </style>

@@ -5,7 +5,7 @@ import { Message } from 'element-ui'
 // 关于路由重复问题
 const originalPush = VueRouter.prototype.push
 
-VueRouter.prototype.push = function push (location) {
+VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
@@ -310,7 +310,8 @@ const routes = [
         component: () => import('@/components/content/user/childRoute/OtherUserDetail.vue'),
         meta: {
           title: '用户歌单',
-          requireLogin: true
+          requireLogin: true,
+          keepLive: true
         }
       },
       {

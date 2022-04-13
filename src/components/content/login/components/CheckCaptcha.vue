@@ -5,34 +5,17 @@
         <i class="el-icon-arrow-left" />
         <span @click="enterRegi()">返回</span>
       </div>
-      <img
-        src="../../../../assets/img/user/x.svg"
-        alt=""
-        @click="closeRegister"
-      >
+      <img src="../../../../assets/img/user/x.svg" alt="" @click="closeRegister">
     </div>
     <div class="main-container">
       <div class="form-item">
-        <el-input
-          v-model.trim="captcha"
-          placeholder="请写验证码"
-          prefix-icon="el-icon-key"
-        />
-        <el-button
-          type="danger"
-          :disabled="btnCaptcha"
-          @click="getCaptcha()"
-        >
+        <el-input v-model.trim="captcha" placeholder="请写验证码" prefix-icon="el-icon-key" />
+        <el-button type="danger" :disabled="btnCaptcha" @click="getCaptcha()">
           {{ startS }}
         </el-button>
       </div>
       <div class="form-item2">
-        <el-button
-          type="danger"
-          size="medium"
-          :disabled="btnDisabled()"
-          @click="enterNickN()"
-        >
+        <el-button type="danger" size="medium" :disabled="btnDisabled()" @click="enterNickN()">
           下一步
         </el-button>
       </div>
@@ -44,7 +27,7 @@ import { _getCaptcha, _getVerifyCaptcha } from 'api/user'
 import { debounce } from 'js/tool' // 防抖
 export default {
   name: 'CheckCaptcha',
-  data () {
+  data() {
     return {
       captcha: '',
       startS: '获取验证码',
@@ -58,7 +41,7 @@ export default {
   },
   watch: {
     // 监听验证码
-    captcha (newkey) {
+    captcha(newkey) {
       if (newkey.trim().length === 4) {
         this.checkCaptcha(this)
       }
@@ -66,10 +49,10 @@ export default {
   },
   methods: {
     // 退回注册页
-    enterRegi () {
+    enterRegi() {
       this.$store.commit('hiddenCaptcha')
     },
-    closeRegister () {
+    closeRegister() {
       // 销毁注册，验证码，昵称页面
       this.$store.commit('hiddenRegister')
       this.$store.commit('hiddenCaptcha')
@@ -78,7 +61,7 @@ export default {
       this.$store.commit('clearUserRegisterInfo', '')
     },
     // 获取验证码和获取验证时间
-    async getCaptcha () {
+    async getCaptcha() {
       // 第一次点击
       this.flag++
       this.btnCaptcha = true
@@ -122,25 +105,27 @@ export default {
     // 验证，验证码是否输入正确
     checkCaptcha: debounce(function (e) {
       try {
-        _getVerifyCaptcha(e.$store.state.phone, e.captcha.trim()).then(res => {
-          console.log(res.data)
-          e.exit = res.data.data
-          // 存储验证码
-          e.$store.commit('addCaptcha', e.captcha)
-        }).catch(err => {
-          console.log(err)
-          e.$message.warning('验证码错误')
-        })
+        _getVerifyCaptcha(e.$store.state.phone, e.captcha.trim())
+          .then(res => {
+            console.log(res.data)
+            e.exit = res.data.data
+            // 存储验证码
+            e.$store.commit('addCaptcha', e.captcha)
+          })
+          .catch(err => {
+            console.log(err)
+            e.$message.warning('验证码错误')
+          })
       } catch (k) {
         console.log(k)
       }
     }, 800),
     // 是否禁用按钮
-    btnDisabled () {
+    btnDisabled() {
       return !(this.captcha.trim().length === 4 && this.exit)
     },
     // 显示呢称组件
-    enterNickN () {
+    enterNickN() {
       this.$store.commit('showNickName')
       clearInterval(this.timer)
     }

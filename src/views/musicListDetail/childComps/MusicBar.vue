@@ -14,13 +14,13 @@ export default {
       default: () => []
     }
   },
-  data () {
+  data() {
     return {
       currentIndex: 0
     }
   },
   methods: {
-    currentIndexClick (index) {
+    currentIndexClick(index) {
       this.currentIndex = index
       switch (index) {
         case 0:

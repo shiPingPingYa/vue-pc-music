@@ -3,63 +3,33 @@
     <div class="modal-content">
       <div class="icon-close-container">
         <div class="back" />
-        <img
-          src="../../../assets/img/user/x.svg"
-          alt=""
-          @click.stop="__hiddenLogin"
-        >
+        <img src="../../../assets/img/user/x.svg" alt="" @click.stop="__hiddenLogin">
       </div>
       <div class="user-img-container">
-        <img
-          :src="getUserImage"
-          alt
-        >
+        <img :src="getUserImage" alt>
       </div>
       <!-- 登录信息 -->
       <div class="main-container">
         <!-- 手机号码 -->
         <div class="form-item">
-          <el-input
-            v-model.trim="phone"
-            placeholder="请输入账号"
-            prefix-icon="el-icon-user"
-            @blur="verifyPhone"
-          />
+          <el-input v-model.trim="phone" placeholder="请输入账号" prefix-icon="el-icon-user" @blur="verifyPhone" />
           <p>{{ phoneErr }}</p>
         </div>
         <!-- 密码 -->
         <div class="form-item">
-          <el-input
-            v-model.trim="password"
-            placeholder="请输入密码"
-            type="password"
-            prefix-icon="el-icon-user"
-            @blur="verifyPassword"
-          />
+          <el-input v-model.trim="password" placeholder="请输入密码" type="password" prefix-icon="el-icon-user" @blur="verifyPassword" />
           <p>{{ passwordErr }}</p>
         </div>
         <!-- 登录 -->
         <div class="form-item">
-          <input
-            ref="btn"
-            type="button"
-            :class="{'login-btn':true,'active-btn':btnDisabled ,'disable-btn':!btnDisabled} "
-            :disabled="!btnDisabled"
-            value="登陆"
-            @click.stop="userLogin()"
-          >
+          <input ref="btn" type="button" :class="{'login-btn':true,'active-btn':btnDisabled ,'disable-btn':!btnDisabled} " :disabled="!btnDisabled" value="登陆"
+            @click.stop="userLogin()">
         </div>
         <!-- 注册 -->
-        <div
-          class="other-btn"
-          @click.stop="registerC()"
-        >
+        <div class="other-btn" @click.stop="registerC()">
           注册
         </div>
-        <div
-          class="other-btn"
-          @click.stop="qrcodeClick()"
-        >
+        <div class="other-btn" @click.stop="qrcodeClick()">
           二维码登录
         </div>
       </div>
@@ -73,7 +43,7 @@ import { _VerifyPhone } from 'api/user'
 export default {
   name: 'Login',
   // mixins: [mixins],
-  data () {
+  data() {
     return {
       isPhone: false,
       isPassword: false,
@@ -87,14 +57,14 @@ export default {
   computed: {
     ...mapState(['image']),
     ...mapGetters(['getUserImage']),
-    btnDisabled () {
+    btnDisabled() {
       return this.isPhone && this.isPassword
     }
   },
   methods: {
     ...mapMutations(['hiddenLogin', 'showRegister', 'showQrcode']),
     // 鼠标一聚焦验证手机号
-    async verifyPhone () {
+    async verifyPhone() {
       this.isPhone = false
       const { phone } = this
       // 判断号码是否为空
@@ -103,7 +73,9 @@ export default {
       else if (phone.length !== 11) this.phoneErr = '请输入11位手机号'
       else {
         // 检测手机号是否存在
-        const { data: { exist } } = await _VerifyPhone(this.phone)
+        const {
+          data: { exist }
+        } = await _VerifyPhone(this.phone)
         if (exist === -1) this.phoneErr = '手机号码未被注册，请注册账号后再登录'
         else {
           this.phoneErr = ''
@@ -111,7 +83,7 @@ export default {
         }
       }
     },
-    verifyPassword () {
+    verifyPassword() {
       this.isPassword = false
       const { password } = this
       // 判断密码 是否为空
@@ -123,7 +95,7 @@ export default {
       }
     },
     // 隐藏登录界面
-    __hiddenLogin () {
+    __hiddenLogin() {
       // 清除提示信息
       this.password = ''
       this.phoneErr = ''
@@ -131,17 +103,17 @@ export default {
       this.hiddenLogin()
     },
     // 显示注册页面
-    registerC () {
+    registerC() {
       this.hiddenLogin()
       this.showRegister()
     },
     // 二维码组件
-    qrcodeClick () {
+    qrcodeClick() {
       this.hiddenLogin()
       this.showQrcode()
     },
     // 登录
-    userLogin () {
+    userLogin() {
       const { phone, password } = this
       this.$store.dispatch('__LOGIN', { phone, password })
     }

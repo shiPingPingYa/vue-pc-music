@@ -32,21 +32,21 @@ import { indexMixin } from '../../../views/musicListDetail/indexMixin'
 const musicItem = () => import('./MusicItem.vue')
 export default {
   name: 'DayMusic',
-  data () {
+  data() {
     return {
       musicList: []
     }
   },
   components: { musicItem, Scroll },
   mixins: [indexMixin],
-  created () {
+  created() {
     const date = new Date()
     this.getDate = date.getDate()
     this.getDay = this.isGetDay(date.getDay())
     this.initDayMusicList()
   },
   methods: {
-    async initDayMusicList () {
+    async initDayMusicList() {
       const {
         data: {
           data: { dailySongs }
@@ -63,7 +63,7 @@ export default {
         }
       })
     },
-    isGetDay (day) {
+    isGetDay(day) {
       switch (day) {
         case 0:
           return '星期天'

@@ -16,18 +16,13 @@
   </div>
 </template>
 <script>
-import Scroll from 'common/scroll/Scroll'
 import MvBar from './childComps/MvBar'
 import MvItem from './childComps/MVItem'
 import { _AllMv } from 'api/mv'
 export default {
   name: 'AllMv',
-  components: {
-    MvBar,
-    MvItem,
-    Scroll
-  },
-  data () {
+  components: { MvBar, MvItem },
+  data() {
     return {
       limit: 40,
       mvList: [],
@@ -37,12 +32,12 @@ export default {
       page: 1
     }
   },
-  mounted () {
+  mounted() {
     this.initAllMvList()
     this.$refs.scroll.refresh()
   },
   methods: {
-    async initAllMvList (area, type, order, flag) {
+    async initAllMvList(area, type, order, flag) {
       if (flag) {
         this.area = area
         this.type = type
@@ -70,7 +65,7 @@ export default {
         }
       })
     },
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       this.page = val
       this.$refs.scroll.scrollTo(0, 0, 200)
       this.initAllMvList()

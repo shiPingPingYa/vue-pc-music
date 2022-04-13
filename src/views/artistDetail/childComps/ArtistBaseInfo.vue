@@ -32,7 +32,7 @@
 import { _getArtistDetail, _getArtistDesc } from 'api/artist'
 export default {
   name: 'ArtistBaseInfo',
-  data () {
+  data() {
     return {
       baseInfo: null,
       artistDes: ''
@@ -40,20 +40,20 @@ export default {
   },
   watch: {
     '$route.query.id': {
-      handler (oldId) {
+      handler(oldId) {
         this.id = oldId
         this.initArtistInfo()
         this.initArtistDes()
       }
     }
   },
-  created () {
+  created() {
     this.id = this.$route.query.id
     this.initArtistInfo()
     this.initArtistDes()
   },
   methods: {
-    async initArtistInfo () {
+    async initArtistInfo() {
       const {
         data: {
           data: { artist }
@@ -61,7 +61,7 @@ export default {
       } = await _getArtistDetail({ id: this.id })
       this.baseInfo = artist
     },
-    async initArtistDes () {
+    async initArtistDes() {
       const {
         data: { briefDesc }
       } = await _getArtistDesc({ id: this.id })

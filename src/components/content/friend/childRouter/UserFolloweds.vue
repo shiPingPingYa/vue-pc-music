@@ -34,7 +34,6 @@
 <script>
 // 导入数据接口
 import { _getUserFons } from '../../../../network/friend'
-import Scroll from '../../../common/scroll/Scroll.vue'
 // 处理请求好的数据
 import { Aollows } from '../childComps/handleUserInfo'
 // 节流
@@ -42,8 +41,7 @@ import { throttled } from '../../../../assets/common/tool'
 import { mapState } from 'vuex'
 export default {
   name: 'UserFolloweds',
-  components: { Scroll },
-  data () {
+  data() {
     return {
       followList: [],
       notFollowList: [],
@@ -54,7 +52,7 @@ export default {
   computed: {
     ...mapState(['userName', 'uid'])
   },
-  created () {
+  created() {
     this.loadFollows()
   },
   methods: {
@@ -62,7 +60,7 @@ export default {
     pullingUp: throttled(function () {
       this.loadFollows()
     }, 800),
-    async loadFollows () {
+    async loadFollows() {
       const params = {
         uid: this.uid || localStorage.getItem('userId'),
         offset: this.followList.length

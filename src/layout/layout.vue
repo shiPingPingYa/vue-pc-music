@@ -19,7 +19,7 @@ export default {
     PlayMusic
     // HomePageRecommends
   },
-  mounted () {
+  mounted() {
     const app = document.getElementById('app')
     const handleImgAndMessageClick = () => {
       this.$store.commit('setAsyncShareImag', false) // 隐藏朋友圈图片
@@ -34,8 +34,8 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.layout_app {
-  width: 100%;
-  height: 100%;
-}
+  .layout_app {
+    width: 100%;
+    height: 100%;
+  }
 </style>

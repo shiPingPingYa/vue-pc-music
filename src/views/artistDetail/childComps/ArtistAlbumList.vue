@@ -56,14 +56,14 @@ export default {
       default: () => {}
     }
   },
-  data () {
+  data() {
     return {
       musicList: [],
       fold: true
     }
   },
   mixins: [tableMixin, indexMixin, playMinxin],
-  created () {
+  created() {
     // 判断专辑信息是否为空
     if (this.album !== null) {
       // 调用接口，根据专辑ID获取专辑
@@ -82,7 +82,7 @@ export default {
     }
   },
   methods: {
-    albumClick (i) {
+    albumClick(i) {
       this.playMusic(i)
     }
   }

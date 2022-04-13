@@ -1,51 +1,26 @@
 <template>
-  <div
-    ref="register"
-    class="modal"
-  >
+  <div ref="register" class="modal">
     <div class="modal-content">
       <div class="icon-close-container">
         <div class="back" />
-        <img
-          src="../../../assets/img/user/x.svg"
-          alt=""
-          @click="closeRegister()"
-        >
+        <img src="../../../assets/img/user/x.svg" alt="" @click="closeRegister()">
       </div>
       <div class="user-img-container">
-        <img
-          src="../../../assets/img/user/phone.svg"
-          alt=""
-        >
+        <img src="../../../assets/img/user/phone.svg" alt="">
       </div>
       <!-- 输入框 -->
       <div class="main-container">
         <div class="form-item">
-          <el-input
-            v-model="phone"
-            placeholder="请输入手机号"
-            prefix-icon="el-icon-user"
-            @blur="verifyPhone"
-          />
+          <el-input v-model="phone" placeholder="请输入手机号" prefix-icon="el-icon-user" @blur="verifyPhone" />
           <p>{{ phoneErr }}</p>
         </div>
         <div class="form-item">
-          <el-input
-            v-model="password"
-            placeholder="请输入密码8到18位"
-            type="password"
-            prefix-icon="el-icon-lock"
-            @blur="verifyPassword"
-          />
+          <el-input v-model="password" placeholder="请输入密码8到18位" type="password" prefix-icon="el-icon-lock" @blur="verifyPassword" />
           <p>{{ passwordErr }}</p>
         </div>
         <div class="form-item">
           <div class="user-register">
-            <el-button
-              type="danger"
-              :disabled="btnDisabled"
-              @click="enterCaptcha()"
-            >
+            <el-button type="danger" :disabled="btnDisabled" @click="enterCaptcha()">
               注册
             </el-button>
           </div>
@@ -54,10 +29,7 @@
     </div>
     <transition name="fade-in-linear">
       <!-- 验证码验证 -->
-      <check-captcha
-        v-show="isCaptcha"
-        ref="check_captcha"
-      />
+      <check-captcha v-show="isCaptcha" ref="check_captcha" />
     </transition>
     <transition name="fade-in-linear">
       <!-- 昵称 -->
@@ -77,7 +49,7 @@ import { _VerifyPhone } from 'api/user'
 export default {
   name: 'Register',
   components: { CheckCaptcha, NickName },
-  data () {
+  data() {
     return {
       isPhone: false,
       isPassword: false,
@@ -90,12 +62,12 @@ export default {
   },
   computed: {
     ...mapState(['isCaptcha', 'isNickName']),
-    btnDisabled () {
+    btnDisabled() {
       return !(this.isPhone && this.isPassword)
     }
   },
   watch: {
-    phone (newkey) {
+    phone(newkey) {
       if (newkey.trim().length >= 11) {
         this.$refs.check_captcha.flag = 0
         clearInterval(this.$refs.check_captcha.timer)
@@ -103,7 +75,7 @@ export default {
     }
   },
   methods: {
-    closeRegister () {
+    closeRegister() {
       // 销毁注册，验证码，昵称页面
       this.$store.commit('hiddenRegister')
       this.$store.commit('hiddenCaptcha')
@@ -112,7 +84,7 @@ export default {
       this.$store.commit('clearUserRegisterInfo', '')
     },
     // 鼠标一聚焦验证手机号
-    async verifyPhone () {
+    async verifyPhone() {
       this.isPhone = false
       const { phone } = this
       // 判断号码是否为空
@@ -121,7 +93,9 @@ export default {
       else if (phone.length !== 11) this.phoneErr = '请输入11位手机号'
       else {
         // 检测手机号是否已经被注册过了
-        const { data: { exist } } = await _VerifyPhone(this.phone)
+        const {
+          data: { exist }
+        } = await _VerifyPhone(this.phone)
         if (exist !== -1) this.phoneErr = '该手机号已被注册了，请直接登录!!!'
         else {
           this.phoneErr = ''
@@ -129,7 +103,7 @@ export default {
         }
       }
     },
-    verifyPassword () {
+    verifyPassword() {
       this.isPassword = false
       const { password } = this
       // 判断密码 是否为空
@@ -141,13 +115,12 @@ export default {
       }
     },
     // 存储注册账号和密码，去往获取验证码页面校验手机号
-    enterCaptcha () {
+    enterCaptcha() {
       this.$store.commit('addPhone', this.phone)
       this.$store.commit('addPassword', this.password)
       this.$store.commit('showCaptcha')
     }
   }
-
 }
 </script>
 <style lang="less" scoped>
