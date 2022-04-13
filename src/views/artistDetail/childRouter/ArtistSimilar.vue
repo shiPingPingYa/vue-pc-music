@@ -13,23 +13,23 @@
 import { _getArtistSimilar } from '../../../network/artist'
 export default {
   name: 'ArtistSimilar',
-  data () {
+  data() {
     return {
       similarArtistList: ''
     }
   },
-  created () {
+  created() {
     this.initSimilarArtist()
   },
   methods: {
-    async initSimilarArtist () {
+    async initSimilarArtist() {
       const { id } = this.$route.query
       const {
         data: { artists }
       } = await _getArtistSimilar(id)
       this.similarArtistList = artists
     },
-    goArtistDetail (artist) {
+    goArtistDetail(artist) {
       this.$router.push({ path: '/artist', query: { id: artist.id } })
     }
   }

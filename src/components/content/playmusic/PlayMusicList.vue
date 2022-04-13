@@ -16,12 +16,11 @@
   </div>
 </template>
 <script>
-import Scroll from '../../common/scroll/Scroll'
 // 导入音乐条目
 import MusicItem from '../../../views/musicListDetail/childComps/MusicItem'
 export default {
   name: 'PlayMusicList',
-  components: { Scroll, MusicItem },
+  components: { MusicItem },
   props: {
     musicList: {
       type: Array,
@@ -29,15 +28,15 @@ export default {
     }
   },
   methods: {
-    cancel () {
+    cancel() {
       this.$parent.isMusicList = false
     },
     // 音乐列表的点击事件传递了一个下标
-    musicItemClick (index) {
+    musicItemClick(index) {
       this.$bus.$emit('playMusicListItem', index)
     }
   },
-  updated () {
+  updated() {
     this.$refs.play_music_scroll.refresh()
   }
 }

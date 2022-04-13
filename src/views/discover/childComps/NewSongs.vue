@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     // 触发父组件上面的方法，传递播放的音乐
-    playMusic (index) {
+    playMusic(index) {
       this.$emit('playMusic', index)
     }
   }

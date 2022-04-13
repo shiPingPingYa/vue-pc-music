@@ -23,8 +23,6 @@
   </div>
 </template>
 <script>
-// 导入scroll
-import Scroll from '../../../components/common/scroll/Scroll'
 // 导入歌手列表组件
 import ArtistList from '../childComps/ArtistList'
 // 导入数据请求
@@ -33,11 +31,8 @@ import { _getArtist } from '../../../network/discover'
 import { throttled } from '../../../assets/common/tool'
 export default {
   name: 'ArtistCategory',
-  components: {
-    ArtistList,
-    Scroll
-  },
-  data () {
+  components: { ArtistList },
+  data() {
     return {
       areaIndex: 0,
       typeIndex: 0,
@@ -58,12 +53,12 @@ export default {
       ]
     }
   },
-  created () {
+  created() {
     this.getArtist()
   },
   methods: {
     // 获取默认全部的歌手数据
-    async getArtist () {
+    async getArtist() {
       this.artistList = []
       const params = {
         area: this.area[this.areaIndex].value,
@@ -88,12 +83,12 @@ export default {
       artists.forEach(item => this.artistList.push(item))
       this.$refs.scroll.finishPullUp()
     }, 800),
-    handleAreaClick (index) {
+    handleAreaClick(index) {
       this.areaIndex = index
       this.$refs.scroll.scrollTo(0, 0, 200)
       this.getArtist()
     },
-    handleTypeClick (index) {
+    handleTypeClick(index) {
       this.typeIndex = index
       this.$refs.scroll.scrollTo(0, 0, 200)
       this.getArtist()

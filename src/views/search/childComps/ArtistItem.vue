@@ -18,19 +18,19 @@ export default {
   props: {
     artistsList: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     }
   },
-  created () {
+  created() {
     this.setItemBackColor()
   },
   methods: {
-    setItemBackColor (i) {
+    setItemBackColor(i) {
       return i % 2 !== 0
     },
-    goArtistDetail (i) {
+    goArtistDetail(i) {
       this.$router.push({
         path: '/artist',
         query: { id: this.artistsList[i].id }

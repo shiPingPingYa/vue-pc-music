@@ -9,6 +9,7 @@ import 'assets/css/babel.css'
 import 'assets/css/index.css'
 // 导入elementui
 import '../src/plugins/element'
+import scroll from './components/common/scroll/Scroll.vue'
 import { formDate } from './assets/common/tool'
 import imgLazy from './dirctives/imgLazy'
 
@@ -19,6 +20,7 @@ Vue.prototype.$http = axios
 Vue.prototype.$bus = new Vue()
 Vue.prototype.formDate = formDate
 Vue.directive('imgLazy', imgLazy)
+Vue.component('scroll', scroll) //全局使用的scroll组件(因为这个scroll组件使用地方过多，所以全局注册)
 
 new Vue({
   router,

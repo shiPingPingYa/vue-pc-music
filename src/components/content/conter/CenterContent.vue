@@ -15,13 +15,13 @@ export default {
   },
   // 监听路由地址
   watch: {
-    $route (oldkey) {
+    $route(oldkey) {
       this.emitCheckClick(oldkey.path)
     }
   },
   methods: {
     // 遍历路由对象
-    emitCheckClick (path) {
+    emitCheckClick(path) {
       var that = this
       for (var i in that.$refs.left_menu.list) {
         ;(function (e) {

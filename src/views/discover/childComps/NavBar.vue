@@ -10,7 +10,7 @@
 <script>
 export default {
   name: 'NavBar',
-  data () {
+  data() {
     return {
       currentIndex: 0,
       tabList: [
@@ -25,14 +25,14 @@ export default {
   },
   watch: {
     '$route.path': {
-      handler () {
+      handler() {
         this.initTabIndex()
       }
     }
   },
   methods: {
     // 处理页面刷新后，路由与tab导航栏对应不上
-    initTabIndex () {
+    initTabIndex() {
       const { path } = this.$route
       this.tabList.some((item, index) => {
         if (item.link === path) {
@@ -41,7 +41,7 @@ export default {
       })
     }
   },
-  mounted () {
+  mounted() {
     this.initTabIndex()
   }
 }

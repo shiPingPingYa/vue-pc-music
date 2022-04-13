@@ -31,7 +31,6 @@
 </template>
 <script>
 import { _getTopicDetail, _getTopicEvent } from '../../../network/topic'
-import Scroll from '../../common/scroll/Scroll.vue'
 import TopTopic from './childComps/TopTopic.vue'
 import { AttentionDynamic } from './childComps/handleUserInfo'
 import { mapState } from 'vuex'
@@ -39,8 +38,8 @@ const EventDynamic = () => import('./childComps/EventDynamic.vue')
 const AlertImage = () => import('./childRouter/AlertImage.vue')
 export default {
   name: 'TopicDetail',
-  components: { Scroll, TopTopic, EventDynamic, AlertImage },
-  data () {
+  components: { TopTopic, EventDynamic, AlertImage },
+  data() {
     return {
       participateCount: '',
       coverPCListUrl: '',
@@ -53,7 +52,7 @@ export default {
   },
   watch: {
     $route: {
-      handler (val) {
+      handler(val) {
         if (val.params.id !== ' ' && val.params.id !== undefined) {
           this.id = val.params.id
           this.initTopicDetail()
@@ -64,12 +63,12 @@ export default {
   computed: {
     ...mapState(['asyncShareImag'])
   },
-  created () {
+  created() {
     this.id = this.$route.params.id
     this.initTopicDetail()
   },
   methods: {
-    async initTopicDetail () {
+    async initTopicDetail() {
       this.dynamicList = []
       const {
         data: {
@@ -80,16 +79,14 @@ export default {
       this.participateCount = participateCount
       this.title = title
       _getTopicEvent({ actid: this.id }).then(res => {
-        res.data.events.forEach(item =>
-          this.dynamicList.push(new AttentionDynamic(item))
-        )
+        res.data.events.forEach(item => this.dynamicList.push(new AttentionDynamic(item)))
       })
     },
-    shaerContentImageChange (urlIndex, urlList) {
+    shaerContentImageChange(urlIndex, urlList) {
       this.imgIndex = urlIndex
       this.imgList = urlList
     },
-    shareTopicEvent (msg) {
+    shareTopicEvent(msg) {
       this.$message.info(`暂无${msg}动态功能`)
     }
   }

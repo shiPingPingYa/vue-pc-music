@@ -27,23 +27,23 @@ export default {
       default: () => []
     }
   },
-  data () {
+  data() {
     return {
       hoverBtnDisplay: 'none',
       index: 0,
       list: ['']
     }
   },
-  created () {
+  created() {
     this.index = this.imgIndex
     this.list = this.imgList
   },
   methods: {
-    perImage () {
+    perImage() {
       if (this.list.length === 1) return this.$message.info('到顶啦！！')
       else if (--this.index < 0) this.index = this.list.length - 1
     },
-    nextImage () {
+    nextImage() {
       if (this.list.length === 1) return this.$message.info('到底啦！！')
       else if (++this.index > this.list.length - 1) this.index = 0
     }

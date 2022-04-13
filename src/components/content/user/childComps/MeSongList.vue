@@ -51,7 +51,7 @@
       <el-row v-show="isTable === 2">
         <el-row v-for="item in songList" :key="item.id">
           <el-col :span="8">
-            <img v-imgLazy:data-src="item.coverImgUrl + '?param=200y200'" src="" />
+            <img v-imgLazy :data-src="item.coverImgUrl + '?param=200y200'" src="" />
           </el-col>
           <el-col :span="14" :offset="2">
             <div class="table_03_header">
@@ -81,11 +81,9 @@
 </template>
 <script>
 import { _getMusicListDetail, _getSongsDetail } from 'api/detail'
-import Scroll from 'common/scroll/Scroll.vue'
 import { formDate } from 'js/tool'
 import { indexMixin } from '@/views/musicListDetail/indexMixin'
 export default {
-  components: { Scroll },
   name: 'MeSongList',
   props: {
     songList: {

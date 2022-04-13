@@ -10,13 +10,12 @@
 <script>
 import { _getCommentEvent } from '../../../../network/event.js'
 import { _getRecommends } from '../../../../network/detail'
-const NoticesRecommends = () =>
-  import('../../../../views/musicListDetail/childComps/Recommends.vue')
+const NoticesRecommends = () => import('../../../../views/musicListDetail/childComps/Recommends.vue')
 const scroll = () => import('../../../common/scroll/Scroll.vue')
 export default {
   name: 'NoticesDetail',
   components: { NoticesRecommends, scroll },
-  data () {
+  data() {
     return {
       threadId: '',
       type: '',
@@ -27,7 +26,7 @@ export default {
   },
   watch: {
     $route: {
-      handler (val) {
+      handler(val) {
         if (val.params.id !== '' && val.params.id !== undefined) {
           this.threadId = val.params.id
           this.type = val.params.type
@@ -36,14 +35,14 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     // 区分评论类型
     this.threadId = this.$route.params.id
     this.type = this.$route.params.type
     this.initPage()
   },
   methods: {
-    initPage () {
+    initPage() {
       // params的参数是string类型(这里的参数是用于区别评论的类型)
       switch (Number(this.type)) {
         case 6:
@@ -64,7 +63,7 @@ export default {
           })
       }
     },
-    moreComments () {
+    moreComments() {
       switch (Number(this.type)) {
         case 6:
           console.log('aaa')
@@ -87,15 +86,14 @@ export default {
             if (res.data.comments.length === 0) {
               this.$message.info('评论已经加载完毕，暂无更多评论')
               // 修改评论组件，的评论提示消息
-              this.$refs.notices_recommends.recommendTitle =
-                '评论加载完毕，暂无更多.....'
+              this.$refs.notices_recommends.recommendTitle = '评论加载完毕，暂无更多.....'
             } else {
               res.data.comments.forEach(item => this.recommends.push(item))
             }
           })
       }
     },
-    getCommends () {
+    getCommends() {
       // 清除评论数据
       this.recommends = []
       _getRecommends({

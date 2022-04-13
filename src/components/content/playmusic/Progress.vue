@@ -9,7 +9,7 @@
 <script>
 export default {
   name: 'Progress',
-  data () {
+  data() {
     return {
       //
       proLine: 0,
@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     // 获取鼠标与进度条的比例
-    proClick (e) {
+    proClick(e) {
       // 获取鼠标点击位置,e.offsetx是相对div的位置来定义
       this.setProgress(e.offsetX)
       // 获取鼠标点击后的比例
@@ -30,42 +30,41 @@ export default {
       this.$emit('childClickScale', this.scale)
     },
     // 根据audio的播放比例,重新设置小圆点和de线条的位置
-    setAudioProgress (scale) {
+    setAudioProgress(scale) {
       this.proLine = scale * this.$refs.progress.offsetWidth
       this.proLoad = scale * this.$refs.progress.offsetWidth
     },
     // 设置播放进度条的前进
-    setProgress (width) {
+    setProgress(width) {
       this.proLine = width
       this.proLoad = width
     }
-
   }
 }
 </script>
 <style lang="less" scoped>
-.progress{
-  position: relative;
-  width: 100%;
-  height: 3px;
-  border-radius: 2px;
-  background: #dbdbdb;
-  cursor: pointer;
-  > .progress-line{
-    width: 50px;
-    height: 100%;
-    background-color: rgb(103, 197, 235);
+  .progress {
+    position: relative;
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    background: #dbdbdb;
+    cursor: pointer;
+    > .progress-line {
+      width: 50px;
+      height: 100%;
+      background-color: rgb(103, 197, 235);
+    }
+    > .progress-dot {
+      position: absolute;
+      margin: auto;
+      top: 0;
+      bottom: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #fff;
+      transform: translateX(50px);
+    }
   }
-  > .progress-dot{
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #fff;
-    transform: translateX(50px);
-  }
-}
 </style>

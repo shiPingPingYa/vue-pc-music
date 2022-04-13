@@ -33,7 +33,7 @@ export default {
   },
   mixins: [privateDetailMixin],
   methods: {
-    privateNewsChange (userId) {
+    privateNewsChange(userId) {
       this.$parent.$parent.$emit('privateNewChange', userId) // 获取私信组件，触发方法去往私信详情页面
     }
   }

@@ -17,8 +17,6 @@
   </div>
 </template>
 <script>
-// 导入定义好的scorll
-import Scroll from '../../components/common/scroll/Scroll'
 // 导入歌手条目
 import ArtistItem from '../search/childComps/ArtistItem'
 // 导入音乐条目
@@ -32,7 +30,7 @@ import { _getSongsDetail, AllSongDetail } from '../../network/detail'
 import { indexMixin } from '../musicListDetail/indexMixin'
 export default {
   name: 'SearchList',
-  data () {
+  data() {
     return {
       currentIndex: 0,
       tabList: ['单曲', '歌手'],
@@ -52,18 +50,18 @@ export default {
   mixins: [indexMixin],
   watch: {
     // 路由都做过缓存处理(在当前页面搜索音乐或者歌手重新跳转页面数据不会再次加载)
-    $route (oldkey) {
+    $route(oldkey) {
       this.keywords = oldkey.params.id
       if ((this.keywords ?? '') !== '') this.initMusicList()
     }
   },
-  created () {
+  created() {
     this.keywords = this.$route.params.id
     // 根据key获取搜索结果
     if ((this.keywords ?? '') !== '') this.initMusicList()
   },
   methods: {
-    async initMusicList () {
+    async initMusicList() {
       this.musicList = []
       this.artistsList = []
       // 将根据关键字搜索的歌曲列表解构出来
@@ -76,16 +74,14 @@ export default {
       const ids = songs.map(item => item.id).join(',')
       songs.forEach(item => this.artistsList.push(item.artists[0]))
       _getSongsDetail(ids).then(res => {
-        res.data.songs.forEach(item =>
-          this.musicList.push(new AllSongDetail(item))
-        )
+        res.data.songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
       })
     },
-    handleTabClick (index) {
+    handleTabClick(index) {
       this.currentIndex = index
     },
     // 子组件触发传递下标
-    musicItemClick (index) {
+    musicItemClick(index) {
       this.playMusic(index)
     }
   }

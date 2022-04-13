@@ -44,7 +44,7 @@ export default {
   props: {
     musicList: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     }
@@ -52,12 +52,12 @@ export default {
   computed: {
     ...mapGetters(['getSongListPath'])
   },
-  data () {
+  data() {
     return {
       playIndex: ''
     }
   },
-  mounted () {
+  mounted() {
     // 设置下标
     this.$bus.$on('Playing', (path, index) => {
       this.playIndex = index
@@ -65,15 +65,15 @@ export default {
   },
   methods: {
     // 设置音乐列表的序号
-    setSerial (i) {
+    setSerial(i) {
       return i + 1 <= 9 ? '0' + (i + 1) : i + 1
     },
     // 设置音乐列表的背景
-    setBackColor (i) {
+    setBackColor(i) {
       return i % 2 !== 0
     },
     // 音乐条目点击事件
-    musicItemClick (index) {
+    musicItemClick(index) {
       // 判断是否在同一歌单下面，是则不修改音乐列表，而是切换播放音乐下标
       if (this.$route.path === this.getSongListPath) {
         this.$bus.$emit('playMusicListItem', index) // 触发播放方法，传递index，把播放音乐下标换了

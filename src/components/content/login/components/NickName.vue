@@ -5,32 +5,17 @@
         <i class="el-icon-arrow-left" />
         <span @click="enterCheC()">返回</span>
       </div>
-      <img
-        src="../../../../assets/img/user/x.svg"
-        alt=""
-        @click="closeRegister"
-      >
+      <img src="../../../../assets/img/user/x.svg" alt="" @click="closeRegister">
     </div>
     <div class="user-img-container">
-      <img
-        src="../../../../assets/img/user/phone.svg"
-        alt=""
-      >
+      <img src="../../../../assets/img/user/phone.svg" alt="">
     </div>
     <div class="main-container">
       <div class="form-item">
-        <el-input
-          v-model="nickName"
-          placeholder="请输入呢称"
-          prefix-icon="el-icon-s-custom"
-        />
+        <el-input v-model="nickName" placeholder="请输入呢称" prefix-icon="el-icon-s-custom" />
       </div>
       <div class="form-item">
-        <el-button
-          type="danger"
-          :disabled="btnNickN"
-          @click="nickNC()"
-        >
+        <el-button type="danger" :disabled="btnNickN" @click="nickNC()">
           立即注册
         </el-button>
       </div>
@@ -42,7 +27,7 @@ import { _registerPhone } from 'api/user'
 import { mapGetters } from 'vuex'
 export default {
   name: 'NickName',
-  data () {
+  data() {
     return {
       nickName: '',
       btnNickN: true
@@ -52,7 +37,7 @@ export default {
     ...mapGetters(['getUserRegisterInfo'])
   },
   watch: {
-    nickName (newkey) {
+    nickName(newkey) {
       if (newkey.trim().length >= 4) {
         this.btnNickN = false
         this.$store.commit('addNickName', this.nickName.trim())
@@ -61,10 +46,10 @@ export default {
   },
   methods: {
     // 回退到验证码
-    enterCheC () {
+    enterCheC() {
       this.$store.commit('hiddenNickName')
     },
-    closeRegister () {
+    closeRegister() {
       // 销毁注册，验证码，昵称页面
       this.$store.commit('hiddenRegister')
       this.$store.commit('hiddenCaptcha')
@@ -73,15 +58,17 @@ export default {
       this.$store.commit('clearUserRegisterInfo', '')
     },
     // 确认注册
-    nickNC () {
+    nickNC() {
       // 隐藏注册，验证码，昵称页面
       this.closeRegister()
-      _registerPhone(this.getUserRegisterInfo).then(res => {
-        this.$message.success('账号注册成功')
-      }).catch(err => {
-        console.log(err)
-        this.$message.warning('注册失败')
-      })
+      _registerPhone(this.getUserRegisterInfo)
+        .then(res => {
+          this.$message.success('账号注册成功')
+        })
+        .catch(err => {
+          console.log(err)
+          this.$message.warning('注册失败')
+        })
     }
   }
 }

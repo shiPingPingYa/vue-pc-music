@@ -2,7 +2,7 @@
   <div class="hotComments">
     <div class="item" v-for="(item, index) in hotComments" :key="index">
       <div class="icon">
-        <img :src="item.user.avatarUrl + '?param40y40'" alt="" @click="goOtherUserDetail(item.user.userId)"/>
+        <img :src="item.user.avatarUrl + '?param40y40'" alt="" @click="goOtherUserDetail(item.user.userId)" />
       </div>
       <div class="mess">
         <div class="top">
@@ -13,8 +13,7 @@
           <div class="item_time">{{ _formatDate(item.time) }}</div>
           <div class="item_right">
             <div class="like_count">
-              <span
-                ><img src="../../../assets/img/clickLike.svg" alt="" />{{
+              <span><img src="../../../assets/img/clickLike.svg" alt="" />{{
                   item.likedCount
                 }}
               </span>
@@ -32,17 +31,17 @@ export default {
   props: {
     hotComments: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     }
   },
   methods: {
     // 格式化时间
-    _formatDate (data) {
+    _formatDate(data) {
       return formDate(new Date(data), 'mmmm--yy-dd')
     },
-    goOtherUserDetail (id) {
+    goOtherUserDetail(id) {
       this.$router.push({ path: '/otherUserDetail', query: { id: id } })
     }
   }

@@ -21,7 +21,6 @@
   </div>
 </template>
 <script>
-import Scroll from '../../../components/common/scroll/Scroll'
 // 导入歌单列表
 import MusicList from '../../musicListDetail/MusicList'
 // 导入数据接口，获取热门标签，获取热门标签歌单列表
@@ -30,7 +29,7 @@ import { _getHighquality, _getMusicListHot, _getHighqualityTags } from '../../..
 import { throttled } from '../../../assets/common/tool'
 export default {
   name: 'MusicListCategory',
-  data () {
+  data() {
     return {
       tags: null,
       currentIndex: 0,
@@ -42,16 +41,13 @@ export default {
       more: true // 加载后，判断有无数据还未加载
     }
   },
-  components: {
-    Scroll,
-    MusicList
-  },
-  mounted () {
+  components: { MusicList },
+  mounted() {
     this.initCategoryList()
     this.$refs.scroll.refresh()
   },
   methods: {
-    async initCategoryList () {
+    async initCategoryList() {
       const {
         data: { tags }
       } = await _getMusicListHot()
@@ -84,7 +80,7 @@ export default {
       this.$refs.scroll.finishPullUp()
     }, 800),
     // 导航栏的点击事件
-    handleTabClick (index) {
+    handleTabClick(index) {
       this.musicList = []
       this.more = true
       this.currentIndex = index
@@ -93,7 +89,7 @@ export default {
       this.getMusicSongSheet(false)
     },
     // 下拉列表点击事件
-    handleSelectChange () {
+    handleSelectChange() {
       this.musicList = []
       this.more = true
       this.currentIndex = -1

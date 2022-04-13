@@ -27,13 +27,13 @@ export default {
   props: {
     topMv: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     }
   },
   methods: {
-    setMusicItemIndex (i) {
+    setMusicItemIndex(i) {
       return i + 1 <= 9 ? `0${i + 1}` : i + 1
     }
   }

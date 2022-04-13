@@ -34,16 +34,14 @@
 <script>
 // 导入数据接口
 import { _getUserAttentionList } from '../../../../network/friend'
-import Scroll from '../../../common/scroll/Scroll.vue'
 // 处理请求好的数据
 import { Aollows } from '../childComps/handleUserInfo'
 // 节流
 import { throttled } from '../../../../assets/common/tool'
 import { mapState } from 'vuex'
 export default {
-  components: { Scroll },
   name: 'UserFollows',
-  data () {
+  data() {
     return {
       followList: [],
       page: 1,
@@ -52,7 +50,7 @@ export default {
     }
   },
   computed: { ...mapState(['uid']) },
-  created () {
+  created() {
     this.loadFollows()
   },
   methods: {
@@ -60,7 +58,7 @@ export default {
     pullingUp: throttled(function () {
       this.loadFollows()
     }, 800),
-    loadFollows () {
+    loadFollows() {
       if (this.followsMore === false) return this.$message.info('暂无更多关注，快快关注去吧')
       const params = {
         uid: this.uid || localStorage.getItem('userId'),

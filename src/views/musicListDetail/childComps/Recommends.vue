@@ -97,7 +97,7 @@ export default {
       default: () => 0
     }
   },
-  data () {
+  data() {
     return {
       // 评论提示内容
       recommendTitle: '更多评论....',
@@ -117,7 +117,7 @@ export default {
   watch: {
     params: {
       // 评论内容为空时，重新将其定义为一般回复
-      handler (val) {
+      handler(val) {
         if (val.content === '') {
           this.reply = 0
         }
@@ -125,21 +125,21 @@ export default {
       deep: true
     }
   },
-  created () {
+  created() {
     this.params.id = this.id
     this.params.type = this.Type
   },
   methods: {
     // 格式化时间
-    _formatDate (data) {
+    _formatDate(data) {
       return formDate(new Date(data), 'mmmm--yy-dd')
     },
     // 获取更多评论消息
-    moreComments () {
+    moreComments() {
       this.$emit('moreComments')
     },
     // 发表在歌单下面的评论
-    async submitCommends () {
+    async submitCommends() {
       if (this.reply === 0) {
         if (this.params.content.length === 0) {
           return this.$message.error('评论内容不能为空')
@@ -163,7 +163,7 @@ export default {
       }
     },
     // 回复评论
-    replyComments (commentId, userName) {
+    replyComments(commentId, userName) {
       this.params.content = `@${userName}:`
       this.params.commentId = commentId
       this.reply = 1
@@ -174,7 +174,7 @@ export default {
       this.$parent.scrollTo(0, 0, 200)
     },
     // 评论方法封装
-    async _sendAndRemoveComment () {
+    async _sendAndRemoveComment() {
       this.params.t = 1
       const {
         data: { code }
@@ -187,7 +187,7 @@ export default {
       }
     },
     // 评论点赞
-    async setCommentsLikedCount (commentId) {
+    async setCommentsLikedCount(commentId) {
       this.likeCount = commentId
       const params = {
         id: this.id,
@@ -203,13 +203,13 @@ export default {
         this.$message.error('点赞失败')
       }
     },
-    setNoneComments (index) {
+    setNoneComments(index) {
       this.noneRecoments === index ? (this.noneRecoments = -1) : (this.noneRecoments = index)
     },
-    getCommentTitle (index) {
+    getCommentTitle(index) {
       return this.noneRecoments === index ? '收起' : '展开'
     },
-    goOtherUserDetail (id) {
+    goOtherUserDetail(id) {
       this.$router.push({ path: '/otherUserDetail', query: { id: id } })
     }
   }

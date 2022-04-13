@@ -46,30 +46,18 @@
   </div>
 </template>
 <script>
-// 导入封装好的better-scroll
-import Scroll from 'common/scroll/Scroll'
 // 导入推荐video组件
 import SiMiVideoItem from './SiMiVideoItem'
 // 导入video的数据请求接口
-import {
-  _getVideoDetail,
-  _getVideoUrl,
-  _getVideoComment,
-  _getRelatedVideo
-} from 'api/video'
+import { _getVideoDetail, _getVideoUrl, _getVideoComment, _getRelatedVideo } from 'api/video'
 // 导入工具函数处理时间,导入节流函数
 import { formDate } from 'js/tool'
 // 导入评论组件
-const videoRecommends = () =>
-  import('../../musicListDetail/childComps/Recommends.vue')
+const videoRecommends = () => import('../../musicListDetail/childComps/Recommends.vue')
 export default {
   name: 'PlayVideo',
-  components: {
-    Scroll,
-    SiMiVideoItem,
-    videoRecommends
-  },
-  data () {
+  components: { SiMiVideoItem, videoRecommends },
+  data() {
     return {
       id: null,
       detail: null,
@@ -84,21 +72,21 @@ export default {
   },
   watch: {
     ' $route.params.id': {
-      handler (val) {
+      handler(val) {
         this.id = val
         this.getBaseInfo()
       },
       deep: true
     }
   },
-  created () {
+  created() {
     this.id = this.$route.params.id
     this.id && this.getBaseInfo()
     // 停止播放音乐
     this.$emit('stopMusic')
   },
   methods: {
-    async getBaseInfo () {
+    async getBaseInfo() {
       this.pageLoading = true
       // 获取video的详情，播放地址，评论，推荐视频
       await Promise.all([
@@ -123,21 +111,21 @@ export default {
       })
     },
     // 格式化时间
-    _formatDate (time) {
+    _formatDate(time) {
       return formDate(new Date(time), 'ff:mm:yy')
     },
     // 判断是否有简历
-    isDescription (des) {
+    isDescription(des) {
       return des || '视频暂无简介'
     },
-    enter () {
+    enter() {
       this.$refs.scroll.disable()
     },
-    leave () {
+    leave() {
       this.$refs.scroll.enable()
     },
     // 获取mv评论内容
-    async moreComments () {
+    async moreComments() {
       const {
         data: { comments }
       } = await _getVideoComment(this.id, this.limit, this.recommends.length)
@@ -145,15 +133,14 @@ export default {
       if (comments.length === 0) {
         this.$Message.info('评论已经加载完毕，暂无更多评论')
         // 修改评论组件，评论提示消息
-        this.$refs.songList_recommends.recommendTitle =
-          '评论加载完毕，暂无更多.....'
+        this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....'
       } else {
         // 遍历添加请求成功后的歌单评论
         comments.forEach(item => this.recommends.push(item))
       }
     },
     // 发送评论后，重新获取评论
-    getCommends () {
+    getCommends() {
       // 清除评论数据
       this.recommends = []
       _getVideoComment(this.id, this.limit, 0).then(res => {
@@ -161,10 +148,8 @@ export default {
       })
     },
     // 视频播放完毕自动播放相似视频
-    handleVideoEnd () {
-      this.$refs.simi_video_item.playVideo(
-        this.simiVideo[this.simiVideoIndex].id
-      )
+    handleVideoEnd() {
+      this.$refs.simi_video_item.playVideo(this.simiVideo[this.simiVideoIndex].id)
       if (this.simiVideoIndex++ > 4) this.simiVideoIndex = 0
     }
   }

@@ -43,7 +43,6 @@
   </transition>
 </template>
 <script>
-import Scroll from '../../common/scroll/Scroll'
 // 歌词组件
 import Lyric from './Lyric'
 // 导入歌曲评论请求和歌词请求
@@ -52,11 +51,7 @@ import { _musicRecommend } from '../../../network/detail'
 const musicRecommends = () => import('../../../views/musicListDetail/childComps/Recommends')
 export default {
   name: 'Player',
-  components: {
-    Scroll,
-    musicRecommends,
-    Lyric
-  },
+  components: { musicRecommends, Lyric },
   props: {
     music: {
       type: Object,

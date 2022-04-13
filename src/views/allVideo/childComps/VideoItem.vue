@@ -27,7 +27,7 @@ export default {
     }
   },
   methods: {
-    playVideo (id) {
+    playVideo(id) {
       this.$router.push('/playvideo/' + id)
       console.log(id)
     }

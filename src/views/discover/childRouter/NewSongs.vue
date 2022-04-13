@@ -38,17 +38,13 @@
   </div>
 </template>
 <script>
-import Scroll from 'common/scroll/Scroll'
 import { _getTopSongs } from 'api/discover'
 import { _getSongsDetail } from 'api/detail'
 import { formDate } from 'js/tool'
 import { indexMixin } from '../../musicListDetail/indexMixin' // 播放音乐方法混入
 export default {
   name: 'NewSongs',
-  components: {
-    Scroll
-  },
-  data () {
+  data() {
     return {
       imgCurrent: 0,
       areaIndex: 0,
@@ -65,23 +61,23 @@ export default {
     }
   },
   mixins: [indexMixin],
-  created () {
+  created() {
     this.initNewMusicList()
   },
   watch: {
     // 监听标签改变，重置
-    areaIndex () {
+    areaIndex() {
       this.page = 0
     }
   },
   methods: {
     // 头部导航条点击
-    handleTabClick (index) {
+    handleTabClick(index) {
       this.areaIndex = index
       this.page = 0
       this.initNewMusicList()
     },
-    async initNewMusicList () {
+    async initNewMusicList() {
       this.musicList = []
       this.page++
       const {
@@ -106,13 +102,13 @@ export default {
       })
     },
     // 播放选中音乐
-    playMusicItem (index) {
+    playMusicItem(index) {
       this.$bus.$emit('playMusicListItem', index)
     },
-    setMusicItemBack (i) {
+    setMusicItemBack(i) {
       return i % 2 !== 0
     },
-    setMusicItemIndex (i) {
+    setMusicItemIndex(i) {
       return i + 1 <= 9 ? `0${i + 1}` : i + 1
     }
   }

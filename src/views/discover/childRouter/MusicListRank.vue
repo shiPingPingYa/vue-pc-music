@@ -11,8 +11,6 @@
   </div>
 </template>
 <script>
-// 滚动条
-import Scroll from '../../../components/common/scroll/Scroll'
 // 音乐榜单
 import RankListItem from '../childComps/RankListItem'
 // 音乐条目
@@ -21,12 +19,8 @@ import MusicList from '../../musicListDetail/MusicList'
 import { _getRankList } from '../../../network/discover'
 export default {
   name: 'MusicListRank',
-  components: {
-    Scroll,
-    MusicList,
-    RankListItem
-  },
-  data () {
+  components: { MusicList, RankListItem },
+  data() {
     return {
       topRankList: [],
       totalList: [],
@@ -46,11 +40,11 @@ export default {
       ]
     }
   },
-  created () {
+  created() {
     this.initMusicRankList()
   },
   methods: {
-    async initMusicRankList () {
+    async initMusicRankList() {
       const {
         data: { list }
       } = await _getRankList()

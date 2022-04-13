@@ -52,7 +52,7 @@ const MeSongList = () => import('./childComps/MeSongList.vue')
 export default {
   name: 'UserDetail',
   components: { MeSongList },
-  data () {
+  data() {
     return {
       createSongList: [],
       collectSongList: [],
@@ -72,19 +72,11 @@ export default {
     }
   },
   computed: {
-    ...mapState([
-      'userName',
-      'userGender',
-      'userFollows',
-      'userFolloweds',
-      'userEventCount',
-      'level',
-      'userSongList'
-    ]),
+    ...mapState(['userName', 'userGender', 'userFollows', 'userFolloweds', 'userEventCount', 'level', 'userSongList']),
     ...mapGetters(['getUserImage'])
   },
   methods: {
-    handleTableIconClick (i) {
+    handleTableIconClick(i) {
       this.tableIconIndex = i
     }
   }

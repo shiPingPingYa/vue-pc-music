@@ -16,7 +16,7 @@ export default {
     }
   },
   methods: {
-    goArtistDetail (artist) {
+    goArtistDetail(artist) {
       this.$router.push({
         path: '/artist',
         query: {

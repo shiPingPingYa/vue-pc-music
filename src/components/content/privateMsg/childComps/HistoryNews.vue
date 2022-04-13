@@ -60,58 +60,56 @@
   </div>
 </template>
 <script>
-import Scroll from '../../../common/scroll/Scroll.vue'
 import { SongDetail, _getSongsDetail } from '../../../../network/detail'
 import { formDate } from '../../../../assets/common/tool'
 import { indexMixin } from '../../../../views/musicListDetail/indexMixin'
 export default {
   name: 'HistoryNews',
-  components: { Scroll },
   mixins: [indexMixin],
   props: {
     historyList: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
     more: {
       type: Boolean,
-      default () {
+      default() {
         return false
       }
     }
   },
-  data () {
+  data() {
     return {
       isPlay: false,
       musicList: []
     }
   },
   methods: {
-    prePrivateDetail () {
+    prePrivateDetail() {
       this.$emit('prePrivateDetail')
     },
-    pullingDown () {
+    pullingDown() {
       if (!this.more) return this.$message.info('没有更多历史记录了')
       else {
       }
       this.$refs.history_news_scroll.finishPullDown()
       console.log('history', '获取更多历史记录')
     },
-    handleHistoryTime (time) {
+    handleHistoryTime(time) {
       return formDate(new Date(time), 'f:mm:dd-hh:mm')
     },
-    goPlayMV (id) {
+    goPlayMV(id) {
       this.$emit('visiableMessage')
       this.$router.push('/playmv/' + id)
     },
-    goPlayMusic (type, id) {
+    goPlayMusic(type, id) {
       if (type === 12 || type === 23) return true
       // 12和23是网易云推出活动不用管，1歌曲，7mv，2专辑
       switch (type) {
         case 1:
-          _getSongsDetail(id).then((res) => {
+          _getSongsDetail(id).then(res => {
             this.musicList.push(new SongDetail(res.data.songs))
             this.playMusic()
           })
@@ -121,7 +119,7 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     if (this.$refs.history_news_scroll !== undefined) {
       const maxY = this.$refs.history_news_scroll.getMaxScrollY()
       this.$refs.history_news_scroll.scrollTo(0, maxY, 0)

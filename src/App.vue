@@ -10,7 +10,7 @@ export default {
   name: 'App',
   methods: {
     ...mapMutations(['showLogin', 'setIslogin']),
-    initUserSongList () {
+    initUserSongList() {
       // 判断是否有userid有userid，通过userid获取下用户歌单和用户信息
       if (localStorage.getItem('userId')) {
         this.$store.dispatch('_GETUSERINFO', localStorage.getItem('userId'))
@@ -21,7 +21,7 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     this.initUserSongList()
   }
 }

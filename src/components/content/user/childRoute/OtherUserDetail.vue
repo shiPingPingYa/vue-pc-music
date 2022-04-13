@@ -7,17 +7,13 @@
         </el-col>
         <el-col :span="19" :offset="1">
           <el-row class="header" type="flex" justify="space-between">
-            <el-col class="user_name" :span="10"
-              >{{ userName }}
+            <el-col class="user_name" :span="10">{{ userName }}
               <i :class="{ 'el-icon-male': userGender == 1 }"></i>
-              <i
-                :class="{ 'el-icon-female': userGender == 0 }"
-                style="color: #f50707"
-              ></i>
+              <i :class="{ 'el-icon-female': userGender == 0 }" style="color: #f50707"></i>
               <label class="user_level">Lv.{{ level }}</label>
             </el-col>
-            <el-col class="user_icon t_r" :span="9"
-              ><el-button>编辑个人信息</el-button>
+            <el-col class="user_icon t_r" :span="9">
+              <el-button>编辑个人信息</el-button>
             </el-col>
           </el-row>
           <el-row type="flex" justify="start">
@@ -41,24 +37,15 @@
       <el-row class="b-a" type="flex" justify="space-between">
         <el-col :span="4">我创建的歌单</el-col>
         <el-col class="t_r" :span="8" :offset="12">
-          <label
-            :class="[
+          <label :class="[
               'table-item',
               tableImageIcon === index ? 'is-table-item' : '',
-            ]"
-            v-for="(item, index) in tableImageList"
-            :key="index"
-            @click="tableImageChange(index)"
-          >
+            ]" v-for="(item, index) in tableImageList" :key="index" @click="tableImageChange(index)">
             <img :src="item.img" alt="" />
           </label>
         </el-col>
       </el-row>
-      <me-song-list
-        v-if="userSongList.length !== 0"
-        :songList="userSongList"
-        :isTable="tableImageIcon"
-      ></me-song-list>
+      <me-song-list v-if="userSongList.length !== 0" :songList="userSongList" :isTable="tableImageIcon"></me-song-list>
     </el-main>
   </el-container>
 </template>
@@ -68,7 +55,7 @@ const MeSongList = () => import('../childComps/MeSongList.vue')
 export default {
   name: 'OtherUserDetail',
   components: { MeSongList },
-  data () {
+  data() {
     return {
       createSongList: [],
       collectSongList: [],
@@ -95,16 +82,16 @@ export default {
       userSongList: []
     }
   },
-  created () {
+  created() {
     if (this.$route.query.id) {
       this.initPage(this.$route.query.id)
     }
   },
   methods: {
-    tableImageChange (i) {
+    tableImageChange(i) {
       this.tableImageIcon = i
     },
-    async initPage (id) {
+    async initPage(id) {
       const {
         data: { profile, level }
       } = await _getUserInfo({

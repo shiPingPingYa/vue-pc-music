@@ -14,7 +14,7 @@
 <script>
 export default {
   name: 'MvBar',
-  data () {
+  data() {
     return {
       area: ['全部', '内地', '港台', '欧美', '韩国', '日本'],
       type: ['全部', '官方版', '原声', '现场版', '网易出品'],
@@ -25,7 +25,7 @@ export default {
     }
   },
   methods: {
-    handleAreaClick (index) {
+    handleAreaClick(index) {
       this.areaIndex = index
       this.$parent.$parent.initAllMvList(
         this.area[this.areaIndex],
@@ -34,7 +34,7 @@ export default {
         true
       )
     },
-    handleTypeClick (index) {
+    handleTypeClick(index) {
       this.typeIndex = index
       this.$parent.$parent.initAllMvList(
         this.area[this.areaIndex],
@@ -43,7 +43,7 @@ export default {
         true
       )
     },
-    handleOrderClick (index) {
+    handleOrderClick(index) {
       this.orderIndex = index
       this.$parent.$parent.initAllMvList(
         this.area[this.areaIndex],

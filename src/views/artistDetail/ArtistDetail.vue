@@ -12,10 +12,9 @@
 <script>
 import ArtistBaseInfo from './childComps/ArtistBaseInfo'
 import ArtistBar from './childComps/ArtistBar'
-import Scroll from 'common/scroll/Scroll'
 export default {
   name: 'ArtistDetail',
-  components: { ArtistBaseInfo, ArtistBar, Scroll }
+  components: { ArtistBaseInfo, ArtistBar }
 }
 </script>
 

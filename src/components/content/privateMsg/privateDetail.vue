@@ -12,7 +12,6 @@
   </div>
 </template>
 <script>
-import Scroll from '../../common/scroll/Scroll.vue'
 import {
   _getPrivateMsg,
   _getPrivateComments,
@@ -29,14 +28,8 @@ import PrivateNoticesList from './childRouter/PrivateNoticesList.vue' // 通知
 import { mapState } from 'vuex'
 export default {
   name: 'privateDetail',
-  components: {
-    Scroll,
-    PrivateNewsList,
-    PrivateCommentList,
-    PrivateForwardList,
-    PrivateNoticesList
-  },
-  data () {
+  components: { PrivateNewsList, PrivateCommentList, PrivateForwardList, PrivateNoticesList },
+  data() {
     return {
       tabbarList: ['私信', '评论', '@我', '通知'],
       isTabber: 0,
@@ -62,7 +55,7 @@ export default {
   },
   computed: {
     ...mapState(['uid']),
-    currentPage () {
+    currentPage() {
       const pageObj = {
         0: 'PrivateNewsList',
         1: 'PrivateCommentList',
@@ -71,7 +64,7 @@ export default {
       }
       return pageObj[this.isTabber]
     },
-    currentList () {
+    currentList() {
       const pageList = {
         0: 'privateNewsList',
         1: 'privateCommentsList',
@@ -82,15 +75,15 @@ export default {
     }
   },
   watch: {
-    isTabber () {
+    isTabber() {
       this.initPrivateDetail(0)
     }
   },
-  created () {
+  created() {
     this.initPrivateDetail(0)
   },
   methods: {
-    async initPrivateDetail (flag) {
+    async initPrivateDetail(flag) {
       switch (this.isTabber) {
         case 0:
           // 获取私信数据
@@ -101,9 +94,7 @@ export default {
             } = await _getPrivateMsg()
             this.NewsMore = more
             this.newMsgCount = newMsgCount
-            msgs.forEach(item =>
-              this.privateNewsList.push(new HandlePrivateMsg(item))
-            )
+            msgs.forEach(item => this.privateNewsList.push(new HandlePrivateMsg(item)))
           } else {
             if (this.NewsMore === false) {
               return this.$message.info('没有更多私信了')
@@ -116,9 +107,7 @@ export default {
             } = await _getPrivateMsg(params)
             this.NewsMore = more
             this.newMsgCount = newMsgCount
-            msgs.forEach(item =>
-              this.privateNewsList.push(new HandlePrivateMsg(item))
-            )
+            msgs.forEach(item => this.privateNewsList.push(new HandlePrivateMsg(item)))
           }
           break
         case 1:
@@ -132,23 +121,17 @@ export default {
               data: { comments, more }
             } = await _getPrivateComments(params)
             this.commentsMore = more
-            comments.forEach(item =>
-              this.privateCommentsList.push(new HandlePrivateComments(item))
-            )
+            comments.forEach(item => this.privateCommentsList.push(new HandlePrivateComments(item)))
           } else {
             if (this.commentsMore === false) {
               return this.$message.info('没有更多评论了')
             }
-            params.before = this.privateCommentsList[
-              this.privateCommentsList.length - 1
-            ].lasttime
+            params.before = this.privateCommentsList[this.privateCommentsList.length - 1].lasttime
             const {
               data: { comments, more }
             } = await _getPrivateComments(params)
             this.commentsMore = more
-            comments.forEach(item =>
-              this.privateCommentsList.push(new HandlePrivateComments(item))
-            )
+            comments.forEach(item => this.privateCommentsList.push(new HandlePrivateComments(item)))
           }
           break
         case 2:
@@ -188,31 +171,25 @@ export default {
               data: { more, notices }
             } = await _getPrivateNotices()
             this.noticesMore = more
-            notices.forEach(item =>
-              this.privateNoticesList.push(new HandlePrivateNotices(item))
-            )
+            notices.forEach(item => this.privateNoticesList.push(new HandlePrivateNotices(item)))
             break
           } else {
             if (this.noticesMore === false) {
               return this.$message.info('没有更多通知了')
             }
             const params = {
-              lasttime: this.privateNoticesList[
-                this.privateNoticesList.length - 1
-              ].lasttime
+              lasttime: this.privateNoticesList[this.privateNoticesList.length - 1].lasttime
             }
             const {
               data: { notices, more }
             } = await _getPrivateNotices(params)
             this.noticesMore = more
-            notices.forEach(item =>
-              this.privateNoticesList.push(new HandlePrivateNotices(item))
-            )
+            notices.forEach(item => this.privateNoticesList.push(new HandlePrivateNotices(item)))
           }
       }
       this.$refs.private_content_scroll.finishPullUp()
     },
-    pullingUp () {
+    pullingUp() {
       this.initPrivateDetail(1)
     }
   }

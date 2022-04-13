@@ -1,7 +1,7 @@
 <template>
   <div class="lyric" v-if="lyric !== ''">
     <scroll ref="scroll" class="lyric-scroll">
-      <ul  v-if="lyric.length > 4">
+      <ul v-if="lyric.length > 4">
         <li v-for="(item,index) in lyricArray" :key="index" :class="{action:lyricIndex == index}">
           {{item.lyric}}
         </li>
@@ -13,21 +13,19 @@
   </div>
 </template>
 <script>
-import Scroll from '../../common/scroll/Scroll'
 // 导入封装好的处理歌词方法
 import { LyricItem } from './playList'
 export default {
   name: 'Lyric',
-  components: { Scroll },
   props: {
     lyric: {
       type: String,
-      default () {
+      default() {
         return ''
       }
     }
   },
-  data () {
+  data() {
     return {
       lyricArray: [],
       lyricIndex: -1,
@@ -37,7 +35,7 @@ export default {
   },
   watch: {
     // 监听歌词，歌词一发生变化重新格式化歌词
-    lyric () {
+    lyric() {
       if (this.lyric.length < 5) return true
       else {
         this.lyricIndex = -1
@@ -48,10 +46,13 @@ export default {
   },
   methods: {
     // 格式化歌词
-    parseLyric (lyric) {
+    parseLyric(lyric) {
       var RegExp = /\[(\d*:\d*\.\d*)\]/
       // 歌词数组，时间数组，歌词，处理后的歌词和时间数组
-      var arr = []; var timeArr = []; var lyricArr = []; var mergeArr = []
+      var arr = []
+      var timeArr = []
+      var lyricArr = []
+      var mergeArr = []
 
       // 切割数组
       arr = lyric.split('\n')
@@ -68,7 +69,7 @@ export default {
         var resTime2 = resTime.split(':')
         var min = parseInt(resTime2[0]) * 60
         var sec = parseFloat(resTime2[1])
-        var time = parseFloat(Number(min + sec).toFixed(2))// toFixed返回值是String
+        var time = parseFloat(Number(min + sec).toFixed(2)) // toFixed返回值是String
         timeArr.push(time)
       }
       // 合并数组
@@ -83,7 +84,7 @@ export default {
       this.length = this.lyricArray.length
     },
     // 首页歌词滚动
-    scrollLyric (time = 0) {
+    scrollLyric(time = 0) {
       // 最后保留一组歌词
       if (this.lyricIndex > this.length - 2) return true
       // 滚动
@@ -93,7 +94,7 @@ export default {
       }
     },
     // 歌词滚动
-    maxScroll (time = 0) {
+    maxScroll(time = 0) {
       // 最后保留一组歌词
       if (this.lyricIndex > this.length - 2) return true
       // 滚动
@@ -109,35 +110,35 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.lyric{
-  height: 100%;
-}
-
-.lyric-scroll{
-  height: 100%;
-  overflow: hidden;
-}
-
-.lyric{
-  > ul{
-    text-align: center;
-    list-style-type: none;
-    width: 100%;
+  .lyric {
+    height: 100%;
   }
-}
-ul li{
-      width: 100%;
-      padding: 8px 0;
-      height: 30px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: #000a0d;
-      font-size: 14px ;
-}
 
-.action{
-  font-size: 18px;
-  color: #b82525;
-}
+  .lyric-scroll {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .lyric {
+    > ul {
+      text-align: center;
+      list-style-type: none;
+      width: 100%;
+    }
+  }
+  ul li {
+    width: 100%;
+    padding: 8px 0;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #000a0d;
+    font-size: 14px;
+  }
+
+  .action {
+    font-size: 18px;
+    color: #b82525;
+  }
 </style>

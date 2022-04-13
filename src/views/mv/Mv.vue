@@ -31,28 +31,23 @@
 
 </template>
 <script>
-import Scroll from '../../components/common/scroll/Scroll'
 import MvItem from './childComps/MVItem'
 import MvRankList from './childComps/MvRankList'
 import { _getNewMV, _getTopMv } from '../../network/mv'
 export default {
   name: 'Mv',
-  components: {
-    MvItem,
-    MvRankList,
-    Scroll
-  },
-  data () {
+  components: { MvItem, MvRankList },
+  data() {
     return {
       mvList: [],
       topMv: []
     }
   },
-  created () {
+  created() {
     this.initMvAndMvRank()
   },
   methods: {
-    async initMvAndMvRank () {
+    async initMvAndMvRank() {
       // 获取最新mv和mv排行榜
       Promise.all([_getNewMV({ limit: 10 }), _getTopMv({ limit: 10 })]).then(res => {
         this.mvList = res[0].data.data.map(item => {
@@ -75,7 +70,7 @@ export default {
         })
       })
     },
-    goAllMvDetail () {
+    goAllMvDetail() {
       this.$router.push('/allmv')
     }
   }

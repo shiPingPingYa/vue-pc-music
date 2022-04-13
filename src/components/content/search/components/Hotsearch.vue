@@ -1,4 +1,4 @@
-newValue<template>
+<template>
   <div class="hot">
     <scroll class="hot-scroll">
       <div class="record">
@@ -42,8 +42,6 @@ newValue<template>
 <script>
 // 请求数据
 import { _hotSearchDetail } from 'api/search'
-// 封装好的scroll
-import Scroll from 'common/scroll/Scroll.vue'
 export default {
   name: 'HotSearch',
   props: {
@@ -52,7 +50,6 @@ export default {
       dufault: () => []
     }
   },
-  components: { Scroll },
   data() {
     return {
       hotList: [],
