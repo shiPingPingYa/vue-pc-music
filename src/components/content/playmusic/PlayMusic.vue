@@ -16,7 +16,7 @@
       </div>
     </div>
     <!-- 播放内容区域 -->
-    <player v-if="isPlayerShow" ref="player" :music="playList[currentIndex]" :lyric="lyric"></player>
+    <player v-show="isPlayerShow" ref="player" :music="playList[currentIndex]" :lyric="lyric"></player>
     <!-- 播放条左边区域 -->
     <div class="play-music-left">
       <!-- 开始按钮 -->

@@ -42,11 +42,7 @@ export default {
       newkey: ''
     }
   },
-  components: {
-    Scroll,
-    ArtistItem,
-    MusicItem
-  },
+  components: { ArtistItem, MusicItem },
   mixins: [indexMixin],
   watch: {
     // 路由都做过缓存处理(在当前页面搜索音乐或者歌手重新跳转页面数据不会再次加载)
