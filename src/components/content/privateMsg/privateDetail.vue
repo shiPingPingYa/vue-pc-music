@@ -7,7 +7,9 @@
       </div>
     </div>
     <scroll class="private_content_scroll" ref="private_content_scroll" :pull-up-load="true" @pullingUp="pullingUp">
-      <component :is="currentPage" :list="currentList"></component>
+      <transition name="fade-in-linear">
+        <component :is="currentPage" :list="currentList"></component>
+      </transition>
     </scroll>
   </div>
 </template>

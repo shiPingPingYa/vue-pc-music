@@ -13,7 +13,7 @@
     </transition>
     <!-- 热搜榜 -->
     <transition name="fade-in-linear">
-      <hot-search @del="del" :searchList="searchList" v-show="isShow" @goSearchDetail="goSearchDetail"></hot-search>
+      <hot-search v-if="isShow" @del="del" :searchList="searchList" @goSearchDetail="goSearchDetail"></hot-search>
     </transition>
 
   </div>

@@ -1,7 +1,5 @@
-import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import axios from 'axios'
 // 导入创建好的vuex
 import store from './store'
 // 导入全局css样式
