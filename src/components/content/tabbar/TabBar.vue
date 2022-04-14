@@ -52,7 +52,7 @@
     </div>
 
     <!-- 消息通知(私信，评论，@我，通知) -->
-    <private-detail v-show="isPrivate" class="private_detail" @privateNewChange="privateNewChange" />
+    <private-detail v-if="isPrivate" class="private_detail" @privateNewChange="privateNewChange" />
     <!-- 消息通知的详情页面 -->
     <history-news v-if="isHistoryNews" class="private_detail" :history-list="historyList" :more="historyMore" @prePrivateDetail="prePrivateDetail"
       @visiableMessage="(isPrivate = false), (isHistoryNews = false)" />

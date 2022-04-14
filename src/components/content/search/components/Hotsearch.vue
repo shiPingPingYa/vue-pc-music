@@ -57,11 +57,15 @@ export default {
     }
   },
   created() {
-    _hotSearchDetail().then(res => {
-      this.hotList = res.data.data
-    })
+    this.initPage()
   },
   methods: {
+    async initPage() {
+      const {
+        data: { data }
+      } = await _hotSearchDetail()
+      this.hotList = data
+    },
     // 点击热搜小图标，删除数据
     del() {
       this.$emit('del')
