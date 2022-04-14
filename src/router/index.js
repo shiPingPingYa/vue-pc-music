@@ -1,5 +1,3 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
 import { Message } from 'element-ui'
 
 // 关于路由重复问题

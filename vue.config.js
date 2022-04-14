@@ -2,7 +2,7 @@
 // const CompressionPlugin = require('compression-webpack-plugin') //我通过iis开启的网址服务，暂时还不会开启gzip压缩，所以压缩没有暂时不使用
 const path = require('path')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
@@ -17,6 +17,13 @@ module.exports = {
     port: '8080'
   },
   lintOnSave: false, // 是否需要eslint提示
+  configureWebpack: config => {
+    config.externals = {
+      vue: 'Vue',
+      'vue-router': 'vue-router',
+      axios: 'axios'
+    }
+  },
   chainWebpack: config => {
     config.when(process.env.NODE_ENV === 'production', config => {
       config.optimization.minimizer('terser').tap(args => {
