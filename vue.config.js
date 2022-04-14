@@ -20,7 +20,7 @@ module.exports = {
   configureWebpack: config => {
     config.externals = {
       vue: 'Vue',
-      'vue-router': 'vue-router',
+      'vue-router': 'VueRouter',
       axios: 'axios'
     }
   },
