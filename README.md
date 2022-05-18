@@ -5,12 +5,15 @@
 ```
 npm install
 拉取分支后通过，npm install 下载开发依赖
+
+API来源于:https://gitee.com/its_mediocre/NeteaseCloudMusicApi
+拉取依赖后，通过npm install 下载开发依赖，并运行。
 ```
 
 ### Compiles and hot-reloads for development
 
 ```
-npm run serve
+npm run start
 运行项目
 ```
 
@@ -47,5 +50,5 @@ feature/v1.0.4 将vue，vue-router,element，通过cdn方式引入
 
 ```
 http://81.69.232.192/
-已经部署的远程项目地址
+已经部署的远程项目地址(服务器已经过期，网址不能再访问)
 ```
