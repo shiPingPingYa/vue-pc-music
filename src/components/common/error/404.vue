@@ -1,11 +1,13 @@
 <template>
   <el-container class="container">
-    <el-row type="flex" justify="start">
+    <el-row type="flex" justify="center">
       <el-col :span="12">
-        <img src="../../../assets/img/404.png" alt="" />
+        <img src="http://rc4igsiwi.hn-bkt.clouddn.com/01.png" alt="" />
       </el-col>
-      <el-col :span="12" class="l-h-344">
-        <div>抱歉您访问的页面不存在</div>
+    </el-row>
+    <el-row type="flex" justify="center">
+      <el-col :span="12">
+        <el-button type="primary" size="small" @click="$router.go(-1)">点击退回</el-button>
       </el-col>
     </el-row>
   </el-container>
@@ -17,12 +19,13 @@ export default {
 </script>
 <style lang="less" scoped>
   .container {
+    display: flex;
+    flex-direction: column;
     padding: 200px 0;
   }
 
   img {
     width: 100%;
-    height: 100%;
   }
 
   .l-h-344 {

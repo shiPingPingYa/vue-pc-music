@@ -324,24 +324,21 @@ const router = new VueRouter({
   routes
 })
 
-const filterPath = routes => {
+const getAllRoutePath = routes => {
   const routerPath = []
   routes.forEach(item => {
-    if (item.children) {
-      routerPath.push(...filterPath(item.children))
-    } else {
-      routerPath.push(item.path)
-    }
+    routerPath.push(item.path)
+    if (item.children) routerPath.push(...getAllRoutePath(item.children))
   })
   return routerPath
 }
 const isRoute = (item, routes) => item.meta.title || routes.indexOf(item.path) // 有些路由是动态路由，会出现路由查找不到的情况，所以加title来进行判断，不存在的路由是没有title的。
 const setWebsiteTitle = title => (document.title = title) // 设置网站title
-const routerList = [...new Set(filterPath(routes))]
+const routePathList = [...new Set(getAllRoutePath(routes))]
 
 router.beforeEach((to, from, next) => {
   setWebsiteTitle(to.meta.title || '覃覃音乐')
-  if (isRoute(to, routerList) === -1) return next('/404') //判断跳转路由是否存在
+  if (isRoute(to, routePathList) === -1) return next('/404') //判断跳转路由是否存在
   // 判断是否需要登录鉴权(requireLogin),不需要直接放行。需要登录鉴权判断是否登录，未登录提示无权限访问页面，并且回退前一个页面，登录放行
   if (to.meta.requireLogin) {
     if (window.localStorage.getItem('userId')) next()

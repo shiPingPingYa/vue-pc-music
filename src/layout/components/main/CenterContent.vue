@@ -5,8 +5,8 @@
   </div>
 </template>
 <script>
-import LeftMenu from '../LeftMenu'
-import RightMain from '../RightMain'
+import LeftMenu from '@/components/content/LeftMenu'
+import RightMain from '@/components/content/RightMain'
 export default {
   name: 'CenterContent.',
   components: {

@@ -3,12 +3,12 @@ import router from './router'
 // 导入创建好的vuex
 import store from './store'
 // 导入全局css样式
-import 'assets/css/babel.less'
-import 'assets/css/index.less'
+import '@/assets/css/babel.less'
+import '@/assets/css/index.less'
 // 导入elementui
 import '../src/plugins/element'
-import scroll from './components/common/scroll/Scroll.vue'
-import { formDate } from './assets/common/tool'
+import scroll from '@/components/common/scroll/Scroll.vue'
+import { formDate } from '@/assets/common/tool'
 import imgLazy from './dirctives/imgLazy'
 
 Vue.config.productionTip = false
