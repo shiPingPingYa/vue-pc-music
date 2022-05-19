@@ -3,8 +3,8 @@ import router from './router'
 // 导入创建好的vuex
 import store from './store'
 // 导入全局css样式
-import 'assets/css/babel.css'
-import 'assets/css/index.css'
+import 'assets/css/babel.less'
+import 'assets/css/index.less'
 // 导入elementui
 import '../src/plugins/element'
 import scroll from './components/common/scroll/Scroll.vue'
