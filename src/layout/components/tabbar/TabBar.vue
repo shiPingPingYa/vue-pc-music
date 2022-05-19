@@ -59,13 +59,13 @@
   </div>
 </template>
 <script>
-import MusicSearch from '../search/MusicSearch'
+import MusicSearch from '@/components/content/search/MusicSearch'
 import { mapState, mapGetters, mapActions } from 'vuex'
-import { mixins } from '../user/mixins'
+import { mixins } from '@/assets/common/verify-phone'
 import { _setUserImage } from '../../../network/user'
 import { _getPrivateHistoryNews, HandlePrivateHistory } from '../../../network/privateNews'
-import privateDetail from '../privateMsg/privateDetail.vue'
-import HistoryNews from '../privateMsg/childComps/HistoryNews.vue'
+import privateDetail from '@/components/content/privateMsg/privateDetail.vue'
+import HistoryNews from '@/components/content/privateMsg/childComps/HistoryNews.vue'
 export default {
   name: 'TabBar',
   components: { MusicSearch, privateDetail, HistoryNews },

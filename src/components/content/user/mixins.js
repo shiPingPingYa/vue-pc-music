@@ -1,8 +1,8 @@
 // 导入数据请求
-import { _VerifyPhone } from 'api/user'
+import { _VerifyPhone } from '@/network/user'
 
 export const mixins = {
-  data () {
+  data() {
     return {
       isPhone: false,
       isPassword: false,
@@ -19,7 +19,7 @@ export const mixins = {
   },
   methods: {
     // 鼠标一聚焦验证手机号
-    verifyPhone () {
+    verifyPhone() {
       // 判断号码是否为空
       if (this.phone.trim().length <= 0) {
         this.phoneMessage = '手机号不能为空'
@@ -41,7 +41,7 @@ export const mixins = {
       }
     },
     // 验证手机号注册
-    verifyPhone2 () {
+    verifyPhone2() {
       // 判断号码是否为空
       if (this.phone.trim().length <= 0) {
         this.phoneMessage = '手机号不能为空'
@@ -62,7 +62,7 @@ export const mixins = {
         }
       }
     },
-    verifyPassword () {
+    verifyPassword() {
       // 判断密码是否为空
       if (this.password.trim().length <= 0) {
         this.passwordMessage = '密码不能为空'
@@ -77,23 +77,21 @@ export const mixins = {
       }
     },
     // 判断是否禁用按钮
-    btnDisabled () {
+    btnDisabled() {
       return this.isPhone && this.isPassword
     },
     // 显示登录背景图
-    userImage () {
-      return this.$store.state.uid !== null
-        ? this.$store.state.image + '?param=48y48'
-        : 'img/login.128c56ca.jpg'
+    userImage() {
+      return this.$store.state.uid !== null ? this.$store.state.image + '?param=48y48' : 'img/login.128c56ca.jpg'
     },
     // 显示验证码,并存储手机号和密码
-    enterCaptcha () {
+    enterCaptcha() {
       this.$store.commit('addPhone', this.phone)
       this.$store.commit('addPassword', this.password)
       this.$store.commit('showCaptcha')
     },
     // 关闭注册页面
-    closeRegister () {
+    closeRegister() {
       // 销毁注册，验证码，昵称页面
       this.$store.commit('hiddenRegister')
       this.$store.commit('hiddenCaptcha')
