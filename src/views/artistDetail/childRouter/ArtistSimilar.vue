@@ -10,30 +10,30 @@
 
 </template>
 <script>
-import { _getArtistSimilar } from '../../../network/artist'
+import { _getArtistSimilar } from '../../../network/artist';
 export default {
   name: 'ArtistSimilar',
   data() {
     return {
-      similarArtistList: ''
-    }
+      similarArtistList: '',
+    };
   },
   created() {
-    this.initSimilarArtist()
+    this.initSimilarArtist();
   },
   methods: {
     async initSimilarArtist() {
-      const { id } = this.$route.query
+      const { id } = this.$route.query;
       const {
-        data: { artists }
-      } = await _getArtistSimilar(id)
-      this.similarArtistList = artists
+        data: { artists },
+      } = await _getArtistSimilar(id);
+      this.similarArtistList = artists;
     },
     goArtistDetail(artist) {
-      this.$router.push({ path: '/artist', query: { id: artist.id } })
-    }
-  }
-}
+      this.$router.push({ path: '/artist', query: { id: artist.id } });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .similar_artist {
