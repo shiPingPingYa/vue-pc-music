@@ -16,7 +16,7 @@
 <script>
 import { _getArtistDescDetail } from '../../../network/artist';
 export default {
-  name: 'AristDescDetail',
+  name: "AristDescDetail",
   data() {
     return {
       descDetail: null,
