@@ -10,24 +10,24 @@
   </div>
 </template>
 <script>
-import ArtistBaseInfo from './childComps/ArtistBaseInfo'
-import ArtistBar from './childComps/ArtistBar'
+import ArtistBaseInfo from './childComps/ArtistBaseInfo';
+import ArtistBar from './childComps/ArtistBar';
 
 export default {
   name: 'ArtistDetail',
-  components: { ArtistBaseInfo, ArtistBar }
-}
+  components: { ArtistBaseInfo, ArtistBar },
+};
 </script>
 
 <style lang='less' scoped>
-.artist-detail {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-
-  & .artist-swiper {
+  .artist-detail {
     width: 100%;
-    height: calc(100% - 40px);
+    height: 100%;
+    overflow: hidden;
+
+    & .artist-swiper {
+      width: 100%;
+      height: calc(100% - 40px);
+    }
   }
-}
 </style>
