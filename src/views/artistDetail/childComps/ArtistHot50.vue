@@ -43,8 +43,8 @@
   </div>
 </template>
 <script>
-import { tableMixin } from '../../musicListDetail/tableMixin'
-import { playMinxin } from '../../musicListDetail/playMixin'
+import { tableMixin } from '../../../mixins/tableMixin'
+import { playMinxin } from '../../../mixins/mixinsBusOnPlaying'
 import { mixinsPlayMusic } from '../../../mixins/mixinsPlayMusic'
 
 export default {

@@ -39,7 +39,7 @@
 </template>
 <script>
 // 处理列表隔行变色和id
-import { tableMixin } from '../../musicListDetail/tableMixin'
+import { tableMixin } from '../../../mixins/tableMixin'
 // 导入获取专辑接口
 import { _getAlbum } from '../../../network/artist'
 // 导入获取歌曲信息接口
@@ -47,7 +47,7 @@ import { _getSongsDetail, AllSongDetail, SongDetail } from '../../../network/det
 // 音乐混入
 import { mixinsPlayMusic } from '../../../mixins/mixinsPlayMusic'
 // 列表下标
-import { playMinxin } from '../../musicListDetail/playMixin'
+import { playMinxin } from '../../../mixins/mixinsBusOnPlaying'
 
 export default {
   name: 'ArtistAlbumList',
