@@ -15,7 +15,7 @@ export default {
   name: 'ArtistSimilar',
   data() {
     return {
-      similarArtistList: "",
+      similarArtistList: '',
     };
   },
   created() {
