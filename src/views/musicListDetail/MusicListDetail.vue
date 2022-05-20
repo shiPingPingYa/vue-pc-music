@@ -1,25 +1,25 @@
 <template>
-  <div class="music-list-detail">
-    <scroll ref="musiclist_detail" class="musiclist-detail">
+  <div class='music-list-detail'>
+    <scroll ref='musiclist_detail' class='musiclist-detail'>
       <!-- 音乐榜单默认信息 -->
-      <music-base-info :baseInfo="baseInfo"></music-base-info>
+      <music-base-info :baseInfo='baseInfo'></music-base-info>
       <!-- 音乐榜单导航条 -->
-      <music-bar ref="tab_bar" :bar="bar" @handleTabClick="handleTabClick"></music-bar>
+      <music-bar ref='tab_bar' :bar='bar' @handleTabClick='handleTabClick'></music-bar>
 
-      <transition name="fade-in-linear">
+      <transition name='fade-in-linear'>
         <!-- 音乐榜单列表 -->
-        <music-item @musicItemClick="musicItemClick" :musicList="musicList" v-show="tabBarIndex == 0"></music-item>
+        <music-item v-show='tabBarIndex === 0' :musicList='musicList' @musicItemClick='musicItemClick'></music-item>
       </transition>
 
-      <transition name="fade-in-linear">
+      <transition name='fade-in-linear'>
         <!-- 音乐榜单评论信息 -->
-        <song-list-recommends ref="songList_recommends" :recommends="recommends" :hotComments="hotComments" :id="id" :Type="2" v-show="tabBarIndex == 1"
-          @moreComments="moreComments" @getCommends="getCommends"></song-list-recommends>
+        <song-list-recommends v-show='tabBarIndex === 1' :id='id' ref='songList_recommends' :Type='2' :hotComments='hotComments' :recommends='recommends' @getCommends='getCommends'
+                              @moreComments='moreComments'></song-list-recommends>
       </transition>
 
-      <transition name="fade-in-linear">
+      <transition name='fade-in-linear'>
         <!-- 音乐榜单收藏者 -->
-        <music-list-like :subs="subs" v-show="tabBarIndex == 2"></music-list-like>
+        <music-list-like v-show='tabBarIndex === 2' :subs='subs'></music-list-like>
       </transition>
     </scroll>
   </div>
@@ -34,17 +34,17 @@ import MusicItem from './childComps/MusicItem'
 // 导入歌单收藏组件
 import MusicListLike from './childComps/MusicListLike'
 // 导入数据请求
-import { _getMusicListDetail, _getSongsDetail, _getRecommends, _getSub } from 'api/detail'
+import { _getMusicListDetail, _getRecommends, _getSongsDetail, _getSub } from 'api/detail'
 // 混入
-import { indexMixin } from './indexMixin'
-import { formDate } from 'js/tool'
+import { mixinsPlayMusic } from '../../mixins/mixinsPlayMusic'
+import { formDate } from '@/assets/common/tool'
 // 导入歌单评论组件
 const songListRecommends = () => import('./childComps/Recommends.vue')
 // 混入
 export default {
   name: 'MusicListDetail',
   // 音乐混入
-  mixins: [indexMixin],
+  mixins: [mixinsPlayMusic],
   components: { MusicBaseInfo, MusicBar, MusicListLike, MusicItem, songListRecommends },
   data() {
     return {
@@ -185,17 +185,17 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-  .music-list-detail {
-    margin: 4% auto;
-    width: 90%;
-    height: 94%;
-    color: #01060a;
-    overflow: hidden;
-  }
+<style lang='less' scoped>
+.music-list-detail {
+  margin: 4% auto;
+  width: 90%;
+  height: 94%;
+  color: #01060a;
+  overflow: hidden;
+}
 
-  .musiclist-detail {
-    height: 100%;
-    overflow: hidden;
-  }
+.musiclist-detail {
+  height: 100%;
+  overflow: hidden;
+}
 </style>

@@ -1,15 +1,16 @@
 <template>
-  <div class="artist-album">
-    <artist-hot-50 :musicList="musicList"></artist-hot-50>
-    <artist-album-list v-for="(item,index) in albumList" :key="index" :album="item"></artist-album-list>
+  <div class='artist-album'>
+    <artist-hot-50 :musicList='musicList'></artist-hot-50>
+    <artist-album-list v-for='(item,index) in albumList' :key='index' :album='item'></artist-album-list>
   </div>
 </template>
 <script>
 import ArtistHot50 from '../childComps/ArtistHot50' // 热门50首音乐
 import ArtistAlbumList from '../childComps/ArtistAlbumList' // 用户专辑
-import { _getArtistHot50, _getArtistAlbum } from '../../../network/artist'
+import { _getArtistAlbum, _getArtistHot50 } from '../../../network/artist'
 import { _getSongsDetail } from '../../../network/detail'
 import { formDate } from 'js/tool'
+
 export default {
   name: 'ArtistAlbum',
   components: {
@@ -58,8 +59,8 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-  .artist-album {
-    width: 100%;
-  }
+<style lang='less' scoped>
+.artist-album {
+  width: 100%;
+}
 </style>

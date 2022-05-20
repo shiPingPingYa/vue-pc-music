@@ -1,18 +1,18 @@
 <template>
-  <div class="individuation">
-    <scroll ref="scroll" class="individ-scroll">
+  <div class='individuation'>
+    <scroll ref='scroll' class='individ-scroll'>
       <!-- 轮播图区域 -->
-      <swiper :banner="banner"></swiper>
+      <swiper :banner='banner'></swiper>
       <p>推荐歌单</p>
       <!-- 推荐歌单区域 -->
       <music-list :totalList='totalList'></music-list>
       <!-- 私人派送区域 -->
       <private-content :privateContent='privateContent'></private-content>
       <!-- 最新音乐区域 -->
-      <new-songs :songList="songList" @playMusic="playNewsong()"></new-songs>
+      <new-songs :songList='songList' @playMusic='playNewsong()'></new-songs>
       <!-- 推荐mv区域 -->
-      <p class="pri-mv">推荐MV</p>
-      <mv-item :mvList="mvList"></mv-item>
+      <p class='pri-mv'>推荐MV</p>
+      <mv-item :mvList='mvList'></mv-item>
     </scroll>
   </div>
 </template>
@@ -22,10 +22,11 @@ import MusicList from '../../musicListDetail/MusicList'
 import PrivateContent from '../childComps/PrivateContent'
 import NewSongs from '../childComps/NewSongs'
 import MvItem from '../../mv/childComps/MVItem'
-import { _getBanner, _getPersonalized, _getPrivateContent, _getNewSong, _getPrivateMv } from 'api/discover'
+import { _getBanner, _getNewSong, _getPersonalized, _getPrivateContent, _getPrivateMv } from 'api/discover'
 import { _getSongsDetail } from 'api/detail'
-import { indexMixin } from '../../musicListDetail/indexMixin'
+import { mixinsPlayMusic } from '../../../mixins/mixinsPlayMusic'
 import { formDate } from 'js/tool'
+
 export default {
   name: 'Individuation',
   data() {
@@ -41,7 +42,7 @@ export default {
     }
   },
   components: { Swiper, MusicList, PrivateContent, NewSongs, MvItem },
-  mixins: [indexMixin],
+  mixins: [mixinsPlayMusic],
   created() {
     this.initIndividuation()
   },
@@ -109,24 +110,25 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-  .individuation {
-    width: 100%;
-    height: 100%;
-    p {
-      margin: 20px 0 6px 0;
-      padding-bottom: 6px;
-      line-height: 30px;
-      font-size: 16px;
-      border-bottom: 1px solid #b8b6b6;
-      color: #01060a;
-      line-height: 20px;
-    }
-  }
+<style lang='less' scoped>
+.individuation {
+  width: 100%;
+  height: 100%;
 
-  .individ-scroll {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  p {
+    margin: 20px 0 6px 0;
+    padding-bottom: 6px;
+    line-height: 30px;
+    font-size: 16px;
+    border-bottom: 1px solid #b8b6b6;
+    color: #01060a;
+    line-height: 20px;
   }
+}
+
+.individ-scroll {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 </style>

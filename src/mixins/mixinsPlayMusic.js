@@ -1,5 +1,5 @@
-import { _getMusicUrl } from '../../network/detail' // 获取音乐播放地址
-export const indexMixin = {
+import { _getMusicUrl } from '@/network/detail' // 获取音乐播放地址
+export const mixinsPlayMusic = {
   methods: {
     async playMusic(index = 0) {
       // 创建路由，音乐列表，播放音乐列表

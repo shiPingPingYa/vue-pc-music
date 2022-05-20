@@ -1,17 +1,17 @@
 <template>
-  <div class="search-list">
-    <scroll class="search-scroll">
-      <div class="title">
-        搜索<span>"{{keywords}}"</span>,找到<span>{{this.musicList.length}}</span>首单曲
+  <div class='search-list'>
+    <scroll class='search-scroll'>
+      <div class='title'>
+        搜索<span>"{{ keywords }}"</span>,找到<span>{{ this.musicList.length }}</span>首单曲
       </div>
-      <div class="bar">
-        <div class="bar-item" :class="{'active-tab':currentIndex == index}" v-for="(item, index) in tabList" :key="index" @click="handleTabClick(index)">{{item}}</div>
+      <div class='bar'>
+        <div v-for='(item, index) in tabList' :key='index' :class="{'active-tab':currentIndex == index}" class='bar-item' @click='handleTabClick(index)'>{{ item }}</div>
       </div>
-      <transition name="fade-in-linear">
-        <music-item :musicList='musicList' @musicItemClick="musicItemClick" v-show="currentIndex == 0"></music-item>
+      <transition name='fade-in-linear'>
+        <music-item v-show='currentIndex == 0' :musicList='musicList' @musicItemClick='musicItemClick'></music-item>
       </transition>
-      <transition name="fade-in-linear">
-        <artist-item :artistsList='artistsList' v-show="currentIndex == 1"></artist-item>
+      <transition name='fade-in-linear'>
+        <artist-item v-show='currentIndex == 1' :artistsList='artistsList'></artist-item>
       </transition>
     </scroll>
   </div>
@@ -27,7 +27,8 @@ import { _Search } from '../../network/search'
 import { _getSongsDetail, AllSongDetail } from '../../network/detail'
 // 导入工具函数，处理相同歌曲标题名
 // 导入混入，使能获取音乐列表
-import { indexMixin } from '../musicListDetail/indexMixin'
+import { mixinsPlayMusic } from '../../mixins/mixinsPlayMusic'
+
 export default {
   name: 'SearchList',
   data() {
@@ -43,7 +44,7 @@ export default {
     }
   },
   components: { ArtistItem, MusicItem },
-  mixins: [indexMixin],
+  mixins: [mixinsPlayMusic],
   watch: {
     // 路由都做过缓存处理(在当前页面搜索音乐或者歌手重新跳转页面数据不会再次加载)
     $route(oldkey) {
@@ -83,42 +84,46 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-  .search-list {
-    padding: 10px 40px;
-    width: 100%;
-    height: 100%;
-    color: #0a0a0a;
-    font-size: 14px;
-  }
-  .search-scroll {
-    height: 100%;
-    overflow: hidden;
-  }
+<style lang='less' scoped>
+.search-list {
+  padding: 10px 40px;
+  width: 100%;
+  height: 100%;
+  color: #0a0a0a;
+  font-size: 14px;
+}
 
-  .search-scroll .title {
-    height: 40px;
-    line-height: 40px;
-    > span {
-      padding: 0 10px;
-      color: #2e6bb0;
-    }
-  }
+.search-scroll {
+  height: 100%;
+  overflow: hidden;
+}
 
-  .search-scroll .bar {
-    margin-bottom: 10px;
-    display: flex;
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    border-bottom: 1px solid #dcdcdd;
+.search-scroll .title {
+  height: 40px;
+  line-height: 40px;
+
+  > span {
+    padding: 0 10px;
+    color: #2e6bb0;
   }
-  .bar-item {
-    padding: 0 20px;
-    cursor: pointer;
-  }
-  .active-tab {
-    color: #b82525;
-    border-bottom: 3px solid #b82525;
-  }
+}
+
+.search-scroll .bar {
+  margin-bottom: 10px;
+  display: flex;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  border-bottom: 1px solid #dcdcdd;
+}
+
+.bar-item {
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+.active-tab {
+  color: #b82525;
+  border-bottom: 3px solid #b82525;
+}
 </style>

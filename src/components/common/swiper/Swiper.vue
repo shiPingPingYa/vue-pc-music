@@ -1,27 +1,27 @@
 <template>
-  <div class="swiper" ref="swiper" v-if="banner !== null">
+  <div v-if='banner !== null' ref='swiper' class='swiper'>
     <!-- 左右按钮 -->
-    <div class="left">
-      <div class="pre">
-        <i class="el-icon-arrow-left"></i>
+    <div class='left'>
+      <div class='pre'>
+        <i class='el-icon-arrow-left'></i>
       </div>
     </div>
-    <div class="right">
-      <div class="next">
-        <i class="el-icon-arrow-right"></i>
+    <div class='right'>
+      <div class='next'>
+        <i class='el-icon-arrow-right'></i>
       </div>
     </div>
     <!-- 图片区域 -->
-    <div class="imgBox">
+    <div class='imgBox'>
       <ul>
-        <li v-for="(item,index) in banner " :class=" 'list'+ ++index " :key="index" @dblclick="swiperMusic(item)">
-          <img :src="item.imageUrl" alt="">
+        <li v-for='(item,index) in banner ' :key='index' :class=" 'list'+ ++index " @dblclick='swiperMusic(item)'>
+          <img :src='item.imageUrl' alt=''>
         </li>
 
       </ul>
     </div>
     <!-- 下面线条 -->
-    <div class="lineBar">
+    <div class='lineBar'>
       <span></span>
       <span></span>
       <span></span>
@@ -34,7 +34,7 @@
 <script>
 // 导入封装的轮播图函数
 import { _Swiper } from './indexSwper'
-import { indexMixin } from '../../../views/musicListDetail/indexMixin'
+import { mixinsPlayMusic } from '../../../mixins/mixinsPlayMusic'
 import { _getCheckMusic, _getSongsDetail, SongDetail } from '../../../network/detail' //
 export default {
   name: 'Swiper',
@@ -52,7 +52,7 @@ export default {
     }
   },
   // 混入音乐播放方法
-  mixins: [indexMixin],
+  mixins: [mixinsPlayMusic],
   methods: {
     async swiperMusic(item) {
       // 清空音乐列表
@@ -83,143 +83,149 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-  .swiper {
-    margin: 0 auto;
-    position: relative;
+<style lang='less' scoped>
+.swiper {
+  margin: 0 auto;
+  position: relative;
+  width: 100%;
+  height: 214px;
+  overflow: hidden;
+  cursor: pointer;
+
+  > .imgBox {
     width: 100%;
-    height: 214px;
-    overflow: hidden;
-    cursor: pointer;
-    > .imgBox {
-      width: 100%;
-    }
-    > .lineBar {
-      position: absolute;
-      margin: auto;
-      left: 0;
-      right: 0;
-      bottom: 6px;
-      height: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 2;
-      > span {
-        margin: 0 6px;
-        width: 20px;
-        height: 3px;
-        display: inline-block;
-        border-radius: 2px;
-        background-color: rgb(182, 179, 179);
-        cursor: pointer;
-      }
-    }
   }
 
-  .imgBox {
-    > ul {
-      position: relative;
-      list-style-type: none;
-      > li {
-        position: absolute;
-        width: 50%;
-        > img {
-          width: 100%;
-        }
-      }
-    }
-  }
-
-  .left {
-    position: relative;
-    float: left;
-    width: 25%;
-    height: 100%;
-    z-index: 1;
-    color: #01060a;
-  }
-
-  .right {
-    position: relative;
-    float: right;
-    width: 25%;
-    height: 100%;
-    z-index: 1;
-    color: #01060a;
-  }
-
-  .pre {
+  > .lineBar {
     position: absolute;
     margin: auto;
-    left: 5px;
-    top: 0;
-    bottom: 0;
-    width: 24px;
-    height: 24px;
-    display: none;
-    font-size: 24px;
-    z-index: 999;
-  }
-
-  .next {
-    position: absolute;
-    margin: auto;
-    right: 5px;
-    top: 0;
-    bottom: 0;
-    width: 24px;
-    height: 24px;
-    display: none;
-    font-size: 24px;
-    z-index: 999;
-  }
-
-  .lineBar .action {
-    background-color: red !important;
-  }
-
-  .list1 {
-    transform: scale(0.9);
-    transform-origin: 0% 100%;
-    z-index: 0;
-    opacity: 0.5;
-  }
-
-  .list2 {
-    transform: translateX(50%);
+    left: 0;
+    right: 0;
+    bottom: 6px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 2;
-    opacity: 1;
-  }
 
-  .list3 {
-    transform: translateX(150%) scale(0.9);
-    transform-origin: 0% 100%;
-    z-index: 0;
-    opacity: 0.9;
+    > span {
+      margin: 0 6px;
+      width: 20px;
+      height: 3px;
+      display: inline-block;
+      border-radius: 2px;
+      background-color: rgb(182, 179, 179);
+      cursor: pointer;
+    }
   }
+}
 
-  .list4 {
-    transform: translateX(220%) scale(0.9);
-    transform-origin: 0% 100%;
-    z-index: 0;
-    opacity: 0.5;
-  }
+.imgBox {
+  > ul {
+    position: relative;
+    list-style-type: none;
 
-  .list5 {
-    transform: translateX(250%) scale(0.9);
-    transform-origin: 0% 100%;
-    z-index: 0;
-    opacity: 0.5;
-  }
+    > li {
+      position: absolute;
+      width: 50%;
 
-  .list6 {
-    transform: translateX(300%) scale(0.9);
-    transform-origin: 0% 100%;
-    z-index: 0;
-    opacity: 0.5;
+      > img {
+        width: 100%;
+      }
+    }
   }
-  [class*='list'] {
-    transition: transform 0.8s;
-  }
+}
+
+.left {
+  position: relative;
+  float: left;
+  width: 25%;
+  height: 100%;
+  z-index: 1;
+  color: #01060a;
+}
+
+.right {
+  position: relative;
+  float: right;
+  width: 25%;
+  height: 100%;
+  z-index: 1;
+  color: #01060a;
+}
+
+.pre {
+  position: absolute;
+  margin: auto;
+  left: 5px;
+  top: 0;
+  bottom: 0;
+  width: 24px;
+  height: 24px;
+  display: none;
+  font-size: 24px;
+  z-index: 999;
+}
+
+.next {
+  position: absolute;
+  margin: auto;
+  right: 5px;
+  top: 0;
+  bottom: 0;
+  width: 24px;
+  height: 24px;
+  display: none;
+  font-size: 24px;
+  z-index: 999;
+}
+
+.lineBar .action {
+  background-color: red !important;
+}
+
+.list1 {
+  transform: scale(0.9);
+  transform-origin: 0% 100%;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.list2 {
+  transform: translateX(50%);
+  z-index: 2;
+  opacity: 1;
+}
+
+.list3 {
+  transform: translateX(150%) scale(0.9);
+  transform-origin: 0% 100%;
+  z-index: 0;
+  opacity: 0.9;
+}
+
+.list4 {
+  transform: translateX(220%) scale(0.9);
+  transform-origin: 0% 100%;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.list5 {
+  transform: translateX(250%) scale(0.9);
+  transform-origin: 0% 100%;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.list6 {
+  transform: translateX(300%) scale(0.9);
+  transform-origin: 0% 100%;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+[class*='list'] {
+  transition: transform 0.8s;
+}
 </style>

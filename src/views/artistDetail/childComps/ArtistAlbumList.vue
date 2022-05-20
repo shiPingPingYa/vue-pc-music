@@ -1,34 +1,34 @@
 <template>
-  <div class="album-list">
-    <p class="top">{{album.name}}</p>
-    <div class="album">
-      <div class="left">
-        <div class="icon">
-          <img src="" :data-src="album.picUrl + '?param=280y260'" alt="" v-imgLazy>
+  <div class='album-list'>
+    <p class='top'>{{ album.name }}</p>
+    <div class='album'>
+      <div class='left'>
+        <div class='icon'>
+          <img v-imgLazy :data-src="album.picUrl + '?param=280y260'" alt='' src=''>
         </div>
       </div>
-      <div class="right">
-        <div class="music">
+      <div class='right'>
+        <div class='music'>
           <table>
             <tbody>
-              <tr v-for="(item,index) in musicList" :key="index" :class="{'backColor':setBackColor(index),'curMusicItem':playIndex == index}" @dblclick="albumClick(index)">
-                <td :class="{'curFont':playIndex == index}">
-                  {{setSerial(index)}}
-                  <div class="curPlay" v-show="playIndex == index">
-                    <img src="../../../assets/img/playmusic/currentplay.svg" alt="">
-                  </div>
-                </td>
-                <td>
-                  <img src="../../../assets/img/leftmenu/live.svg" alt class="live" />
-                  <img src="../../../assets/img/leftmenu/xiazai.svg" alt class="download" />
-                </td>
-                <td>
-                  {{item.name}}
-                </td>
-                <td>
-                  {{item.time}}
-                </td>
-              </tr>
+            <tr v-for='(item,index) in musicList' :key='index' :class="{'backColor':setBackColor(index),'curMusicItem':playIndex == index}" @dblclick='albumClick(index)'>
+              <td :class="{'curFont':playIndex == index}">
+                {{ setSerial(index) }}
+                <div v-show='playIndex == index' class='curPlay'>
+                  <img alt='' src='../../../assets/img/playmusic/currentplay.svg'>
+                </div>
+              </td>
+              <td>
+                <img alt class='live' src='../../../assets/img/leftmenu/live.svg' />
+                <img alt class='download' src='../../../assets/img/leftmenu/xiazai.svg' />
+              </td>
+              <td>
+                {{ item.name }}
+              </td>
+              <td>
+                {{ item.time }}
+              </td>
+            </tr>
             </tbody>
           </table>
 
@@ -43,17 +43,19 @@ import { tableMixin } from '../../musicListDetail/tableMixin'
 // 导入获取专辑接口
 import { _getAlbum } from '../../../network/artist'
 // 导入获取歌曲信息接口
-import { SongDetail, _getSongsDetail, AllSongDetail } from '../../../network/detail'
+import { _getSongsDetail, AllSongDetail, SongDetail } from '../../../network/detail'
 // 音乐混入
-import { indexMixin } from '../../musicListDetail/indexMixin'
+import { mixinsPlayMusic } from '../../../mixins/mixinsPlayMusic'
 // 列表下标
 import { playMinxin } from '../../musicListDetail/playMixin'
+
 export default {
   name: 'ArtistAlbumList',
   props: {
     album: {
       type: Object,
-      default: () => {}
+      default: () => {
+      }
     }
   },
   data() {
@@ -62,7 +64,7 @@ export default {
       fold: true
     }
   },
-  mixins: [tableMixin, indexMixin, playMinxin],
+  mixins: [tableMixin, mixinsPlayMusic, playMinxin],
   created() {
     // 判断专辑信息是否为空
     if (this.album !== null) {
@@ -88,123 +90,131 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-  .album-list {
-    margin-top: 50px;
-    width: 100%;
+<style lang='less' scoped>
+.album-list {
+  margin-top: 50px;
+  width: 100%;
+  color: #0a0a0a;
+
+  > .top {
+    display: block;
+    padding-left: 26%;
+    height: 20px;
     color: #0a0a0a;
-    > .top {
-      display: block;
-      padding-left: 26%;
-      height: 20px;
-      color: #0a0a0a;
-      font-size: 14px;
-    }
-    > .album {
-      display: flex;
-      width: 100%;
-      justify-content: flex-start;
-      > .left {
-        width: 20%;
-        > .icon {
+    font-size: 14px;
+  }
+
+  > .album {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+
+    > .left {
+      width: 20%;
+
+      > .icon {
+        width: 100%;
+
+        > img {
+          padding: 0 0 0 20px;
           width: 100%;
-          > img {
-            padding: 0 0 0 20px;
-            width: 100%;
-            min-height: 100px;
-          }
+          min-height: 100px;
         }
       }
-      > .right {
-        margin-left: 40px;
-        width: 75%;
-      }
+    }
+
+    > .right {
+      margin-left: 40px;
+      width: 75%;
     }
   }
+}
 
-  .music tr td .live {
-    margin: auto;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 20px !important;
-    height: 26px !important;
-    vertical-align: -2px;
-  }
+.music tr td .live {
+  margin: auto;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 20px !important;
+  height: 26px !important;
+  vertical-align: -2px;
+}
 
-  .music tr td .download {
-    margin-left: 26px;
-    width: 20px !important;
-    height: 26px !important;
-  }
+.music tr td .download {
+  margin-left: 26px;
+  width: 20px !important;
+  height: 26px !important;
+}
 
-  .music > table {
-    margin-top: 4px;
-    width: 100%;
-    border: 1px solid #e6e7e9;
-  }
+.music > table {
+  margin-top: 4px;
+  width: 100%;
+  border: 1px solid #e6e7e9;
+}
 
-  .music tbody {
-    color: #575757;
-  }
+.music tbody {
+  color: #575757;
+}
 
-  .music tbody tr td {
-    border: none;
-  }
+.music tbody tr td {
+  border: none;
+}
 
-  .music tr td {
-    position: relative;
-    border: 1px solid #23262c;
-  }
+.music tr td {
+  position: relative;
+  border: 1px solid #23262c;
+}
 
-  .music tr {
-    height: 30px;
-    text-align: left;
-  }
+.music tr {
+  height: 30px;
+  text-align: left;
+}
 
-  .music tr:hover {
-    background-color: #c9c6c6;
-    cursor: pointer;
-  }
+.music tr:hover {
+  background-color: #c9c6c6;
+  cursor: pointer;
+}
 
-  .music tr td:nth-child(1) {
-    width: 10%;
-    text-align: center;
-    color: rgb(36, 199, 240);
-  }
+.music tr td:nth-child(1) {
+  width: 10%;
+  text-align: center;
+  color: rgb(36, 199, 240);
+}
 
-  .music tr td:nth-child(2) {
-    width: 12%;
-    > img {
-      width: 20px;
-      opacity: 0.4;
-    }
-  }
+.music tr td:nth-child(2) {
+  width: 12%;
 
-  .music tr td .live {
-    position: absolute;
-    margin: auto;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  > img {
+    width: 20px;
+    opacity: 0.4;
   }
+}
 
-  .music tr td .download {
-    margin-left: 26px;
-  }
-  .music tbody tr td:nth-child(3) {
-    width: 24%;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    color: #0a0a0a;
-  }
+.music tr td .live {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 
-  .music tr td:nth-child(4) {
-    width: 16%;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
+.music tr td .download {
+  margin-left: 26px;
+}
+
+.music tbody tr td:nth-child(3) {
+  width: 24%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #0a0a0a;
+}
+
+.music tr td:nth-child(4) {
+  width: 16%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 </style>
