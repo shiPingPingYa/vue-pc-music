@@ -7,7 +7,7 @@ import '@/assets/css/babel.less';
 import '@/assets/css/index.less';
 // 导入elementui
 import '../src/plugins/element';
-import scroll from '@/components/common/scroll/index';
+import scroll from '@/components/common/scroll/Scroll.vue';
 import { formDate } from '@/assets/common/tool';
 import imgLazy from './dirctives/imgLazy';
 
