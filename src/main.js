@@ -1,7 +1,9 @@
+import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 // 导入创建好的vuex
 import store from './store';
+import axios from 'axios';
 // 导入全局css样式
 import '@/assets/css/babel.less';
 import '@/assets/css/index.less';
