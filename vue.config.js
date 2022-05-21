@@ -17,13 +17,13 @@ module.exports = {
     port: '8080'
   },
   lintOnSave: false, // 是否需要eslint提示
-  configureWebpack: config => {
-    config.externals = {
-      vue: 'Vue',
-      'vue-router': 'VueRouter',
-      axios: 'axios'
-    }
-  },
+  // configureWebpack: config => {
+  //   config.externals = {
+  //     vue: 'Vue',
+  //     'vue-router': 'VueRouter',
+  //     axios: 'axios'
+  //   }
+  // },
   chainWebpack: config => {
     config.when(process.env.NODE_ENV === 'production', config => {
       config.optimization.minimizer('terser').tap(args => {
