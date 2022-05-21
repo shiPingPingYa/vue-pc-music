@@ -26,7 +26,7 @@ export default {
       } = await _getArtistMv(id);
       this.mvList = mvs.map(item => {
         return {
-           id: item.id,
+          id: item.id,
           cover: item.cover || item.imgurl || item.picUrl,
           name: item.name,
           artist: item.artistName,
