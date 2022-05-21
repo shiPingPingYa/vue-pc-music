@@ -2,14 +2,10 @@
   <div v-if='bannerList !== null' ref='swiper' class='swiper'>
     <!-- 左右按钮 -->
     <div class='left'>
-      <div class='pre'>
-        <i class='el-icon-arrow-left'></i>
-      </div>
+      <div class='pre'><i class='el-icon-arrow-left'></i></div>
     </div>
     <div class='right'>
-      <div class='next'>
-        <i class='el-icon-arrow-right'></i>
-      </div>
+      <div class='next'><i class='el-icon-arrow-right'></i></div>
     </div>
     <!-- 图片区域 -->
     <div class='imgBox'>
@@ -17,27 +13,19 @@
         <li v-for='(item,index) in bannerList ' :key='index' :class="[`list${++index}`]" @dblclick='handleBannerMusicClick(item)'>
           <img :src='item.imageUrl' alt=''>
         </li>
-
       </ul>
     </div>
     <!-- 下面线条 -->
-    <div class='lineBar'>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
+    <div class='lineBar'><span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
   </div>
 </template>
 <script>
-// 导入封装的轮播图函数
+import { _getCheckMusic, _getSongsDetail, SongDetail } from '@/network/detail'; //
 import { _Swiper } from './initSwiper';
 import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
-import { _getCheckMusic, _getSongsDetail, SongDetail } from '@/network/detail'; //
 export default {
-  name: 'Swiper',
+  name: 'swiper',
   props: {
     bannerList: {
       type: Array,
@@ -53,6 +41,9 @@ export default {
   },
   // 混入音乐播放方法
   mixins: [mixinsPlayMusic],
+  mounted() {
+    this.$refs.swiper && _Swiper(this.$refs.swiper);
+  },
   methods: {
     async handleBannerMusicClick(item) {
       // 清空音乐列表
@@ -74,12 +65,6 @@ export default {
         console.log(e);
       }
     },
-  },
-  updated() {
-    // 把swiper这个dom对象传递函数
-    if (this.$refs.swiper !== null) {
-      _Swiper(this.$refs.swiper);
-    }
   },
 };
 </script>
