@@ -1,6 +1,6 @@
 <template>
   <div class="discover">
-    <nav-bar ref="nav"></nav-bar>
+    <navBar ref="nav" />
     <div class="content">
       <keep-alive>
         <transition name="fade-in-linear">
@@ -11,11 +11,11 @@
   </div>
 </template>
 <script>
-import NavBar from './childComps/NavBar'
+import navBar from './components/navBar';
 export default {
-  name: 'DisoverMusic',
-  components: { NavBar }
-}
+  name: 'discoverMusic',
+  components: { navBar },
+};
 </script>
 <style lang="less" scoped>
   .discover {

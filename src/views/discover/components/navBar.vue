@@ -9,7 +9,7 @@
 </template>
 <script>
 export default {
-  name: 'NavBar',
+  name: 'navBar',
   data() {
     return {
       currentIndex: 0,
@@ -36,10 +36,10 @@ export default {
   methods: {
     // 处理页面刷新后，路由与tab导航栏对应不上
     initTabIndex() {
-      const { path } = this.$route;
       this.tabList.some((item, index) => {
-        if (item.link === path) {
-          return (this.currentIndex = index);
+        if (item.link === this.$route.path) {
+          this.currentIndex = index;
+          return true;
         }
       });
     },
