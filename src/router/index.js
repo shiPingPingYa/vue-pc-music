@@ -14,10 +14,10 @@ const routes = [
     redirect: '/discover',
     component: () => import('@/layout/layout'),
     children: [
-      // 首页
       {
-        path: '/discover',
         // 首页
+        path: '/discover',
+        redirect: '/discover/individ',
         component: () => import('@/views/discover/DiscoverMusic'),
         meta: {
           title: '首页',
@@ -25,21 +25,17 @@ const routes = [
         },
         children: [
           {
-            path: '/',
-            redirect: '/discover/individ'
-          },
-          // 个性推荐
-          {
+            // 发现音乐-个性推荐
             path: '/discover/individ',
-            component: () => import('@/views/discover/childRouter/Individuation'),
+            component: () => import('@/views/individuation/index'),
             meta: {
               title: '个性推荐',
               keepLive: true,
               requireLogin: false
             }
           },
-          // 歌单
           {
+            // 发现音乐-歌单
             path: '/discover/category',
             component: () => import('@/views/discover/childRouter/MusicListCategory'),
             meta: {
@@ -48,8 +44,8 @@ const routes = [
               requireLogin: false
             }
           },
-          // 排行榜
           {
+            // 发现音乐-排行榜
             path: '/discover/ranklist',
             component: () => import('@/views/discover/childRouter/MusicListRank'),
             meta: {
@@ -58,8 +54,8 @@ const routes = [
               requireLogin: false
             }
           },
-          // 歌手
           {
+            // 发现音乐-歌手
             path: '/discover/artist',
             component: () => import('@/views/discover/childRouter/ArtistCategory'),
             meta: {
@@ -68,8 +64,8 @@ const routes = [
               requireLogin: false
             }
           },
-          // 最新音乐
           {
+            // 发现音乐-最新音乐
             path: '/discover/newsongs',
             component: () => import('@/views/discover/childRouter/NewSongs'),
             meta: {
@@ -78,8 +74,8 @@ const routes = [
               requireLogin: false
             }
           },
-          // MV首页
           {
+            // 发现音乐-MV
             path: '/discover/mv',
             component: () => import('@/views/mv/Mv'),
             meta: {

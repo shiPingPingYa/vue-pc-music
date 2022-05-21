@@ -14,7 +14,7 @@
     <!-- 图片区域 -->
     <div class='imgBox'>
       <ul>
-        <li v-for='(item,index) in bannerList ' :key='index' :class="[`list${++index}`]" @dblclick='swiperMusic(item)'>
+        <li v-for='(item,index) in bannerList ' :key='index' :class="[`list${++index}`]" @dblclick='handleBannerMusicClick(item)'>
           <img :src='item.imageUrl' alt=''>
         </li>
 
@@ -54,7 +54,7 @@ export default {
   // 混入音乐播放方法
   mixins: [mixinsPlayMusic],
   methods: {
-    async swiperMusic(item) {
+    async handleBannerMusicClick(item) {
       // 清空音乐列表
       this.musicList = [];
       // 判断音乐有无版权再做处理
