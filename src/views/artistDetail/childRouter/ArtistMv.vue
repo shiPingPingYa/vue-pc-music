@@ -22,7 +22,7 @@ export default {
       const { id } = this.$route.query;
       // 调用获取mv数据接口传入用户id，拿到返回的歌手mv数据
       const {
-         data: { mvs },
+        data: { mvs },
       } = await _getArtistMv(id);
       this.mvList = mvs.map(item => {
         return {
