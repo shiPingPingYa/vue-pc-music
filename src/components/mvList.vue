@@ -3,7 +3,7 @@
     <div class="mv-list " v-if="Array.isArray(mvList) && mvList.length !== 0 ">
       <div class=" mv-item" v-for="(item,index) in mvList" :key="index" @click="goPlayMvDetail(item.id)">
         <div class="count">
-          <img src="../../../assets/img/leftmenu/shiping.svg" alt="">
+          <img src="@/assets/img/leftmenu/shiping.svg" alt="">
           <div class="play-count">{{item.count}} </div>
         </div>
         <img src="" :data-src="item.cover + '?param=321y181'" alt="" v-imgLazy>
@@ -20,7 +20,7 @@
 </template>
 <script>
 export default {
-  name: 'MvItem',
+  name: 'mvList',
   props: {
     mvList: {
       type: Array,

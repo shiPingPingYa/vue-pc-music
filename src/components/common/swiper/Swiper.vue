@@ -1,27 +1,27 @@
 <template>
-  <div class="swiper" ref="swiper" v-if="banner !== null">
+  <div v-if='bannerList !== null' ref='swiper' class='swiper'>
     <!-- 左右按钮 -->
-    <div class="left">
-      <div class="pre">
-        <i class="el-icon-arrow-left"></i>
+    <div class='left'>
+      <div class='pre'>
+        <i class='el-icon-arrow-left'></i>
       </div>
     </div>
-    <div class="right">
-      <div class="next">
-        <i class="el-icon-arrow-right"></i>
+    <div class='right'>
+      <div class='next'>
+        <i class='el-icon-arrow-right'></i>
       </div>
     </div>
     <!-- 图片区域 -->
-    <div class="imgBox">
+    <div class='imgBox'>
       <ul>
-        <li v-for="(item,index) in banner " :class=" 'list'+ ++index " :key="index" @dblclick="swiperMusic(item)">
-          <img :src="item.imageUrl" alt="">
+        <li v-for='(item,index) in bannerList ' :key='index' :class="[`list${++index}`]" @dblclick='handleBannerMusicClick(item)'>
+          <img :src='item.imageUrl' alt=''>
         </li>
 
       </ul>
     </div>
     <!-- 下面线条 -->
-    <div class="lineBar">
+    <div class='lineBar'>
       <span></span>
       <span></span>
       <span></span>
@@ -33,57 +33,57 @@
 </template>
 <script>
 // 导入封装的轮播图函数
-import { _Swiper } from './indexSwper'
-import { indexMixin } from '../../../views/musicListDetail/indexMixin'
-import { _getCheckMusic, _getSongsDetail, SongDetail } from '../../../network/detail' //
+import { _Swiper } from './initSwiper';
+import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
+import { _getCheckMusic, _getSongsDetail, SongDetail } from '@/network/detail'; //
 export default {
   name: 'Swiper',
   props: {
-    banner: {
+    bannerList: {
       type: Array,
       default() {
-        return []
-      }
-    }
+        return [];
+      },
+    },
   },
   data() {
     return {
-      musicList: []
-    }
+      musicList: [],
+    };
   },
   // 混入音乐播放方法
-  mixins: [indexMixin],
+  mixins: [mixinsPlayMusic],
   methods: {
-    async swiperMusic(item) {
+    async handleBannerMusicClick(item) {
       // 清空音乐列表
-      this.musicList = []
+      this.musicList = [];
       // 判断音乐有无版权再做处理
       try {
         const {
-          data: { success }
-        } = await _getCheckMusic(item.targetId)
+          data: { success },
+        } = await _getCheckMusic(item.targetId);
         if (success) {
           const {
-            data: { songs }
-          } = await _getSongsDetail(item.targetId)
-          this.musicList.push(new SongDetail(songs))
+            data: { songs },
+          } = await _getSongsDetail(item.targetId);
+          this.musicList.push(new SongDetail(songs));
           // 播放音乐
-          this.playMusic()
+          this.playMusic();
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-    }
+    },
   },
   updated() {
     // 把swiper这个dom对象传递函数
     if (this.$refs.swiper !== null) {
-      _Swiper(this.$refs.swiper)
+      _Swiper(this.$refs.swiper);
     }
-  }
-}
+  },
+};
 </script>
-<style lang="less" scoped>
+<style lang='less' scoped>
   .swiper {
     margin: 0 auto;
     position: relative;
@@ -91,9 +91,11 @@ export default {
     height: 214px;
     overflow: hidden;
     cursor: pointer;
+
     > .imgBox {
       width: 100%;
     }
+
     > .lineBar {
       position: absolute;
       margin: auto;
@@ -105,6 +107,7 @@ export default {
       justify-content: center;
       align-items: center;
       z-index: 2;
+
       > span {
         margin: 0 6px;
         width: 20px;
@@ -121,9 +124,11 @@ export default {
     > ul {
       position: relative;
       list-style-type: none;
+
       > li {
         position: absolute;
         width: 50%;
+
         > img {
           width: 100%;
         }
@@ -219,6 +224,7 @@ export default {
     z-index: 0;
     opacity: 0.5;
   }
+
   [class*='list'] {
     transition: transform 0.8s;
   }

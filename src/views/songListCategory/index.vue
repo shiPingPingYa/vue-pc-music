@@ -25,7 +25,7 @@ import { _getHighquality, _getMusicListHot, _getHighqualityTags } from '@/networ
 import { throttled } from '@/assets/common/tool';
 import songList from '@/components/songList';
 export default {
-  name: 'MusicListCategory',
+  name: 'songListCategory',
   data() {
     return {
       tags: null,
@@ -63,12 +63,11 @@ export default {
     getMusicSongSheet: throttled(async function (flag) {
       if (!this.more) return this.$message.info('暂无更多歌单！！！');
       this.page++;
-      var params = {
+      let params = {
         limit: this.limit * this.page,
       };
       // flag区分是精品歌单标签还是普通的tabbar
       flag ? (params.cat = this.HighqualityName) : (params.cat = this.tags[this.currentIndex].name);
-
       const {
         data: { playlists, more },
       } = await _getHighquality(params);

@@ -49,11 +49,11 @@
 </template>
 <script>
 // mv的相关推荐
-import SimiMvItem from '../mv/childComps/SimiMvItem'
+import SimiMvItem from '../mv/childComps/SimiMvItem';
 // 导入mv的数据请求接口
-import { _getMvDetail, _getMvComment, _getMvUrl, _getSimiMv } from 'api/mv'
+import { _getMvDetail, _getMvComment, _getMvUrl, _getSimiMv } from 'api/mv';
 // 评论组件
-const mvRecommends = () => import('../musicListDetail/childComps/Recommends')
+const mvRecommends = () => import('../musicListDetail/childComps/Recommends');
 export default {
   name: 'PlayMv',
   components: { SimiMvItem, mvRecommends },
@@ -66,96 +66,94 @@ export default {
       limit: 30,
       simiMv: [],
       simiMvIndex: 0,
-      pageLoading: false
-    }
+      pageLoading: false,
+    };
   },
   watch: {
-    '$route.params.id': {
-      handler(val) {
-        this.id = val
-        this.getBaseInfo()
+    '$route.query.id': {
+      handler(id) {
+        this.id = id;
+        this.getBaseInfo();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   mounted() {
-    this.id = this.$route.params.id
-    this.id && this.getBaseInfo()
+    let { id } = this.$route.query;
+    this.id = id;
+    this.id && this.getBaseInfo();
     // 停止播放音乐
-    this.$bus.$emit('stopMusic', false)
+    this.$bus.$emit('stopMusic', false);
   },
   methods: {
     // 获取播放mv默认信息
     async getBaseInfo() {
-      this.pageLoading = true
-      this.simiMv = []
+      this.pageLoading = true;
+      this.simiMv = [];
       // 分别是mv的详情，地址，评论，相似mv
-      await Promise.all([
-        _getMvDetail({ mvid: this.id }),
-        _getMvUrl({ id: this.id }),
-        _getMvComment({ id: this.id, limit: this.limit }),
-        _getSimiMv({ mvid: this.id })
-      ]).then(res => {
-        this.pageLoading = false
-        this.detail = res[0].data.data
-        this.url = res[1].data.data.url
-        this.recommends = res[2].data.comments
-        this.simiMv = res[3].data.mvs.map(item => {
-          return {
-            id: item.id,
-            cover: item.cover || item.imgurl || item.picUrl,
-            name: item.name,
-            artist: item.artistName,
-            count: item.playCount
-          }
-        })
-      })
+      await Promise.all([_getMvDetail({ mvid: this.id }), _getMvUrl({ id: this.id }), _getMvComment({ id: this.id, limit: this.limit }), _getSimiMv({ mvid: this.id })]).then(
+        res => {
+          this.pageLoading = false;
+          this.detail = res[0].data.data;
+          this.url = res[1].data.data.url;
+          this.recommends = res[2].data.comments;
+          this.simiMv = res[3].data.mvs.map(item => {
+            return {
+              id: item.id,
+              cover: item.cover || item.imgurl || item.picUrl,
+              name: item.name,
+              artist: item.artistName,
+              count: item.playCount,
+            };
+          });
+        }
+      );
     },
     // 判断是否有简介
     isDescription(desc) {
-      return desc || 'MV暂无简介'
+      return desc || 'MV暂无简介';
     },
     enter() {
-      this.$refs.scroll.disable()
+      this.$refs.scroll.disable();
     },
     leave() {
-      this.$refs.scroll.enable()
+      this.$refs.scroll.enable();
     },
     // 获取mv评论内容
     async moreComments() {
       const params = {
         id: this.id,
         limit: this.limit,
-        offset: this.recommends.length
-      }
+        offset: this.recommends.length,
+      };
       const {
-        data: { comments }
-      } = await _getMvComment(params)
+        data: { comments },
+      } = await _getMvComment(params);
       // 评论已经被请求完毕
       if (comments.length === 0) {
-        this.$Message.info('评论已经加载完毕，暂无更多评论')
+        this.$Message.info('评论已经加载完毕，暂无更多评论');
         // 修改评论组件，评论提示消息
-        this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....'
+        this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....';
       } else {
         // 遍历添加请求成功后的歌单评论
-        comments.forEach(item => this.recommends.push(item))
+        comments.forEach(item => this.recommends.push(item));
       }
     },
     // 发送评论后，重新获取评论
     getCommends() {
       // 清除评论数据
-      this.recommends = []
+      this.recommends = [];
       _getMvComment({ id: this.id, limit: this.limit }).then(res => {
-        res.data.comments.forEach(item => this.recommends.push(item))
-      })
+        res.data.comments.forEach(item => this.recommends.push(item));
+      });
     },
     // 视频播放完毕自动播放相似视频
     handleVideoEnd() {
-      this.$refs.simi_mv_item.playMV(this.simiMv[this.simiMvIndex].id)
-      if (this.simiMvIndex++ > 4) this.simiMvIndex = 0
-    }
-  }
-}
+      this.$refs.simi_mv_item.playMV(this.simiMv[this.simiMvIndex].id);
+      if (this.simiMvIndex++ > 4) this.simiMvIndex = 0;
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .clear {

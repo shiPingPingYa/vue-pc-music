@@ -17,7 +17,7 @@
 <script>
 import { _getPrivateContent } from '@/network/discover';
 export default {
-  name: 'PrivateContetn',
+  name: 'PrivateContentMv',
   data() {
     return {
       privateMv: null,
