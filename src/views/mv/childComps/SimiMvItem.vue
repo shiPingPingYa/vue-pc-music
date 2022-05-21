@@ -24,15 +24,15 @@ export default {
   props: {
     mvList: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   methods: {
     goPlayMvDetail(id) {
-      this.$router.push('/playmv/' + id)
-    }
-  }
-}
+      this.$router.push({ path: '/playmv', query: { id } });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .simi {

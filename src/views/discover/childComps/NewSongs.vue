@@ -1,8 +1,8 @@
 <template>
   <div class="new-songs">
     <div class="top">最新音乐</div>
-    <div class="content">
-      <div class="item" v-for="(item, index) in songList" :key="index" @dblclick="playMusic(index)">
+    <div class="content" v-if="newMusicList.length">
+      <div class="item" v-for="(item, index) in newMusicList" :key="index" @dblclick="handleMusicItemClick(index)">
         <div class="number">{{index+1}} </div>
         <div class="title">
           <img src='' :data-src="item.picUrl + '?param=70y70'" alt="" v-imgLazy>
@@ -21,21 +21,56 @@
   </div>
 </template>
 <script>
+import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
+import { _getSongsDetail } from '@/network/detail';
+import { _getNewSong } from '@/network/discover';
+
+import { formDate } from '@/assets/common/tool';
 export default {
   name: 'NewSongs',
-  props: {
-    songList: {
-      type: Array,
-      default: () => []
-    }
+  data() {
+    return {
+      musicList: [],
+      newMusicList: [],
+    };
+  },
+  mixins: [mixinsPlayMusic],
+  created() {
+    this.initNewSongList();
   },
   methods: {
-    // 触发父组件上面的方法，传递播放的音乐
-    playMusic(index) {
-      this.$emit('playMusic', index)
-    }
-  }
-}
+    async initNewSongList() {
+      const {
+        data: { result, code },
+      } = await _getNewSong();
+      if (code == 200) {
+        this.newMusicList = result;
+      }
+    },
+    //播放音乐
+    async handleMusicItemClick(index) {
+      this.musicList = [];
+      // 拼接歌曲id
+      const ids = this.newMusicList.map(item => item.id).join(',');
+      // 根据歌曲的id获取音乐详细信息
+      const {
+        data: { songs },
+      } = await _getSongsDetail(ids);
+      // 处理音乐播放列表(需要音乐id，歌曲名字，专辑名字，歌手名，歌曲背景图片，歌曲时间)
+      this.musicList = songs.map(item => {
+        return {
+          id: item.id,
+          name: item.name,
+          album: item.al.name,
+          song: item.ar[0].name,
+          pic: item.al.picUrl,
+          time: formDate(new Date(item.dt), 'mm:ss'),
+        };
+      });
+      this.playMusic(index);
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .new-songs {

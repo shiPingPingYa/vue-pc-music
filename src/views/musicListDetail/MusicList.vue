@@ -24,76 +24,77 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 export default {
   name: 'MusicList',
   props: {
+    //歌单数组
     totalList: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   computed: {
-    ...mapGetters(['isLogin'])
+    ...mapGetters(['isLogin']),
   },
   data() {
     return {
       getDate: '',
       getDay: '',
-      isDayMusic: true
-    }
+      isDayMusic: true,
+    };
   },
   watch: {
     '$route.path': {
       handler(newPath) {
-        if (newPath === '/discover/individ') this.isDayMusic = true
+        if (newPath === '/discover/individ') this.isDayMusic = true;
         else {
-          this.isDayMusic = false
+          this.isDayMusic = false;
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   created() {
-    const date = new Date()
-    this.getDate = date.getDate()
-    this.getDay = this.isGetDay(date.getDay())
+    const date = new Date();
+    this.getDate = date.getDate();
+    this.getDay = this.isGetDay(date.getDay());
   },
   methods: {
     // 跳转到推荐详情页
     goDayMusicListDetail() {
-      this.$router.push('/daymusic')
+      this.$router.push('/daymusic');
     },
     getImgUrl(item) {
-      return item.picUrl || item.coverImgUrl
+      return item.picUrl || item.coverImgUrl;
     },
     // 条状到音乐详情页
     goMusicListDetail(index) {
       this.$router.push({
         path: '/musiclistdetail/' + this.totalList[index].id,
-        query: { songId: this.totalList[index].id }
-      })
+        query: { songId: this.totalList[index].id },
+      });
     },
     isGetDay(day) {
       switch (day) {
         case 0:
-          return '星期天'
+          return '星期天';
         case 1:
-          return '星期一'
+          return '星期一';
         case 2:
-          return '星期二'
+          return '星期二';
         case 3:
-          return '星期三'
+          return '星期三';
         case 4:
-          return '星期四'
+          return '星期四';
         case 5:
-          return '星期五'
+          return '星期五';
         case 6:
-          return '星期六'
+          return '星期六';
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .music-lsit {

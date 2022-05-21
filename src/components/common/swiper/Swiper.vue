@@ -1,5 +1,5 @@
 <template>
-  <div v-if='banner !== null' ref='swiper' class='swiper'>
+  <div v-if='bannerList !== null' ref='swiper' class='swiper'>
     <!-- 左右按钮 -->
     <div class='left'>
       <div class='pre'>
@@ -14,7 +14,7 @@
     <!-- 图片区域 -->
     <div class='imgBox'>
       <ul>
-        <li v-for='(item,index) in banner ' :key='index' :class=" 'list'+ ++index " @dblclick='swiperMusic(item)'>
+        <li v-for='(item,index) in bannerList ' :key='index' :class="[`list${++index}`]" @dblclick='swiperMusic(item)'>
           <img :src='item.imageUrl' alt=''>
         </li>
 
@@ -33,199 +33,199 @@
 </template>
 <script>
 // 导入封装的轮播图函数
-import { _Swiper } from './indexSwper'
-import { mixinsPlayMusic } from '../../../mixins/mixinsPlayMusic'
-import { _getCheckMusic, _getSongsDetail, SongDetail } from '../../../network/detail' //
+import { _Swiper } from './initSwiper';
+import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
+import { _getCheckMusic, _getSongsDetail, SongDetail } from '@/network/detail'; //
 export default {
   name: 'Swiper',
   props: {
-    banner: {
+    bannerList: {
       type: Array,
       default() {
-        return []
-      }
-    }
+        return [];
+      },
+    },
   },
   data() {
     return {
-      musicList: []
-    }
+      musicList: [],
+    };
   },
   // 混入音乐播放方法
   mixins: [mixinsPlayMusic],
   methods: {
     async swiperMusic(item) {
       // 清空音乐列表
-      this.musicList = []
+      this.musicList = [];
       // 判断音乐有无版权再做处理
       try {
         const {
-          data: { success }
-        } = await _getCheckMusic(item.targetId)
+          data: { success },
+        } = await _getCheckMusic(item.targetId);
         if (success) {
           const {
-            data: { songs }
-          } = await _getSongsDetail(item.targetId)
-          this.musicList.push(new SongDetail(songs))
+            data: { songs },
+          } = await _getSongsDetail(item.targetId);
+          this.musicList.push(new SongDetail(songs));
           // 播放音乐
-          this.playMusic()
+          this.playMusic();
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-    }
+    },
   },
   updated() {
     // 把swiper这个dom对象传递函数
     if (this.$refs.swiper !== null) {
-      _Swiper(this.$refs.swiper)
+      _Swiper(this.$refs.swiper);
     }
-  }
-}
+  },
+};
 </script>
 <style lang='less' scoped>
-.swiper {
-  margin: 0 auto;
-  position: relative;
-  width: 100%;
-  height: 214px;
-  overflow: hidden;
-  cursor: pointer;
-
-  > .imgBox {
-    width: 100%;
-  }
-
-  > .lineBar {
-    position: absolute;
-    margin: auto;
-    left: 0;
-    right: 0;
-    bottom: 6px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2;
-
-    > span {
-      margin: 0 6px;
-      width: 20px;
-      height: 3px;
-      display: inline-block;
-      border-radius: 2px;
-      background-color: rgb(182, 179, 179);
-      cursor: pointer;
-    }
-  }
-}
-
-.imgBox {
-  > ul {
+  .swiper {
+    margin: 0 auto;
     position: relative;
-    list-style-type: none;
+    width: 100%;
+    height: 214px;
+    overflow: hidden;
+    cursor: pointer;
 
-    > li {
+    > .imgBox {
+      width: 100%;
+    }
+
+    > .lineBar {
       position: absolute;
-      width: 50%;
+      margin: auto;
+      left: 0;
+      right: 0;
+      bottom: 6px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
 
-      > img {
-        width: 100%;
+      > span {
+        margin: 0 6px;
+        width: 20px;
+        height: 3px;
+        display: inline-block;
+        border-radius: 2px;
+        background-color: rgb(182, 179, 179);
+        cursor: pointer;
       }
     }
   }
-}
 
-.left {
-  position: relative;
-  float: left;
-  width: 25%;
-  height: 100%;
-  z-index: 1;
-  color: #01060a;
-}
+  .imgBox {
+    > ul {
+      position: relative;
+      list-style-type: none;
 
-.right {
-  position: relative;
-  float: right;
-  width: 25%;
-  height: 100%;
-  z-index: 1;
-  color: #01060a;
-}
+      > li {
+        position: absolute;
+        width: 50%;
 
-.pre {
-  position: absolute;
-  margin: auto;
-  left: 5px;
-  top: 0;
-  bottom: 0;
-  width: 24px;
-  height: 24px;
-  display: none;
-  font-size: 24px;
-  z-index: 999;
-}
+        > img {
+          width: 100%;
+        }
+      }
+    }
+  }
 
-.next {
-  position: absolute;
-  margin: auto;
-  right: 5px;
-  top: 0;
-  bottom: 0;
-  width: 24px;
-  height: 24px;
-  display: none;
-  font-size: 24px;
-  z-index: 999;
-}
+  .left {
+    position: relative;
+    float: left;
+    width: 25%;
+    height: 100%;
+    z-index: 1;
+    color: #01060a;
+  }
 
-.lineBar .action {
-  background-color: red !important;
-}
+  .right {
+    position: relative;
+    float: right;
+    width: 25%;
+    height: 100%;
+    z-index: 1;
+    color: #01060a;
+  }
 
-.list1 {
-  transform: scale(0.9);
-  transform-origin: 0% 100%;
-  z-index: 0;
-  opacity: 0.5;
-}
+  .pre {
+    position: absolute;
+    margin: auto;
+    left: 5px;
+    top: 0;
+    bottom: 0;
+    width: 24px;
+    height: 24px;
+    display: none;
+    font-size: 24px;
+    z-index: 999;
+  }
 
-.list2 {
-  transform: translateX(50%);
-  z-index: 2;
-  opacity: 1;
-}
+  .next {
+    position: absolute;
+    margin: auto;
+    right: 5px;
+    top: 0;
+    bottom: 0;
+    width: 24px;
+    height: 24px;
+    display: none;
+    font-size: 24px;
+    z-index: 999;
+  }
 
-.list3 {
-  transform: translateX(150%) scale(0.9);
-  transform-origin: 0% 100%;
-  z-index: 0;
-  opacity: 0.9;
-}
+  .lineBar .action {
+    background-color: red !important;
+  }
 
-.list4 {
-  transform: translateX(220%) scale(0.9);
-  transform-origin: 0% 100%;
-  z-index: 0;
-  opacity: 0.5;
-}
+  .list1 {
+    transform: scale(0.9);
+    transform-origin: 0% 100%;
+    z-index: 0;
+    opacity: 0.5;
+  }
 
-.list5 {
-  transform: translateX(250%) scale(0.9);
-  transform-origin: 0% 100%;
-  z-index: 0;
-  opacity: 0.5;
-}
+  .list2 {
+    transform: translateX(50%);
+    z-index: 2;
+    opacity: 1;
+  }
 
-.list6 {
-  transform: translateX(300%) scale(0.9);
-  transform-origin: 0% 100%;
-  z-index: 0;
-  opacity: 0.5;
-}
+  .list3 {
+    transform: translateX(150%) scale(0.9);
+    transform-origin: 0% 100%;
+    z-index: 0;
+    opacity: 0.9;
+  }
 
-[class*='list'] {
-  transition: transform 0.8s;
-}
+  .list4 {
+    transform: translateX(220%) scale(0.9);
+    transform-origin: 0% 100%;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  .list5 {
+    transform: translateX(250%) scale(0.9);
+    transform-origin: 0% 100%;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  .list6 {
+    transform: translateX(300%) scale(0.9);
+    transform-origin: 0% 100%;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  [class*='list'] {
+    transition: transform 0.8s;
+  }
 </style>

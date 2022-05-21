@@ -1,8 +1,8 @@
 <template>
-  <div class="private" v-if="privateContent !== null">
-    <p class="top">{{privateContent.name}} </p>
+  <div class="private" v-if="privateMv">
+    <p class="top">{{privateMv.name}} </p>
     <div class="content">
-      <div class="private-item" v-for="(item,index) in privateContent.result" :key="index" @click="goPlayMVDetail(item.id)">
+      <div class="private-item" v-for="(item,index) in privateMv.result" :key="index" @click="goPlayMVDetail(item.id)">
         <img src='' :data-src=" item.picUrl + '?param=300y111'" alt="" v-imgLazy>
         <div class=" icon">
           <img src="../../../assets/img/leftmenu/shiping.svg" alt="">
@@ -15,20 +15,30 @@
   </div>
 </template>
 <script>
+import { _getPrivateContent } from '@/network/discover';
 export default {
   name: 'PrivateContetn',
-  props: {
-    privateContent: {
-      type: Object,
-      default: () => {}
-    }
+  data() {
+    return {
+      privateMv: null,
+    };
+  },
+  created() {
+    this.initPage();
   },
   methods: {
+    //初始化私人推荐mv区域
+    async initPage() {
+      const { data } = await _getPrivateContent();
+      if (data.code == 200) {
+        this.privateMv = data;
+      }
+    },
     goPlayMVDetail(id) {
-      this.$router.push('/playmv/' + id)
-    }
-  }
-}
+      this.$router.push({ path: '/playmv/', query: { id } });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .private {

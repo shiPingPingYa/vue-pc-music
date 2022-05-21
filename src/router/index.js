@@ -137,7 +137,7 @@ const routes = [
       },
       // mv播放跳转,
       {
-        path: '/playmv/:id',
+        path: '/playmv',
         component: () => import('@/views/mv/PlayMv'),
         meta: {
           title: 'MV播放',
