@@ -19,7 +19,7 @@
 <script>
 import { _getBanner, _getPersonalized, _getPrivateMv } from '@/network/discover';
 import { _getSongsDetail } from '@/network/detail';
-import Swiper from '@/components/common/swiper/Swiper';
+import swiper from '@/components/common/swiper/index';
 import songList from '@/components/songList';
 import mvList from '@/components/mvList';
 import PrivateContentMv from './components/PrivateContentMv';
@@ -34,7 +34,7 @@ export default {
       mvList: [],
     };
   },
-  components: { Swiper, songList, PrivateContentMv, newMusicList, mvList },
+  components: { swiper, songList, PrivateContentMv, newMusicList, mvList },
   created() {
     this.initBannerList();
     this.initSongList();
