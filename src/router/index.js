@@ -1,92 +1,61 @@
-import { Message } from 'element-ui'
+import { Message } from 'element-ui';
 
 // 关于路由重复问题
-const originalPush = VueRouter.prototype.push
+const originalPush = VueRouter.prototype.push;
 
 VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
+  return originalPush.call(this, location).catch(err => err);
+};
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
     redirect: '/discover',
     component: () => import('@/layout/layout'),
     children: [
-      // 首页
       {
-        path: '/discover',
         // 首页
-        component: () => import('@/views/discover/DiscoverMusic'),
-        meta: {
-          title: '首页',
-          requireLogin: false
-        },
+        path: '/discover',
+        redirect: '/discover/individ',
+        component: () => import('@/views/discover/index'),
+        meta: { title: '首页', requireLogin: false },
         children: [
           {
-            path: '/',
-            redirect: '/discover/individ'
-          },
-          // 个性推荐
-          {
+            // 发现音乐-个性推荐
             path: '/discover/individ',
-            component: () => import('@/views/discover/childRouter/Individuation'),
-            meta: {
-              title: '个性推荐',
-              keepLive: true,
-              requireLogin: false
-            }
+            component: () => import('@/views/individuation/index'),
+            meta: { title: '个性推荐', keepLive: true, requireLogin: false }
           },
-          // 歌单
           {
-            path: '/discover/category',
-            component: () => import('@/views/discover/childRouter/MusicListCategory'),
-            meta: {
-              title: '歌单',
-              keepLive: true,
-              requireLogin: false
-            }
+            // 发现音乐-歌单
+            path: '/discover/songList',
+            component: () => import('@/views/songListCategory/index'),
+            meta: { title: '歌单', keepLive: true, requireLogin: false }
           },
-          // 排行榜
           {
+            // 发现音乐-排行榜
             path: '/discover/ranklist',
             component: () => import('@/views/discover/childRouter/MusicListRank'),
-            meta: {
-              title: '排行榜',
-              keepLive: true,
-              requireLogin: false
-            }
+            meta: { title: '排行榜', keepLive: true, requireLogin: false }
           },
-          // 歌手
           {
+            // 发现音乐-歌手
             path: '/discover/artist',
             component: () => import('@/views/discover/childRouter/ArtistCategory'),
-            meta: {
-              title: '歌手',
-              keepLive: true,
-              requireLogin: false
-            }
+            meta: { title: '歌手', keepLive: true, requireLogin: false }
           },
-          // 最新音乐
           {
+            // 发现音乐-最新音乐
             path: '/discover/newsongs',
             component: () => import('@/views/discover/childRouter/NewSongs'),
-            meta: {
-              title: '最新音乐',
-              keepLive: true,
-              requireLogin: false
-            }
+            meta: { title: '最新音乐', keepLive: true, requireLogin: false }
           },
-          // MV首页
           {
+            // 发现音乐-MV
             path: '/discover/mv',
             component: () => import('@/views/mv/Mv'),
-            meta: {
-              title: 'MV首页',
-              keepLive: true,
-              requireLogin: false
-            }
+            meta: { title: 'MV首页', keepLive: true, requireLogin: false }
           }
         ]
       },
@@ -137,7 +106,7 @@ const routes = [
       },
       // mv播放跳转,
       {
-        path: '/playmv/:id',
+        path: '/playmv',
         component: () => import('@/views/mv/PlayMv'),
         meta: {
           title: 'MV播放',
@@ -318,36 +287,36 @@ const routes = [
       }
     ]
   }
-]
+];
 
 const router = new VueRouter({
   routes
-})
+});
 
 const getAllRoutePath = routes => {
-  const routerPath = []
+  const routerPath = [];
   routes.forEach(item => {
-    routerPath.push(item.path)
-    if (item.children) routerPath.push(...getAllRoutePath(item.children))
-  })
-  return routerPath
-}
-const isRoute = (item, routes) => item.meta.title || routes.indexOf(item.path) // 有些路由是动态路由，会出现路由查找不到的情况，所以加title来进行判断，不存在的路由是没有title的。
-const setWebsiteTitle = title => (document.title = title) // 设置网站title
-const routePathList = [...new Set(getAllRoutePath(routes))]
+    routerPath.push(item.path);
+    if (item.children) routerPath.push(...getAllRoutePath(item.children));
+  });
+  return routerPath;
+};
+const isRoute = (item, routes) => item.meta.title || routes.indexOf(item.path); // 有些路由是动态路由，会出现路由查找不到的情况，所以加title来进行判断，不存在的路由是没有title的。
+const setWebsiteTitle = title => (document.title = title); // 设置网站title
+const routePathList = [...new Set(getAllRoutePath(routes))];
 
 router.beforeEach((to, from, next) => {
-  setWebsiteTitle(to.meta.title || '覃覃音乐')
-  if (isRoute(to, routePathList) === -1) return next('/404') //判断跳转路由是否存在
+  setWebsiteTitle(to.meta.title || '覃覃音乐');
+  if (isRoute(to, routePathList) === -1) return next('/404'); //判断跳转路由是否存在
   // 判断是否需要登录鉴权(requireLogin),不需要直接放行。需要登录鉴权判断是否登录，未登录提示无权限访问页面，并且回退前一个页面，登录放行
   if (to.meta.requireLogin) {
-    if (window.localStorage.getItem('userId')) next()
+    if (window.localStorage.getItem('userId')) next();
     else {
-      Message.info('电台，视频等资源需登录后，才能获取数据，请先登录~~~~')
-      setWebsiteTitle(from.meta.title || '覃覃音乐')
-      next({ path: from.path })
+      Message.info('电台，视频等资源需登录后，才能获取数据，请先登录~~~~');
+      setWebsiteTitle(from.meta.title || '覃覃音乐');
+      next({ path: from.path });
     }
-  } else next()
-})
+  } else next();
+});
 
-export default router
+export default router;

@@ -1,22 +1,23 @@
 <template>
-  <div class="artist_album_detail">
-    <scroll class="artist_album_scroll">
-      <album-info :albumInfo="albumInfo"></album-info>
-      <album-bar :tabBarList="tabBarList" @albumClick="albumClick"></album-bar>
-      <music-item v-show="isShow === '歌曲列表'" :musicList="musicList" @musicItemClick="musicItemClick"></music-item>
-      <recommends ref="artist_album_detail" v-show="isShow === tabBarList[1]" :recommends="recommends" :hotComments="hotComments" :id="id" :Type="3" @moreComments="moreComments"
-        @getCommends="getCommends"></recommends>
-      <album-detail v-show="isShow === '专辑详情'" :albumDescription="albumDescription"></album-detail>
+  <div class='artist_album_detail'>
+    <scroll class='artist_album_scroll'>
+      <album-info :albumInfo='albumInfo'></album-info>
+      <album-bar :tabBarList='tabBarList' @albumClick='albumClick'></album-bar>
+      <music-item v-show="isShow === '歌曲列表'" :musicList='musicList' @musicItemClick='musicItemClick'></music-item>
+      <recommends v-show='isShow === tabBarList[1]' :id='id' ref='artist_album_detail' :Type='3' :hotComments='hotComments' :recommends='recommends' @getCommends='getCommends'
+                  @moreComments='moreComments'></recommends>
+      <album-detail v-show="isShow === '专辑详情'" :albumDescription='albumDescription'></album-detail>
     </scroll>
   </div>
 </template>
 <script>
-import { _getAlbumDeatil, _getAlbumDynamicDetail, AllSongDetail, _getAlbumComments } from '../../network/detail'
-import { indexMixin } from '../musicListDetail/indexMixin'
+import { _getAlbumComments, _getAlbumDeatil, _getAlbumDynamicDetail, AllSongDetail } from '../../network/detail'
+import { mixinsPlayMusic } from '../../mixins/mixinsPlayMusic'
 import AlbumBar from './childRouter/AlbumBar.vue'
 import AlbumInfo from './childRouter/AlbumInfo.vue'
 import MusicItem from '../musicListDetail/childComps/MusicItem.vue'
 import AlbumDetail from './childRouter/AlbumDetail.vue'
+
 const Recommends = () => import('../musicListDetail/childComps/Recommends.vue')
 export default {
   name: 'ArtistAlbumDetail',
@@ -42,7 +43,7 @@ export default {
       commentTime: ''
     }
   },
-  mixins: [indexMixin],
+  mixins: [mixinsPlayMusic],
   created() {
     this.id = this.$route.params.id
     this.initPage()
@@ -104,14 +105,15 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-  .artist_album_detail {
-    width: 100%;
+<style lang='less' scoped>
+.artist_album_detail {
+  width: 100%;
+  height: 100%;
+  padding: 40px 50px;
+
+  .artist_album_scroll {
     height: 100%;
-    padding: 40px 50px;
-    .artist_album_scroll {
-      height: 100%;
-      overflow: hidden;
-    }
+    overflow: hidden;
   }
+}
 </style>

@@ -27,7 +27,7 @@ import { _getNewSong } from '@/network/discover';
 
 import { formDate } from '@/assets/common/tool';
 export default {
-  name: 'NewSongs',
+  name: 'newMusicList',
   data() {
     return {
       musicList: [],

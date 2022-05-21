@@ -14,29 +14,29 @@
   </div>
 </template>
 <script>
-import { _getArtistDescDetail } from '../../../network/artist'
+import { _getArtistDescDetail } from '../../../network/artist';
 export default {
-  name: 'AristDescDetail',
+  name: "AristDescDetail",
   data() {
     return {
-      descDetail: null
-    }
+      descDetail: null,
+    };
   },
   created() {
-    this.initArtistDesc()
+    this.initArtistDesc();
   },
   methods: {
     async initArtistDesc() {
-      const { id } = this.$route.query
+      const { id } = this.$route.query;
       // 根据用户id请求数据
-      const { data } = await _getArtistDescDetail(id)
-      this.descDetail = data
+      const { data } = await _getArtistDescDetail(id);
+      this.descDetail = data;
     },
     formatText(text) {
-      return text !== null && text !== undefined ? text.split('\n') : '暂无信息'
-    }
-  }
-}
+      return text !== null && text !== undefined ? text.split('\n') : '暂无信息';
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .desc-container {

@@ -1,4 +1,4 @@
-import { request } from './request'
+import { request } from './request';
 
 /**
  * @description 获取歌手分类列表
@@ -7,80 +7,61 @@ import { request } from './request'
  * @param  limit 歌手数量，默认30
  * @param  offset 偏移位，取当前歌手列表数组长度，即偏离当前歌手列表
  */
-export function _getArtist (params) {
+export function _getArtist(params) {
   return request({
     url: '/artist/list',
     params
-  })
+  });
 }
 
 /**
  * @description 新歌速递
  * @param  type 地区id 全部:0 华语:7 欧美:96 日本:8 韩国:16
  */
-export function _getTopSongs (type) {
+export function _getTopSongs(type) {
   return request({
     url: '/top/song',
     params: {
       type: type
     }
-  })
+  });
 }
 
 /**
  * @description 所有榜单
  */
-export function _getRankList () {
+export function _getRankList() {
   return request({
     url: '/toplist'
-  })
+  });
 }
 
 /**
  * @description 获取轮播图数据
  */
-export function _getBanner () {
-  return request({
-    url: '/banner'
-  })
-}
+export const _getBanner = () => request({ url: '/banner' });
 
 /**
  * @description 获取推荐歌单
  * @param limit 取出数量，默认30
  */
-export function _getPersonalized (config) {
-  return request({
-    url: '/personalized',
-    params: {
-      limit: config
-    }
-  })
-}
+export const _getPersonalized = params => request({ url: '/personalized', params });
 
 /**
  * @description 获取独家放送(首页需要独家放送入口)
  */
-export function _getPrivateContent () {
-  return request({
-    url: '/personalized/privatecontent'
-  })
-}
+export const _getPrivateContent = () => request({ url: '/personalized/privatecontent' });
 
 /**
  * @description 获取推荐音乐
  */
-export function _getNewSong () {
-  return request({
-    url: '/personalized/newsong'
-  })
-}
+export const _getNewSong = () => request({ url: '/personalized/newsong' });
 
 /**
  * @description 获取推荐mv
  */
-export function _getPrivateMv () {
+export function _getPrivateMv() {
   return request({
     url: '/personalized/mv'
-  })
+  });
 }
