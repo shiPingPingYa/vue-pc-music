@@ -16,17 +16,14 @@
     </div>
     <scroll ref="scroll" class="song-category" :pull-up-load="true" @pullingUp="getMusicSongSheet(false)">
       <!-- 歌单列表 -->
-      <music-list :totalList="musicList"></music-list>
+      <songList :totalList="musicList" />
     </scroll>
   </div>
 </template>
 <script>
-// 导入歌单列表
-import MusicList from '../../musicListDetail/MusicList'
-// 导入数据接口，获取热门标签，获取热门标签歌单列表
-import { _getHighquality, _getMusicListHot, _getHighqualityTags } from '../../../network/detail'
-// 歌单节流
-import { throttled } from '../../../assets/common/tool'
+import { _getHighquality, _getMusicListHot, _getHighqualityTags } from '@/network/detail';
+import { throttled } from '@/assets/common/tool';
+import songList from '@/components/songList';
 export default {
   name: 'MusicListCategory',
   data() {
@@ -38,67 +35,67 @@ export default {
       musicList: [],
       HighqualityOptions: '',
       HighqualityName: '',
-      more: true // 加载后，判断有无数据还未加载
-    }
+      more: true, // 加载后，判断有无数据还未加载
+    };
   },
-  components: { MusicList },
+  components: { songList },
   mounted() {
-    this.initCategoryList()
-    this.$refs.scroll.refresh()
+    this.initCategoryList();
+    this.$refs.scroll.refresh();
   },
   methods: {
     async initCategoryList() {
       const {
-        data: { tags }
-      } = await _getMusicListHot()
-      this.tags = tags
+        data: { tags },
+      } = await _getMusicListHot();
+      this.tags = tags;
       const {
-        data: { playlists }
-      } = await _getHighquality(this.tags[this.currentIndex].name, this.limit * this.page)
+        data: { playlists },
+      } = await _getHighquality(this.tags[this.currentIndex].name, this.limit * this.page);
       // 获取精品歌单标签
       const {
-        data: { tags: otherTags }
-      } = await _getHighqualityTags()
-      this.HighqualityOptions = otherTags
-      this.musicList = playlists
+        data: { tags: otherTags },
+      } = await _getHighqualityTags();
+      this.HighqualityOptions = otherTags;
+      this.musicList = playlists;
     },
     // 获取音乐歌单
     getMusicSongSheet: throttled(async function (flag) {
-      if (!this.more) return this.$message.info('暂无更多歌单！！！')
-      this.page++
+      if (!this.more) return this.$message.info('暂无更多歌单！！！');
+      this.page++;
       var params = {
-        limit: this.limit * this.page
-      }
+        limit: this.limit * this.page,
+      };
       // flag区分是精品歌单标签还是普通的tabbar
-      flag ? (params.cat = this.HighqualityName) : (params.cat = this.tags[this.currentIndex].name)
+      flag ? (params.cat = this.HighqualityName) : (params.cat = this.tags[this.currentIndex].name);
 
       const {
-        data: { playlists, more }
-      } = await _getHighquality(params)
-      this.musicList = playlists
-      this.more = more
-      this.$refs.scroll.finishPullUp()
+        data: { playlists, more },
+      } = await _getHighquality(params);
+      this.musicList = playlists;
+      this.more = more;
+      this.$refs.scroll.finishPullUp();
     }, 800),
     // 导航栏的点击事件
     handleTabClick(index) {
-      this.musicList = []
-      this.more = true
-      this.currentIndex = index
-      this.page = 1
-      this.$refs.scroll.scrollTo(0, 0, 200)
-      this.getMusicSongSheet(false)
+      this.musicList = [];
+      this.more = true;
+      this.currentIndex = index;
+      this.page = 1;
+      this.$refs.scroll.scrollTo(0, 0, 200);
+      this.getMusicSongSheet(false);
     },
     // 下拉列表点击事件
     handleSelectChange() {
-      this.musicList = []
-      this.more = true
-      this.currentIndex = -1
-      this.page = 1
-      this.$refs.scroll.scrollTo(0, 0, 200)
-      this.getMusicSongSheet(true)
-    }
-  }
-}
+      this.musicList = [];
+      this.more = true;
+      this.currentIndex = -1;
+      this.page = 1;
+      this.$refs.scroll.scrollTo(0, 0, 200);
+      this.getMusicSongSheet(true);
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .category {

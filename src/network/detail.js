@@ -1,7 +1,7 @@
 import { request } from './request';
 
 // 工具函数
-import { formDate } from '../assets/common/tool';
+import { formDate } from '@/assets/common/tool';
 
 /**
  * @description 获取音乐播放地址
@@ -104,11 +104,7 @@ export function _musicRecommend(id, limit, offset) {
 /**
  * @description 获取热门播放歌单
  */
-export function _getMusicListHot() {
-  return request({
-    url: '/playlist/hot'
-  });
-}
+export const _getMusicListHot = () => request({ url: '/playlist/hot' });
 
 // 获取精品歌单cat: tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部"
 /**
@@ -117,21 +113,12 @@ export function _getMusicListHot() {
  * @param  limit 取出歌单数量 , 默认为 20
  * @param  before: 分页参数,取上一页最后一个歌单的 updateTime 获取下一页数据
  */
-export function _getHighquality(params) {
-  return request({
-    url: '/top/playlist/highquality',
-    params
-  });
-}
+export const _getHighquality = params => request({ url: '/top/playlist/highquality', params });
 
 /**
  * @description 获取精品歌单标签列表
  */
-export function _getHighqualityTags() {
-  return request({
-    url: '/playlist/highquality/tags'
-  });
-}
+export const _getHighqualityTags = () => request({ url: '/playlist/highquality/tags' });
 
 /**
  * @description 音乐心动模式
