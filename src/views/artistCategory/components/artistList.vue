@@ -8,24 +8,24 @@
 </template>
 <script>
 export default {
-  name: 'ArtistList',
+  name: 'artistList',
   props: {
     artistList: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   methods: {
     goArtistDetail(artist) {
       this.$router.push({
         path: '/artist',
         query: {
-          id: artist.id
-        }
-      })
-    }
-  }
-}
+          id: artist.id,
+        },
+      });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .music-list {

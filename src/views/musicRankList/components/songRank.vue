@@ -36,15 +36,12 @@
 </template>
 <script>
 import { _getMusicListDetail, _getSongsDetail } from 'api/detail';
-// 格式化日期
-import { formDate } from 'js/tool';
-// 处理隔行变色
-import { tableMixin } from '../../../mixins/tableMixin';
-// 音乐混入
-import { mixinsPlayMusic } from '../../../mixins/mixinsPlayMusic';
+import { tableMixin } from '@/mixins/tableMixin';
+import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
+import { formDate } from '@/assets/common/tool';
 
 export default {
-  name: 'RankListItem',
+  name: 'songRank',
   props: {
     // 排行榜单ID
     rankId: {

@@ -4,7 +4,7 @@
       <div class="left">
         <img src="" :data-src="item.cover + '?param=150y85'" alt="" v-imgLazy>
         <div class="count">
-          <img src="../../../assets/img/leftmenu/shiping.svg" alt="">
+          <img src="@/assets/img/leftmenu/shiping.svg" alt="">
           <div class="play-count">{{item.count}} </div>
         </div>
       </div>
