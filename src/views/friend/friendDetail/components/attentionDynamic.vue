@@ -9,30 +9,25 @@
             写动态
           </div>
         </div>
-        <!-- 每个分享盒子 -->
-        <event-dynamic :dynamicList="dynamicList" @shaerContentImageChange="shaerContentImageChange"></event-dynamic>
+        <eventDynamic :dynamicList="dynamicList" @shaerContentImageChange="shaerContentImageChange" />
       </div>
     </scroll>
     <!-- 展示分享图片 -->
-    <alert-image v-if="asyncShareImag" :imgIndex="imgIndex" :imgList="imgList"></alert-image>
+    <alertImage v-if="asyncShareImag" :imgIndex="imgIndex" :imgList="imgList" />
   </div>
 </template>
 <script>
-// 导入数据请求
-import { _getEvent } from 'api/friend'
-
-// 导入方法，获取需要的请求数据
-import { AttentionDynamic } from './handleUserInfo'
-// 导入处理时间的函数
-import { throttled } from 'js/tool'
-import Scroll from 'common/scroll/Scroll'
-import { mapState, mapMutations } from 'vuex'
-const eventDynamic = () => import('./EventDynamic.vue')
-const AlertImage = () => import('../childRouter/AlertImage.vue')
+import { mapState, mapMutations } from 'vuex';
+import { _getEvent } from '@/network/friend';
+import { AttentionDynamic } from './handleUserInfo';
+import { throttled } from '@/assets/common/tool';
+import scroll from '@/components/common/scroll/Scroll';
+const eventDynamic = () => import('./eventDynamic');
+const alertImage = () => import('./alertImage');
 export default {
-  name: 'AttentionDynamic',
-  components: { Scroll, AlertImage, eventDynamic },
-  data () {
+  name: 'attentionDynamic',
+  components: { scroll, alertImage, eventDynamic },
+  data() {
     return {
       dynamicList: [],
       pagesize: 20,
@@ -40,42 +35,42 @@ export default {
       // 最后一项评论的时间
       lastTime: -1,
       imgList: [],
-      imgIndex: 0
-    }
+      imgIndex: 0,
+    };
   },
   computed: {
-    ...mapState(['asyncShareImag'])
+    ...mapState(['asyncShareImag']),
   },
-  created () {
-    this.initUserDynamic()
+  created() {
+    this.initUserDynamic();
   },
   methods: {
     ...mapMutations(['setAsyncShareImag']),
     // 下拉获取动态
     pullingUp: throttled(function () {
-      this.initUserDynamic()
+      this.initUserDynamic();
     }, 800),
     // 加载数据
-    async initUserDynamic () {
+    async initUserDynamic() {
       // 用户关注动态
       const params = {
         pagesize: this.pagesize,
-        lasttime: this.lastTime
-      }
+        lasttime: this.lastTime,
+      };
       const {
-        data: { event, lasttime }
-      } = await _getEvent(params)
-      this.lastTime = lasttime
-      event.forEach(item => this.dynamicList.push(new AttentionDynamic(item)))
-      this.$refs.scroll.refresh()
+        data: { event, lasttime },
+      } = await _getEvent(params);
+      this.lastTime = lasttime;
+      event.forEach(item => this.dynamicList.push(new AttentionDynamic(item)));
+      this.$refs.scroll.refresh();
     },
     // 获取动态组件传递的图片下标和图片数组
-    shaerContentImageChange (urlIndex, urlList) {
-      this.imgIndex = urlIndex
-      this.imgList = urlList
-    }
-  }
-}
+    shaerContentImageChange(urlIndex, urlList) {
+      this.imgIndex = urlIndex;
+      this.imgList = urlList;
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .attention-dynamic {

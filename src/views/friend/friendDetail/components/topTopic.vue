@@ -1,12 +1,13 @@
 <template>
-  <div class="hot_topic">
-    <div class="top_topic_header">
-      <p>话题飙升榜</p>
+  <div class="to_topic">
+    <div class="top_topic_header" v-if="isTitle">
+      <p>热门话题</p>
+      <p @click="gotHotTopicRankList()">更多</p>
     </div>
-    <div class="topic_content" v-for="(item,index) in topicList" :key="item.actId" @click="goTopicDetail(item.actId)">
-      <div class="topic_index" :class="{text_red:index < 3}">{{index + 1}}</div>
+    <div class="top_topic_header" v-else>推荐话题</div>
+    <div class="topic_content" v-for="item in topicList" :key="item.actId" @click="goTopicDetail(item.actId)">
       <div class="topic_content_image">
-        <img src="" :data-src="item.sharePicUrl+ '?param=100y100' " alt="" v-imgLazy>
+        <img src="" :data-src="item.sharePicUrl+ '?param=60y60' " alt="" v-imgLazy>
       </div>
       <div class="topic_content_text">
         <div class="topic_title">#{{item.title}}#</div>
@@ -16,9 +17,20 @@
   </div>
 </template>
 <script>
-import { _getHotTopic } from '../../../../network/topic';
+import { _getHotTopic } from '@/network/topic';
 export default {
-  name: 'HotTopicList',
+  name: 'TopTopic',
+  props: {
+    limit: {
+      type: Number,
+      default() {
+        return 0;
+      },
+    },
+    isTitle: {
+      type: Boolean,
+    },
+  },
   data() {
     return {
       topicList: [],
@@ -26,10 +38,13 @@ export default {
   },
   async created() {
     await _getHotTopic().then(res => {
-      this.topicList = res.data.hot;
+      this.topicList = res.data.hot.slice(2, this.limit);
     });
   },
   methods: {
+    gotHotTopicRankList() {
+      this.$router.push('/hotTopicRankList');
+    },
     goTopicDetail(actid) {
       this.$router.push('/topicDetail/' + actid);
     },
@@ -37,17 +52,13 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-  .hot_topic {
+  .to_topic {
     width: 100%;
     .top_topic_header {
       display: flex;
-      padding: 10px 6px 6px;
+      padding: 10px 30px;
       justify-content: space-between;
-      p:nth-child(1) {
-        width: 100%;
-        padding-bottom: 20px;
-        border-bottom: 1px solid black;
-        font-size: 20px;
+      p:nth-child(2) {
         color: rgb(129, 116, 116);
         &:hover {
           cursor: pointer;
@@ -56,18 +67,14 @@ export default {
     }
     .topic_content {
       display: flex;
-      height: 140px;
+      height: 60px;
+      margin-left: 30px;
       margin-bottom: 10px;
       justify-content: flex-start;
-      font-size: 20px;
-      .topic_index {
-        width: 60px;
-        line-height: 140px;
-        text-align: center;
-      }
+      font-size: 14px;
       .topic_content_text {
         flex: 1;
-        margin: 20px;
+        margin-left: 20px;
         .topic_number {
           color: rgb(129, 116, 116);
         }
@@ -81,14 +88,9 @@ export default {
 
   .topic_content_image {
     img {
-      display: inline-block;
-      width: 100px;
-      height: 100px;
-      margin: 20px;
+      width: 60px;
+      height: 60px;
+      vertical-align: 20px;
     }
-  }
-
-  .text_red {
-    color: red;
   }
 </style>

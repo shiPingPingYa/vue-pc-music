@@ -21,43 +21,70 @@ const routes = [
         path: '/discover',
         redirect: '/discover/individ',
         component: () => import('@/layout/discover/index'),
-        meta: { title: '首页', requireLogin: false },
+        meta: {
+          title: '首页',
+          requireLogin: false
+        },
         children: [
           {
             // 发现音乐-个性推荐
             path: '/discover/individ',
             component: () => import('@/views/individuation/index'),
-            meta: { title: '个性推荐', keepLive: true, requireLogin: false }
+            meta: {
+              title: '个性推荐',
+              keepLive: true,
+              requireLogin: false
+            }
           },
           {
             // 发现音乐-歌单
             path: '/discover/songList',
             component: () => import('@/views/songListCategory/index'),
-            meta: { title: '歌单', keepLive: true, requireLogin: false }
+            meta: {
+              title: '歌单',
+              keepLive: true,
+              requireLogin: false
+            }
           },
           {
             // 发现音乐-排行榜
             path: '/discover/ranklist',
             component: () => import('@/views/musicRankList/index'),
-            meta: { title: '排行榜', keepLive: true, requireLogin: false }
+            meta: {
+              title: '排行榜',
+              keepLive: true,
+              requireLogin: false
+            }
           },
           {
             // 发现音乐-歌手
             path: '/discover/artist',
             component: () => import('@/views/artistCategory/index'),
-            meta: { title: '歌手', keepLive: true, requireLogin: false }
+            meta: {
+              title: '歌手',
+              keepLive: true,
+              requireLogin: false
+            }
           },
           {
             // 发现音乐-最新音乐
             path: '/discover/newsongs',
             component: () => import('@/views/newMusic/index'),
-            meta: { title: '最新音乐', keepLive: true, requireLogin: false }
+            meta: {
+              title: '最新音乐',
+              keepLive: true,
+              requireLogin: false
+            }
           },
           {
             // 发现音乐-MV
             path: '/discover/mv',
             component: () => import('@/views/discoverMv/index'),
-            meta: { title: 'MV首页', keepLive: true, requireLogin: false }
+            meta: {
+              title: 'MV首页',
+              keepLive: true,
+              requireLogin: false
+            }
           }
         ]
       },
@@ -97,8 +124,8 @@ const routes = [
           }
         ]
       },
-      // input输入框搜索信息，搜索内容
       {
+        // input输入框搜索信息，搜索内容
         path: '/search/:id',
         component: () => import('@/views/search/SearchList'),
         meta: {
@@ -106,8 +133,8 @@ const routes = [
           requireLogin: false
         }
       },
-      // mv播放跳转,
       {
+        // mv播放跳转,
         path: '/playmv',
         component: () => import('@/views/mv/PlayMv'),
         meta: {
@@ -115,8 +142,8 @@ const routes = [
           requireLogin: false
         }
       },
-      // 所有mv
       {
+        // 所有mv
         path: '/allmv',
         component: () => import('@/views/mv/AllMv'),
         meta: {
@@ -125,8 +152,8 @@ const routes = [
           requireLogin: false
         }
       },
-      // 歌单详情页面
       {
+        // 歌单详情页面
         path: '/musicListDetail/:id',
         component: () => import('@/views/musicListDetail/MusicListDetail'),
         meta: {
@@ -134,8 +161,8 @@ const routes = [
           requireLogin: false
         }
       },
-      // 播放视频
       {
+        // 播放视频
         path: '/playvideo/:id',
         component: () => import('@/views/allVideo/childComps/PlayVideo'),
         meta: {
@@ -143,14 +170,14 @@ const routes = [
           requireLogin: true
         }
       },
-      // 所有视频
       {
+        // 所有视频
         path: '/video',
         // 播放视频详情页面
         component: () => import('@/views/allVideo/AllVideoDetail'),
         children: [
-          // 所有视频
           {
+            // 所有视频
             path: '/video/allvideo',
             component: () => import('@/views/allVideo/childComps/AllVideo'),
             meta: {
@@ -158,8 +185,8 @@ const routes = [
               requireLogin: true
             }
           },
-          // 所有mv
           {
+            // 所有mv
             path: '/video/allmv',
             component: () => import('@/views/mv/AllMv'),
             meta: {
@@ -168,25 +195,17 @@ const routes = [
           }
         ]
       },
-      // 朋友
       {
+        // 朋友
         path: '/friend',
-        component: () => import('@/components/content/friend/Friend'),
-        meta: {
-          title: '朋友',
-          requireLogin: true
-        },
+        redirect: '/friend/frienddetail',
+        component: () => import('@/views/friend/index'),
+        meta: { title: '朋友', requireLogin: true },
         children: [
           {
-            path: '/',
-            redirect: 'frienddetail'
-          },
-          {
             path: '/friend/frienddetail',
-            component: () => import('@/components/content/friend/FriendDetail'),
-            meta: {
-              requireLogin: true
-            }
+            component: () => import('@/views/friend/friendDetail/index'),
+            meta: { requireLogin: true }
           },
           // 动态
           {
@@ -217,7 +236,7 @@ const routes = [
       // 电台
       {
         path: '/transceiver',
-        component: () => import('@/components/content/friend/Friend.vue'),
+        component: () => import('@/views/friend/index'),
         meta: {
           title: '电台',
           requireLogin: true,
@@ -316,7 +335,9 @@ router.beforeEach((to, from, next) => {
     else {
       Message.info('电台，视频等资源需登录后，才能获取数据，请先登录~~~~');
       setWebsiteTitle(from.meta.title || '覃覃音乐');
-      next({ path: from.path });
+      next({
+        path: from.path
+      });
     }
   } else next();
 });

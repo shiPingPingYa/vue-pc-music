@@ -31,45 +31,36 @@
           <span>粉丝</span>
         </div>
       </div>
-
     </div>
-    <top-topic :limit="limit" :isTitle='true'></top-topic>
+    <topTopic :limit="limit" :isTitle="true" />
   </div>
 </template>
 <script>
-// 背景混入
-import { mixins } from '../../user/mixins'
-// 解析vuex的state
-import { mapState, mapGetters } from 'vuex'
-import TopTopic from './TopTopic.vue'
+import { mapState, mapGetters } from 'vuex';
+import { mixins } from '@/mixins/mixinsVerify';
+import topTopic from './topTopic';
 export default {
-  name: 'UserAttentionInfo',
-  data () {
+  name: 'userAttentionInfo',
+  data() {
     return {
-      limit: 6 // 话题榜个数
-    }
+      limit: 6, // 话题榜个数
+    };
   },
-  components: { TopTopic },
+  components: { topTopic },
   mixins: [mixins],
   computed: {
-    ...mapState([
-      'userName',
-      'userGender',
-      'userFollows',
-      'userFolloweds',
-      'userEventCount'
-    ]),
-    ...mapGetters(['getUserImage'])
+    ...mapState(['userName', 'userGender', 'userFollows', 'userFolloweds', 'userEventCount']),
+    ...mapGetters(['getUserImage']),
   },
   methods: {
-    goUserOtherPath (path) {
-      this.$router.push(path)
+    goUserOtherPath(path) {
+      this.$router.push(path);
     },
-    goUserDetail () {
-      this.$router.push('/userDetail')
-    }
-  }
-}
+    goUserDetail() {
+      this.$router.push('/userDetail');
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .user-attention-info {
