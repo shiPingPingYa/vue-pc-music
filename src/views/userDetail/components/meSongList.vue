@@ -5,7 +5,7 @@
         <div v-for='(item, index) in songList' :key='index' class='musicCategary'>
           <img v-imgLazy :data-src='item.coverImgUrl' src='' @click='goMusicListDetail(item.id)' @mouseout='isMusicPlayIcon = -1' @mouseenter.stop='isMusicPlayIcon = index' />
           <div class='musicCategary_playCount'>
-            <img alt='' src='../../../../assets/img/content/erji.svg' />
+            <img alt='' src='@/assets/img/content/erji.svg' />
             {{ item.playCount }}
           </div>
           <div>
@@ -80,25 +80,25 @@
   </div>
 </template>
 <script>
-import { _getMusicListDetail, _getSongsDetail } from 'api/detail'
-import { formDate } from 'js/tool'
-import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic'
+import { _getMusicListDetail, _getSongsDetail } from '@/network/detail';
+import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
+import { formDate } from '@/assets/common/tool';
 
 export default {
-  name: 'MeSongList',
+  name: 'meSongList',
   props: {
     songList: {
       type: Array,
       default() {
-        return []
-      }
+        return [];
+      },
     },
     isTable: {
       type: Number,
       default() {
-        return 0
-      }
-    }
+        return 0;
+      },
+    },
   },
   mixins: [mixinsPlayMusic],
   data() {
@@ -108,11 +108,11 @@ export default {
       isMusicPlayIcon2: -1,
       allMusicList: {},
       musicList: [],
-      isTableHeader: false
-    }
+      isTableHeader: false,
+    };
   },
   created() {
-    this.initAllMusicList()
+    this.initAllMusicList();
   },
   methods: {
     // 初始化所有歌单的音乐
@@ -120,13 +120,13 @@ export default {
       for (const item of this.songList) {
         const {
           data: {
-            playlist: { trackIds }
-          }
-        } = await _getMusicListDetail(item.id)
-        const ids = trackIds.map(item => item.id).join(',')
+            playlist: { trackIds },
+          },
+        } = await _getMusicListDetail(item.id);
+        const ids = trackIds.map(item => item.id).join(',');
         const {
-          data: { songs }
-        } = await _getSongsDetail(ids)
+          data: { songs },
+        } = await _getSongsDetail(ids);
         this.allMusicList[item.id] = songs.map(item => {
           return {
             id: item.id,
@@ -134,168 +134,168 @@ export default {
             album: item.al.name,
             song: item.ar[0].name,
             pic: item.al.picUrl,
-            time: formDate(new Date(item.dt), 'mm:ss')
-          }
-        })
+            time: formDate(new Date(item.dt), 'mm:ss'),
+          };
+        });
       }
     },
     goMusicListDetail(id) {
-      this.$router.push('/musiclistdetail/' + id)
+      this.$router.push('/musiclistdetail/' + id);
     },
     // 获取音乐列表
     getMusicList(id) {
       for (const key in this.allMusicList) {
         if (String(id) === key) {
-          this.musicList = this.allMusicList[key]
-          return this.playMusic()
+          this.musicList = this.allMusicList[key];
+          return this.playMusic();
         }
       }
     },
     indexMethod(i) {
-      return i < 9 ? `0${i + 1}` : i + 1
-    }
-  }
-}
+      return i < 9 ? `0${i + 1}` : i + 1;
+    },
+  },
+};
 </script>
 <style lang='less' scoped>
-.me-song-list-container {
-  width: 100%;
-}
+  .me-song-list-container {
+    width: 100%;
+  }
 
-.me-song-list-scroll {
-  width: 100%;
-  height: 50vh;
-  overflow: hidden;
-}
+  .me-song-list-scroll {
+    width: 100%;
+    height: 50vh;
+    overflow: hidden;
+  }
 
-.music-list {
-  display: flex;
-  width: 100%;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  padding-bottom: 40px;
+  .music-list {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding-bottom: 40px;
 
-  .musicCategary {
+    .musicCategary {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin-top: 40px;
+      margin-bottom: 40px;
+      margin-left: 40px;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .musicCategary_playCount {
+      position: absolute;
+      width: 100%;
+      height: 20px;
+      top: 0;
+      right: 0;
+      line-height: 20px;
+      text-align: right;
+      color: #fff;
+      background: linear-gradient(to right, #fff, rgb(143, 139, 139));
+      opacity: 0.8;
+
+      img {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  .music_play_icon {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    font-size: 16px;
+
+    i {
+      font-size: 26px;
+      color: #fff;
+    }
+  }
+
+  .i-b-rp-4 {
+    display: inline-block;
+    padding-right: 4px;
+  }
+
+  .table-02-image {
     position: relative;
-    width: 200px;
-    height: 200px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    margin-left: 40px;
+    width: 60px;
+    height: 60px;
+
+    i {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      color: #fff;
+      font-size: 26px;
+      transform: translate(-50%, -50%);
+    }
 
     img {
-      width: 100%;
-      height: 100%;
+      cursor: pointer;
     }
 
     &:hover {
-      cursor: pointer;
+      i {
+        display: inline-block;
+        cursor: pointer;
+      }
     }
   }
 
-  .musicCategary_playCount {
-    position: absolute;
-    width: 100%;
-    height: 20px;
-    top: 0;
-    right: 0;
-    line-height: 20px;
-    text-align: right;
-    color: #fff;
-    background: linear-gradient(to right, #fff, rgb(143, 139, 139));
-    opacity: 0.8;
-
-    img {
-      width: 14px;
-      height: 14px;
-    }
-  }
-}
-
-.music_play_icon {
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  font-size: 16px;
-
-  i {
-    font-size: 26px;
-    color: #fff;
-  }
-}
-
-.i-b-rp-4 {
-  display: inline-block;
-  padding-right: 4px;
-}
-
-.table-02-image {
-  position: relative;
-  width: 60px;
-  height: 60px;
-
-  i {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    color: #fff;
-    font-size: 26px;
-    transform: translate(-50%, -50%);
+  .table_03_header {
+    display: flex;
+    justify-content: space-between;
   }
 
-  img {
-    cursor: pointer;
-  }
-
-  &:hover {
+  .table_03_icon {
     i {
       display: inline-block;
-      cursor: pointer;
+      font-size: 18px;
+      margin-right: 10px;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
-}
 
-.table_03_header {
-  display: flex;
-  justify-content: space-between;
-}
+  .i-f-r {
+    font-size: 16px;
+    color: red;
+  }
 
-.table_03_icon {
-  i {
-    display: inline-block;
-    font-size: 18px;
-    margin-right: 10px;
+  .p-f14-c {
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    color: #828385;
+    opacity: 0.8;
 
     &:hover {
       cursor: pointer;
+      opacity: 1;
     }
   }
-}
 
-.i-f-r {
-  font-size: 16px;
-  color: red;
-}
-
-.p-f14-c {
-  height: 40px;
-  line-height: 40px;
-  font-size: 14px;
-  color: #828385;
-  opacity: 0.8;
-
-  &:hover {
-    cursor: pointer;
-    opacity: 1;
+  .one_line_over {
+    width: 100%;
+    height: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
-}
-
-.one_line_over {
-  width: 100%;
-  height: 20px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
 </style>

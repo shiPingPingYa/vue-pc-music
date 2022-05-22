@@ -3,13 +3,12 @@
     <el-header class="el_header">
       <el-row type="flex" justify="space-between">
         <el-col :span="4">
-          <img class="user_image" :src="userImage + '?param=200y200'" alt="" />
+          <img class="user_image" :src="getUserImage + '?param=200y200'" alt="" />
         </el-col>
         <el-col :span="19" :offset="1">
           <el-row class="header" type="flex" justify="space-between">
             <el-col class="user_name" :span="10">{{ userName }}
-              <i :class="{ 'el-icon-male': userGender == 1 }"></i>
-              <i :class="{ 'el-icon-female': userGender == 0 }" style="color: #f50707"></i>
+              <i :class="[userGender == 2 ?'el-icon-male':'el-icon-female c-r']"></i>
               <label class="user_level">Lv.{{ level }}</label>
             </el-col>
             <el-col class="user_icon t_r" :span="9">
@@ -37,81 +36,40 @@
       <el-row class="b-a" type="flex" justify="space-between">
         <el-col :span="4">我创建的歌单</el-col>
         <el-col class="t_r" :span="8" :offset="12">
-          <label :class="[
-              'table-item',
-              tableImageIcon === index ? 'is-table-item' : '',
-            ]" v-for="(item, index) in tableImageList" :key="index" @click="tableImageChange(index)">
+          <label :class="['table-item',tableIconIndex === index ? 'is-table-item' : '',]" v-for="(item, index) in tableIconList" :key="index" @click="handleTableIconClick(index)">
             <img :src="item.img" alt="" />
           </label>
         </el-col>
       </el-row>
-      <me-song-list v-if="userSongList.length !== 0" :songList="userSongList" :isTable="tableImageIcon"></me-song-list>
+      <meSongList :songList="userSongList" :isTable="tableIconIndex" />
     </el-main>
   </el-container>
 </template>
 <script>
-import { _getSongList, _getUserInfo } from '../../../../network/user'
-const MeSongList = () => import('../childComps/MeSongList.vue')
+import { mapState, mapGetters } from 'vuex';
+import meSongList from './components/meSongList';
 export default {
-  name: 'OtherUserDetail',
-  components: { MeSongList },
+  name: 'userDetail',
+  components: { meSongList },
   data() {
     return {
       createSongList: [],
       collectSongList: [],
-      tableImageList: [
-        {
-          img: require('../../../../assets/img/table01.svg')
-        },
-        {
-          img: require('../../../../assets/img/table02.svg')
-        },
-        {
-          img: require('../../../../assets/img/table03.svg')
-        }
-      ],
+      tableIconList: [{ img: require('@/assets/img/table01.svg') }, { img: require('@/assets/img/table02.svg') }, { img: require('@/assets/img/table03.svg') }],
       tableImageIndex: -1,
-      tableImageIcon: 0,
-      userName: '',
-      userGender: '',
-      userFollows: '',
-      userFolloweds: '',
-      userEventCount: '',
-      level: '',
-      userImage: '',
-      userSongList: []
-    }
+      tableIconIndex: 0,
+    };
   },
-  created() {
-    if (this.$route.query.id) {
-      this.initPage(this.$route.query.id)
-    }
+  computed: {
+    ...mapState(['userName', 'userGender', 'userFollows', 'userFolloweds', 'userEventCount', 'level', 'userSongList']),
+    ...mapGetters(['getUserImage']),
   },
   methods: {
-    tableImageChange(i) {
-      this.tableImageIcon = i
+    handleTableIconClick(i) {
+      this.tableIconIndex = i;
     },
-    async initPage(id) {
-      const {
-        data: { profile, level }
-      } = await _getUserInfo({
-        uid: id,
-        timestamp: Date.now()
-      })
-      const {
-        data: { playlist }
-      } = await _getSongList(id)
-      this.userName = profile.nickname
-      this.userFollows = profile.follows
-      this.userFolloweds = profile.followeds
-      this.userEventCount = profile.eventCount
-      this.userGender = profile.gender
-      this.level = level
-      this.userImage = profile.avatarUrl
-      this.userSongList = playlist
-    }
-  }
-}
+  },
+};
 </script>
 <style lang="less" scoped>
   .p-30 {
@@ -184,5 +142,9 @@ export default {
   .is-table-item {
     color: white;
     background-color: #dfd9d9;
+  }
+
+  .c-r {
+    color: #f50707;
   }
 </style>

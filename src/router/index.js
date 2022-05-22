@@ -281,8 +281,9 @@ const routes = [
         }
       },
       {
+        //用户详情页面
         path: '/userDetail',
-        component: () => import('@/components/content/user/UserDetail.vue'),
+        component: () => import('@/views/userDetail/index'),
         meta: {
           title: '用户详情',
           keepLive: true,
@@ -290,8 +291,9 @@ const routes = [
         }
       },
       {
+        //其他用户详情页面
         path: '/otherUserDetail',
-        component: () => import('@/components/content/user/childRoute/OtherUserDetail.vue'),
+        component: () => import('@/views/userDetail/components/otherUserDetail'),
         meta: {
           title: '用户歌单',
           requireLogin: true,
@@ -299,6 +301,7 @@ const routes = [
         }
       },
       {
+        //404页面
         path: '/404',
         component: () => import('@/components/common/error/404.vue')
       }

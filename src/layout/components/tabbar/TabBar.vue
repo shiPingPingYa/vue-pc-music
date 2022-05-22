@@ -2,7 +2,7 @@
   <div ref="tabBar" class="header">
     <div class="logo">
       <img src="../../../assets/img/webSiteIcon.svg" title="小拳拳锤你" />
-      <div class="title">覃覃音乐</div>
+      <div class="title" @click="goHome">覃覃音乐</div>
     </div>
     <!-- 两个回退按钮 -->
     <div class="buttons">
@@ -59,13 +59,13 @@
   </div>
 </template>
 <script>
-import MusicSearch from '@/components/content/search/MusicSearch'
-import { mapState, mapGetters, mapActions } from 'vuex'
-import { mixins } from '@/assets/common/verify-phone'
-import { _setUserImage } from '../../../network/user'
-import { _getPrivateHistoryNews, HandlePrivateHistory } from '../../../network/privateNews'
-import privateDetail from '@/components/content/privateMsg/privateDetail.vue'
-import HistoryNews from '@/components/content/privateMsg/childComps/HistoryNews.vue'
+import MusicSearch from '@/components/content/search/MusicSearch';
+import { mapState, mapGetters, mapActions } from 'vuex';
+import { mixins } from '@/assets/common/verify-phone';
+import { _setUserImage } from '../../../network/user';
+import { _getPrivateHistoryNews, HandlePrivateHistory } from '../../../network/privateNews';
+import privateDetail from '@/components/content/privateMsg/privateDetail.vue';
+import HistoryNews from '@/components/content/privateMsg/childComps/HistoryNews.vue';
 export default {
   name: 'TabBar',
   components: { MusicSearch, privateDetail, HistoryNews },
@@ -73,103 +73,106 @@ export default {
   data() {
     return {
       header: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
       },
       droupMenuList: [
         {
           icon: 'el-icon-picture-outline-round',
           value: 'editImg',
-          label: '修改头像'
+          label: '修改头像',
         },
         { icon: 'el-icon-message', value: 'messageNotify', label: '消息通知' },
-        { icon: 'el-icon-s-home', value: 'layout', label: '退出登录' }
+        { icon: 'el-icon-s-home', value: 'layout', label: '退出登录' },
       ],
       isPrivate: false,
       isHistoryNews: false,
       historyList: [],
       privageUserId: '',
       historyMore: false,
-      dropVisiable: false
-    }
+      dropVisiable: false,
+    };
   },
   computed: {
     ...mapState(['userName']),
-    ...mapGetters(['getUserImage', 'isLogin'])
+    ...mapGetters(['getUserImage', 'isLogin']),
   },
   watch: {
     // 隐藏消息和私信内容
     $route: {
       handler() {
-        this.isPrivate = false
-        this.isHistoryNews = false
+        this.isPrivate = false;
+        this.isHistoryNews = false;
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     ...mapActions(['_GETUSERINFO']),
+    goHome() {
+      this.$router.push('/discover');
+    },
     handleChangeRouter(i) {
-      this.$router.go(i)
-      this.$parent.$refs.play_music.isPlayerShow = false
+      this.$router.go(i);
+      this.$parent.$refs.play_music.isPlayerShow = false;
     },
     handleDropClick(v) {
       switch (v) {
         case 'messageNotify':
-          this.isPrivate = !this.isPrivate
-          this.isHistoryNews = false
-          break
+          this.isPrivate = !this.isPrivate;
+          this.isHistoryNews = false;
+          break;
         case 'layout':
-          this.enterLogin()
-          break
+          this.enterLogin();
+          break;
       }
     },
     handleDropMenuVisible(flag) {
-      this.dropVisiable = flag
+      this.dropVisiable = flag;
     },
     // 隐藏登录页面
     showLogin() {
-      this.$store.commit('showLogin', !this.$store.state.isShowLogin)
+      this.$store.commit('showLogin', !this.$store.state.isShowLogin);
       // 隐藏注册页面
-      this.$store.commit('hiddenRegister')
+      this.$store.commit('hiddenRegister');
     },
     // 退出登录
     enterLogin() {
-      this.$store.dispatch('_Layout')
+      this.$store.dispatch('_Layout');
     },
     async httpRequest(item) {
-      const isType = item.file.type === 'image/jpeg' || item.file.type === 'image/png'
-      if (!isType) return this.$message.error('请选择正确的文件')
-      var uploadImage = new FormData()
-      uploadImage.append('imgFile', item.file)
+      const isType = item.file.type === 'image/jpeg' || item.file.type === 'image/png';
+      if (!isType) return this.$message.error('请选择正确的文件');
+      var uploadImage = new FormData();
+      uploadImage.append('imgFile', item.file);
       const {
         data: {
-          data: { code }
-        }
-      } = await _setUserImage(uploadImage)
+          data: { code },
+        },
+      } = await _setUserImage(uploadImage);
       if (code === 200) {
-        this.$message.success('头像修改成功')
-        await this._GETUSERINFO(localStorage.getItem('userId'))
+        this.$message.success('头像修改成功');
+        await this._GETUSERINFO(localStorage.getItem('userId'));
       }
     },
     privateNewChange(userId) {
-      this.historyList = []
-      this.privageUserId = userId
+      this.historyList = [];
+      this.privageUserId = userId;
       _getPrivateHistoryNews({ uid: this.privageUserId })
         .then(res => {
-          res.data.msgs.forEach(item => this.historyList.push(new HandlePrivateHistory(item)))
-          this.historyList = this.historyList.reverse()
-          this.historyMore = res.data.more
+          res.data.msgs.forEach(item => this.historyList.push(new HandlePrivateHistory(item)));
+          this.historyList = this.historyList.reverse();
+          this.historyMore = res.data.more;
         })
         .then(() => {
-          this.isHistoryNews = true
-        })
+          this.isHistoryNews = true;
+        });
     },
     prePrivateDetail() {
-      this.isPrivate = true
-      this.isHistoryNews = false
-    }
-  }
-}
+      this.isPrivate = true;
+      this.isHistoryNews = false;
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .header {
