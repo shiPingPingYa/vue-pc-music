@@ -16,17 +16,17 @@
       <!-- 用户关注列表 -->
       <div class="user-atttion-list">
         <!-- 用户动态 -->
-        <div class="dynamic" @click="goUserOtherPath('userdynamic')">
+        <div class="dynamic" @click="goRoute('userdynamic')">
           <p>{{userEventCount}} </p>
           <span>动态</span>
         </div>
         <!-- 用户关注列表 -->
-        <div class="attention-list" @click="goUserOtherPath('userfollows')">
+        <div class="attention-list" @click="goRoute('userAttention')">
           <p>{{userFollows}}</p>
           <span>关注</span>
         </div>
         <!-- 用户粉丝 -->
-        <div class="user-fons" @click="goUserOtherPath('userfolloweds')">
+        <div class="user-fons" @click="goRoute('userfolloweds')">
           <p>{{userFolloweds}}</p>
           <span>粉丝</span>
         </div>
@@ -53,7 +53,7 @@ export default {
     ...mapGetters(['getUserImage']),
   },
   methods: {
-    goUserOtherPath(path) {
+    goRoute(path) {
       this.$router.push(path);
     },
     goUserDetail() {

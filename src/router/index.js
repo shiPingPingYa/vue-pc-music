@@ -203,33 +203,28 @@ const routes = [
         meta: { title: '朋友', requireLogin: true },
         children: [
           {
+            //朋友首页
             path: '/friend/frienddetail',
             component: () => import('@/views/friend/friendDetail/index'),
             meta: { requireLogin: true }
           },
-          // 动态
           {
+            // 动态
             path: '/friend/userdynamic',
-            component: () => import('@/components/content/friend/childRouter/UserDynamic'),
-            meta: {
-              requireLogin: true
-            }
+            component: () => import('@/views/userDynamic/index'),
+            meta: { requireLogin: true }
           },
-          // 粉丝
           {
+            // 粉丝
             path: '/friend/userfolloweds',
-            component: () => import('@/components/content/friend/childRouter/UserFolloweds'),
-            meta: {
-              requireLogin: true
-            }
+            component: () => import('@/views/userfolloweds/index'),
+            meta: { requireLogin: true }
           },
-          // 关注
           {
-            path: '/friend/userfollows',
-            component: () => import('@/components/content/friend/childRouter/UserFollows'),
-            meta: {
-              requireLogin: true
-            }
+            // 关注
+            path: '/friend/userAttention',
+            component: () => import('@/views/userAttention/index'),
+            meta: { requireLogin: true }
           }
         ]
       },
