@@ -14,13 +14,13 @@ const routes = [
   {
     path: '/',
     redirect: '/discover',
-    component: () => import('@/layout/layout'),
+    component: () => import('@/layout/index'),
     children: [
       {
         // 首页
         path: '/discover',
         redirect: '/discover/individ',
-        component: () => import('@/views/discover/index'),
+        component: () => import('@/layout/discover/index'),
         meta: { title: '首页', requireLogin: false },
         children: [
           {
@@ -38,25 +38,25 @@ const routes = [
           {
             // 发现音乐-排行榜
             path: '/discover/ranklist',
-            component: () => import('@/views/discover/childRouter/MusicListRank'),
+            component: () => import('@/views/musicRankList/index'),
             meta: { title: '排行榜', keepLive: true, requireLogin: false }
           },
           {
             // 发现音乐-歌手
             path: '/discover/artist',
-            component: () => import('@/views/discover/childRouter/ArtistCategory'),
+            component: () => import('@/views/artistCategory/index'),
             meta: { title: '歌手', keepLive: true, requireLogin: false }
           },
           {
             // 发现音乐-最新音乐
             path: '/discover/newsongs',
-            component: () => import('@/views/discover/childRouter/NewSongs'),
+            component: () => import('@/views/newMusic/index'),
             meta: { title: '最新音乐', keepLive: true, requireLogin: false }
           },
           {
             // 发现音乐-MV
             path: '/discover/mv',
-            component: () => import('@/views/mv/Mv'),
+            component: () => import('@/views/discoverMv/index'),
             meta: { title: 'MV首页', keepLive: true, requireLogin: false }
           }
         ]

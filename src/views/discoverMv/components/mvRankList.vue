@@ -20,24 +20,24 @@
 </template>
 <script>
 // 导入mv排行版下面的子组件
-import RankList from './RankList'
+import rankList from './rankList';
 export default {
-  name: 'MvRankListMv',
-  components: { RankList },
+  name: 'mvRankList',
+  components: { rankList },
   props: {
     topMv: {
       type: Array,
       default() {
-        return []
-      }
-    }
+        return [];
+      },
+    },
   },
   methods: {
     setMusicItemIndex(i) {
-      return i + 1 <= 9 ? `0${i + 1}` : i + 1
-    }
-  }
-}
+      return i + 1 <= 9 ? `0${i + 1}` : i + 1;
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .mv-rank {
