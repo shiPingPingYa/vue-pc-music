@@ -4,8 +4,8 @@
     <div class="day_music" v-show="isLogin && isDayMusic" @click="goDayMusicListDetail()">
       <div class="day_music_back"></div>
       <div class="day_music_time">
-        <div class="day_music_date">{{ getDay }}</div>
-        <div class="day_music_day">{{ getDate }}</div>
+        <div class="day_music_date">{{ dateMap.week }}</div>
+        <div class="day_music_day">{{ dateMap.date }}</div>
       </div>
       <div class="day_music_title">每日歌曲推荐</div>
     </div>
@@ -31,15 +31,29 @@ export default {
       default: () => [],
     },
   },
-  computed: {
-    ...mapGetters(['isLogin']),
-  },
   data() {
     return {
-      getDate: '',
-      getDay: '',
       isDayMusic: true,
+      weekMap: {
+        0: '星期天',
+        1: '星期一',
+        2: '星期二',
+        3: '星期三',
+        4: '星期四',
+        5: '星期五',
+        6: '星期六',
+      },
     };
+  },
+  computed: {
+    ...mapGetters(['isLogin']),
+    dateMap() {
+      let dateExample = new Date();
+      return {
+        date: dateExample.getDate(),
+        week: this.weekMap[dateExample.getDay()],
+      };
+    },
   },
   watch: {
     '$route.path': {
@@ -48,11 +62,6 @@ export default {
       },
       deep: true,
     },
-  },
-  created() {
-    let date = new Date();
-    this.getDate = date.getDate();
-    this.getDay = this.isGetDay(date.getDay());
   },
   methods: {
     // 跳转到推荐详情页

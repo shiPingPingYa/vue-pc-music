@@ -88,8 +88,17 @@ const routes = [
           }
         ]
       },
-      // 歌手信息
       {
+        // 每日推荐
+        path: '/daymusic',
+        component: () => import('@/views/dailyRecommendation/index'),
+        meta: {
+          title: '每日歌曲推荐',
+          requireLogin: false
+        }
+      },
+      {
+        //歌手信息
         path: '/artist',
         // 歌手详细信息开始
         component: () => import('@/views/artistDetail/ArtistDetail'),
@@ -238,15 +247,7 @@ const routes = [
           keepLive: true
         }
       },
-      // 每日推荐
-      {
-        path: '/daymusic',
-        component: () => import('@/views/musicListDetail/childComps/DayMusic.vue'),
-        meta: {
-          title: '每日歌曲推荐',
-          requireLogin: false
-        }
-      },
+
       {
         path: '/hotTopicRankList',
         component: () => import('@/components/content/friend/childRouter/HotTopicRankList.vue'),
