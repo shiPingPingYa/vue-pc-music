@@ -16,60 +16,51 @@
       <!-- 用户关注列表 -->
       <div class="user-atttion-list">
         <!-- 用户动态 -->
-        <div class="dynamic" @click="goUserOtherPath('userdynamic')">
+        <div class="dynamic" @click="goRoute('userdynamic')">
           <p>{{userEventCount}} </p>
           <span>动态</span>
         </div>
         <!-- 用户关注列表 -->
-        <div class="attention-list" @click="goUserOtherPath('userfollows')">
+        <div class="attention-list" @click="goRoute('userAttention')">
           <p>{{userFollows}}</p>
           <span>关注</span>
         </div>
         <!-- 用户粉丝 -->
-        <div class="user-fons" @click="goUserOtherPath('userfolloweds')">
+        <div class="user-fons" @click="goRoute('userfolloweds')">
           <p>{{userFolloweds}}</p>
           <span>粉丝</span>
         </div>
       </div>
-
     </div>
-    <top-topic :limit="limit" :isTitle='true'></top-topic>
+    <topTopic :limit="limit" :isTitle="true" />
   </div>
 </template>
 <script>
-// 背景混入
-import { mixins } from '../../user/mixins'
-// 解析vuex的state
-import { mapState, mapGetters } from 'vuex'
-import TopTopic from './TopTopic.vue'
+import { mapState, mapGetters } from 'vuex';
+import { mixins } from '@/mixins/mixinsVerify';
+import topTopic from './topTopic';
 export default {
-  name: 'UserAttentionInfo',
-  data () {
+  name: 'userAttentionInfo',
+  data() {
     return {
-      limit: 6 // 话题榜个数
-    }
+      limit: 6, // 话题榜个数
+    };
   },
-  components: { TopTopic },
+  components: { topTopic },
   mixins: [mixins],
   computed: {
-    ...mapState([
-      'userName',
-      'userGender',
-      'userFollows',
-      'userFolloweds',
-      'userEventCount'
-    ]),
-    ...mapGetters(['getUserImage'])
+    ...mapState(['userName', 'userGender', 'userFollows', 'userFolloweds', 'userEventCount']),
+    ...mapGetters(['getUserImage']),
   },
   methods: {
-    goUserOtherPath (path) {
-      this.$router.push(path)
+    goRoute(path) {
+      this.$router.push(path);
     },
-    goUserDetail () {
-      this.$router.push('/userDetail')
-    }
-  }
-}
+    goUserDetail() {
+      this.$router.push('/userDetail');
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .user-attention-info {

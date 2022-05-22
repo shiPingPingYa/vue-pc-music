@@ -32,46 +32,43 @@
   </div>
 </template>
 <script>
-// 导入数据接口
-import { _getUserFons } from '../../../../network/friend'
-// 处理请求好的数据
-import { Aollows } from '../childComps/handleUserInfo'
-// 节流
-import { throttled } from '../../../../assets/common/tool'
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
+import { _getUserFons } from '@/network/friend';
+import { Aollows } from './components/handleUserInfo';
+import { throttled } from '@/assets/common/tool';
 export default {
-  name: 'UserFolloweds',
+  name: 'userfolloweds',
   data() {
     return {
       followList: [],
       notFollowList: [],
       page: 1,
-      limit: 30
-    }
+      limit: 30,
+    };
   },
   computed: {
-    ...mapState(['userName', 'uid'])
+    ...mapState(['userName', 'uid']),
   },
   created() {
-    this.loadFollows()
+    this.loadFollows();
   },
   methods: {
     // 下拉刷新数据
     pullingUp: throttled(function () {
-      this.loadFollows()
+      this.loadFollows();
     }, 800),
     async loadFollows() {
       const params = {
         uid: this.uid || localStorage.getItem('userId'),
-        offset: this.followList.length
-      }
+        offset: this.followList.length,
+      };
       _getUserFons(params).then(res => {
-        this.notFollowList = res.data.followeds.forEach(item => this.followList.push(new Aollows(item)))
-        this.$refs.scroll.finishPullUp()
-      })
-    }
-  }
-}
+        this.notFollowList = res.data.followeds.forEach(item => this.followList.push(new Aollows(item)));
+        this.$refs.scroll.finishPullUp();
+      });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .user-follows {

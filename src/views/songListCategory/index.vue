@@ -26,6 +26,7 @@ import { throttled } from '@/assets/common/tool';
 import songList from '@/components/songList';
 export default {
   name: 'songListCategory',
+  components: { songList },
   data() {
     return {
       tags: null,
@@ -38,7 +39,6 @@ export default {
       more: true, // 加载后，判断有无数据还未加载
     };
   },
-  components: { songList },
   mounted() {
     this.initCategoryList();
     this.$refs.scroll.refresh();

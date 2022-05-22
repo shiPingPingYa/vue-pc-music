@@ -32,47 +32,44 @@
   </div>
 </template>
 <script>
-// 导入数据接口
-import { _getUserAttentionList } from '../../../../network/friend'
-// 处理请求好的数据
-import { Aollows } from '../childComps/handleUserInfo'
-// 节流
-import { throttled } from '../../../../assets/common/tool'
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
+import { _getUserAttentionList } from '@/network/friend';
+import { throttled } from '@/assets/common/tool';
+import { Aollows } from './components/handleUserInfo';
 export default {
-  name: 'UserFollows',
+  name: 'userAttention',
   data() {
     return {
       followList: [],
       page: 1,
       limit: 39,
-      followsMore: ''
-    }
+      followsMore: '',
+    };
   },
   computed: { ...mapState(['uid']) },
   created() {
-    this.loadFollows()
+    this.loadFollows();
   },
   methods: {
     // 下拉刷新数据
     pullingUp: throttled(function () {
-      this.loadFollows()
+      this.loadFollows();
     }, 800),
     loadFollows() {
-      if (this.followsMore === false) return this.$message.info('暂无更多关注，快快关注去吧')
+      if (this.followsMore === false) return this.$message.info('暂无更多关注，快快关注去吧');
       const params = {
         uid: this.uid || localStorage.getItem('userId'),
         offset: this.followList.length,
-        limit: 40
-      }
+        limit: 40,
+      };
       _getUserAttentionList(params).then(res => {
-        this.notFollowList = res.data.follow.forEach(item => this.followList.push(new Aollows(item)))
-        this.followsMore = res.data.more
-        this.$refs.scroll.finishPullUp()
-      })
-    }
-  }
-}
+        this.notFollowList = res.data.follow.forEach(item => this.followList.push(new Aollows(item)));
+        this.followsMore = res.data.more;
+        this.$refs.scroll.finishPullUp();
+      });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .user-follows {

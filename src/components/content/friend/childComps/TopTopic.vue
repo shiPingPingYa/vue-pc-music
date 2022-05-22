@@ -17,38 +17,39 @@
   </div>
 </template>
 <script>
-import { _getHotTopic } from '../../../../network/topic'
-import { goTopicDetailMixin } from '../go'
+import { _getHotTopic } from '../../../../network/topic';
 export default {
   name: 'TopTopic',
   props: {
     limit: {
       type: Number,
-      default () {
-        return 0
-      }
+      default() {
+        return 0;
+      },
     },
     isTitle: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
-  mixins: [goTopicDetailMixin],
-  data () {
+  data() {
     return {
-      topicList: []
-    }
+      topicList: [],
+    };
   },
-  async created () {
+  async created() {
     await _getHotTopic().then(res => {
-      this.topicList = res.data.hot.slice(2, this.limit)
-    })
+      this.topicList = res.data.hot.slice(2, this.limit);
+    });
   },
   methods: {
-    toHotTopicRankList () {
-      this.$router.push('/hotTopicRankList')
-    }
-  }
-}
+    toHotTopicRankList() {
+      this.$router.push('/hotTopicRankList');
+    },
+    goTopicDetail(actid) {
+      this.$router.push('/topicDetail/' + actid);
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .to_topic {

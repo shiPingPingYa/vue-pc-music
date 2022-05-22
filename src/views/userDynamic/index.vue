@@ -49,18 +49,18 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 // import { _getUserSendEvent } from '../../../../network/event'
 export default {
-  name: 'UserDynamic',
+  name: 'userDynamic',
   computed: {
-    ...mapState(['userName', 'uid'])
+    ...mapState(['userName', 'uid']),
   },
   data() {
     return {
       lasttime: -1,
-      userSendEventList: []
-    }
+      userSendEventList: [],
+    };
   },
   async created() {
     // const params = {
@@ -76,10 +76,10 @@ export default {
   },
   methods: {
     pullingUp() {
-      console.log('aa')
-    }
-  }
-}
+      console.log('aa');
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .user-dynamic {
