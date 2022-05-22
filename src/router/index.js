@@ -14,13 +14,13 @@ const routes = [
   {
     path: '/',
     redirect: '/discover',
-    component: () => import('@/layout/layout'),
+    component: () => import('@/layout/index'),
     children: [
       {
         // 首页
         path: '/discover',
         redirect: '/discover/individ',
-        component: () => import('@/views/discover/index'),
+        component: () => import('@/layout/discover/index'),
         meta: { title: '首页', requireLogin: false },
         children: [
           {
