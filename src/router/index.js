@@ -89,6 +89,39 @@ const routes = [
         ]
       },
       {
+        // 朋友
+        path: '/friend',
+        redirect: '/friend/frienddetail',
+        component: () => import('@/views/friend/index'),
+        meta: { title: '朋友', requireLogin: true },
+        children: [
+          {
+            //朋友首页
+            path: '/friend/frienddetail',
+            component: () => import('@/views/friend/friendDetail/index'),
+            meta: { requireLogin: true }
+          },
+          {
+            // 动态
+            path: '/friend/userdynamic',
+            component: () => import('@/views/userDynamic/index'),
+            meta: { requireLogin: true }
+          },
+          {
+            // 粉丝
+            path: '/friend/userfolloweds',
+            component: () => import('@/views/userfolloweds/index'),
+            meta: { requireLogin: true }
+          },
+          {
+            // 关注
+            path: '/friend/userAttention',
+            component: () => import('@/views/userAttention/index'),
+            meta: { requireLogin: true }
+          }
+        ]
+      },
+      {
         // 每日推荐
         path: '/daymusic',
         component: () => import('@/views/dailyRecommendation/index'),
@@ -96,6 +129,31 @@ const routes = [
           title: '每日歌曲推荐',
           requireLogin: false
         }
+      },
+      {
+        //用户详情页面
+        path: '/userDetail',
+        component: () => import('@/views/userDetail/index'),
+        meta: {
+          title: '用户详情',
+          keepLive: true,
+          requireLogin: true
+        }
+      },
+      {
+        //其他用户详情页面
+        path: '/otherUserDetail',
+        component: () => import('@/views/userDetail/components/otherUserDetail'),
+        meta: {
+          title: '用户歌单',
+          requireLogin: true,
+          keepLive: true
+        }
+      },
+      {
+        //404页面
+        path: '/404',
+        component: () => import('@/components/common/error/404.vue')
       },
       {
         //歌手信息
@@ -205,40 +263,7 @@ const routes = [
         ]
       },
       {
-        // 朋友
-        path: '/friend',
-        redirect: '/friend/frienddetail',
-        component: () => import('@/views/friend/index'),
-        meta: { title: '朋友', requireLogin: true },
-        children: [
-          {
-            //朋友首页
-            path: '/friend/frienddetail',
-            component: () => import('@/views/friend/friendDetail/index'),
-            meta: { requireLogin: true }
-          },
-          {
-            // 动态
-            path: '/friend/userdynamic',
-            component: () => import('@/views/userDynamic/index'),
-            meta: { requireLogin: true }
-          },
-          {
-            // 粉丝
-            path: '/friend/userfolloweds',
-            component: () => import('@/views/userfolloweds/index'),
-            meta: { requireLogin: true }
-          },
-          {
-            // 关注
-            path: '/friend/userAttention',
-            component: () => import('@/views/userAttention/index'),
-            meta: { requireLogin: true }
-          }
-        ]
-      },
-      // 电台
-      {
+        // 电台
         path: '/transceiver',
         component: () => import('@/views/friend/index'),
         meta: {
@@ -247,7 +272,6 @@ const routes = [
           keepLive: true
         }
       },
-
       {
         path: '/hotTopicRankList',
         component: () => import('@/components/content/friend/childRouter/HotTopicRankList.vue'),
@@ -279,31 +303,6 @@ const routes = [
           title: '歌手专辑',
           requireLogin: false
         }
-      },
-      {
-        //用户详情页面
-        path: '/userDetail',
-        component: () => import('@/views/userDetail/index'),
-        meta: {
-          title: '用户详情',
-          keepLive: true,
-          requireLogin: true
-        }
-      },
-      {
-        //其他用户详情页面
-        path: '/otherUserDetail',
-        component: () => import('@/views/userDetail/components/otherUserDetail'),
-        meta: {
-          title: '用户歌单',
-          requireLogin: true,
-          keepLive: true
-        }
-      },
-      {
-        //404页面
-        path: '/404',
-        component: () => import('@/components/common/error/404.vue')
       }
     ]
   }
