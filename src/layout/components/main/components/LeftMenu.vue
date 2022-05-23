@@ -92,8 +92,8 @@ export default {
   watch: {
     // 网页刷新后设置左侧路由和音乐列表的选中
     $route: {
-      handler(newV) {
-        const pathList = newV.path.split('/');
+      handler(route) {
+        const pathList = route.path.split('/');
         if (pathList.includes('musicListDetail')) {
           this.initMusicListIndex();
         } else {
