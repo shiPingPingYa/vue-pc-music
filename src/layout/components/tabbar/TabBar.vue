@@ -54,7 +54,7 @@
     <!-- 消息通知(私信，评论，@我，通知) -->
     <messageNotice v-if="isPrivate" class="private_detail" @privateNewChange="privateNewChange" />
     <!-- 消息通知的详情页面 -->
-    <history-news v-if="isHistoryNews" class="private_detail" :history-list="historyList" :more="historyMore" @prePrivateDetail="prePrivateDetail"
+    <privateMessageDetail v-if="isHistoryNews" class="private_detail" :history-list="historyList" :more="historyMore" @prePrivateDetail="prePrivateDetail"
       @visiableMessage="(isPrivate = false), (isHistoryNews = false)" />
   </div>
 </template>
@@ -65,10 +65,10 @@ import { _getPrivateHistoryNews, HandlePrivateHistory } from '@/network/privateN
 import { mixins } from '@/assets/common/verify-phone';
 import MusicSearch from '@/components/content/search/MusicSearch';
 import messageNotice from '@/views/messageNotice/index';
-import HistoryNews from '@/components/content/privateMsg/childComps/HistoryNews.vue';
+import privateMessageDetail from '@/views/privateMessageDetail/index';
 export default {
   name: 'TabBar',
-  components: { MusicSearch, HistoryNews, messageNotice },
+  components: { MusicSearch, privateMessageDetail, messageNotice },
   mixins: [mixins],
   data() {
     return {

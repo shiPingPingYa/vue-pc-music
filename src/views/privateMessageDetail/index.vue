@@ -60,12 +60,12 @@
   </div>
 </template>
 <script>
-import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
 import { _getSongsDetail, SongDetail } from '@/network/detail';
+import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
 import { formDate } from '@/assets/common/tool';
 
 export default {
-  name: 'HistoryNews',
+  name: 'privateMessageDetail',
   mixins: [mixinsPlayMusic],
   props: {
     historyList: {

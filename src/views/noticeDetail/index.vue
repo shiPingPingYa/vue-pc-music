@@ -12,7 +12,7 @@ import { _getCommentEvent } from '@/network/event.js';
 import { _getRecommends } from '@/network/detail';
 const NoticesRecommends = () => import('@/views/musicListDetail/childComps/Recommends.vue');
 export default {
-  name: 'NoticesDetail',
+  name: 'noticeDetail',
   components: { NoticesRecommends },
   data() {
     return {

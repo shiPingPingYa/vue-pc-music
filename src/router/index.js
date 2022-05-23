@@ -169,6 +169,14 @@ const routes = [
         }
       },
       {
+        path: '/noticesDetail/:id/:type',
+        component: () => import('@/views/noticeDetail/index'),
+        meta: {
+          title: '通知详情',
+          requireLogin: true
+        }
+      },
+      {
         //404页面
         path: '/404',
         component: () => import('@/components/common/error/404.vue')
@@ -288,14 +296,6 @@ const routes = [
           title: '电台',
           requireLogin: true,
           keepLive: true
-        }
-      },
-      {
-        path: '/noticesDetail/:id/:type',
-        component: () => import('@/components/content/privateMsg/childComps/NoticesDetail.vue'),
-        meta: {
-          title: '通知详情',
-          requireLogin: true
         }
       },
       {
