@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="icon-close-container">
         <div class="back" />
-        <img src="../../../assets/img/user/x.svg" alt="" @click.stop="__hiddenLogin">
+        <img src="@/assets/img/user/x.svg" alt="" @click.stop="__hiddenLogin">
       </div>
       <div class="user-img-container">
         <img :src="getUserImage" alt>
