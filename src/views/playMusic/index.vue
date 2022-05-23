@@ -1,12 +1,12 @@
 <template>
-  <div class="play-music" v-if="playList !== null">
+  <div class="app-footer play-music" v-if="playList !== null">
     <!-- 播放条上面的内容区域 -->
     <div class="top">
       <!-- 播放内容图片 -->
       <div class="music-top-icon" v-if="playList[currentIndex] !== null" @mouseenter="isShade = true" @mouseleave="isShade = false" @click="playerShow()">
         <img :src="playList[currentIndex].pic" alt="">
         <div class="music-max" v-show="isShade">
-          <img src="../../../assets/img/playmusic/max.svg" alt="">
+          <img src="@/assets/img/playmusic/max.svg" alt="">
         </div>
       </div>
       <!-- 播放内容 -->
@@ -62,7 +62,7 @@
         <!-- 音乐列表按钮 -->
         <div class="music-list" @click="toggleMusicList()">
           <a href="javascript:;" title="歌单">
-            <img src="../../../assets/img/playmusic/list.svg" alt />
+            <img src="@/assets/img/playmusic/list.svg" alt />
           </a>
         </div>
       </div>
@@ -74,27 +74,20 @@
   </div>
 </template>
 <script>
-// 导入歌曲的歌词组件
-import Player from './Player'
-// 导入封装的处理时间函数
-import { formDate } from '../../../assets/common/tool'
-// 导入歌曲网络请求
-import { _getLyric, _getIntelligenceList, _getSongsDetail, AllSongDetail, _getMusicUrl } from '../../../network/detail'
-import { PlayList } from './playList'
-// 导入进度条
-import MusicProgress from './Progress'
-// 导入歌词组件
-import Lyric from './Lyric.vue'
-// 导入播放音乐列表
-import PlayMusicList from './PlayMusicList'
-// 导入歌曲播放地址请求
+import { _getLyric, _getIntelligenceList, _getSongsDetail, AllSongDetail, _getMusicUrl } from '@/network/detail';
+import { formDate } from '@/assets/common/tool';
+import { PlayList } from './components/playList';
+import Player from './components/Player';
+import MusicProgress from './components/Progress';
+import Lyric from './components/Lyric.vue';
+import PlayMusicList from './components/PlayMusicList';
 export default {
-  name: 'PlayMusic',
+  name: 'playMusic',
   components: {
     Player,
     MusicProgress,
     Lyric,
-    PlayMusicList
+    PlayMusicList,
   },
   data() {
     return {
@@ -135,78 +128,78 @@ export default {
           index: 0,
           id: 1430989428,
           src: '',
-          pic: 'https://p2.music.126.net/VLgHixU0mvXYvnL8hi_l0A==/109951164804177794.jpg'
-        }
-      ]
-    }
+          pic: 'https://p2.music.126.net/VLgHixU0mvXYvnL8hi_l0A==/109951164804177794.jpg',
+        },
+      ],
+    };
   },
   computed: {
     currentPlayImg() {
       if (this.schemaIndex === 0) {
-        return { img: this.playIcon, title: '顺序播放' }
+        return { img: this.playIcon, title: '顺序播放' };
       } else if (this.schemaIndex === 1) {
-        return { img: this.playIcon1, title: '随机播放' }
+        return { img: this.playIcon1, title: '随机播放' };
       } else if (this.schemaIndex === 2) {
-        return { img: this.playIcon2, title: '单曲循环' }
-      } else return { img: this.playIcon3, title: '心动模式' }
-    }
+        return { img: this.playIcon2, title: '单曲循环' };
+      } else return { img: this.playIcon3, title: '心动模式' };
+    },
   },
   mounted() {
     // 音乐数据
     this.$bus.$on('PlayMusic', (index, path, musicList, playList) => {
       // 存储歌单路由
-      this.$store.commit('addSongListPath', path)
-      if (this.playList.length !== 0) this.playList = []
-      this.path = path
-      this.musicList = musicList
-      this.playList = playList
+      this.$store.commit('addSongListPath', path);
+      if (this.playList.length !== 0) this.playList = [];
+      this.path = path;
+      this.musicList = musicList;
+      this.playList = playList;
       // 设置index
-      this.setCurrentIndex(index)
-      this.$refs.music_volumn.setAudioProgress(0.8)
-    })
+      this.setCurrentIndex(index);
+      this.$refs.music_volumn.setAudioProgress(0.8);
+    });
     // 监听歌曲列表的点击,设置index,修改播放音乐
     this.$bus.$on('playMusicListItem', index => {
-      this.setCurrentIndex(index)
-    })
+      this.setCurrentIndex(index);
+    });
     // 播放视频的时候，停止音乐播放
     this.$bus.$on('stopMusic', flag => {
-      this.stopMusic(flag)
-    })
-    this.initHomeMusic()
+      this.stopMusic(flag);
+    });
+    this.initHomeMusic();
   },
   methods: {
     // 修改首页默认播放音乐的url地址(但是不能自动播放了，因为现在浏览器都是禁止了自动播放音乐，必须要用户主动触发)
     async initHomeMusic() {
       const {
         data: {
-          data: [data]
-        }
-      } = await _getMusicUrl(this.playList[0].id)
-      this.playList[0].src = data.url
+          data: [data],
+        },
+      } = await _getMusicUrl(this.playList[0].id);
+      this.playList[0].src = data.url;
     },
     // 改变currentindex,重新设置播放音乐
     setCurrentIndex(index) {
       this.playList.some((item, i) => {
         if (item.index === index) {
-          return (this.currentIndex = i)
+          return (this.currentIndex = i);
         }
-      })
+      });
     },
     // 显示歌词组件
     playerShow() {
-      this.isPlayerShow = !this.isPlayerShow
+      this.isPlayerShow = !this.isPlayerShow;
     },
     // 播放音乐
     toggle() {
       // 设置音量进度条
-      this.$refs.music_volumn.setAudioProgress(0.8)
+      this.$refs.music_volumn.setAudioProgress(0.8);
       // 替换图片
-      this.isPlayer = !this.isPlayer
+      this.isPlayer = !this.isPlayer;
       // 判断当前音乐的状态
       if (this.isPlayer && this.$refs.audio.readyState === 4) {
-        this.$refs.audio.play()
+        this.$refs.audio.play();
       } else {
-        this.$refs.audio.pause()
+        this.$refs.audio.pause();
       }
     },
     // 播放视频的时候停止播放音乐
@@ -214,178 +207,178 @@ export default {
       // 音乐处于播放状态
       if (this.isPlayer && this.$refs.audio.readyState === 4) {
         // 切换播放值和图片
-        this.isPlayer = flag
+        this.isPlayer = flag;
         // 停止播放音乐
-        this.$refs.audio.pause()
+        this.$refs.audio.pause();
       }
     },
     // 播放音乐的位置
     audioTimeUpdate() {
       if (this.$refs.audio !== null) {
         // 获取当前正在播放的时间
-        this.currentTime = formDate(new Date(this.$refs.audio.currentTime * 1000), 'mm:ss')
+        this.currentTime = formDate(new Date(this.$refs.audio.currentTime * 1000), 'mm:ss');
         // 获取总时长
-        this.duration = formDate(new Date(this.$refs.audio.duration * 1000), 'mm:ss')
+        this.duration = formDate(new Date(this.$refs.audio.duration * 1000), 'mm:ss');
         // 获取比例
-        var scale = this.$refs.audio.currentTime / this.$refs.audio.duration
+        var scale = this.$refs.audio.currentTime / this.$refs.audio.duration;
         // 设置比例
-        this.$refs.music_pro.setAudioProgress(scale)
+        this.$refs.music_pro.setAudioProgress(scale);
 
         // 滚动歌词,播放时间不能为空
         if (this.$refs.audio.currentTime !== null) {
           // 首页歌词
-          this.$refs.lyric.scrollLyric(this.$refs.audio.currentTime)
+          this.$refs.lyric.scrollLyric(this.$refs.audio.currentTime);
           // 播放页面歌词
-          this.$refs.player.$refs.playerLyric.maxScroll(this.$refs.audio.currentTime)
+          this.$refs.player.$refs.playerLyric.maxScroll(this.$refs.audio.currentTime);
         }
       }
     },
     // 音乐停止了
     musicPause() {
-      this.isPlayer = false
+      this.isPlayer = false;
       // 切换歌词组件的isPlayer,滚动图片
-      if (this.$refs.player !== null) this.$refs.player.isPlayer = false
+      if (this.$refs.player !== null) this.$refs.player.isPlayer = false;
     },
     // 音乐因缓存停止,或停止后已就绪时触发。
     musicPlaying() {
-      this.isPlayer = true
+      this.isPlayer = true;
       // 触发播放方法，把下标传递过去
-      this.$bus.$emit('Playing', this.path, this.playList[this.currentIndex].index)
+      this.$bus.$emit('Playing', this.path, this.playList[this.currentIndex].index);
       // 触发评论内容方法
       // this.$bus.$emit('changeRecommends', this.playList[this.currentIndex].id)
-      if (this.$refs.player !== null) this.$refs.player.isPlayer = true
+      if (this.$refs.player !== null) this.$refs.player.isPlayer = true;
     },
     // 音乐播放完毕
     musicEnded() {
       // 判断播放音乐是否存在
       if (this.currentIndex >= this.playList.length - 1) {
-        this.currentIndex = 0
+        this.currentIndex = 0;
       } else {
         switch (this.schemaIndex) {
           case 0:
-            this.currentIndex++
-            break
+            this.currentIndex++;
+            break;
           case 1:
-            this.currentIndex = Math.floor(Math.random() * this.playList.length)
-            break
+            this.currentIndex = Math.floor(Math.random() * this.playList.length);
+            break;
           case 2:
-            break
+            break;
           case 3:
-            this.playModeIntellgence()
-            break
+            this.playModeIntellgence();
+            break;
         }
-        this.$refs.audio.src = this.playList[this.currentIndex].src
+        this.$refs.audio.src = this.playList[this.currentIndex].src;
       }
     },
     // 加载播放音频
     async playLoad() {
       // 设置音量进度条
-      this.$refs.music_volumn.setAudioProgress(0.8)
+      this.$refs.music_volumn.setAudioProgress(0.8);
       // 获取歌词
       await _getLyric(this.playList[this.currentIndex].id).then(res => {
         try {
-          this.lyric = res.data.lrc.lyric
+          this.lyric = res.data.lrc.lyric;
         } catch (e) {
-          this.lyric = '暂无歌词'
-          console.log(e)
+          this.lyric = '暂无歌词';
+          console.log(e);
         }
-      })
+      });
     },
     // 音乐获取失败
     musicErr() {
-      this.$message.error('当前音频不可用')
+      this.$message.error('当前音频不可用');
       // this.currentIndex++
     },
     // 是否在首页显示音乐列表
     toggleMusicList() {
-      this.isMusicList = !this.isMusicList
+      this.isMusicList = !this.isMusicList;
     },
     // 设置歌曲播放的声音
     setVolumn(scale) {
-      this.$refs.audio.volume = scale
+      this.$refs.audio.volume = scale;
     },
     // 设置进度条的点击，歌曲时间对应跳转
     setMusicProgress(scale) {
-      this.$refs.audio.currentTime = scale * this.$refs.audio.duration
+      this.$refs.audio.currentTime = scale * this.$refs.audio.duration;
     },
     // 设置音乐音量
     toggleVolumn() {
-      this.isVolumn = !this.isVolumn
+      this.isVolumn = !this.isVolumn;
       // 音量 == 0
       if (this.isVolumn) {
-        this.$refs.audio.volume = 0.0
-        this.$refs.music_volumn && this.$refs.music_volumn.setAudioProgress(0.0)
+        this.$refs.audio.volume = 0.0;
+        this.$refs.music_volumn && this.$refs.music_volumn.setAudioProgress(0.0);
       } else {
         // 音量不为 == 0
-        this.$refs.audio.volume = 0.8
-        this.$refs.music_volumn && this.$refs.music_volumn.setAudioProgress(0.8)
+        this.$refs.audio.volume = 0.8;
+        this.$refs.music_volumn && this.$refs.music_volumn.setAudioProgress(0.8);
       }
     },
     // 切换下一首音乐
     nextMusic() {
       // 判断播放音乐是否存在
       if (this.currentIndex >= this.playList.length - 1) {
-        this.currentIndex = 0
+        this.currentIndex = 0;
       } else {
         switch (this.schemaIndex) {
           case 0:
-            this.currentIndex++
-            break
+            this.currentIndex++;
+            break;
           case 1:
-            this.currentIndex = Math.floor(Math.random() * this.playList.length)
-            break
+            this.currentIndex = Math.floor(Math.random() * this.playList.length);
+            break;
           case 2:
-            break
+            break;
           case 3:
-            this.playModeIntellgence()
-            break
+            this.playModeIntellgence();
+            break;
         }
-        this.$refs.audio.src = this.playList[this.currentIndex].src
+        this.$refs.audio.src = this.playList[this.currentIndex].src;
       }
     },
     // 心动模式
     async playModeIntellgence() {
       const params = {
         pid: localStorage.getItem('pid'),
-        id: this.playList[this.currentIndex].id
-      }
+        id: this.playList[this.currentIndex].id,
+      };
       const {
-        data: { data }
-      } = await _getIntelligenceList(params)
+        data: { data },
+      } = await _getIntelligenceList(params);
       // 音乐id
       const ids = data
         .slice(0, 60)
         .map(item => item.id)
-        .join(',')
-      const mulistItem = this.musicList[this.currentIndex]
-      const playListItem = this.playList[this.currentIndex]
-      this.musicList = []
-      this.playList = []
-      this.playList.push(playListItem)
-      this.musicList.push(mulistItem)
+        .join(',');
+      const mulistItem = this.musicList[this.currentIndex];
+      const playListItem = this.playList[this.currentIndex];
+      this.musicList = [];
+      this.playList = [];
+      this.playList.push(playListItem);
+      this.musicList.push(mulistItem);
       try {
         const {
-          data: { data: musicUrlList }
-        } = await _getMusicUrl(ids)
+          data: { data: musicUrlList },
+        } = await _getMusicUrl(ids);
         const {
-          data: { songs }
-        } = await _getSongsDetail(ids)
-        songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
+          data: { songs },
+        } = await _getSongsDetail(ids);
+        songs.forEach(item => this.musicList.push(new AllSongDetail(item)));
         if (songs.length === this.musicList.length) {
           this.musicList.forEach((item, index) => {
             if (Number(index) >= 1) {
-              this.playList.push(new PlayList(index + 1, item, musicUrlList[index].url, item.id))
+              this.playList.push(new PlayList(index + 1, item, musicUrlList[index].url, item.id));
             }
-          })
+          });
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-      this.currentIndex = 1
-      this.schemaIndex = 0
-    }
-  }
-}
+      this.currentIndex = 1;
+      this.schemaIndex = 0;
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .play-music {

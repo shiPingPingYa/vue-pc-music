@@ -2,7 +2,7 @@
   <div class="layout_app">
     <tab-bar ref="tabBar" />
     <appMain ref="center_content" />
-    <play-music ref="play_music" />
+    <playMusic ref="play_music" />
     <!-- <home-page-recommends></home-page-recommends> -->
   </div>
 </template>
@@ -10,14 +10,14 @@
 import { mapState } from 'vuex';
 import TabBar from './components/tabbar/TabBar';
 import appMain from './components/main/index';
-import PlayMusic from '@/components/content/playmusic/PlayMusic';
+import playMusic from '@/views/playMusic/index';
 // import HomePageRecommends from '../src/components/HomePageRecommends'
 export default {
   name: 'layout',
   computed: {
     ...mapState(['asyncShareImag']),
   },
-  components: { TabBar, appMain, PlayMusic },
+  components: { TabBar, appMain, playMusic },
   mounted() {
     const handleImgMessageMenuHide = () => {
       this.$store.commit('setAsyncShareImag', false); // 隐藏朋友圈图片
