@@ -33,7 +33,7 @@ export default {
     goArtistDetail(i) {
       this.$router.push({
         path: '/artist',
-        query: { id: this.artistsList[i].id }
+        query: { id: this.artistsList[i].artists[0].id }
       });
     }
   }
