@@ -15,7 +15,7 @@ import playMusic from '@/views/playMusic/index';
 export default {
   name: 'layout',
   computed: {
-    ...mapState(['asyncShareImag']),
+    ...mapState(['asyncShareImag'])
   },
   components: { TabBar, appMain, playMusic },
   mounted() {
@@ -28,12 +28,12 @@ export default {
     const stopMusic = e => e.keyCode === 32 && this.$refs.play_music.toggle();
     window.addEventListener('keyup', stopMusic); // 监听键盘输入事件，空格停止音乐播放
     document.getElementById('app').addEventListener('click', () => handleImgMessageMenuHide());
-  },
+  }
 };
 </script>
 <style lang="less" scoped>
-  .layout_app {
-    width: 100%;
-    height: 100%;
-  }
+.layout_app {
+  width: 100%;
+  height: 100%;
+}
 </style>

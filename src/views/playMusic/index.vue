@@ -4,15 +4,15 @@
     <div class="top">
       <!-- 播放内容图片 -->
       <div class="music-top-icon" v-if="playList[currentIndex] !== null" @mouseenter="isShade = true" @mouseleave="isShade = false" @click="playerShow()">
-        <img :src="playList[currentIndex].pic" alt="">
+        <img :src="playList[currentIndex].pic" alt="" />
         <div class="music-max" v-show="isShade">
-          <img src="@/assets/img/playmusic/max.svg" alt="">
+          <img src="@/assets/img/playmusic/max.svg" alt="" />
         </div>
       </div>
       <!-- 播放内容 -->
       <div class="music-top-center" v-if="playList[currentIndex] !== null">
-        <div class="music-title">{{playList[currentIndex].title}} </div>
-        <div class="music-artist">{{playList[currentIndex].artist}}</div>
+        <div class="music-title">{{ playList[currentIndex].title }}</div>
+        <div class="music-artist">{{ playList[currentIndex].artist }}</div>
       </div>
     </div>
     <!-- 播放内容区域 -->
@@ -31,24 +31,33 @@
     <!-- 播放条右边区域 -->
     <div class="play-music-right" v-if="playList[currentIndex] !== null">
       <!-- audio音频标签 -->
-      <audio :src="playList[currentIndex].src" autoplay ref="audio" @timeupdate="audioTimeUpdate()" @pause="musicPause()" @play="playLoad()" @ended="musicEnded()"
-        @playing="musicPlaying()" @error="musicErr()"></audio>
+      <audio
+        :src="playList[currentIndex].src"
+        autoplay
+        ref="audio"
+        @timeupdate="audioTimeUpdate()"
+        @pause="musicPause()"
+        @play="playLoad()"
+        @ended="musicEnded()"
+        @playing="musicPlaying()"
+        @error="musicErr()"
+      ></audio>
       <!-- 进度条 -->
       <div class="music-progress">
         <music-progress ref="music_pro" class="music-progress-children" @childClickScale="setMusicProgress"></music-progress>
-        <div class="music-currtTime">{{currentTime}}/{{duration}} </div>
+        <div class="music-currtTime">{{ currentTime }}/{{ duration }}</div>
       </div>
       <!-- 音量 -->
       <div class="volumn">
         <div class="volumb-icon" @click="toggleVolumn">
-          <img :src="!isVolumn ? volumnIcon : noVolumnIcon" alt="">
+          <img :src="!isVolumn ? volumnIcon : noVolumnIcon" alt="" />
         </div>
         <music-progress ref="music_volumn" @childClickScale="setVolumn"></music-progress>
       </div>
       <!-- 歌词,歌曲列表,播放顺序 -->
       <div class="music-icon">
         <!-- 播放顺序按钮 -->
-        <div class="schema" @click="schemaIndex >=3 ? schemaIndex = 0 : schemaIndex ++">
+        <div class="schema" @click="schemaIndex >= 3 ? (schemaIndex = 0) : schemaIndex++">
           <a href="#" :title="currentPlayImg.title">
             <img :src="currentPlayImg.img" />
           </a>
@@ -87,7 +96,7 @@ export default {
     Player,
     MusicProgress,
     Lyric,
-    PlayMusicList,
+    PlayMusicList
   },
   data() {
     return {
@@ -128,9 +137,9 @@ export default {
           index: 0,
           id: 1430989428,
           src: '',
-          pic: 'https://p2.music.126.net/VLgHixU0mvXYvnL8hi_l0A==/109951164804177794.jpg',
-        },
-      ],
+          pic: 'https://p2.music.126.net/VLgHixU0mvXYvnL8hi_l0A==/109951164804177794.jpg'
+        }
+      ]
     };
   },
   computed: {
@@ -142,7 +151,7 @@ export default {
       } else if (this.schemaIndex === 2) {
         return { img: this.playIcon2, title: '单曲循环' };
       } else return { img: this.playIcon3, title: '心动模式' };
-    },
+    }
   },
   mounted() {
     // 音乐数据
@@ -172,8 +181,8 @@ export default {
     async initHomeMusic() {
       const {
         data: {
-          data: [data],
-        },
+          data: [data]
+        }
       } = await _getMusicUrl(this.playList[0].id);
       this.playList[0].src = data.url;
     },
@@ -340,10 +349,10 @@ export default {
     async playModeIntellgence() {
       const params = {
         pid: localStorage.getItem('pid'),
-        id: this.playList[this.currentIndex].id,
+        id: this.playList[this.currentIndex].id
       };
       const {
-        data: { data },
+        data: { data }
       } = await _getIntelligenceList(params);
       // 音乐id
       const ids = data
@@ -358,10 +367,10 @@ export default {
       this.musicList.push(mulistItem);
       try {
         const {
-          data: { data: musicUrlList },
+          data: { data: musicUrlList }
         } = await _getMusicUrl(ids);
         const {
-          data: { songs },
+          data: { songs }
         } = await _getSongsDetail(ids);
         songs.forEach(item => this.musicList.push(new AllSongDetail(item)));
         if (songs.length === this.musicList.length) {
@@ -376,169 +385,169 @@ export default {
       }
       this.currentIndex = 1;
       this.schemaIndex = 0;
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
-  .play-music {
-    position: relative;
-    width: 100%;
-    height: 58px;
-    background-color: #a3b2b8;
-    z-index: 3;
-    bottom: 0;
-    user-select: none;
-    > .top {
-      position: absolute;
-      left: 0;
-      bottom: 58px;
-      width: 18%;
+.play-music {
+  position: relative;
+  width: 100%;
+  height: 58px;
+  background-color: #a3b2b8;
+  z-index: 3;
+  bottom: 0;
+  user-select: none;
+  > .top {
+    position: absolute;
+    left: 0;
+    bottom: 58px;
+    width: 18%;
+    height: 100%;
+    display: flex;
+    color: #000a0d;
+    background: #f0f0f8;
+    z-index: 1;
+  }
+  > .play-music-left {
+    float: left;
+    width: 15%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: rgb(103, 197, 235);
+    > div {
+      font-size: 46px;
+      cursor: pointer;
+    }
+    > .play {
+      width: 50px;
+      height: 50px;
+      font-size: 38px !important;
+    }
+  }
+  > .play-music-right {
+    float: right;
+    width: 85%;
+    height: 100%;
+    > .music-progress {
+      float: left;
+      width: 70%;
       height: 100%;
       display: flex;
-      color: #000a0d;
-      background: #f0f0f8;
-      z-index: 1;
+      align-items: center;
+      text-align: center;
+      > .music-currtTime {
+        width: 100px;
+        color: #fff;
+      }
+      > .music-progress-children {
+        flex: 1;
+      }
     }
-    > .play-music-left {
+    > .volumn {
       float: left;
-      width: 15%;
+      width: 10%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      user-select: none;
+    }
+    > .music-icon {
+      float: left;
+      padding: 0 20px;
+      margin-left: 1%;
+      width: 19%;
       height: 100%;
       display: flex;
       justify-content: space-around;
       align-items: center;
-      color: rgb(103, 197, 235);
-      > div {
-        font-size: 46px;
-        cursor: pointer;
-      }
-      > .play {
-        width: 50px;
-        height: 50px;
-        font-size: 38px !important;
-      }
-    }
-    > .play-music-right {
-      float: right;
-      width: 85%;
-      height: 100%;
-      > .music-progress {
-        float: left;
-        width: 70%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        > .music-currtTime {
-          width: 100px;
-          color: #fff;
-        }
-        > .music-progress-children {
-          flex: 1;
-        }
-      }
-      > .volumn {
-        float: left;
-        width: 10%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        user-select: none;
-      }
-      > .music-icon {
-        float: left;
-        padding: 0 20px;
-        margin-left: 1%;
-        width: 19%;
-        height: 100%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-      }
-    }
-    > .play-music-lyric {
-      position: absolute;
-      margin: auto;
-      bottom: 60px;
-      left: 50%;
-      right: 50%;
-      width: 460px;
-      height: 30px;
-      z-index: 100;
-    }
-    > .play-music-list {
-      position: absolute;
-      bottom: 60px;
-      right: 2px;
     }
   }
-
-  .volumb-icon {
-    cursor: pointer;
-    > img {
-      margin-right: 10px;
-      width: 16px;
-    }
+  > .play-music-lyric {
+    position: absolute;
+    margin: auto;
+    bottom: 60px;
+    left: 50%;
+    right: 50%;
+    width: 460px;
+    height: 30px;
+    z-index: 100;
   }
-
-  .schema {
-    width: 30px;
-    img {
-      width: 20px;
-      height: 20px;
-    }
+  > .play-music-list {
+    position: absolute;
+    bottom: 60px;
+    right: 2px;
   }
+}
 
-  .music-lyric {
+.volumb-icon {
+  cursor: pointer;
+  > img {
+    margin-right: 10px;
+    width: 16px;
+  }
+}
+
+.schema {
+  width: 30px;
+  img {
     width: 20px;
-    img {
-      width: 20px;
-      height: 20px;
-      background-size: 100%, 100%;
-    }
+    height: 20px;
   }
+}
 
-  .music-list {
+.music-lyric {
+  width: 20px;
+  img {
     width: 20px;
-    img {
-      width: 20px;
-      height: 20px;
-      background-size: 100%, 100%;
-    }
+    height: 20px;
+    background-size: 100%, 100%;
   }
+}
 
-  .music-top-icon {
+.music-list {
+  width: 20px;
+  img {
+    width: 20px;
+    height: 20px;
+    background-size: 100%, 100%;
+  }
+}
+
+.music-top-icon {
+  height: 100%;
+  cursor: pointer;
+  img {
     height: 100%;
-    cursor: pointer;
-    img {
-      height: 100%;
-    }
-    > .music-max {
-      position: relative;
-      bottom: 61px;
-      width: 58px;
-      height: 100%;
-      z-index: 4;
-      background: rgba(0, 0, 0, 0.4);
-    }
   }
-
-  .music-top-center {
+  > .music-max {
     position: relative;
-    left: 5px;
-    width: 120px;
-    font-size: 12px;
-    color: #000a0d;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    > .music-title {
-      position: absolute;
-      top: 0;
-    }
-    > .music-artist {
-      position: absolute;
-      bottom: 0;
-    }
+    bottom: 61px;
+    width: 58px;
+    height: 100%;
+    z-index: 4;
+    background: rgba(0, 0, 0, 0.4);
   }
+}
+
+.music-top-center {
+  position: relative;
+  left: 5px;
+  width: 120px;
+  font-size: 12px;
+  color: #000a0d;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  > .music-title {
+    position: absolute;
+    top: 0;
+  }
+  > .music-artist {
+    position: absolute;
+    bottom: 0;
+  }
+}
 </style>

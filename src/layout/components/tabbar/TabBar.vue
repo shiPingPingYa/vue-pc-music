@@ -1,19 +1,14 @@
 <template>
   <div ref="tabBar" class="header">
     <div class="logo">
-      <img src="../../../assets/img/webSiteIcon.svg" title="小拳拳锤你" />
+      <img src="@/assets/img/webSiteIcon.svg" title="小拳拳锤你" />
       <div class="title" @click="goHome">覃覃音乐</div>
     </div>
-    <!-- 两个回退按钮 -->
     <div class="buttons">
       <button class="el-icon-arrow-left" @click.stop="handleChangeRouter(-1)" />
       <button class="el-icon-arrow-right" @click.stop="handleChangeRouter(1)" />
     </div>
-
-    <!-- 音乐搜索 -->
     <music-search />
-
-    <!-- 用户登录 -->
     <div class="user-group">
       <div class="img-container">
         <img :src="getUserImage" @click="showLogin()" />
