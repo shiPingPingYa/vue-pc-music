@@ -151,10 +151,20 @@ const routes = [
         }
       },
       {
+        //话题排行榜
         path: '/hotTopicRankList',
         component: () => import('@/views/hotTopic/index'),
         meta: {
           title: '热门话题',
+          requireLogin: true
+        }
+      },
+      {
+        //话题详情页
+        path: '/topicDetail/:id',
+        component: () => import('@/views/topicDetail/index'),
+        meta: {
+          title: '话题详情',
           requireLogin: true
         }
       },
@@ -278,14 +288,6 @@ const routes = [
           title: '电台',
           requireLogin: true,
           keepLive: true
-        }
-      },
-      {
-        path: '/topicDetail/:id',
-        component: () => import('@/components/content/friend/TopicDetail.vue'),
-        meta: {
-          title: '话题详情',
-          requireLogin: true
         }
       },
       {

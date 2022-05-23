@@ -3,10 +3,10 @@
     <div class="alert_container" @mouseenter="hoverBtnDisplay = 'block'" @mouseleave="hoverBtnDisplay = 'none' ">
       <img :src="list[index] + '?param=600y600'" alt="">
       <div class="perImage" :style="{'display':hoverBtnDisplay} " @click.stop="perImage">
-        <img src="../../../../assets/img/perImage.svg" alt="">
+        <img src="@/assets/img/perImage.svg" alt="">
       </div>
       <div class="nextImage" :style="{'display':hoverBtnDisplay} " @click.stop="nextImage">
-        <img src="../../../../assets/img/nextImage.svg" alt="">
+        <img src="@/assets/img/nextImage.svg" alt="">
       </div>
     </div>
     <div class="line">
@@ -16,39 +16,39 @@
 </template>
 <script>
 export default {
-  name: 'AlertImage',
+  name: 'alertImage',
   props: {
     imgIndex: {
       type: Number,
-      default: () => 0
+      default: () => 0,
     },
     imgList: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {
       hoverBtnDisplay: 'none',
       index: 0,
-      list: ['']
-    }
+      list: [''],
+    };
   },
   created() {
-    this.index = this.imgIndex
-    this.list = this.imgList
+    this.index = this.imgIndex;
+    this.list = this.imgList;
   },
   methods: {
     perImage() {
-      if (this.list.length === 1) return this.$message.info('到顶啦！！')
-      else if (--this.index < 0) this.index = this.list.length - 1
+      if (this.list.length === 1) return this.$message.info('到顶啦！！');
+      else if (--this.index < 0) this.index = this.list.length - 1;
     },
     nextImage() {
-      if (this.list.length === 1) return this.$message.info('到底啦！！')
-      else if (++this.index > this.list.length - 1) this.index = 0
-    }
-  }
-}
+      if (this.list.length === 1) return this.$message.info('到底啦！！');
+      else if (++this.index > this.list.length - 1) this.index = 0;
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .alert_image {

@@ -10,12 +10,12 @@
             <el-button icon="el-icon-edit" style="width: 80%; margin-left: 10%; color: red" @click="shareTopicEvent('参与')">立即参与</el-button>
           </div>
           <div class="share_topic" @click="shareTopicEvent('分享')">
-            <img src="../../../assets/img/share_topic.svg" alt="" />
+            <img src="@/assets/img/share_topic.svg" alt="" />
           </div>
         </div>
         <p>热门动态</p>
         <div>
-          <event-dynamic :dynamicList="dynamicList" @shaerContentImageChange="shaerContentImageChange"></event-dynamic>
+          <eventDynamic :dynamicList="dynamicList" @shaerContentImageChange="shaerContentImageChange" />
         </div>
         <div class="dynamic-over" v-show="dynamicList.length === 0">
           该话题暂无动态
@@ -25,20 +25,20 @@
     <div class="topic_right">
       <top-topic :isTitle="true" :limit="10"></top-topic>
     </div>
-    <!-- 展示分享图片 -->
-    <alert-image v-if="asyncShareImag" :imgIndex="imgIndex" :imgList="imgList"></alert-image>
+    <alertImage v-if="asyncShareImag" :imgIndex="imgIndex" :imgList="imgList" />
   </div>
 </template>
 <script>
-import { _getTopicDetail, _getTopicEvent } from '../../../network/topic'
-import TopTopic from './childComps/TopTopic.vue'
-import { AttentionDynamic } from './childComps/handleUserInfo'
-import { mapState } from 'vuex'
-const EventDynamic = () => import('./childComps/EventDynamic.vue')
-const AlertImage = () => import('./childRouter/AlertImage.vue')
+import { mapState } from 'vuex';
+import { _getTopicDetail, _getTopicEvent } from '@/network/topic';
+import topTopic from '@/components/topTopic';
+import alertImage from '@/components/alertImage';
+import { AttentionDynamic } from './components/handleUserInfo';
+import eventDynamic from './components/eventDynamic';
+
 export default {
-  name: 'TopicDetail',
-  components: { TopTopic, EventDynamic, AlertImage },
+  name: 'topicDetail',
+  components: { topTopic, eventDynamic, alertImage },
   data() {
     return {
       participateCount: '',
@@ -47,50 +47,50 @@ export default {
       id: '',
       dynamicList: [],
       imgIndex: 0,
-      imgList: []
-    }
+      imgList: [],
+    };
   },
   watch: {
     $route: {
-      handler(val) {
-        if (val.params.id !== ' ' && val.params.id !== undefined) {
-          this.id = val.params.id
-          this.initTopicDetail()
+      handler(route) {
+        if (route.params.id !== ' ' && route.params.id !== undefined) {
+          this.id = route.params.id;
+          this.initTopicDetail();
         }
-      }
-    }
+      },
+    },
   },
   computed: {
-    ...mapState(['asyncShareImag'])
+    ...mapState(['asyncShareImag']),
   },
   created() {
-    this.id = this.$route.params.id
-    this.initTopicDetail()
+    this.id = this.$route.params.id;
+    this.initTopicDetail();
   },
   methods: {
     async initTopicDetail() {
-      this.dynamicList = []
+      this.dynamicList = [];
       const {
         data: {
-          act: { coverPCListUrl, participateCount, title }
-        }
-      } = await _getTopicDetail({ actid: this.id })
-      this.coverPCListUrl = coverPCListUrl
-      this.participateCount = participateCount
-      this.title = title
+          act: { coverPCListUrl, participateCount, title },
+        },
+      } = await _getTopicDetail({ actid: this.id });
+      this.coverPCListUrl = coverPCListUrl;
+      this.participateCount = participateCount;
+      this.title = title;
       _getTopicEvent({ actid: this.id }).then(res => {
-        res.data.events.forEach(item => this.dynamicList.push(new AttentionDynamic(item)))
-      })
+        res.data.events.forEach(item => this.dynamicList.push(new AttentionDynamic(item)));
+      });
     },
     shaerContentImageChange(urlIndex, urlList) {
-      this.imgIndex = urlIndex
-      this.imgList = urlList
+      this.imgIndex = urlIndex;
+      this.imgList = urlList;
     },
     shareTopicEvent(msg) {
-      this.$message.info(`暂无${msg}动态功能`)
-    }
-  }
-}
+      this.$message.info(`暂无${msg}动态功能`);
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .topic_detail {
