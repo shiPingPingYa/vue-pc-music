@@ -5,13 +5,13 @@
       <p @click="goHotTopicRankList()">更多</p>
     </div>
     <div class="top_topic_header" v-else>推荐话题</div>
-    <div class="topic_content" v-for="item in topicList" :key="item.actId" @click="goTopicDetail(item.actId)">
+    <div class="topic-item" v-for="item in topicList" :key="item.actId" @click="goTopicDetail(item.actId)">
       <div class="topic_content_image">
         <img src="" :data-src="item.sharePicUrl+ '?param=60y60' " alt="" v-imgLazy>
       </div>
       <div class="topic_content_text">
-        <div class="topic_title">#{{item.title}}#</div>
-        <div class="topic_number">{{item.participateCount}}人参与</div>
+        <div class="topic_title more-over-eclipse">#{{item.title}}#</div>
+        <div class="topic_number one-over-eclipse">{{item.participateCount}}人参与</div>
       </div>
     </div>
   </div>
@@ -59,10 +59,11 @@ export default {
 <style lang="less" scoped>
   .to_topic {
     width: 100%;
+    padding: 0 10px 0;
     .top_topic_header {
       display: flex;
-      padding: 10px 30px;
       justify-content: space-between;
+      margin-bottom: 30px;
       p:nth-child(2) {
         color: rgb(129, 116, 116);
         &:hover {
@@ -70,32 +71,37 @@ export default {
         }
       }
     }
-    .topic_content {
+    .topic-item {
       display: flex;
-      height: 60px;
-      margin-left: 30px;
-      margin-bottom: 10px;
       justify-content: flex-start;
+      margin-bottom: 10px;
+      height: 60px;
       font-size: 14px;
+      cursor: pointer;
+      &:hover {
+        background-color: rgb(198, 210, 218);
+      }
+      .topic_content_image {
+        img {
+          width: 60px;
+          height: 60px;
+          vertical-align: 20px;
+        }
+      }
       .topic_content_text {
         flex: 1;
         margin-left: 20px;
+        .topic_title {
+          width: 100%;
+          height: 40px;
+          -webkit-line-clamp: 2;
+        }
         .topic_number {
+          width: 100%;
+          height: 20px;
           color: rgb(129, 116, 116);
         }
       }
-      &:hover {
-        background-color: rgb(198, 210, 218);
-        cursor: pointer;
-      }
-    }
-  }
-
-  .topic_content_image {
-    img {
-      width: 60px;
-      height: 60px;
-      vertical-align: 20px;
     }
   }
 </style>
