@@ -7,5 +7,6 @@
   "singleQuote": true,
   "eslintIntegration": false,
   "semi": true,
-  "arrowParens": "avoid"
+  "arrowParens": "avoid",
+  "wrapAttributes": true
 }

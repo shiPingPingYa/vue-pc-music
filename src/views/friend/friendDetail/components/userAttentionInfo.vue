@@ -32,20 +32,15 @@
         </div>
       </div>
     </div>
-    <topTopic :limit="limit" :isTitle="true" />
+    <topTopic :limit="6" :isTitle="true" />
   </div>
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex';
 import { mixins } from '@/mixins/mixinsVerify';
-import topTopic from './topTopic';
+import topTopic from '@/components/topTopic';
 export default {
   name: 'userAttentionInfo',
-  data() {
-    return {
-      limit: 6, // 话题榜个数
-    };
-  },
   components: { topTopic },
   mixins: [mixins],
   computed: {

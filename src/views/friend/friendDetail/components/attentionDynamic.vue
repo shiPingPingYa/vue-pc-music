@@ -12,21 +12,19 @@
         <eventDynamic :dynamicList="dynamicList" @shaerContentImageChange="shaerContentImageChange" />
       </div>
     </scroll>
-    <!-- 展示分享图片 -->
     <alertImage v-if="asyncShareImag" :imgIndex="imgIndex" :imgList="imgList" />
   </div>
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex';
 import { _getEvent } from '@/network/friend';
-import { AttentionDynamic } from './handleUserInfo';
 import { throttled } from '@/assets/common/tool';
-import scroll from '@/components/common/scroll/Scroll';
-const eventDynamic = () => import('./eventDynamic');
-const alertImage = () => import('./alertImage');
+import { AttentionDynamic } from '@/assets/common/handleUserInfo';
+import alertImage from '@/components/alertImage';
+import eventDynamic from '@/components/eventDynamic';
 export default {
   name: 'attentionDynamic',
-  components: { scroll, alertImage, eventDynamic },
+  components: { alertImage, eventDynamic },
   data() {
     return {
       dynamicList: [],

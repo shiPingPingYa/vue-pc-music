@@ -5,9 +5,7 @@
   </div>
 </template>
 <script>
-// 用户动态
 import attentionDynamic from './components/attentionDynamic';
-// 用户用户关注默认信息
 import userAttentionInfo from './components/userAttentionInfo';
 export default {
   name: 'friendDetail',
