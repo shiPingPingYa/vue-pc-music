@@ -1,5 +1,5 @@
 <template>
-  <div class="appMain">
+  <div class="app-main">
     <left-menu ref="left_menu"></left-menu>
     <right-main ref="right_menu"></right-main>
   </div>
@@ -13,7 +13,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-  .appMain {
+  .app-main {
     position: relative;
     width: 100%;
     height: calc(100% - 54px - 58px);

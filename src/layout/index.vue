@@ -1,9 +1,8 @@
 <template>
   <div class="layout_app">
-    <tab-bar ref="tabBar"></tab-bar>
+    <tab-bar ref="tabBar" />
     <appMain ref="center_content" />
-    <play-music ref="play_music">
-    </play-music>
+    <play-music ref="play_music" />
     <!-- <home-page-recommends></home-page-recommends> -->
   </div>
 </template>
