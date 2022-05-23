@@ -220,7 +220,7 @@ const routes = [
       {
         // input输入框搜索信息，搜索内容
         path: '/search/:id',
-        component: () => import('@/views/search/SearchList'),
+        component: () => import('@/views/searchMusicDeatil/index'),
         meta: {
           title: '搜索内容',
           requireLogin: false
