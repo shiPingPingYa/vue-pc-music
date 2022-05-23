@@ -31,10 +31,10 @@
 <script>
 import { mapState } from 'vuex';
 import { _getTopicDetail, _getTopicEvent } from '@/network/topic';
+import { AttentionDynamic } from '@/assets/common/handleUserInfo';
 import topTopic from '@/components/topTopic';
 import alertImage from '@/components/alertImage';
-import { AttentionDynamic } from './components/handleUserInfo';
-import eventDynamic from './components/eventDynamic';
+import eventDynamic from '@/components/eventDynamic';
 
 export default {
   name: 'topicDetail',

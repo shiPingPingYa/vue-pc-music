@@ -1,5 +1,19 @@
 import { formDate } from '@/assets/common/tool';
-// 处理用户关注动态
+const shareTypeMap = {
+  13: '分享歌单',
+  17: '分享电台节目',
+  18: '分享单曲',
+  19: '分享专辑',
+  21: '分享视频',
+  22: '转发',
+  24: '分享专栏文章',
+  35: '分享歌单',
+  39: '发布视频',
+  41: '分享视频'
+};
+/**
+ * @description 处理用户发表的动态消息
+ */
 export class AttentionDynamic {
   constructor(obj) {
     this.userimg = obj.user.avatarUrl;
@@ -31,24 +45,21 @@ export class AttentionDynamic {
 
   // 获取分享的歌曲或者歌单等的图片
   getContentImg(item) {
-    if (item.playlist !== undefined) {
-      return item.playlist.coverImgUrl + '?param=50y50'; // 限制图片高度
-    } else if (item.song !== undefined) {
-      return item.song.album.picUrl + '?param=50y50';
-    }
+    // 限制图片高度
+    if (item.playlist !== undefined) return `${item.playlist.coverImgUrl}?param=50y50`;
+    else if (item.song !== undefined) return `${item.song.album.picUrl}?param=50y50`;
   }
 
   // 获取分享的歌曲或者歌单等的标题
   getContentTitle(item) {
-    if (item.playlist !== undefined) {
-      return item.playlist.name;
-    } else if (item.song !== undefined) {
-      return item.song.name;
-    }
+    if (item.playlist !== undefined) return item.playlist.name;
+    else if (item.song !== undefined) return item.song.name;
   }
 }
 
-// 处理歌曲
+/**
+ * @description 处理歌曲
+ */
 export class DynamicMusic {
   constructor(obj) {
     this.id = obj.id;
@@ -58,14 +69,9 @@ export class DynamicMusic {
   }
 }
 
-// 处理转发内容
-// export class TransmitContent(){
-//   constructor(obj){
-
-//   }
-// }
-
-// 处理用户关注
+/**
+ * @description 处理用户关注
+ */
 export class Aollows {
   constructor(obj) {
     this.id = obj.userId;
@@ -79,16 +85,6 @@ export class Aollows {
   }
 }
 
-// 处理用户发送动态
-// 18 分享单曲
-// 19 分享专辑
-// 17、28 分享电台节目
-// 22 转发
-// 39 发布视频
-// 35、13 分享歌单
-// 24 分享专栏文章
-// 41、21 分享视频
-
 /**
  * @type  转发类型
  * @eventTime 转发时间
@@ -97,37 +93,7 @@ export class Aollows {
  */
 export class UserSendEvent {
   constructor(obj) {
-    this.type = this.setShareType(obj.type);
+    this.type = shareTypeMap[obj.type];
     this.eventTime = formDate(obj.eventTime);
-    // this.pics =
-    this.msg = this.filterEvent(obj);
-  }
-
-  setShareType(type) {
-    switch (type) {
-      case 18:
-        return '分享单曲';
-      case 19:
-        return '分享专辑';
-      case 17 && 18:
-        return '分享电台节目';
-      case 22:
-        return '转发';
-      case 39:
-        return '发布视频';
-      case 35 && 13:
-        return '分享歌单';
-      case 24:
-        return '分享专栏文章';
-      case 41 && 21:
-        return '分享视频';
-    }
-  }
-
-  // 过滤用户动态，动态有很多层
-  filterEvent(obj) {
-    if (obj.json !== undefined) {
-      console.log(obj);
-    }
   }
 }
