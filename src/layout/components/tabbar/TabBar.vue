@@ -1,5 +1,5 @@
 <template>
-  <div ref="tabBar" class="header">
+  <div ref="tabBar" class="header app-header">
     <div class="logo">
       <img src="@/assets/img/webSiteIcon.svg" title="小拳拳锤你" />
       <div class="title" @click="goHome">覃覃音乐</div>
