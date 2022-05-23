@@ -5,7 +5,7 @@
         <i class="el-icon-arrow-left" />
         <span @click="enterRegi()">返回</span>
       </div>
-      <img src="../../../../assets/img/user/x.svg" alt="" @click="closeRegister">
+      <img src="@/assets/img/user/x.svg" alt="" @click="closeRegister">
     </div>
     <div class="main-container">
       <div class="form-item">
@@ -23,8 +23,8 @@
   </div>
 </template>
 <script>
-import { _getCaptcha, _getVerifyCaptcha } from 'api/user'
-import { debounce } from 'js/tool' // 防抖
+import { _getCaptcha, _getVerifyCaptcha } from 'api/user';
+import { debounce } from 'js/tool'; // 防抖
 export default {
   name: 'CheckCaptcha',
   data() {
@@ -36,70 +36,70 @@ export default {
       exit: false,
       btnCaptcha: false,
       timer: null,
-      message: ''
-    }
+      message: '',
+    };
   },
   watch: {
     // 监听验证码
     captcha(newkey) {
       if (newkey.trim().length === 4) {
-        this.checkCaptcha(this)
+        this.checkCaptcha(this);
       }
-    }
+    },
   },
   methods: {
     // 退回注册页
     enterRegi() {
-      this.$store.commit('hiddenCaptcha')
+      this.$store.commit('hiddenCaptcha');
     },
     closeRegister() {
       // 销毁注册，验证码，昵称页面
-      this.$store.commit('hiddenRegister')
-      this.$store.commit('hiddenCaptcha')
-      this.$store.commit('hiddenNickName')
+      this.$store.commit('hiddenRegister');
+      this.$store.commit('hiddenCaptcha');
+      this.$store.commit('hiddenNickName');
       // 清除添加的手机号，密码，验证码
-      this.$store.commit('clearUserRegisterInfo', '')
+      this.$store.commit('clearUserRegisterInfo', '');
     },
     // 获取验证码和获取验证时间
     async getCaptcha() {
       // 第一次点击
-      this.flag++
-      this.btnCaptcha = true
+      this.flag++;
+      this.btnCaptcha = true;
       // 获取验证码
       try {
-        await _getCaptcha(this.$store.state.phone)
-        this.$message.warning('验证码已达每日最大五个上限')
-        throw new Error('验证码已超过每日最大五个上限')
+        await _getCaptcha(this.$store.state.phone);
+        this.$message.warning('验证码已达每日最大五个上限');
+        throw new Error('验证码已超过每日最大五个上限');
       } catch (e) {
-        this.message = e.message.substr(10, 4)
+        this.message = e.message.substr(10, 4);
       }
       // 验证码报错
       if (this.message.trim().length >= 1) {
-        this.startS = this.message
-        this.message = ''
-        this.btnCaptcha = false
-        return true
+        this.startS = this.message;
+        this.message = '';
+        this.btnCaptcha = false;
+        return true;
       }
       if (this.flag === 1) {
         this.timer = setInterval(() => {
-          this.startS = `00:${this.time--}`
+          this.startS = `00:${this.time--}`;
           if (this.time === 0) {
-            clearInterval(this.timer)
-            this.startS = '重新获取'
-            this.btnCaptcha = false
-            this.time = 60
+            clearInterval(this.timer);
+            this.startS = '重新获取';
+            this.btnCaptcha = false;
+            this.time = 60;
           }
-        }, 1000)
+        }, 1000);
       } else if (this.flag >= 2) {
         this.timer = setInterval(() => {
-          this.startS = `00:${this.time--}`
+          this.startS = `00:${this.time--}`;
           if (this.time === 0) {
-            clearInterval(this.timer)
-            this.startS = '重新获取'
-            this.btnCaptcha = false
-            this.time = 60
+            clearInterval(this.timer);
+            this.startS = '重新获取';
+            this.btnCaptcha = false;
+            this.time = 60;
           }
-        }, 1000)
+        }, 1000);
       }
     },
     // 验证，验证码是否输入正确
@@ -107,30 +107,30 @@ export default {
       try {
         _getVerifyCaptcha(e.$store.state.phone, e.captcha.trim())
           .then(res => {
-            console.log(res.data)
-            e.exit = res.data.data
+            console.log(res.data);
+            e.exit = res.data.data;
             // 存储验证码
-            e.$store.commit('addCaptcha', e.captcha)
+            e.$store.commit('addCaptcha', e.captcha);
           })
           .catch(err => {
-            console.log(err)
-            e.$message.warning('验证码错误')
-          })
+            console.log(err);
+            e.$message.warning('验证码错误');
+          });
       } catch (k) {
-        console.log(k)
+        console.log(k);
       }
     }, 800),
     // 是否禁用按钮
     btnDisabled() {
-      return !(this.captcha.trim().length === 4 && this.exit)
+      return !(this.captcha.trim().length === 4 && this.exit);
     },
     // 显示呢称组件
     enterNickN() {
-      this.$store.commit('showNickName')
-      clearInterval(this.timer)
-    }
-  }
-}
+      this.$store.commit('showNickName');
+      clearInterval(this.timer);
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .modal-content {

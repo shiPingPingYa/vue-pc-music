@@ -5,36 +5,36 @@
   </div>
 </template>
 <script>
-import LeftMenu from '@/components/content/LeftMenu'
-import RightMain from '@/components/content/RightMain'
+import LeftMenu from './components/LeftMenu';
+import RightMain from '@/components/content/RightMain';
 export default {
   name: 'CenterContent.',
   components: {
     LeftMenu,
-    RightMain
+    RightMain,
   },
   // 监听路由地址
   watch: {
     $route(oldkey) {
-      this.emitCheckClick(oldkey.path)
-    }
+      this.emitCheckClick(oldkey.path);
+    },
   },
   methods: {
     // 遍历路由对象
     emitCheckClick(path) {
-      var that = this
+      var that = this;
       for (var i in that.$refs.left_menu.list) {
-        ;(function (e) {
+        (function (e) {
           if (that.$refs.left_menu.list[e].link === path) {
             setTimeout(() => {
-              that.$refs.left_menu.checkClick(e)
-            }, 100)
+              that.$refs.left_menu.checkClick(e);
+            }, 100);
           }
-        })(i)
+        })(i);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .content {

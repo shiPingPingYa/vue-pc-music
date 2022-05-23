@@ -39,11 +39,9 @@
   </div>
 </template>
 <script>
-import Scroll from 'common/scroll/Scroll.vue'
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 export default {
   name: 'LeftMenu',
-  components: { Scroll },
   data() {
     return {
       activeIndex: '0-0',
@@ -60,102 +58,102 @@ export default {
               path: '/discover',
               icon: 'el-icon-bell',
               label: '发现音乐',
-              transform: false
+              transform: false,
             },
             {
               path: '/allmv',
               icon: 'el-icon-video-camera-solid',
               label: '全部MV',
-              transform: false
+              transform: false,
             },
             {
               path: '/video/allvideo',
               icon: 'el-icon-video-camera',
               label: '视频',
-              transform: false
+              transform: false,
             },
             {
               path: '/friend/frienddetail',
               icon: 'el-icon-s-custom',
               label: '朋友',
-              transform: false
-            }
-          ]
-        }
-      ]
-    }
+              transform: false,
+            },
+          ],
+        },
+      ],
+    };
   },
   computed: {
     ...mapState(['isSongList', 'userSongList']),
     left_menu() {
-      return document.getElementsByClassName('left-menu-container ')[0]
-    }
+      return document.getElementsByClassName('left-menu-container ')[0];
+    },
   },
   watch: {
     // 网页刷新后设置左侧路由和音乐列表的选中
     $route: {
       handler(newV) {
-        const pathList = newV.path.split('/')
+        const pathList = newV.path.split('/');
         if (pathList.includes('musicListDetail')) {
-          this.initMusicListIndex()
+          this.initMusicListIndex();
         } else {
-          const currtPanth = pathList[1]
+          const currtPanth = pathList[1];
           this.list.some((item, index) => {
             return item.children.some((itemChildren, indexChildren) => {
               if (itemChildren.path.split('/')[1] === currtPanth) {
-                return (this.activeIndex = `${index.toString()}-${indexChildren.toString()}`), (this.songListIndex = '')
+                return (this.activeIndex = `${index.toString()}-${indexChildren.toString()}`), (this.songListIndex = '');
               }
-            })
-          })
+            });
+          });
         }
-      }
-    }
+      },
+    },
   },
   methods: {
     checkClick(index) {
-      if (this.list[index].icon) return
-      this.currentIndex = index
+      if (this.list[index].icon) return;
+      this.currentIndex = index;
     },
     // 显示喜欢歌单
     isMML(flag) {
-      this.icon = !this.icon
-      this.$store.commit('userSongList', !flag)
+      this.icon = !this.icon;
+      this.$store.commit('userSongList', !flag);
     },
     handleMenuItemClick(i) {
-      this.activeIndex = i
-      this.songListIndex = ''
+      this.activeIndex = i;
+      this.songListIndex = '';
     },
     handleSongItemClick(i) {
-      this.songListIndex = i.toString()
-      this.activeIndex = ''
-      this.$router.push('/musicListDetail/' + this.userSongList[i].id) // 跳转音乐详情页面
+      this.songListIndex = i.toString();
+      this.activeIndex = '';
+      this.$router.push('/musicListDetail/' + this.userSongList[i].id); // 跳转音乐详情页面
     },
     handleMenuMouseEnter() {
-      this.isCollapse = false
-      this.left_menu.style.width = '188px'
+      this.isCollapse = false;
+      this.left_menu.style.width = '188px';
     },
     // 网页刷新后设置歌单列表的选中
     initMusicListIndex() {
-      const pathList = location.href.split('#')[1].split('/')
+      const pathList = location.href.split('#')[1].split('/');
       if (pathList.includes('musicListDetail')) {
         this.userSongList.some((item, index) => {
           if (item.id === Number(pathList[2])) {
-            return (this.songListIndex = index.toString()), (this.activeIndex = '')
+            return (this.songListIndex = index.toString()), (this.activeIndex = '');
           }
-        })
+        });
       }
-    }
+    },
   },
   mounted() {
     this.$bus.$on('handleMenuMouseLeave', () => {
-      this.isCollapse = true
+      this.isCollapse = true;
       this.$nextTick(() => {
-        this.left_menu.style.width = '68px'
-      })
-    })
-    this.initMusicListIndex()
-  }
-}
+        this.left_menu.style.width = '68px';
+      });
+    });
+    this.initMusicListIndex();
+  },
+};
 </script>
 <style lang="less" scoped>
   a {

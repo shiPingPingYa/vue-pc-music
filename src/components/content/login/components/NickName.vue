@@ -5,10 +5,10 @@
         <i class="el-icon-arrow-left" />
         <span @click="enterCheC()">返回</span>
       </div>
-      <img src="../../../../assets/img/user/x.svg" alt="" @click="closeRegister">
+      <img src="@/assets/img/user/x.svg" alt="" @click="closeRegister">
     </div>
     <div class="user-img-container">
-      <img src="../../../../assets/img/user/phone.svg" alt="">
+      <img src="@/assets/img/user/phone.svg" alt="">
     </div>
     <div class="main-container">
       <div class="form-item">
@@ -23,55 +23,55 @@
   </div>
 </template>
 <script>
-import { _registerPhone } from 'api/user'
-import { mapGetters } from 'vuex'
+import { _registerPhone } from 'api/user';
+import { mapGetters } from 'vuex';
 export default {
   name: 'NickName',
   data() {
     return {
       nickName: '',
-      btnNickN: true
-    }
+      btnNickN: true,
+    };
   },
   computed: {
-    ...mapGetters(['getUserRegisterInfo'])
+    ...mapGetters(['getUserRegisterInfo']),
   },
   watch: {
     nickName(newkey) {
       if (newkey.trim().length >= 4) {
-        this.btnNickN = false
-        this.$store.commit('addNickName', this.nickName.trim())
+        this.btnNickN = false;
+        this.$store.commit('addNickName', this.nickName.trim());
       }
-    }
+    },
   },
   methods: {
     // 回退到验证码
     enterCheC() {
-      this.$store.commit('hiddenNickName')
+      this.$store.commit('hiddenNickName');
     },
     closeRegister() {
       // 销毁注册，验证码，昵称页面
-      this.$store.commit('hiddenRegister')
-      this.$store.commit('hiddenCaptcha')
-      this.$store.commit('hiddenNickName')
+      this.$store.commit('hiddenRegister');
+      this.$store.commit('hiddenCaptcha');
+      this.$store.commit('hiddenNickName');
       // 清除添加的手机号，密码，验证码
-      this.$store.commit('clearUserRegisterInfo', '')
+      this.$store.commit('clearUserRegisterInfo', '');
     },
     // 确认注册
     nickNC() {
       // 隐藏注册，验证码，昵称页面
-      this.closeRegister()
+      this.closeRegister();
       _registerPhone(this.getUserRegisterInfo)
         .then(res => {
-          this.$message.success('账号注册成功')
+          this.$message.success('账号注册成功');
         })
         .catch(err => {
-          console.log(err)
-          this.$message.warning('注册失败')
-        })
-    }
-  }
-}
+          console.log(err);
+          this.$message.warning('注册失败');
+        });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .modal-content {
