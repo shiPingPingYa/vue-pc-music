@@ -110,10 +110,6 @@ export default {
     },
   },
   methods: {
-    checkClick(index) {
-      if (this.list[index].icon) return;
-      this.currentIndex = index;
-    },
     // 显示喜欢歌单
     isMML(flag) {
       this.icon = !this.icon;

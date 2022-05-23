@@ -3,15 +3,11 @@
     <keep-alive include="$route.meta.keepLive">
       <router-view />
     </keep-alive>
-    <transition name="fade-in-linear">
-      <login v-if="getLoginStatus" />
-    </transition>
-    <transition name="fade-in-linear">
-      <register v-if="isShowRegister" />
-    </transition>
-    <transition name="fade-in-linear">
-      <qrcode v-if="isShowQrcode" />
-    </transition>
+    <transition-group name="fade-in-linear">
+      <login :key="0" v-if="getLoginStatus" />
+      <register :key="1" v-if="isShowRegister" />
+      <qrcode :key="2" v-if="isShowQrcode" />
+    </transition-group>
   </div>
 </template>
 <script>
