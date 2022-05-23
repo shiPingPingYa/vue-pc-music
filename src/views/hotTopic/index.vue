@@ -2,26 +2,21 @@
   <div class="hot_topic_list">
     <scroll class="hot_topic_list_scroll">
       <div class="topic_rank">
-        <hot-topic-list></hot-topic-list>
+        <soarTopicList />
       </div>
     </scroll>
     <div class="topic">
-      <top-topic :limit="limit"></top-topic>
+      <topTopic :limit="6" :isTitle="false" />
     </div>
   </div>
 </template>
 <script>
-import TopTopic from '../childComps/TopTopic.vue'
-import HotTopicList from '../childComps/HotTopicList'
+import topTopic from '@/components/topTopic.vue';
+import soarTopicList from './components/soarTopicList';
 export default {
-  name: 'HotTopicRankList',
-  data() {
-    return {
-      limit: 12
-    }
-  },
-  components: { TopTopic, HotTopicList }
-}
+  name: 'hotTopic',
+  components: { topTopic, soarTopicList },
+};
 </script>
 <style lang="less" scoped>
   .hot_topic_list {
@@ -33,14 +28,14 @@ export default {
       width: 80%;
       height: 100%;
       overflow: hidden;
+      .topic_rank {
+        width: 100%;
+        border-right: 1px solid #828385;
+      }
     }
-  }
-  .topic_rank {
-    width: 100%;
-    border-right: 1px solid #828385;
-  }
-  .topic {
-    flex: 1;
-    padding: 200px 0 0 20px;
+    .topic {
+      flex: 1;
+      padding: 50px 0 60px 0;
+    }
   }
 </style>

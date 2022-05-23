@@ -16,20 +16,24 @@
   </div>
 </template>
 <script>
-import { _getHotTopic } from '../../../../network/topic';
+import { _getHotTopic } from '@/network/topic';
 export default {
-  name: 'HotTopicList',
+  name: 'soarTopicList',
   data() {
     return {
       topicList: [],
     };
   },
-  async created() {
-    await _getHotTopic().then(res => {
-      this.topicList = res.data.hot;
-    });
+  created() {
+    this.initTopicList();
   },
   methods: {
+    async initTopicList() {
+      const {
+        data: { hot },
+      } = await _getHotTopic();
+      this.topicList = hot;
+    },
     goTopicDetail(actid) {
       this.$router.push('/topicDetail/' + actid);
     },

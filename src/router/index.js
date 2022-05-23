@@ -151,6 +151,14 @@ const routes = [
         }
       },
       {
+        path: '/hotTopicRankList',
+        component: () => import('@/views/hotTopic/index'),
+        meta: {
+          title: '热门话题',
+          requireLogin: true
+        }
+      },
+      {
         //404页面
         path: '/404',
         component: () => import('@/components/common/error/404.vue')
@@ -270,14 +278,6 @@ const routes = [
           title: '电台',
           requireLogin: true,
           keepLive: true
-        }
-      },
-      {
-        path: '/hotTopicRankList',
-        component: () => import('@/components/content/friend/childRouter/HotTopicRankList.vue'),
-        meta: {
-          title: '热门话题',
-          requireLogin: true
         }
       },
       {
