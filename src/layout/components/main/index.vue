@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="appMain">
     <left-menu ref="left_menu"></left-menu>
     <right-main ref="right_menu"></right-main>
   </div>
@@ -8,12 +8,12 @@
 import LeftMenu from './components/LeftMenu';
 import RightMain from './components/RightMain';
 export default {
-  name: 'CenterContent.',
+  name: 'appMain',
   components: { LeftMenu, RightMain },
 };
 </script>
 <style lang="less" scoped>
-  .content {
+  .appMain {
     position: relative;
     width: 100%;
     height: calc(100% - 54px - 58px);
