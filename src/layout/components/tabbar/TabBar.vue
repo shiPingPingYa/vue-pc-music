@@ -8,7 +8,7 @@
       <button class="el-icon-arrow-left" @click.stop="handleChangeRouter(-1)" />
       <button class="el-icon-arrow-right" @click.stop="handleChangeRouter(1)" />
     </div>
-    <musicSearch />
+    <MusicSearch />
     <div class="user-group">
       <div class="img-container">
         <img :src="getUserImage" @click="showLogin()" />
@@ -31,7 +31,6 @@
           </el-dropdown-menu>
         </el-dropdown>
       </div>
-
       <!-- 用户的其他信息，比如粉丝，动态，关注等等-->
       <div class="info-container">
         <div class="user-info">
@@ -42,11 +41,10 @@
         </div>
       </div>
     </div>
-
     <!-- 消息通知(私信，评论，@我，通知) -->
-    <messageNotice v-if="isPrivate" class="private_detail" @privateNewChange="privateNewChange" />
+    <MessageNotice v-if="isPrivate" class="private_detail" @privateNewChange="privateNewChange" />
     <!-- 消息通知的详情页面 -->
-    <privateMessageDetail
+    <PrivateMessageDetail
       v-if="isHistoryNews"
       class="private_detail"
       :history-list="historyList"
@@ -61,12 +59,12 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 import { _setUserImage } from '@/network/user';
 import { _getPrivateHistoryNews, HandlePrivateHistory } from '@/network/privateNews';
 import { mixins } from '@/assets/common/verify-phone';
-import musicSearch from '@/views/musicSearch/index';
-import messageNotice from '@/views/messageNotice/index';
-import privateMessageDetail from '@/views/privateMessageDetail/index';
+import MusicSearch from '@/views/musicSearch/index';
+import MessageNotice from '@/views/messageNotice/index';
+import PrivateMessageDetail from '@/views/privateMessageDetail/index';
 export default {
   name: 'TabBar',
-  components: { musicSearch, privateMessageDetail, messageNotice },
+  components: { MusicSearch, PrivateMessageDetail, MessageNotice },
   mixins: [mixins],
   data() {
     return {
