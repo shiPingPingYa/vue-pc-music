@@ -3,23 +3,25 @@
     <div class="top">
       搜索<span>"{{ keywords }}"</span>相关的结果>
     </div>
-    <dl>
-      <dt>
+    <div class="search-container">
+      <div class="search-title">
         <div class="icon"><i class="el-icon-user-solid"></i></div>
         <div class="title">单曲</div>
-      </dt>
-      <dd v-for="(item, index) in this.sugSongs" :key="index + 'song'" @click="goSearchDetail(item.name)">{{ item.name }}——{{ item.artists[0].name }}</dd>
-      <dt>
+      </div>
+      <div class="search-music" v-for="(item, index) in searchMusic" :key="index + 'song'" @click="goSearchDetail(item.name)">{{ item.name }}——{{ item.artists[0].name }}</div>
+      <div class="search-title">
         <div class="icon"><i class="el-icon-bell"></i></div>
         <div class="title">歌手</div>
-      </dt>
-      <dd v-for="(item, index) in sugArtist" :key="index" @click="goArtistDetail(item)">
+      </div>
+      <div class="search-artist" v-for="(item, index) in searchArtist" :key="index" @click="goArtistDetail(item)">
         {{ item.name }}
-      </dd>
-    </dl>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import { oLocalStorage } from './observeLocalStorage';
+
 export default {
   name: 'searchContent',
   props: {
@@ -27,22 +29,26 @@ export default {
       type: String || Number,
       default: () => '' || 0
     },
-    sugSongs: {
+    searchMusic: {
       type: Array,
       default: () => []
     },
-    sugArtist: {
+    searchArtist: {
       type: Array,
       default: () => []
     }
   },
   methods: {
-    goSearchDetail(item) {
-      this.$emit('goSearchDetail', item);
+    goSearchDetail(v) {
+      let searchList = (oLocalStorage.get('searchList') && JSON.parse(oLocalStorage.get('searchList'))) || [];
+      searchList.push(v);
+      oLocalStorage.set('searchList', JSON.stringify(searchList));
+      this.$router.push('/search/' + v);
+      this.$parent.$parent.handiveInputBlur();
     },
     goArtistDetail(item) {
-      this.$emit('goArtistDetail');
       this.$router.push({ path: '/artist/album', query: { id: item.id } });
+      this.$parent.$parent.handiveInputBlur();
     }
   }
 };
@@ -65,30 +71,32 @@ export default {
     }
   }
 
-  dl {
+  & > .search-container {
     width: 100%;
     font-size: 13px;
-  }
-
-  dl dt {
-    margin-top: 4px;
-    padding: 5px 8px;
-    display: flex;
-    width: 100%;
-    line-height: 20px;
-    align-content: center;
-    background-color: #303236;
-    color: #fff;
-  }
-
-  dl dd {
-    padding: 5px 31px;
-    line-height: 20px;
-    cursor: pointer;
-  }
-
-  dd:hover {
-    background-color: #2a2c30;
+    & > .search-title {
+      display: flex;
+      justify-content: flex-start;
+      align-content: center;
+      margin-top: 4px;
+      width: 100%;
+      padding: 5px 8px;
+      color: #fff;
+      background-color: #303236;
+      line-height: 20px;
+      & > .icon {
+        width: 34px;
+      }
+    }
+    & > .search-music,
+    .search-artist {
+      padding: 5px 31px;
+      line-height: 20px;
+      cursor: pointer;
+      &:hover {
+        background-color: #2a2c30;
+      }
+    }
   }
 }
 </style>

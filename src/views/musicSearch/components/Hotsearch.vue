@@ -6,25 +6,18 @@
           搜索历史
           <div class="icon"><i class="el-icon-delete" @click="del()"></i></div>
         </h3>
-        <!-- 搜索历史内容 -->
         <div class="record-content">
-          <div class="search-item" v-for="(item, index) in searchList" :key="index" @click="goSearchDetail(index)">
+          <div class="search-item" v-for="(item, index) in mapMusicHistory" :key="index" @click="goSearchDetail(item)">
             {{ item }}
           </div>
         </div>
       </div>
-
-      <!-- 搜索热点 -->
       <div class="hot-list">
-        <!-- 标题 -->
         <h3>热搜榜</h3>
-        <!-- 热搜列表 -->
-        <table>
-          <tr v-for="(item, index) in hotList" :key="index" @click="handleHotSearchClick(index)">
-            <!-- 热搜列表排名 -->
-            <td :class="{ red: index <= 2 }">{{ index + 1 }}</td>
-            <!-- 热搜列表上面的名字，次数，以及下面的内容 -->
-            <td>
+        <div class="hot-table">
+          <div class="hot-table-tr" v-for="(item, index) in hotList" :key="index" @click="goSearchDetail(item.searchWord)">
+            <div class="hot-table-td">
+              <div :class="{ 'hot-music': index <= 2 }">{{ index + 1 }}</div>
               <div class="top">
                 <div class="top-name">{{ item.searchWord }}</div>
                 <div class="top-score">{{ item.score }}</div>
@@ -32,51 +25,50 @@
                   <img :src="item.iconUrl" alt="" />
                 </div>
               </div>
-              <div class="bottom">{{ item.content }}</div>
-            </td>
-          </tr>
-        </table>
+            </div>
+            <div class="bottom">{{ item.content }}</div>
+          </div>
+        </div>
       </div>
     </scroll>
   </div>
 </template>
 <script>
 import { _hotSearchDetail } from '@/network/search';
+import { oLocalStorage } from './observeLocalStorage';
 export default {
   name: 'HotSearch',
-  props: {
-    searchList: {
-      type: Array,
-      dufault: () => []
-    }
-  },
   data() {
     return {
       hotList: [],
       isImg: 2
     };
   },
+  computed: {
+    mapMusicHistory() {
+      let musciHistory = oLocalStorage.get('searchList') && JSON.parse(oLocalStorage.get('searchList'));
+      return musciHistory ? [...new Set(musciHistory)] : ['海底', '世间美好与你环环相扣', '灰狼'];
+    }
+  },
   created() {
-    this.initPage();
+    this.initHotMusicList();
   },
   methods: {
-    async initPage() {
+    async initHotMusicList() {
       const {
         data: { data }
       } = await _hotSearchDetail();
       this.hotList = data;
     },
-    // 点击热搜小图标，删除数据
     del() {
-      this.$emit('del');
+      oLocalStorage.set('searchList', '');
     },
-    // 点击热搜记录，触发父组件recordClick方法
-    goSearchDetail(i) {
-      this.$emit('goSearchDetail', this.searchList[i]);
-    },
-    // 热搜榜的跳转
-    handleHotSearchClick(i) {
-      this.$emit('goSearchDetail', this.hotList[i].searchWord);
+    goSearchDetail(v) {
+      let searchList = (oLocalStorage.get('searchList') && JSON.parse(oLocalStorage.get('searchList'))) || [];
+      searchList.push(v);
+      oLocalStorage.set('searchList', JSON.stringify(searchList));
+      this.$router.push('/search/' + v);
+      this.$parent.$parent.handleInputBlur();
     }
   }
 };
@@ -123,43 +115,46 @@ export default {
   border-radius: 10px;
 }
 
-.red {
+.hot-music {
+  font-size: 24px;
   color: #dd3a3a;
 }
 
-table {
+.hot-table {
   width: 100%;
-}
-
-table tr {
-  line-height: 30px;
-  cursor: pointer;
-}
-tr td:nth-child(1) {
-  width: 40px;
-  font-size: 1.3em;
-}
-
-tr:hover {
-  background-color: #2a2c30;
-}
-
-.top {
-  display: flex;
-  height: 25px;
-  color: #fff;
-  font-size: 13px;
-}
-.top div {
-  margin-right: 5px;
-}
-
-.top-img img {
-  height: 16px;
-}
-
-.top-name {
-  color: #dcdde4;
-  font-weight: 500;
+  & > .hot-table-tr {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    line-height: 30px;
+    cursor: pointer;
+    &:hover {
+      background-color: #232426;
+    }
+    & > .hot-table-td {
+      display: flex;
+      width: 100%;
+      & > div:nth-child(1) {
+        width: 40px;
+      }
+      .top {
+        flex: 1;
+        display: flex;
+        height: 25px;
+        color: #fff;
+        font-size: 13px;
+        div {
+          margin-right: 5px;
+        }
+        .top-img img {
+          height: 16px;
+        }
+        .top-name {
+          color: #dcdde4;
+          font-weight: 500;
+        }
+      }
+    }
+  }
 }
 </style>
