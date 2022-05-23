@@ -14,22 +14,14 @@
   </div>
 </template>
 <script>
-import {
-  _getPrivateMsg,
-  _getPrivateComments,
-  _getPrivateMe,
-  _getPrivateNotices,
-  HandlePrivateMsg,
-  HandlePrivateNotices,
-  HandlePrivateComments
-} from '../../../network/privateNews'
-import PrivateNewsList from './childRouter/PrivateNewsList.vue' // 私信
-import PrivateCommentList from './childRouter/PrivateCommentList.vue' // 评论
-import PrivateForwardList from './childRouter/PrivateForwardList.vue' // @我
-import PrivateNoticesList from './childRouter/PrivateNoticesList.vue' // 通知
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
+import { _getPrivateMsg, _getPrivateComments, _getPrivateMe, _getPrivateNotices, HandlePrivateMsg, HandlePrivateNotices, HandlePrivateComments } from '@/network/privateNews';
+import PrivateNewsList from './components/PrivateNewsList.vue'; // 私信
+import PrivateCommentList from './components/PrivateCommentList.vue'; // 评论
+import PrivateForwardList from './components/PrivateForwardList.vue'; // @我
+import PrivateNoticesList from './components/PrivateNoticesList.vue'; // 通知
 export default {
-  name: 'privateDetail',
+  name: 'messageNotice',
   components: { PrivateNewsList, PrivateCommentList, PrivateForwardList, PrivateNoticesList },
   data() {
     return {
@@ -52,8 +44,8 @@ export default {
       commentsUpdateTime: '',
       // 是否还有评论数据
       commentsMore: '',
-      userId: ''
-    }
+      userId: '',
+    };
   },
   computed: {
     ...mapState(['uid']),
@@ -62,27 +54,27 @@ export default {
         0: 'PrivateNewsList',
         1: 'PrivateCommentList',
         2: 'PrivateForwardList',
-        3: 'PrivateNoticesList'
-      }
-      return pageObj[this.isTabber]
+        3: 'PrivateNoticesList',
+      };
+      return pageObj[this.isTabber];
     },
     currentList() {
       const pageList = {
         0: 'privateNewsList',
         1: 'privateCommentsList',
         2: 'forwardsList',
-        3: 'privateNoticesList'
-      }
-      return this[pageList[this.isTabber]]
-    }
+        3: 'privateNoticesList',
+      };
+      return this[pageList[this.isTabber]];
+    },
   },
   watch: {
     isTabber() {
-      this.initPrivateDetail(0)
-    }
+      this.initPrivateDetail(0);
+    },
   },
   created() {
-    this.initPrivateDetail(0)
+    this.initPrivateDetail(0);
   },
   methods: {
     async initPrivateDetail(flag) {
@@ -90,112 +82,112 @@ export default {
         case 0:
           // 获取私信数据
           if (flag === 0) {
-            this.privateNewsList = []
+            this.privateNewsList = [];
             const {
-              data: { msgs, newMsgCount, more }
-            } = await _getPrivateMsg()
-            this.NewsMore = more
-            this.newMsgCount = newMsgCount
-            msgs.forEach(item => this.privateNewsList.push(new HandlePrivateMsg(item)))
+              data: { msgs, newMsgCount, more },
+            } = await _getPrivateMsg();
+            this.NewsMore = more;
+            this.newMsgCount = newMsgCount;
+            msgs.forEach(item => this.privateNewsList.push(new HandlePrivateMsg(item)));
           } else {
             if (this.NewsMore === false) {
-              return this.$message.info('没有更多私信了')
+              return this.$message.info('没有更多私信了');
             }
             const params = {
-              offset: this.privateNewsList.length
-            }
+              offset: this.privateNewsList.length,
+            };
             const {
-              data: { msgs, newMsgCount, more }
-            } = await _getPrivateMsg(params)
-            this.NewsMore = more
-            this.newMsgCount = newMsgCount
-            msgs.forEach(item => this.privateNewsList.push(new HandlePrivateMsg(item)))
+              data: { msgs, newMsgCount, more },
+            } = await _getPrivateMsg(params);
+            this.NewsMore = more;
+            this.newMsgCount = newMsgCount;
+            msgs.forEach(item => this.privateNewsList.push(new HandlePrivateMsg(item)));
           }
-          break
+          break;
         case 1:
           // 获取评论数据
           var params = {
-            uid: this.uid
-          }
+            uid: this.uid,
+          };
           if (flag === 0) {
-            this.privateCommentsList = []
+            this.privateCommentsList = [];
             const {
-              data: { comments, more }
-            } = await _getPrivateComments(params)
-            this.commentsMore = more
-            comments.forEach(item => this.privateCommentsList.push(new HandlePrivateComments(item)))
+              data: { comments, more },
+            } = await _getPrivateComments(params);
+            this.commentsMore = more;
+            comments.forEach(item => this.privateCommentsList.push(new HandlePrivateComments(item)));
           } else {
             if (this.commentsMore === false) {
-              return this.$message.info('没有更多评论了')
+              return this.$message.info('没有更多评论了');
             }
-            params.before = this.privateCommentsList[this.privateCommentsList.length - 1].lasttime
+            params.before = this.privateCommentsList[this.privateCommentsList.length - 1].lasttime;
             const {
-              data: { comments, more }
-            } = await _getPrivateComments(params)
-            this.commentsMore = more
-            comments.forEach(item => this.privateCommentsList.push(new HandlePrivateComments(item)))
+              data: { comments, more },
+            } = await _getPrivateComments(params);
+            this.commentsMore = more;
+            comments.forEach(item => this.privateCommentsList.push(new HandlePrivateComments(item)));
           }
-          break
+          break;
         case 2:
           // 获取@我数据
           if (flag === 0) {
-            this.forwardsList = []
+            this.forwardsList = [];
             const {
-              data: { forwards, lasttime, more }
-            } = await _getPrivateMe()
-            this.forWradMore = more
+              data: { forwards, lasttime, more },
+            } = await _getPrivateMe();
+            this.forWradMore = more;
             if (forwards.length === 0) {
-              return this.$message.info('暂无@我的消息')
+              return this.$message.info('暂无@我的消息');
             } else {
-              this.forwardLastTime = lasttime
-              forwards.forEach(item => this.forwardsList.push(item))
+              this.forwardLastTime = lasttime;
+              forwards.forEach(item => this.forwardsList.push(item));
             }
           } else {
             if (this.forWradMore === false) {
-              return this.$message.info('没有更多@我的消息了')
+              return this.$message.info('没有更多@我的消息了');
             }
             const params = {
-              offset: this.forwardsList.length
-            }
+              offset: this.forwardsList.length,
+            };
             const {
-              data: { forwards, lasttime, more }
-            } = await _getPrivateMe(params)
-            this.forWradMore = more
-            this.forwardLastTime = lasttime
-            forwards.forEach(item => this.forwardsList.push(item))
+              data: { forwards, lasttime, more },
+            } = await _getPrivateMe(params);
+            this.forWradMore = more;
+            this.forwardLastTime = lasttime;
+            forwards.forEach(item => this.forwardsList.push(item));
           }
-          break
+          break;
         case 3:
           // 获取通知数据
           if (flag === 0) {
-            this.privateNoticesList = []
+            this.privateNoticesList = [];
             const {
-              data: { more, notices }
-            } = await _getPrivateNotices()
-            this.noticesMore = more
-            notices.forEach(item => this.privateNoticesList.push(new HandlePrivateNotices(item)))
-            break
+              data: { more, notices },
+            } = await _getPrivateNotices();
+            this.noticesMore = more;
+            notices.forEach(item => this.privateNoticesList.push(new HandlePrivateNotices(item)));
+            break;
           } else {
             if (this.noticesMore === false) {
-              return this.$message.info('没有更多通知了')
+              return this.$message.info('没有更多通知了');
             }
             const params = {
-              lasttime: this.privateNoticesList[this.privateNoticesList.length - 1].lasttime
-            }
+              lasttime: this.privateNoticesList[this.privateNoticesList.length - 1].lasttime,
+            };
             const {
-              data: { notices, more }
-            } = await _getPrivateNotices(params)
-            this.noticesMore = more
-            notices.forEach(item => this.privateNoticesList.push(new HandlePrivateNotices(item)))
+              data: { notices, more },
+            } = await _getPrivateNotices(params);
+            this.noticesMore = more;
+            notices.forEach(item => this.privateNoticesList.push(new HandlePrivateNotices(item)));
           }
       }
-      this.$refs.private_content_scroll.finishPullUp()
+      this.$refs.private_content_scroll.finishPullUp();
     },
     pullingUp() {
-      this.initPrivateDetail(1)
-    }
-  }
-}
+      this.initPrivateDetail(1);
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .private_container {

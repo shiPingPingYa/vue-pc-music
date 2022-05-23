@@ -22,26 +22,28 @@
   </div>
 </template>
 <script>
-import { privateDetailMixin } from '../indexmixin'
+import { formDate } from '@/assets/common/tool';
 export default {
   name: 'PrivateNoticesList',
   props: {
     list: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
-  mixins: [privateDetailMixin],
   methods: {
+    handlePrivateTime(time) {
+      return formDate(new Date(time), 'ff:mm:dd');
+    },
     goNoticesDetail(id, type) {
-      if (id === '' || id === undefined) return true
+      if (id === '' || id === undefined) return true;
       else {
-        this.$router.push('/noticesDetail/' + id + '/' + type)
+        this.$parent.isPrivate = false;
+        this.$router.push('/noticesDetail/' + id + '/' + type);
       }
-      this.$parent.isPrivate = false
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .private_content {

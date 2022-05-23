@@ -52,23 +52,23 @@
     </div>
 
     <!-- 消息通知(私信，评论，@我，通知) -->
-    <private-detail v-if="isPrivate" class="private_detail" @privateNewChange="privateNewChange" />
+    <messageNotice v-if="isPrivate" class="private_detail" @privateNewChange="privateNewChange" />
     <!-- 消息通知的详情页面 -->
     <history-news v-if="isHistoryNews" class="private_detail" :history-list="historyList" :more="historyMore" @prePrivateDetail="prePrivateDetail"
       @visiableMessage="(isPrivate = false), (isHistoryNews = false)" />
   </div>
 </template>
 <script>
-import MusicSearch from '@/components/content/search/MusicSearch';
 import { mapState, mapGetters, mapActions } from 'vuex';
+import { _setUserImage } from '@/network/user';
+import { _getPrivateHistoryNews, HandlePrivateHistory } from '@/network/privateNews';
 import { mixins } from '@/assets/common/verify-phone';
-import { _setUserImage } from '../../../network/user';
-import { _getPrivateHistoryNews, HandlePrivateHistory } from '../../../network/privateNews';
-import privateDetail from '@/components/content/privateMsg/privateDetail.vue';
+import MusicSearch from '@/components/content/search/MusicSearch';
+import messageNotice from '@/views/messageNotice/index';
 import HistoryNews from '@/components/content/privateMsg/childComps/HistoryNews.vue';
 export default {
   name: 'TabBar',
-  components: { MusicSearch, privateDetail, HistoryNews },
+  components: { MusicSearch, HistoryNews, messageNotice },
   mixins: [mixins],
   data() {
     return {

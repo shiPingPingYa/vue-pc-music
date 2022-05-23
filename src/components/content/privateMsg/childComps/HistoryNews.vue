@@ -2,13 +2,13 @@
   <div v-if='historyList.length !== 0' class='history_news'>
     <div class='new_headers'>
       <div @click='prePrivateDetail'>
-        <img alt='' src='../../../../assets/img/privateNews/pre.svg' />
+        <img alt='' src='@/assets/img/privateNews/pre.svg' />
       </div>
       <div>
         {{ historyList[0].nickname }}
       </div>
       <div @click='prePrivateDetail'>
-        <img alt='' src='../../../../assets/img/privateNews/replay_privateNews.svg' />
+        <img alt='' src='@/assets/img/privateNews/replay_privateNews.svg' />
       </div>
     </div>
     <div class='new_container'>
@@ -60,9 +60,9 @@
   </div>
 </template>
 <script>
-import { _getSongsDetail, SongDetail } from '../../../../network/detail'
-import { formDate } from '../../../../assets/common/tool'
-import { mixinsPlayMusic } from '../../../../mixins/mixinsPlayMusic'
+import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
+import { _getSongsDetail, SongDetail } from '@/network/detail';
+import { formDate } from '@/assets/common/tool';
 
 export default {
   name: 'HistoryNews',
@@ -71,217 +71,217 @@ export default {
     historyList: {
       type: Array,
       default() {
-        return []
-      }
+        return [];
+      },
     },
     more: {
       type: Boolean,
       default() {
-        return false
-      }
-    }
+        return false;
+      },
+    },
   },
   data() {
     return {
       isPlay: false,
-      musicList: []
-    }
+      musicList: [],
+    };
   },
   methods: {
     prePrivateDetail() {
-      this.$emit('prePrivateDetail')
+      this.$emit('prePrivateDetail');
     },
     pullingDown() {
-      if (!this.more) return this.$message.info('没有更多历史记录了')
+      if (!this.more) return this.$message.info('没有更多历史记录了');
       else {
       }
-      this.$refs.history_news_scroll.finishPullDown()
-      console.log('history', '获取更多历史记录')
+      this.$refs.history_news_scroll.finishPullDown();
+      console.log('history', '获取更多历史记录');
     },
     handleHistoryTime(time) {
-      return formDate(new Date(time), 'f:mm:dd-hh:mm')
+      return formDate(new Date(time), 'f:mm:dd-hh:mm');
     },
     goPlayMV(id) {
-      this.$emit('visiableMessage')
-      this.$router.push('/playmv/' + id)
+      this.$emit('visiableMessage');
+      this.$router.push('/playmv/' + id);
     },
     goPlayMusic(type, id) {
-      if (type === 12 || type === 23) return true
+      if (type === 12 || type === 23) return true;
       // 12和23是网易云推出活动不用管，1歌曲，7mv，2专辑
       switch (type) {
         case 1:
           _getSongsDetail(id).then(res => {
-            this.musicList.push(new SongDetail(res.data.songs))
-            this.playMusic()
-          })
-          break
+            this.musicList.push(new SongDetail(res.data.songs));
+            this.playMusic();
+          });
+          break;
         case 2:
-          this.$router.push('/artist/albumDetail/' + id)
+          this.$router.push('/artist/albumDetail/' + id);
       }
-    }
+    },
   },
   mounted() {
     if (this.$refs.history_news_scroll !== undefined) {
-      const maxY = this.$refs.history_news_scroll.getMaxScrollY()
-      this.$refs.history_news_scroll.scrollTo(0, maxY, 0)
+      const maxY = this.$refs.history_news_scroll.getMaxScrollY();
+      this.$refs.history_news_scroll.scrollTo(0, maxY, 0);
     }
-  }
-}
+  },
+};
 </script>
 <style lang='less' scoped>
-.history_news {
-  width: 40%;
-  height: 88%;
-  box-shadow: 0 1px 8px black;
+  .history_news {
+    width: 40%;
+    height: 88%;
+    box-shadow: 0 1px 8px black;
 
-  .new_headers {
+    .new_headers {
+      display: flex;
+      justify-content: space-between;
+      height: 50px;
+      padding: 6px 10px;
+      line-height: 50px;
+      text-align: top;
+      background: #e9eaeb;
+
+      div img {
+        width: 20px;
+        height: 20px;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .new_container {
+      height: 100%;
+      background: #fff;
+      overflow: hidden;
+    }
+  }
+
+  .history_news_scroll {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .history_news_list {
     display: flex;
-    justify-content: space-between;
-    height: 50px;
-    padding: 6px 10px;
-    line-height: 50px;
-    text-align: top;
-    background: #e9eaeb;
+    width: 100%;
+    padding: 10px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
 
-    div img {
-      width: 20px;
-      height: 20px;
+    .history_time {
+      width: 100%;
+      height: 30px;
+      margin: 10px 30%;
+      text-align: center;
+      line-height: 30px;
+      color: rgb(153, 150, 150);
+      background: rgb(243, 241, 241);
+      border-radius: 10px;
+    }
 
-      &:hover {
-        cursor: pointer;
+    .history_img {
+      width: 16%;
+      padding: 0 6px 0 20px;
+
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+    }
+
+    .history_container {
+      flex: 1;
+      margin-right: 18%;
+      padding: 6px;
+      background: rgb(243, 241, 241);
+
+      .share_event {
+        display: flex;
+        margin: 10px 0 10px 0;
+        padding: 20px;
+        justify-content: flex-start;
+        height: 80px;
+        background: #fff;
+
+        .share_event_image {
+          width: 40px;
+          height: 40px;
+
+          img {
+            width: 40px;
+            height: 40px;
+          }
+        }
+
+        .share_event_content {
+          flex: 1;
+          padding-left: 10px;
+          font-size: 14px !important;
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
   }
 
-  .new_container {
-    height: 100%;
-    background: #fff;
-    overflow: hidden;
-  }
-}
-
-.history_news_scroll {
-  height: 100%;
-  overflow: hidden;
-}
-
-.history_news_list {
-  display: flex;
-  width: 100%;
-  padding: 10px;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-
-  .history_time {
-    width: 100%;
-    height: 30px;
-    margin: 10px 30%;
-    text-align: center;
-    line-height: 30px;
-    color: rgb(153, 150, 150);
-    background: rgb(243, 241, 241);
-    border-radius: 10px;
+  .user_share_name {
+    padding-top: 6px;
   }
 
-  .history_img {
-    width: 16%;
-    padding: 0 6px 0 20px;
+  .share_event_mv {
+    position: relative;
+    width: 232px;
+    height: 160px;
+    margin: 10px 0 0 6px;
+    color: #fff;
+    background: rgb(223, 222, 222);
 
     img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+      width: 100%;
+      height: 100%;
     }
-  }
 
-  .history_container {
-    flex: 1;
-    margin-right: 18%;
-    padding: 6px;
-    background: rgb(243, 241, 241);
+    .share_event_mv_content {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
 
-    .share_event {
-      display: flex;
-      margin: 10px 0 10px 0;
-      padding: 20px;
-      justify-content: flex-start;
-      height: 80px;
-      background: #fff;
+      &:hover {
+        cursor: pointer;
+      }
 
-      .share_event_image {
-        width: 40px;
-        height: 40px;
+      .mv_content_title {
+        height: 20%;
 
-        img {
-          width: 40px;
-          height: 40px;
+        span {
+          padding: 2px;
+          border: 1px solid #fff;
+          font-size: 14px !important;
         }
       }
 
-      .share_event_content {
-        flex: 1;
-        padding-left: 10px;
-        font-size: 14px !important;
+      .mv_content_play {
+        height: 60%;
+        line-height: 80px;
+        text-align: center;
+        font-size: 40px;
       }
 
-      &:hover {
-        cursor: pointer;
+      .mv_content_playNum {
+        display: flex;
+        justify-content: space-between;
+        height: 20%;
       }
     }
   }
-}
-
-.user_share_name {
-  padding-top: 6px;
-}
-
-.share_event_mv {
-  position: relative;
-  width: 232px;
-  height: 160px;
-  margin: 10px 0 0 6px;
-  color: #fff;
-  background: rgb(223, 222, 222);
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
-
-  .share_event_mv_content {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-
-    &:hover {
-      cursor: pointer;
-    }
-
-    .mv_content_title {
-      height: 20%;
-
-      span {
-        padding: 2px;
-        border: 1px solid #fff;
-        font-size: 14px !important;
-      }
-    }
-
-    .mv_content_play {
-      height: 60%;
-      line-height: 80px;
-      text-align: center;
-      font-size: 40px;
-    }
-
-    .mv_content_playNum {
-      display: flex;
-      justify-content: space-between;
-      height: 20%;
-    }
-  }
-}
 </style>

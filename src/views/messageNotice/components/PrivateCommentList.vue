@@ -13,7 +13,7 @@
           <div class="private_title">回复我:{{ item.title }}</div>
           <div class="private_comments_ablum">{{ item.content }}</div>
           <div class="private_comments_replay">
-            <img src="../../../../assets/img/replay.svg" alt="" />回复
+            <img src="@/assets/img/replay.svg" alt="" />回复
           </div>
         </div>
       </div>
@@ -24,17 +24,21 @@
   </div>
 </template>
 <script>
-import { privateDetailMixin } from '../indexmixin'
+import { formDate } from '@/assets/common/tool';
 export default {
   name: 'PrivateCommentList',
   props: {
     list: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
-  mixins: [privateDetailMixin]
-}
+  methods: {
+    handlePrivateTime(time) {
+      return formDate(new Date(time), 'ff:mm:dd');
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .private_content {

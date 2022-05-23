@@ -22,22 +22,24 @@
   </div>
 </template>
 <script>
-import { privateDetailMixin } from '../indexmixin'
+import { formDate } from '@/assets/common/tool';
 export default {
   name: 'PrivateNewsList',
   props: {
     list: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
-  mixins: [privateDetailMixin],
   methods: {
+    handlePrivateTime(time) {
+      return formDate(new Date(time), 'ff:mm:dd');
+    },
     privateNewsChange(userId) {
-      this.$parent.$parent.$emit('privateNewChange', userId) // 获取私信组件，触发方法去往私信详情页面
-    }
-  }
-}
+      this.$parent.$parent.$emit('privateNewChange', userId); // 获取私信组件，触发方法去往私信详情页面
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
   .private_content {
