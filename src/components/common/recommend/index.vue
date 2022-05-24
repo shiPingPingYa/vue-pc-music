@@ -65,11 +65,11 @@
 import { sendAndRemoveComment, _setCommentsLikedCount } from '@/network/comment';
 import { formDate } from '@/assets/common/tool';
 // 热门评论
-import HotComments from '../components/HotComments';
+import HotComments from './components/HotComments';
 // 楼中楼评论
-import FloorRecommend from '../components/floorRecommend';
+import FloorRecommend from './components/floorRecommend';
 export default {
-  name: 'Recommends',
+  name: 'recommends',
   components: { HotComments, FloorRecommend },
   props: {
     recommends: {

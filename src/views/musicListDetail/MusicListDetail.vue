@@ -9,7 +9,7 @@
       </div>
       <transition-group name="fade-in-linear">
         <MusicItem :key="0" v-show="tabBarIndex === 0" :musicList="musicList" @musicItemClick="musicItemClick" />
-        <song-list-recommends
+        <Recommend
           :key="1"
           v-show="tabBarIndex === 1"
           :id="id"
@@ -19,7 +19,7 @@
           :recommends="recommends"
           @getCommends="getCommends"
           @moreComments="moreComments"
-        ></song-list-recommends>
+        />
         <CollectSongList :key="2" v-show="tabBarIndex === 2" :id="id" />
       </transition-group>
     </div>
@@ -32,11 +32,11 @@ import { formDate } from '@/assets/common/tool';
 import MusicBaseInfo from './components/MusicBaseInfo';
 import MusicItem from '@/components/musicItem';
 import CollectSongList from './components/collectSongList';
-const songListRecommends = () => import('./childComps/Recommends.vue');
+import Recommend from '@/components/common/recommend/index';
 export default {
   name: 'MusicListDetail',
   mixins: [mixinsPlayMusic],
-  components: { MusicBaseInfo, MusicItem, CollectSongList, songListRecommends },
+  components: { MusicBaseInfo, MusicItem, CollectSongList, Recommend },
   data() {
     return {
       id: '',
