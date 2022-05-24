@@ -3,15 +3,14 @@
     <!-- 热门标签列表 -->
     <div class="w-120">
       <el-select v-model="HighqualityName" placeholder="请选择" size="small" style="width:100%" @change="handleSelectChange">
-        <el-option v-for="item in HighqualityOptions" :key="item.id" :label="item.name" :value="item.name">
-        </el-option>
+        <el-option v-for="item in HighqualityOptions" :key="item.id" :label="item.name" :value="item.name"> </el-option>
       </el-select>
     </div>
     <!-- 热门标签 -->
     <div class="tags">
       <span>热门标签:</span>
-      <div class="tag-item" v-for="(item,index) in tags" :key="index" :class="{tagCur:currentIndex == index}" @click="handleTabClick(index)">
-        {{item.name}}
+      <div class="tag-item" v-for="(item, index) in tags" :key="index" :class="{ tagCur: currentIndex == index }" @click="handleTabClick(index)">
+        {{ item.name }}
       </div>
     </div>
     <scroll ref="scroll" class="song-category" :pull-up-load="true" @pullingUp="getMusicSongSheet(false)">
@@ -36,7 +35,7 @@ export default {
       musicList: [],
       HighqualityOptions: '',
       HighqualityName: '',
-      more: true, // 加载后，判断有无数据还未加载
+      more: true // 加载后，判断有无数据还未加载
     };
   },
   mounted() {
@@ -46,30 +45,30 @@ export default {
   methods: {
     async initCategoryList() {
       const {
-        data: { tags },
+        data: { tags }
       } = await _getMusicListHot();
       this.tags = tags;
       const {
-        data: { playlists },
+        data: { playlists }
       } = await _getHighquality(this.tags[this.currentIndex].name, this.limit * this.page);
       // 获取精品歌单标签
       const {
-        data: { tags: otherTags },
+        data: { tags: otherTags }
       } = await _getHighqualityTags();
       this.HighqualityOptions = otherTags;
       this.musicList = playlists;
     },
     // 获取音乐歌单
-    getMusicSongSheet: throttled(async function (flag) {
+    getMusicSongSheet: throttled(async function(flag) {
       if (!this.more) return this.$message.info('暂无更多歌单！！！');
       this.page++;
       let params = {
-        limit: this.limit * this.page,
+        limit: this.limit * this.page
       };
       // flag区分是精品歌单标签还是普通的tabbar
       flag ? (params.cat = this.HighqualityName) : (params.cat = this.tags[this.currentIndex].name);
       const {
-        data: { playlists, more },
+        data: { playlists, more }
       } = await _getHighquality(params);
       this.musicList = playlists;
       this.more = more;
@@ -92,39 +91,39 @@ export default {
       this.page = 1;
       this.$refs.scroll.scrollTo(0, 0, 200);
       this.getMusicSongSheet(true);
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
-  .category {
-    margin: 0 auto 20px auto;
-    padding-bottom: 20px;
-    width: 98%;
-    height: 100%;
-    font-size: 14px;
-    color: #01060a;
-    overflow: hidden;
-    > .tags {
-      margin-bottom: 20px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-    }
+.category {
+  margin: 0 auto 20px auto;
+  padding-bottom: 20px;
+  width: 98%;
+  height: 100%;
+  font-size: 14px;
+  color: #01060a;
+  overflow: hidden;
+  > .tags {
+    margin-bottom: 20px;
+    height: 30px;
+    display: flex;
+    align-items: center;
   }
+}
 
-  .tags > .tag-item {
-    padding: 0 10px;
-    color: #828384;
-    cursor: pointer;
-  }
+.tags > .tag-item {
+  padding: 0 10px;
+  color: #828384;
+  cursor: pointer;
+}
 
-  .song-category {
-    height: calc(100% - 30px);
-    overflow: hidden;
-  }
+.song-category {
+  height: calc(100% - 30px);
+  overflow: hidden;
+}
 
-  .tagCur {
-    color: #4facd1 !important;
-  }
+.tagCur {
+  color: #4facd1 !important;
+}
 </style>

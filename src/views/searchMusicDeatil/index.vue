@@ -20,7 +20,7 @@ import { _getSongsDetail } from '@/network/detail';
 import { _Search } from '@/network/search';
 import { formDate } from '@/assets/common/tool';
 import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
-import ArtistItem from './components/ArtistItem';
+import ArtistItem from './components/artistItem';
 import MusicItem from '@/components/musicItem';
 
 export default {
