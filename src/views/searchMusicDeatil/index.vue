@@ -21,7 +21,7 @@ import { _Search } from '@/network/search';
 import { formDate } from '@/assets/common/tool';
 import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
 import ArtistItem from './components/ArtistItem';
-import MusicItem from '../musicListDetail/childComps/MusicItem';
+import MusicItem from '@/components/musicItem';
 
 export default {
   name: 'searchMusicDeatil',

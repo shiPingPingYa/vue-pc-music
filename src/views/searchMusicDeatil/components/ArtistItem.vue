@@ -1,14 +1,10 @@
 <template>
-  <div class="artist-list">
-    <div class="artist-item" v-for="(item, index) in artistsList" :key="index" :class="{ backColor: setItemBackColor(index) }" @click="goArtistDetail(index)">
-      <!-- 图片 -->
-      <div class="artist-img">
+  <div class="artist-container">
+    <div class="artist-tr" v-for="(item, index) in artistsList" :key="index" @click="goArtistDetail(index)">
+      <div class="artist-td">
         <img :src="item.artists[0].img1v1Url" alt="" />
       </div>
-      <!-- 歌手名 -->
-      <div class="artist">
-        {{ item.artists[0].name }}
-      </div>
+      <div class="artist">{{ item.artists[0].name }}</div>
     </div>
   </div>
 </template>
@@ -40,34 +36,29 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.artist-list {
+.artist-container {
   width: 100%;
-}
-
-.artist-item {
-  display: flex;
-  height: 50px;
-  line-height: 50px;
-  margin-bottom: 20px;
-}
-
-.artist {
-  cursor: pointer;
-}
-
-.artist-img {
-  margin: 0 20px 0 0;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  > img {
-    width: 100%;
-    height: 100%;
-    background-size: 100%, 100%;
+  & > .artist-tr {
+    display: flex;
+    margin-bottom: 20px;
+    height: 50px;
+    line-height: 50px;
+    & > .artist-td:nth-child(1) {
+      margin-right: 20px;
+      width: 50;
+      height: 50px;
+      padding: 5px;
+      & > img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+    & > .artist-td:nth-child(2) {
+      flex: 1;
+    }
   }
-}
-
-.backColor {
-  background-color: #dededf;
+  & > .artist-tr:nth-child(odd) {
+    background-color: #dededf;
+  }
 }
 </style>
