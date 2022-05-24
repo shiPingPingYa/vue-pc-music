@@ -1,8 +1,12 @@
 <template>
   <div class="music-list-detail">
-    <scroll ref="musiclist_detail" class="musiclist-detail">
-      <music-base-info :baseInfo="baseInfo"></music-base-info>
-      <music-bar ref="tab_bar" :bar="bar" @handleTabClick="handleTabClick"></music-bar>
+    <div class="musiclist-detail">
+      <MusicBaseInfo :baseInfo="baseInfo" />
+      <div class="musiclsit-bar">
+        <div class="item" v-for="(item, index) in bar" :key="index" :class="{ action: tabBarIndex == index }" @click="handleTabClick(index)">
+          {{ item }}
+        </div>
+      </div>
       <transition-group name="fade-in-linear">
         <MusicItem :key="0" v-show="tabBarIndex === 0" :musicList="musicList" @musicItemClick="musicItemClick" />
         <song-list-recommends
@@ -18,22 +22,21 @@
         ></song-list-recommends>
         <CollectSongList :key="2" v-show="tabBarIndex === 2" :id="id" />
       </transition-group>
-    </scroll>
+    </div>
   </div>
 </template>
 <script>
 import { _getMusicListDetail, _getRecommends, _getSongsDetail, _getSub } from '@/network/detail';
 import { mixinsPlayMusic } from '../../mixins/mixinsPlayMusic';
 import { formDate } from '@/assets/common/tool';
-import MusicBaseInfo from './childComps/MusicBaseInfo';
-import MusicBar from './childComps/MusicBar';
+import MusicBaseInfo from './components/MusicBaseInfo';
 import MusicItem from '@/components/musicItem';
 import CollectSongList from './components/collectSongList';
 const songListRecommends = () => import('./childComps/Recommends.vue');
 export default {
   name: 'MusicListDetail',
   mixins: [mixinsPlayMusic],
-  components: { MusicBaseInfo, MusicBar, MusicItem, CollectSongList, songListRecommends },
+  components: { MusicBaseInfo, MusicItem, CollectSongList, songListRecommends },
   data() {
     return {
       id: '',
@@ -54,7 +57,6 @@ export default {
         if ((oldId ?? '') !== '') {
           this.id = oldId;
           this.tabBarIndex = 0;
-          this.$refs.tab_bar._data.currentIndex = 0;
           this.initMusicListAndTabbar();
         }
       },
@@ -67,9 +69,9 @@ export default {
     this.initMusicListAndTabbar();
   },
   methods: {
-    handleTabClick(str) {
-      this.tabBarIndex = str;
-      if (str === 1) this.initMusicListComments();
+    handleTabClick(i) {
+      this.tabBarIndex = i;
+      if (i === 1) this.initMusicListComments();
     },
     // 初始化音乐列表
     async initMusicListAndTabbar() {
@@ -165,15 +167,31 @@ export default {
 </script>
 <style lang="less" scoped>
 .music-list-detail {
-  margin: 4% auto;
-  width: 90%;
+  margin: 2% auto;
+  width: 96%;
   height: 94%;
   color: #01060a;
   overflow: hidden;
-}
+  .musiclist-detail {
+    height: 100%;
+    overflow-y: scroll;
 
-.musiclist-detail {
-  height: 100%;
-  overflow: hidden;
+    .musiclsit-bar {
+      padding-top: 10px;
+      width: 100%;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      > .item {
+        padding: 5px 20px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .action {
+    border-bottom: 3px solid #b82525;
+  }
 }
 </style>
