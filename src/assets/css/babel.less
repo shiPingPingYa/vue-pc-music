@@ -9,6 +9,23 @@ html {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  /* 滚动槽 */
+  ::-webkit-scrollbar-track {
+    border-radius: 4px;
+    background: rgb(76, 207, 230);
+  }
+  /* 滚动条滑块 */
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgb(232, 72, 99);
+  }
+  ::-webkit-scrollbar-thumb:window-inactive {
+    background: rgb(232, 72, 99);
+  }
 }
 
 body {

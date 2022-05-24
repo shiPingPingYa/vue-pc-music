@@ -16,8 +16,7 @@
         <!-- 下面评论区 -->
         <div class="recommend">
           <p class="p">评论</p>
-          <mv-recommends class="recds" ref="songList_recommends" @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="1" :recommends="recommends">
-          </mv-recommends>
+          <Recommend class="recds" ref="songList_recommends" @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="1" :recommends="recommends" />
         </div>
       </div>
       <!-- 右边内容布局 -->
@@ -41,22 +40,19 @@
         <!-- 相关视频推荐 -->
         <div class="alia">
           <p class="p">相关推荐</p>
-          <simi-mv-item ref="simi_mv_item" :mvList="simiMv"></simi-mv-item>
+          <SimilarMvItem ref="simi_mv_item" :mvList="simiMv" />
         </div>
       </div>
     </scroll>
   </div>
 </template>
 <script>
-// mv的相关推荐
-import SimiMvItem from '../mv/childComps/SimiMvItem';
-// 导入mv的数据请求接口
-import { _getMvDetail, _getMvComment, _getMvUrl, _getSimiMv } from 'api/mv';
-// 评论组件
-const mvRecommends = () => import('../musicListDetail/childComps/Recommends');
+import { _getMvDetail, _getMvComment, _getMvUrl, _getSimiMv } from '@/network/mv';
+import Recommend from '@/components/common/recommend/index';
+import SimilarMvItem from './components/similarMvItem';
 export default {
   name: 'PlayMv',
-  components: { SimiMvItem, mvRecommends },
+  components: { SimilarMvItem, Recommend },
   data() {
     return {
       id: null,
@@ -66,7 +62,7 @@ export default {
       limit: 30,
       simiMv: [],
       simiMvIndex: 0,
-      pageLoading: false,
+      pageLoading: false
     };
   },
   watch: {
@@ -75,8 +71,8 @@ export default {
         this.id = id;
         this.getBaseInfo();
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   mounted() {
     let { id } = this.$route.query;
@@ -103,7 +99,7 @@ export default {
               cover: item.cover || item.imgurl || item.picUrl,
               name: item.name,
               artist: item.artistName,
-              count: item.playCount,
+              count: item.playCount
             };
           });
         }
@@ -124,10 +120,10 @@ export default {
       const params = {
         id: this.id,
         limit: this.limit,
-        offset: this.recommends.length,
+        offset: this.recommends.length
       };
       const {
-        data: { comments },
+        data: { comments }
       } = await _getMvComment(params);
       // 评论已经被请求完毕
       if (comments.length === 0) {
@@ -151,99 +147,99 @@ export default {
     handleVideoEnd() {
       this.$refs.simi_mv_item.playMV(this.simiMv[this.simiMvIndex].id);
       if (this.simiMvIndex++ > 4) this.simiMvIndex = 0;
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
-  .clear {
-    clear: both;
-  }
-  .play-mv {
-    padding: 0 5%;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
+.clear {
+  clear: both;
+}
+.play-mv {
+  padding: 0 5%;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 
-  .play-mv-scroll {
-    height: 100%;
-  }
+.play-mv-scroll {
+  height: 100%;
+}
 
-  .left-layout {
-    display: inline-block;
-    width: 70%;
-    > .title {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      > .left-mv {
-        display: inline-block;
-        padding: 5px;
-        border: 1px solid red;
-        color: red;
-      }
-      > .name {
-        margin-left: 5px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        font-size: 18px;
-        color: #01060a;
-      }
-      > .artist {
-        margin-left: 5px;
-        color: #828384;
-        height: 24px;
-        line-height: 30px;
-        font-size: 14px;
-        vertical-align: -4px;
-      }
+.left-layout {
+  display: inline-block;
+  width: 70%;
+  > .title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    > .left-mv {
+      display: inline-block;
+      padding: 5px;
+      border: 1px solid red;
+      color: red;
     }
-  }
-
-  .video-play {
-    outline-style: none;
-    z-index: 20;
-  }
-
-  .recommend {
-    margin-top: 10px;
-  }
-  .recds {
-    margin-top: 4px;
-    padding: 5px 0 10px 0;
-  }
-  .right {
-    padding-left: 16px;
-    float: right;
-    width: 30%;
-    color: #828384;
-  }
-
-  .p {
-    padding-bottom: 10px;
-    font-size: 18px;
-    color: #01060a;
-  }
-
-  .base {
-    > .playCount {
-      float: right;
+    > .name {
+      margin-left: 5px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-size: 18px;
+      color: #01060a;
     }
-    > .data {
-      margin-bottom: 6px;
-    }
-  }
-
-  .mv-desc {
-    margin-bottom: 15px;
-    max-height: 288px;
-    width: 100%;
-    overflow: hidden;
-    > span {
-      color: #2e6bb0;
+    > .artist {
+      margin-left: 5px;
+      color: #828384;
+      height: 24px;
+      line-height: 30px;
       font-size: 14px;
+      vertical-align: -4px;
     }
   }
+}
+
+.video-play {
+  outline-style: none;
+  z-index: 20;
+}
+
+.recommend {
+  margin-top: 10px;
+}
+.recds {
+  margin-top: 4px;
+  padding: 5px 0 10px 0;
+}
+.right {
+  padding-left: 16px;
+  float: right;
+  width: 30%;
+  color: #828384;
+}
+
+.p {
+  padding-bottom: 10px;
+  font-size: 18px;
+  color: #01060a;
+}
+
+.base {
+  > .playCount {
+    float: right;
+  }
+  > .data {
+    margin-bottom: 6px;
+  }
+}
+
+.mv-desc {
+  margin-bottom: 15px;
+  max-height: 288px;
+  width: 100%;
+  overflow: hidden;
+  > span {
+    color: #2e6bb0;
+    font-size: 14px;
+  }
+}
 </style>

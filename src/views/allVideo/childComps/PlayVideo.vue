@@ -15,7 +15,7 @@
         <!-- 下面评论区 -->
         <div class="recommend">
           <p class="p">评论</p>
-          <video-recommends class="recds" @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="5" :recommends="recommends"></video-recommends>
+          <Recommend class="recds" @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="5" :recommends="recommends"/>
         </div>
       </div>
       <!-- 右边内容布局 -->
@@ -53,10 +53,10 @@ import { _getVideoDetail, _getVideoUrl, _getVideoComment, _getRelatedVideo } fro
 // 导入工具函数处理时间,导入节流函数
 import { formDate } from 'js/tool'
 // 导入评论组件
-const videoRecommends = () => import('../../musicListDetail/childComps/Recommends.vue')
+import Recommend from '@/components/common/recommend/index'
 export default {
   name: 'PlayVideo',
-  components: { SiMiVideoItem, videoRecommends },
+  components: { SiMiVideoItem, Recommend },
   data() {
     return {
       id: null,

@@ -227,21 +227,21 @@ const routes = [
         }
       },
       {
-        // mv播放跳转,
-        path: '/playmv',
-        component: () => import('@/views/mv/PlayMv'),
+        // 所有mv
+        path: '/allmv',
+        component: () => import('@/views/allMv/index'),
         meta: {
-          title: 'MV播放',
+          title: '所有MV',
+          keepLive: true,
           requireLogin: false
         }
       },
       {
-        // 所有mv
-        path: '/allmv',
-        component: () => import('@/views/mv/AllMv'),
+        // mv播放跳转,
+        path: '/playmv',
+        component: () => import('@/views/playMv/index'),
         meta: {
-          title: '所有MV',
-          keepLive: true,
+          title: 'MV播放',
           requireLogin: false
         }
       },
@@ -281,7 +281,7 @@ const routes = [
           {
             // 所有mv
             path: '/video/allmv',
-            component: () => import('@/views/mv/AllMv'),
+            component: () => import('@/views/allMv/index'),
             meta: {
               title: '所有MV'
             }

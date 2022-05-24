@@ -1,201 +1,200 @@
 <template>
-  <div class='music-list-detail'>
-    <scroll ref='musiclist_detail' class='musiclist-detail'>
-      <!-- 音乐榜单默认信息 -->
-      <music-base-info :baseInfo='baseInfo'></music-base-info>
-      <!-- 音乐榜单导航条 -->
-      <music-bar ref='tab_bar' :bar='bar' @handleTabClick='handleTabClick'></music-bar>
-
-      <transition name='fade-in-linear'>
-        <!-- 音乐榜单列表 -->
-        <music-item v-show='tabBarIndex === 0' :musicList='musicList' @musicItemClick='musicItemClick'></music-item>
-      </transition>
-
-      <transition name='fade-in-linear'>
-        <!-- 音乐榜单评论信息 -->
-        <song-list-recommends v-show='tabBarIndex === 1' :id='id' ref='songList_recommends' :Type='2' :hotComments='hotComments' :recommends='recommends' @getCommends='getCommends'
-          @moreComments='moreComments'></song-list-recommends>
-      </transition>
-
-      <transition name='fade-in-linear'>
-        <!-- 音乐榜单收藏者 -->
-        <music-list-like v-show='tabBarIndex === 2' :subs='subs'></music-list-like>
-      </transition>
-    </scroll>
+  <div class="music-list-detail">
+    <div class="musiclist-detail">
+      <MusicBaseInfo :baseInfo="baseInfo" />
+      <div class="musiclsit-bar">
+        <div class="item" v-for="(item, index) in bar" :key="index" :class="{ action: tabBarIndex == index }" @click="handleTabClick(index)">
+          {{ item }}
+        </div>
+      </div>
+      <keep-alive>
+        <transition-group name="fade-in-linear">
+          <MusicItem :key="0" v-show="tabBarIndex === 0" :musicList="musicList" @musicItemClick="musicItemClick" />
+          <Recommend
+            :key="1"
+            v-show="tabBarIndex === 1"
+            :id="id"
+            ref="songList_recommends"
+            :Type="2"
+            :hotComments="hotComments"
+            :recommends="recommends"
+            @getCommends="getCommends"
+            @moreComments="moreComments"
+          />
+          <CollectSongList :key="2" v-show="tabBarIndex === 2" :id="id" />
+        </transition-group>
+      </keep-alive>
+    </div>
   </div>
 </template>
 <script>
-// 导入歌单默认信息
-import MusicBaseInfo from './childComps/MusicBaseInfo';
-// 导入歌单导航条
-import MusicBar from './childComps/MusicBar';
-// 导入歌单列表
-import MusicItem from './childComps/MusicItem';
-// 导入歌单收藏组件
-import MusicListLike from './childComps/MusicListLike';
-// 导入数据请求
-import { _getMusicListDetail, _getRecommends, _getSongsDetail, _getSub } from 'api/detail';
-// 混入
+import { _getMusicListDetail, _getRecommends, _getSongsDetail, _getSub } from '@/network/detail';
 import { mixinsPlayMusic } from '../../mixins/mixinsPlayMusic';
 import { formDate } from '@/assets/common/tool';
-// 导入歌单评论组件
-const songListRecommends = () => import('./childComps/Recommends.vue');
-// 混入
+import MusicBaseInfo from './components/MusicBaseInfo';
+import MusicItem from '@/components/musicItem';
+import CollectSongList from './components/collectSongList';
+import Recommend from '@/components/common/recommend/index';
 export default {
-    name: 'MusicListDetail',
-    // 音乐混入
-    mixins: [mixinsPlayMusic],
-    components: { MusicBaseInfo, MusicBar, MusicListLike, MusicItem, songListRecommends },
-    data() {
-        return {
-            id: '',
-            tabBarIndex: 0,
-            bar: [], // 导航条
-            musicList: [], // 歌曲列表
-            baseInfo: null,
-            recommends: [],
-            hotComments: [], // 热门评论内容
-            limit: 50,
-            subs: [],
-        };
-    },
+  name: 'MusicListDetail',
+  mixins: [mixinsPlayMusic],
+  components: { MusicBaseInfo, MusicItem, CollectSongList, Recommend },
+  data() {
+    return {
+      id: '',
+      bar: [],
+      tabBarIndex: 0,
+      isClickTab: false,
+      baseInfo: null,
+      musicList: [],
+      recommends: [],
+      hotComments: [],
+      limit: 50
+    };
+  },
 
-    watch: {
-        '$route.params.id': {
-            handler(oldId) {
-                if ((oldId ?? '') !== '') {
-                    this.id = oldId;
-                    this.tabBarIndex = 0;
-                    this.$refs.tab_bar._data.currentIndex = 0;
-                    this.initMusicListAndTabbar();
-                }
-            },
-            deep: true,
-        },
+  watch: {
+    '$route.params.id': {
+      handler(oldId) {
+        if ((oldId ?? '') !== '') {
+          this.id = oldId;
+          this.tabBarIndex = 0;
+          this.initMusicListDetail();
+        }
+      },
+      deep: true
+    }
+  },
+  created() {
+    this.id = this.$route.params.id;
+    localStorage.setItem('pid', this.id); // 存储歌单id，心动模式必需
+    this.initMusicListDetail();
+  },
+  methods: {
+    handleTabClick(i) {
+      this.tabBarIndex = i;
+      !this.isClickTab && this.initMusicListComments(); //keep-alive做了缓存，判断是否是第二次点击
+      this.isClickTab = true;
     },
-    created() {
-        this.id = this.$route.params.id;
-        localStorage.setItem('pid', this.id); // 存储歌单id，心动模式必需
-        this.initMusicListAndTabbar();
+    // 初始化音乐列表
+    async initMusicListDetail() {
+      this.musicList = [];
+      // 获取歌单id，获取歌单数据，commentCount:评论数量，trackIds:歌曲id，playlist:歌曲信息
+      const {
+        data: {
+          playlist,
+          playlist: { commentCount, trackIds }
+        }
+      } = await _getMusicListDetail(this.id);
+
+      // 获取歌单默认信息
+      this.baseInfo = {
+        img: playlist.coverImgUrl,
+        title: playlist.description,
+        name: playlist.name,
+        shareCount: playlist.shareCount,
+        subscribedCount: playlist.subscribedCount,
+        playCount: playlist.playCount,
+        trackCount: playlist.trackCount,
+        tags: playlist.tags
+      };
+      // 处理评论默认信息
+      this.bar = ['歌曲列表', `评论${commentCount}`, '收藏者'];
+
+      // 拼接id ,获取歌曲，处理歌曲信息
+      const ids = trackIds.map(item => item.id).join(',');
+      const {
+        data: { songs }
+      } = await _getSongsDetail(ids);
+
+      songs.forEach(item =>
+        this.musicList.push({
+          id: item.id,
+          name: item.name,
+          album: item.al.name,
+          song: item.ar[0].name,
+          pic: item.al.picUrl,
+          time: formDate(new Date(item.dt), 'mm:ss')
+        })
+      );
     },
-    methods: {
-        handleTabClick(str) {
-            this.tabBarIndex = str;
-            if (str === 1) this.initMusicListComments();
-            else {
-                this.initMusicListLike();
-            }
-        },
-        // 初始化音乐列表
-        async initMusicListAndTabbar() {
-            this.musicList = [];
-            // 获取歌单id，获取歌单数据，commentCount:评论数量，trackIds:歌曲id，playlist:歌曲信息
-            const {
-                data: {
-                    playlist,
-                    playlist: { commentCount, trackIds },
-                },
-            } = await _getMusicListDetail(this.id);
-
-            // 获取歌单默认信息
-            this.baseInfo = {
-                img: playlist.coverImgUrl,
-                title: playlist.description,
-                name: playlist.name,
-                shareCount: playlist.shareCount,
-                subscribedCount: playlist.subscribedCount,
-                playCount: playlist.playCount,
-                trackCount: playlist.trackCount,
-                tags: playlist.tags,
-            };
-            // 处理评论默认信息
-            this.bar = ['歌曲列表', `评论${commentCount}`, '收藏者'];
-
-            // 拼接id ,获取歌曲，处理歌曲信息
-            const ids = trackIds.map(item => item.id).join(',');
-            const {
-                data: { songs },
-            } = await _getSongsDetail(ids);
-
-            songs.forEach(item =>
-                this.musicList.push({
-                    id: item.id,
-                    name: item.name,
-                    album: item.al.name,
-                    song: item.ar[0].name,
-                    pic: item.al.picUrl,
-                    time: formDate(new Date(item.dt), 'mm:ss'),
-                })
-            );
-        },
-        // 获取歌单评论内容
-        async initMusicListComments() {
-            const {
-                data: { comments, hotComments },
-            } = await _getRecommends({
-                id: this.id,
-                limit: this.limit,
-                offset: this.recommends.length,
-                timestamp: Date.now(),
-            });
-            this.recommends = comments;
-            this.hotComments = hotComments;
-        },
-        async initMusicListLike() {
-            // 获取歌单收藏者
-            const {
-                data: { subscribers },
-            } = await _getSub(this.id);
-            this.subs = subscribers;
-        },
-        // 获取更多评论
-        async moreComments() {
-            const {
-                data: { comments },
-            } = await _getRecommends({
-                id: this.id,
-                limit: this.limit,
-                offset: this.recommends.length,
-                timestamp: Date.now(),
-            });
-            if (comments.length === 0) {
-                this.$message.info('评论已经加载完毕，暂无更多评论');
-                // 修改评论组件，的评论提示消息
-                this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....';
-            } else comments.forEach(item => this.recommends.push(item));
-        },
-        // 发送评论后，重新获取评论
-        async getCommends() {
-            // 清除评论数据
-            this.recommends = [];
-            const {
-                data: { comments },
-            } = await _getRecommends({
-                id: this.id,
-                limit: this.limit,
-                offset: 0,
-                timestamp: Date.now(),
-            });
-            this.recommends = comments;
-        },
-        // 子组件上面的歌曲点击事件传递音乐下标
-        musicItemClick(index) {
-            this.playMusic(index);
-        },
+    // 获取歌单评论内容
+    async initMusicListComments() {
+      const {
+        data: { comments, hotComments }
+      } = await _getRecommends({
+        id: this.id,
+        limit: this.limit,
+        offset: this.recommends.length,
+        timestamp: Date.now()
+      });
+      this.recommends = comments;
+      this.hotComments = hotComments;
     },
+    // 获取更多评论
+    async moreComments() {
+      const {
+        data: { comments }
+      } = await _getRecommends({
+        id: this.id,
+        limit: this.limit,
+        offset: this.recommends.length,
+        timestamp: Date.now()
+      });
+      if (comments.length === 0) {
+        this.$message.info('评论已经加载完毕，暂无更多评论');
+        // 修改评论组件，的评论提示消息
+        this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....';
+      } else comments.forEach(item => this.recommends.push(item));
+    },
+    // 发送评论后，重新获取评论
+    async getCommends() {
+      // 清除评论数据
+      this.recommends = [];
+      const {
+        data: { comments }
+      } = await _getRecommends({
+        id: this.id,
+        limit: this.limit,
+        offset: 0,
+        timestamp: Date.now()
+      });
+      this.recommends = comments;
+    },
+    // 子组件上面的歌曲点击事件传递音乐下标
+    musicItemClick(index) {
+      this.playMusic(index);
+    }
+  }
 };
 </script>
-<style lang='less' scoped>
-  .music-list-detail {
-      margin: 4% auto;
-      width: 90%;
-      height: 94%;
-      color: #01060a;
-      overflow: hidden;
+<style lang="less" scoped>
+.music-list-detail {
+  margin: 2% auto;
+  width: 96%;
+  height: 94%;
+  color: #01060a;
+  overflow: hidden;
+  .musiclist-detail {
+    height: 100%;
+    overflow-y: scroll;
+
+    .musiclsit-bar {
+      padding-top: 10px;
+      width: 100%;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      > .item {
+        padding: 5px 20px;
+        cursor: pointer;
+      }
+    }
   }
 
-  .musiclist-detail {
-      height: 100%;
-      overflow: hidden;
+  .action {
+    border-bottom: 3px solid #b82525;
   }
+}
 </style>
