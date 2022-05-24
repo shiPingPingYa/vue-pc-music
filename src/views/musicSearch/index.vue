@@ -8,8 +8,8 @@
       <img src="@/assets/img/search_svg.svg" @click="goMusicDetail" alt="" />
     </div>
     <transition-group name="fade-in-linear">
-      <searchContent :key="0" v-show="musicSearchModal" :keywords="keywords" :searchMusic="searchMusic" :searchArtist="searchArtist" />
-      <hot-search :key="1" v-if="musicHotModal"></hot-search>
+      <SearchContent :key="0" v-show="musicSearchModal" :keywords="keywords" :searchMusic="searchMusic" :searchArtist="searchArtist" />
+      <HotSearch :key="1" v-if="musicHotModal" />
     </transition-group>
   </div>
 </template>
@@ -17,10 +17,10 @@
 import { _Suggest } from '@/network/search';
 import { debounce } from '@/assets/common/tool';
 import HotSearch from './components/Hotsearch';
-import searchContent from './components/searchContent';
+import SearchContent from './components/searchContent';
 export default {
   name: 'musicSearch',
-  components: { HotSearch, searchContent },
+  components: { HotSearch, SearchContent },
   data() {
     return {
       keywords: '',

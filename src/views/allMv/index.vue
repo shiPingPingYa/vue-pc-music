@@ -6,22 +6,21 @@
       </div>
       <div class="content">
         <mv-bar></mv-bar>
-        <mv-item class="mv_item" :mvList="mvList"></mv-item>
+        <MvList class="mv_item" :mvList="mvList" />
       </div>
       <div class="mv_pagination">
         <el-pagination v-show="mvList.length !== 0" :current-page="page" @current-change="handleCurrentChange" background layout="prev, pager, next" :total="1000" />
       </div>
     </scroll>
-
   </div>
 </template>
 <script>
-import MvBar from './childComps/MvBar'
-import MvItem from './childComps/MVItem'
-import { _AllMv } from 'api/mv'
+import MvBar from './components/mvBar';
+import MvList from '@/components/mvList';
+import { _AllMv } from 'api/mv';
 export default {
   name: 'AllMv',
-  components: { MvBar, MvItem },
+  components: { MvBar, MvList },
   data() {
     return {
       limit: 40,
@@ -30,18 +29,18 @@ export default {
       type: '全部',
       order: '上升最快',
       page: 1
-    }
+    };
   },
   mounted() {
-    this.initAllMvList()
-    this.$refs.scroll.refresh()
+    this.initAllMvList();
+    this.$refs.scroll.refresh();
   },
   methods: {
     async initAllMvList(area, type, order, flag) {
       if (flag) {
-        this.area = area
-        this.type = type
-        this.order = order
+        this.area = area;
+        this.type = type;
+        this.order = order;
       }
       const params = {
         type: this.type,
@@ -49,12 +48,12 @@ export default {
         order: this.order,
         limit: this.limit,
         offset: this.mvList.length * (this.page - 1) // 偏移位
-      }
-      this.mvList = []
+      };
+      this.mvList = [];
       // 调用接口获取数据
       const {
         data: { data }
-      } = await _AllMv(params)
+      } = await _AllMv(params);
       this.mvList = data.map(item => {
         return {
           id: item.id,
@@ -62,49 +61,49 @@ export default {
           name: item.name,
           artist: item.artistName,
           count: item.playCount
-        }
-      })
+        };
+      });
     },
     handleCurrentChange(val) {
-      this.page = val
-      this.$refs.scroll.scrollTo(0, 0, 200)
-      this.initAllMvList()
+      this.page = val;
+      this.$refs.scroll.scrollTo(0, 0, 200);
+      this.initAllMvList();
     }
   }
-}
+};
 </script>
 <style lang="less" scoped>
-  .all-mv {
-    padding: 0 20px 60px;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
+.all-mv {
+  padding: 0 20px 60px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 
-  .scroll {
-    height: 100%;
-  }
+.scroll {
+  height: 100%;
+}
 
-  .mv_item {
-    margin-bottom: 20px;
-  }
+.mv_item {
+  margin-bottom: 20px;
+}
 
-  .title {
+.title {
+  margin-top: 10px;
+  padding: 0 20px;
+  font-size: 18px;
+  color: #01060a;
+  > .title-boder {
     margin-top: 10px;
-    padding: 0 20px;
-    font-size: 18px;
-    color: #01060a;
-    > .title-boder {
-      margin-top: 10px;
-      width: 100%;
-      height: 1px;
-      border-bottom: 1px solid #23262c;
-    }
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px solid #23262c;
   }
+}
 </style>
 <style>
-  .mv_pagination {
-    display: flex;
-    justify-content: flex-end;
-  }
+.mv_pagination {
+  display: flex;
+  justify-content: flex-end;
+}
 </style>
