@@ -22,25 +22,24 @@ export default {
         this.setIslogin(false);
         this.showLogin(true);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style>
-  ul li {
-    list-style: none;
-  }
-  #app {
-    position: relative;
-    margin: 0 10% 0 10%;
-    width: 80%;
-    height: 100%;
-    opacity: 0.9;
-  }
-
-  .w-120 {
-    width: 120px;
-    margin-top: 10px;
-  }
+ul li {
+  list-style: none;
+}
+#app {
+  position: relative;
+  margin: 0 10% 0 10%;
+  width: 80%;
+  height: 100%;
+  opacity: 0.9;
+}
+.w-120 {
+  width: 120px;
+  margin-top: 10px;
+}
 </style>

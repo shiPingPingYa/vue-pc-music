@@ -6,7 +6,7 @@ import store from './store';
 import axios from 'axios';
 // 导入全局css样式
 import '@/assets/css/babel.less';
-import '@/assets/css/index.less';
+import '@/assets/css/modal.less';
 // 导入elementui
 import '../src/plugins/element';
 import scroll from '@/components/common/scroll/Scroll.vue';
