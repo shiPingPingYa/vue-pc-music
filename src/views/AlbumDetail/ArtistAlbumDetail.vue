@@ -1,27 +1,35 @@
 <template>
-  <div class='artist_album_detail'>
-    <scroll class='artist_album_scroll'>
-      <album-info :albumInfo='albumInfo'></album-info>
-      <album-bar :tabBarList='tabBarList' @albumClick='albumClick'></album-bar>
-      <music-item v-show="isShow === '歌曲列表'" :musicList='musicList' @musicItemClick='musicItemClick'></music-item>
-      <recommends v-show='isShow === tabBarList[1]' :id='id' ref='artist_album_detail' :Type='3' :hotComments='hotComments' :recommends='recommends' @getCommends='getCommends'
-                  @moreComments='moreComments'></recommends>
-      <album-detail v-show="isShow === '专辑详情'" :albumDescription='albumDescription'></album-detail>
+  <div class="artist_album_detail">
+    <scroll class="artist_album_scroll">
+      <album-info :albumInfo="albumInfo"></album-info>
+      <album-bar :tabBarList="tabBarList" @albumClick="albumClick"></album-bar>
+      <music-item v-show="isShow === '歌曲列表'" :musicList="musicList" @musicItemClick="musicItemClick"></music-item>
+      <Recommend
+        v-show="isShow === tabBarList[1]"
+        :id="id"
+        ref="artist_album_detail"
+        :Type="3"
+        :hotComments="hotComments"
+        :recommends="recommends"
+        @getCommends="getCommends"
+        @moreComments="moreComments"
+      />
+      <album-detail v-show="isShow === '专辑详情'" :albumDescription="albumDescription"></album-detail>
     </scroll>
   </div>
 </template>
 <script>
-import { _getAlbumComments, _getAlbumDeatil, _getAlbumDynamicDetail, AllSongDetail } from '../../network/detail'
-import { mixinsPlayMusic } from '../../mixins/mixinsPlayMusic'
-import AlbumBar from './childRouter/AlbumBar.vue'
-import AlbumInfo from './childRouter/AlbumInfo.vue'
-import MusicItem from '../musicListDetail/childComps/MusicItem.vue'
-import AlbumDetail from './childRouter/AlbumDetail.vue'
+import { _getAlbumComments, _getAlbumDeatil, _getAlbumDynamicDetail, AllSongDetail } from '../../network/detail';
+import { mixinsPlayMusic } from '../../mixins/mixinsPlayMusic';
+import AlbumBar from './childRouter/AlbumBar.vue';
+import AlbumInfo from './childRouter/AlbumInfo.vue';
+import MusicItem from '../musicListDetail/childComps/MusicItem.vue';
+import AlbumDetail from './childRouter/AlbumDetail.vue';
+import Recommend from '@/components/common/recommend/index';
 
-const Recommends = () => import('../musicListDetail/childComps/Recommends.vue')
 export default {
   name: 'ArtistAlbumDetail',
-  components: { AlbumBar, AlbumInfo, MusicItem, Recommends, AlbumDetail },
+  components: { AlbumBar, AlbumInfo, MusicItem, Recommend, AlbumDetail },
   data() {
     return {
       id: '',
@@ -41,71 +49,71 @@ export default {
       hotComments: [],
       commentMore: false,
       commentTime: ''
-    }
+    };
   },
   mixins: [mixinsPlayMusic],
   created() {
-    this.id = this.$route.params.id
-    this.initPage()
+    this.id = this.$route.params.id;
+    this.initPage();
   },
   methods: {
     async initPage() {
       // 专辑详细信息，不包括动态消息(如收藏，分享等等)
       _getAlbumDeatil({ id: this.id }).then(res => {
-        res.data.songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
-        this.albumDescription = res.data.album.description
-        this.albumInfo.nickName = res.data.album.artist.name
-        this.albumInfo.avatarUrl = res.data.album.picUrl
-        this.albumInfo.albumName = res.data.album.name
-        this.albumInfo.albumPublishTime = res.data.album.publishTime
-      })
+        res.data.songs.forEach(item => this.musicList.push(new AllSongDetail(item)));
+        this.albumDescription = res.data.album.description;
+        this.albumInfo.nickName = res.data.album.artist.name;
+        this.albumInfo.avatarUrl = res.data.album.picUrl;
+        this.albumInfo.albumName = res.data.album.name;
+        this.albumInfo.albumPublishTime = res.data.album.publishTime;
+      });
       _getAlbumDynamicDetail({ id: this.id }).then(res => {
         this.$nextTick(() => {
-          this.tabBarList = ['歌曲列表', `评论(${res.data.commentCount})`, '专辑详情']
-        })
-        this.albumInfo.subCount = `(${res.data.subCount})`
-        this.albumInfo.shareCount = `(${res.data.shareCount})`
-      })
+          this.tabBarList = ['歌曲列表', `评论(${res.data.commentCount})`, '专辑详情'];
+        });
+        this.albumInfo.subCount = `(${res.data.subCount})`;
+        this.albumInfo.shareCount = `(${res.data.shareCount})`;
+      });
       // 评论
       _getAlbumComments({ id: this.id }).then(res => {
-        this.recommends = res.data.comments
-        this.hotComments = res.data.hotComments
-        this.commentMore = res.data.more
-        this.commentTime = this.recommends[this.recommends.length - 1].time
-      })
+        this.recommends = res.data.comments;
+        this.hotComments = res.data.hotComments;
+        this.commentMore = res.data.more;
+        this.commentTime = this.recommends[this.recommends.length - 1].time;
+      });
     },
     albumClick(str) {
-      this.isShow = str
+      this.isShow = str;
     },
     musicItemClick(index) {
-      this.playMusic(index)
+      this.playMusic(index);
     },
     moreComments() {
       if (!this.commentMore) {
-        this.$message.info('评论已经加载完毕，暂无更多评论')
+        this.$message.info('评论已经加载完毕，暂无更多评论');
         // 修改评论组件，的评论提示消息
-        this.$refs.artist_album_detail.recommendTitle = '评论加载完毕，暂无更多.....'
+        this.$refs.artist_album_detail.recommendTitle = '评论加载完毕，暂无更多.....';
       }
       _getAlbumComments({
         id: this.id,
         limit: this.limit,
         before: this.commentTime
       }).then(res => {
-        res.data.comments.forEach(item => this.recommends.push(item))
-      })
+        res.data.comments.forEach(item => this.recommends.push(item));
+      });
     },
     // 发送评论后，重新获取评论
     getCommends() {
       // 清除评论数据
-      this.recommends = []
+      this.recommends = [];
       _getAlbumComments({ id: this.id, limit: this.limit }).then(res => {
-        res.data.comments.forEach(item => this.recommends.push(item))
-      })
+        res.data.comments.forEach(item => this.recommends.push(item));
+      });
     }
   }
-}
+};
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .artist_album_detail {
   width: 100%;
   height: 100%;

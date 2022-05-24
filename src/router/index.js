@@ -227,6 +227,16 @@ const routes = [
         }
       },
       {
+        // 所有mv
+        path: '/allmv',
+        component: () => import('@/views/allMv/index'),
+        meta: {
+          title: '所有MV',
+          keepLive: true,
+          requireLogin: false
+        }
+      },
+      {
         // mv播放跳转,
         path: '/playmv',
         component: () => import('@/views/playMv/index'),
