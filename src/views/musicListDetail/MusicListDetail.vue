@@ -16,7 +16,7 @@
           @getCommends="getCommends"
           @moreComments="moreComments"
         ></song-list-recommends>
-        <CollectSongList :key="2" v-show="tabBarIndex === 2" :subs="subs" />
+        <CollectSongList :key="2" v-show="tabBarIndex === 2" :id="id" />
       </transition-group>
     </scroll>
   </div>
@@ -70,9 +70,6 @@ export default {
     handleTabClick(str) {
       this.tabBarIndex = str;
       if (str === 1) this.initMusicListComments();
-      else {
-        this.initMusicListLike();
-      }
     },
     // 初始化音乐列表
     async initMusicListAndTabbar() {
@@ -128,13 +125,6 @@ export default {
       });
       this.recommends = comments;
       this.hotComments = hotComments;
-    },
-    async initMusicListLike() {
-      // 获取歌单收藏者
-      const {
-        data: { subscribers }
-      } = await _getSub(this.id);
-      this.subs = subscribers;
     },
     // 获取更多评论
     async moreComments() {

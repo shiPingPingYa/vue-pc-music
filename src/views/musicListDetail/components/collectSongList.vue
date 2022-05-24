@@ -1,7 +1,7 @@
 <template>
   <div class="collect-song-list">
-    <div class="collect-list" v-if="subs.length !== 0">
-      <div class="collect-item" v-for="(item, index) in subs" :key="index">
+    <div class="collect-list" v-if="collectSongList.length !== 0">
+      <div class="collect-item" v-for="(item, index) in collectSongList" :key="index">
         <img src="" :data-src="item.avatarUrl + '?param=60y60'" alt="" v-imgLazy />
         <div>{{ item.nickname }}</div>
       </div>
@@ -12,12 +12,30 @@
   </div>
 </template>
 <script>
+import { _getSub } from '@/network/detail';
 export default {
   name: 'collectSongList',
   props: {
-    subs: {
-      tyep: Array,
-      default: () => []
+    id: {
+      type: [Number, String],
+      default: () => 0 || '0'
+    }
+  },
+  data() {
+    return {
+      collectSongList: []
+    };
+  },
+  created() {
+    this.initCollectSongList();
+  },
+  methods: {
+    async initCollectSongList() {
+      // 获取歌单收藏者
+      const {
+        data: { subscribers }
+      } = await _getSub(this.id);
+      this.collectSongList = subscribers;
     }
   }
 };

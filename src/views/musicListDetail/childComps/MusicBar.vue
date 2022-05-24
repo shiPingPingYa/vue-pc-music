@@ -1,7 +1,7 @@
 <template>
   <div class="musiclsit-bar" v-if="bar !== null">
-    <div class="item" v-for="(item,index) in bar " :key="index" :class="{'action':currentIndex == index}" @click="currentIndexClick(index)">
-      {{item}}
+    <div class="item" v-for="(item, index) in bar" :key="index" :class="{ action: currentIndex == index }" @click="currentIndexClick(index)">
+      {{ item }}
     </div>
   </div>
 </template>
@@ -17,41 +17,31 @@ export default {
   data() {
     return {
       currentIndex: 0
-    }
+    };
   },
   methods: {
     currentIndexClick(index) {
-      this.currentIndex = index
-      switch (index) {
-        case 0:
-          this.$emit('handleTabClick', 0)
-          break
-        case 1:
-          this.$emit('handleTabClick', 1)
-          break
-        case 2:
-          this.$emit('handleTabClick', 2)
-          break
-      }
+      this.currentIndex = index;
+      this.$emit('handleTabClick', index);
     }
   }
-}
+};
 </script>
 <style lang="less" scoped>
-  .musiclsit-bar {
-    padding-top: 10px;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    > .item {
-      padding: 5px 20px;
-      cursor: pointer;
-    }
+.musiclsit-bar {
+  padding-top: 10px;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  > .item {
+    padding: 5px 20px;
+    cursor: pointer;
   }
+}
 
-  .action {
-    border-bottom: 3px solid #b82525;
-  }
-</style>>
+.action {
+  border-bottom: 3px solid #b82525;
+}</style
+>>
