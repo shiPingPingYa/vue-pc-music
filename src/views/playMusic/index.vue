@@ -126,10 +126,12 @@ export default {
       cLyricIcon: require('assets/img/playmusic/lyric-click.svg'),
       volumnIcon: require('assets/img/playmusic/volumn.svg'),
       noVolumnIcon: require('assets/img/playmusic/novolumn.svg'),
-      playIcon: require('assets/img/playmusic/sunxubofang.svg'),
-      playIcon1: require('assets/img/playmusic/suijibofang.svg'),
-      playIcon2: require('assets/img/playmusic/danquxunhuan.svg'),
-      playIcon3: require('assets/img/heart.svg'),
+      mapPlayIconObj: {
+        0: { title: '顺序播放', img: require('@/assets/img/playmusic/sunxubofang.svg') },
+        1: { title: '随机播放', img: require('@/assets/img/playmusic/suijibofang.svg') },
+        2: { title: '单曲循环', img: require('@/assets/img/playmusic/danquxunhuan.svg') },
+        3: { title: '心动模式', img: require('@/assets/img/heart.svg') }
+      },
       playList: [
         {
           title: '南 海 花 痴（PLUS版） ',
@@ -144,13 +146,7 @@ export default {
   },
   computed: {
     currentPlayImg() {
-      if (this.schemaIndex === 0) {
-        return { img: this.playIcon, title: '顺序播放' };
-      } else if (this.schemaIndex === 1) {
-        return { img: this.playIcon1, title: '随机播放' };
-      } else if (this.schemaIndex === 2) {
-        return { img: this.playIcon2, title: '单曲循环' };
-      } else return { img: this.playIcon3, title: '心动模式' };
+      return this.mapPlayIconObj[this.schemaIndex];
     }
   },
   mounted() {
@@ -189,9 +185,7 @@ export default {
     // 改变currentindex,重新设置播放音乐
     setCurrentIndex(index) {
       this.playList.some((item, i) => {
-        if (item.index === index) {
-          return (this.currentIndex = i);
-        }
+        if (item.index == index) return (this.currentIndex = i);
       });
     },
     // 显示歌词组件

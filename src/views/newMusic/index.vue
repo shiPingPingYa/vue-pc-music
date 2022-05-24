@@ -1,37 +1,32 @@
 <template>
-  <div class='new-songs'>
+  <div class="new-songs">
     <!-- 头部导航栏 -->
-    <div class='area'>
-      <div v-for='(item,index) in tabList' :key='index' :class="{'action':areaIndex == index}" class='area-item' @click='handleTabClick(index)'>
+    <div class="area">
+      <div v-for="(item, index) in tabList" :key="index" :class="{ action: areaIndex == index }" class="area-item" @click="handleTabClick(index)">
         {{ item.name }}
       </div>
     </div>
-    <scroll ref='scroll' :pull-up-load='true' class='new-scroll'>
-      <div class='content'>
-        <!-- 播放按钮 -->
-        <div class='play' @click='playMusic()'>
-          <i class='el-icon-video-play'></i>
+    <scroll ref="scroll" :pull-up-load="true" class="new-scroll">
+      <div class="content">
+        <div class="play" @click="playMusic()">
+          <i class="el-icon-video-play"></i>
           <span> 播放全部</span>
         </div>
-        <div class='music'>
-          <table>
-            <tbody>
-              <tr v-for='(item,index) in musicList' :key='index' :class="{'backColor':setMusicItemBack(index)}" @click='playMusicItem(index)'>
-                <td>{{ setMusicItemIndex(index) }}</td>
-                <td>
-                  <div class='backMask'>
-                    <img v-imgLazy :data-src="item.pic + '?param=50y50'" alt='' src=''>
-                    <div class='icon'>
-                      <i class='el-icon-video-play'></i>
-                    </div>
-                  </div>
-                </td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.album }}</td>
-                <td>{{ item.time }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="music-table">
+          <div class="music-table-tr" v-for="(item, index) in musicList" :key="index">
+            <div class="music-table-td" v-html="setMusicItemIndex(index)"></div>
+            <div class="music-table-td">
+              <div class="backMask" @click="playMusicItem(index)">
+                <img v-imgLazy :data-src="item.pic + '?param=50y50'" alt="" src="" />
+                <div class="icon">
+                  <i class="el-icon-video-play"></i>
+                </div>
+              </div>
+            </div>
+            <div class="music-table-td">{{ item.name }}</div>
+            <div class="music-table-td">{{ item.album }}</div>
+            <div class="music-table-td">{{ item.time }}</div>
+          </div>
         </div>
       </div>
     </scroll>
@@ -53,42 +48,29 @@ export default {
         { value: 7, name: '华语' },
         { value: 96, name: '欧美' },
         { value: 16, name: '韩国' },
-        { value: 8, name: '日本' },
+        { value: 8, name: '日本' }
       ],
-      limit: 30,
       list: [],
-      musicList: [],
+      musicList: []
     };
   },
   mixins: [mixinsPlayMusic],
   created() {
     this.initNewMusicList();
   },
-  watch: {
-    // 监听标签改变，重置
-    areaIndex() {
-      this.page = 0;
-    },
-  },
   methods: {
     // 头部导航条点击
     handleTabClick(index) {
       this.areaIndex = index;
-      this.page = 0;
       this.initNewMusicList();
     },
     async initNewMusicList() {
-      this.musicList = [];
-      this.page++;
       const {
-        data: { data },
+        data: { data }
       } = await _getTopSongs(this.tabList[this.areaIndex].value);
-      const ids = data
-        .slice(0, this.limit)
-        .map(item => item.id)
-        .join(',');
+      const ids = data.map(item => item.id).join(',');
       const {
-        data: { songs },
+        data: { songs }
       } = await _getSongsDetail(ids);
       this.musicList = songs.map(item => {
         return {
@@ -97,38 +79,28 @@ export default {
           album: item.al.name,
           song: item.ar[0].name,
           pic: item.al.picUrl,
-          time: formDate(new Date(item.dt), 'mm:ss'),
+          time: formDate(new Date(item.dt), 'mm:ss')
         };
       });
     },
-    // 播放选中音乐
+    // 判断是否在同一歌单下面，是则不重新获取音乐数据，而是修改音乐播放列表序号
     playMusicItem(index) {
       this.$bus.$emit('playMusicListItem', index);
     },
-    setMusicItemBack(i) {
-      return i % 2 !== 0;
-    },
     setMusicItemIndex(i) {
       return i + 1 <= 9 ? `0${i + 1}` : i + 1;
-    },
-  },
+    }
+  }
 };
 </script>
-<style lang='less' scoped>
-  .new-songs {
-    padding: 0 98px;
-    margin-bottom: 20px;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .new-scroll {
-    height: calc(100% - 45px);
-    overflow: hidden;
-  }
-
-  .area {
+<style lang="less" scoped>
+.new-songs {
+  padding: 0 98px;
+  margin-bottom: 20px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  & > .area {
     display: flex;
     border-bottom: 1px solid #d3d4d6;
     color: #01060a;
@@ -139,113 +111,120 @@ export default {
       cursor: pointer;
     }
   }
+  & > .new-scroll {
+    height: calc(100% - 45px);
+    overflow: hidden;
+    .content {
+      margin-top: 8px;
 
-  .content {
-    margin-top: 8px;
+      > .play {
+        padding: 10px 0;
+        width: 100%;
+        font-size: 24px;
+        cursor: pointer;
 
-    > .play {
-      padding: 10px 0;
-      width: 100%;
-      font-size: 24px;
-      cursor: pointer;
+        & > span {
+          font-size: 14px !important;
+        }
 
-      > span {
-        font-size: 14px !important;
-      }
-
-      > i {
-        vertical-align: -4px;
-        color: red;
+        & > i {
+          vertical-align: -4px;
+          color: red;
+        }
       }
     }
   }
 
-  .music > table {
+  .music-table {
     width: 100%;
-    border: 1px solid #e0e0e0;
-    border-spacing: 0;
-
-    > tbody {
-      font-size: 13px;
-    }
-  }
-
-  .music tr {
-    height: 50px;
-    text-align: left;
-    cursor: pointer;
-  }
-
-  .music tr:hover {
-    background-color: #b6b6b6;
-  }
-
-  .music > tr > td {
-    position: relative;
-    border: 1px solid #23262c;
-  }
-
-  .music tr td:nth-child(1) {
-    width: 10%;
-    text-align: center;
-  }
-
-  .music tr td:nth-child(2) {
-    width: 14%;
-
-    > img {
+    & > .music-table-tr {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
       width: 100%;
+      height: 60px;
+      cursor: pointer;
+      &:hover {
+        color: #0a0a0a;
+        background-color: #c9c6c6;
+      }
+      & > div {
+        padding: 6px;
+        text-align: center;
+        line-height: 28px;
+      }
+      & > .music-table-td:nth-child(1) {
+        position: relative;
+        width: 10%;
+        color: rgb(36, 199, 240);
+      }
+      & > .music-table-td:nth-child(2) {
+        width: 14%;
+        & > .backMask {
+          position: relative;
+          width: 50px;
+          height: 50px;
+
+          > img {
+            width: 100%;
+            height: 100%;
+            background-size: 100%, 100%;
+          }
+
+          > .icon {
+            position: absolute;
+            margin: auto;
+            width: 24px;
+            height: 24px;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+
+            > i {
+              font-size: 24px;
+              color: #fff;
+              opacity: 0.8;
+            }
+          }
+        }
+      }
+      & > .music-table-td:nth-child(3) {
+        width: 34%;
+        max-width: 190px;
+      }
+      & > .music-table-td:nth-child(4) {
+        width: 34%;
+      }
+      & > .music-table-td:nth-child(5) {
+        width: 8%;
+        max-width: 162px;
+      }
     }
-  }
-
-  .music tbody tr td:nth-child(3) {
-    width: 34%;
-    color: #01060a;
-  }
-
-  .backMask {
-    position: relative;
-    width: 50px;
-    height: 50px;
-
-    > img {
-      width: 100%;
-      height: 100%;
-      background-size: 100%, 100%;
+    & > .music-table-tr:nth-child(odd) {
+      background-color: #eeecec;
     }
-
-    > .icon {
+    .active-icon {
       position: absolute;
       margin: auto;
-      width: 24px;
-      height: 24px;
-      left: 0;
       top: 0;
-      right: 0;
       bottom: 0;
-
-      > i {
-        font-size: 24px;
-        color: #fff;
-        opacity: 0.8;
+      left: 0;
+      right: 0;
+      width: 16px;
+      height: 16px;
+      z-index: 1;
+    }
+    .active-music {
+      background-color: #c9c6c6 !important;
+      & > div:nth-child(1) {
+        color: transparent !important;
       }
     }
   }
-
-  .music > tr > td:nth-child(4) {
-    width: 34%;
-  }
-
-  .music > tr > td:nth-child(5) {
-    width: 8%;
-  }
-
-  .backColor {
-    background: #eeecec;
-  }
-
   .action {
     color: #01060a;
     border-bottom: 2px solid #828384;
   }
+}
 </style>
