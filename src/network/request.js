@@ -31,7 +31,7 @@ request.interceptors.response.use(
   res => {
     if (res.status === 200 && res !== null) {
       return res;
-    } else if (res.data.code === 301) {
+    } else if (res.data.code == 301 || res.data.code == 400) {
       Message.error(res.data.msg);
       store.dispatch('_Layout');
     } else {

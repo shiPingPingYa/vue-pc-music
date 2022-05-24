@@ -7,21 +7,23 @@
           {{ item }}
         </div>
       </div>
-      <transition-group name="fade-in-linear">
-        <MusicItem :key="0" v-show="tabBarIndex === 0" :musicList="musicList" @musicItemClick="musicItemClick" />
-        <Recommend
-          :key="1"
-          v-show="tabBarIndex === 1"
-          :id="id"
-          ref="songList_recommends"
-          :Type="2"
-          :hotComments="hotComments"
-          :recommends="recommends"
-          @getCommends="getCommends"
-          @moreComments="moreComments"
-        />
-        <CollectSongList :key="2" v-show="tabBarIndex === 2" :id="id" />
-      </transition-group>
+      <keep-alive>
+        <transition-group name="fade-in-linear">
+          <MusicItem :key="0" v-show="tabBarIndex === 0" :musicList="musicList" @musicItemClick="musicItemClick" />
+          <Recommend
+            :key="1"
+            v-show="tabBarIndex === 1"
+            :id="id"
+            ref="songList_recommends"
+            :Type="2"
+            :hotComments="hotComments"
+            :recommends="recommends"
+            @getCommends="getCommends"
+            @moreComments="moreComments"
+          />
+          <CollectSongList :key="2" v-show="tabBarIndex === 2" :id="id" />
+        </transition-group>
+      </keep-alive>
     </div>
   </div>
 </template>
@@ -40,14 +42,14 @@ export default {
   data() {
     return {
       id: '',
+      bar: [],
       tabBarIndex: 0,
-      bar: [], // 导航条
-      musicList: [], // 歌曲列表
+      isClickTab: false,
       baseInfo: null,
+      musicList: [],
       recommends: [],
-      hotComments: [], // 热门评论内容
-      limit: 50,
-      subs: []
+      hotComments: [],
+      limit: 50
     };
   },
 
@@ -57,7 +59,7 @@ export default {
         if ((oldId ?? '') !== '') {
           this.id = oldId;
           this.tabBarIndex = 0;
-          this.initMusicListAndTabbar();
+          this.initMusicListDetail();
         }
       },
       deep: true
@@ -66,15 +68,16 @@ export default {
   created() {
     this.id = this.$route.params.id;
     localStorage.setItem('pid', this.id); // 存储歌单id，心动模式必需
-    this.initMusicListAndTabbar();
+    this.initMusicListDetail();
   },
   methods: {
     handleTabClick(i) {
       this.tabBarIndex = i;
-      if (i === 1) this.initMusicListComments();
+      !this.isClickTab && this.initMusicListComments(); //keep-alive做了缓存，判断是否是第二次点击
+      this.isClickTab = true;
     },
     // 初始化音乐列表
-    async initMusicListAndTabbar() {
+    async initMusicListDetail() {
       this.musicList = [];
       // 获取歌单id，获取歌单数据，commentCount:评论数量，trackIds:歌曲id，playlist:歌曲信息
       const {
