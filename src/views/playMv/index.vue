@@ -55,14 +55,14 @@ export default {
   components: { SimilarMvItem, Recommend },
   data() {
     return {
+      pageLoading: false,
       id: null,
       detail: null,
       url: null,
-      recommends: null,
       limit: 30,
       simiMv: [],
       simiMvIndex: 0,
-      pageLoading: false
+      recommends: []
     };
   },
   watch: {
