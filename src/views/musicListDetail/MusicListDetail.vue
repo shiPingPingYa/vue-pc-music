@@ -1,29 +1,29 @@
 <template>
   <div class="music-list-detail">
     <div class="musiclist-detail">
-      <MusicBaseInfo :baseInfo="baseInfo" />
+      <MusicBaseInfo :baseInfo="baseInfo" @playMusic="playMusic" />
       <div class="musiclsit-bar">
         <div class="item" v-for="(item, index) in bar" :key="index" :class="{ action: tabBarIndex == index }" @click="handleTabClick(index)">
           {{ item }}
         </div>
       </div>
-      <keep-alive>
-        <transition-group name="fade-in-linear">
-          <MusicItem :key="0" v-show="tabBarIndex === 0" :musicList="musicList" @musicItemClick="musicItemClick" />
+      <transition name="fade-in-linear">
+        <keep-alive>
+          <MusicItem :key="0" v-if="tabBarIndex === 0" :musicList="musicList" @musicItemClick="musicItemClick" />
           <Recommend
-            :key="1"
-            v-show="tabBarIndex === 1"
-            :id="id"
             ref="songList_recommends"
+            :key="1"
+            v-else-if="tabBarIndex === 1"
+            :id="id"
             :Type="2"
             :hotComments="hotComments"
             :recommends="recommends"
             @getCommends="getCommends"
             @moreComments="moreComments"
           />
-          <CollectSongList :key="2" v-show="tabBarIndex === 2" :id="id" />
-        </transition-group>
-      </keep-alive>
+          <CollectSongList :key="2" v-else :id="id" />
+        </keep-alive>
+      </transition>
     </div>
   </div>
 </template>
@@ -102,7 +102,10 @@ export default {
       this.bar = ['歌曲列表', `评论${commentCount}`, '收藏者'];
 
       // 拼接id ,获取歌曲，处理歌曲信息
-      const ids = trackIds.map(item => item.id).join(',');
+      const ids = trackIds
+        .slice(0, 100)
+        .map(item => item.id)
+        .join(',');
       const {
         data: { songs }
       } = await _getSongsDetail(ids);
