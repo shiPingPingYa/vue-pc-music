@@ -1,13 +1,12 @@
 <template>
   <div class="play-mv">
-    <scroll class="play-mv-scroll" ref="scroll" :pull-up-load="true" v-if="!pageLoading">
+    <scroll class="play-mv-scroll" ref="scroll" :pull-up-load="true" @pullingUp="pullingUp()" v-if="!pageLoading">
       <!-- 左边内容布局 -->
       <div class="left-layout">
         <!-- 左边头部标题-->
         <div class="title">
           <div class="left-mv">MV</div>
-          <div class="name">{{ detail.name }}</div>
-          <div class="artist">{{ detail.artistName }}</div>
+          <div class="name">{{ detail.title }}</div>
         </div>
         <!-- 中间video视频播放标签 -->
         <div class="video">
@@ -16,98 +15,99 @@
         <!-- 下面评论区 -->
         <div class="recommend">
           <p class="p">评论</p>
-          <Recommend class="recds" ref="songList_recommends" @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="1" :recommends="recommends" />
+          <Recommend class="recds" @moreComments="moreComments" @getCommends="getCommends" :id="String(id)" :Type="5" :recommends="recommends" />
         </div>
       </div>
       <!-- 右边内容布局 -->
       <div class="right">
         <!-- mv介绍 -->
         <div class="desc">
-          <p class="p">MV介绍</p>
+          <p class="p">视频介绍</p>
           <div class="base">
-            <div class="data">发布时间:{{ detail.publishTime }}</div>
-            <div class="playCount">播放次数:{{ detail.playCount }}次</div>
+            <div class="data">发布时间:{{ _formatDate(detail.publishTime) }}</div>
+            <div class="playCount">播放次数:{{ detail.playTime }}次</div>
             <div class="clear"></div>
           </div>
-          <div class="mv-desc">
+          <div class="mv-desc" v-if="detail.desc !== null">
             <!-- 防止鼠标下滑的时候，重新调用方法，mv会重复 -->
             <scroll class="desc-scroll" ref="descScroll" @mouseenter="enter()" @mouseleave="leave()">
               <span>简介:</span>
-              {{ isDescription(detail.desc) }}
+              {{ isDescription(detail.description) }}
             </scroll>
           </div>
         </div>
         <!-- 相关视频推荐 -->
         <div class="alia">
           <p class="p">相关推荐</p>
-          <SimilarMvItem ref="simi_mv_item" :mvList="simiMv" />
+          <SimilarVideo ref="simi_video_item" :videoList="simiVideo" />
         </div>
       </div>
     </scroll>
   </div>
 </template>
 <script>
-import { _getMvDetail, _getMvComment, _getMvUrl, _getSimiMv } from '@/network/mv';
+import { _getVideoDetail, _getVideoUrl, _getVideoComment, _getRelatedVideo } from '@/network/video';
+import { formDate } from '@/assets/common/tool';
+import SimilarVideo from './components/similarVideo';
 import Recommend from '@/components/common/recommend/index';
-import SimilarMvItem from './components/similarMvItem';
 export default {
-  name: 'PlayMv',
-  components: { SimilarMvItem, Recommend },
+  name: 'PlayVideo',
+  components: { SimilarVideo, Recommend },
   data() {
     return {
-      pageLoading: false,
       id: null,
       detail: null,
       url: null,
-      limit: 30,
-      simiMv: [],
-      simiMvIndex: 0,
-      recommends: []
+      recommends: null,
+      offset: 1,
+      limit: 20,
+      simiVideo: [],
+      simiVideoIndex: 0,
+      pageLoading: false
     };
   },
   watch: {
-    '$route.query.id': {
-      handler(id) {
-        this.id = id;
+    ' $route.params.id': {
+      handler(val) {
+        this.id = val;
         this.getBaseInfo();
       },
       deep: true
     }
   },
-  mounted() {
-    let { id } = this.$route.query;
-    this.id = id;
+  created() {
+    this.id = this.$route.params.id;
     this.id && this.getBaseInfo();
     // 停止播放音乐
-    this.$bus.$emit('stopMusic', false);
+    this.$emit('stopMusic');
   },
   methods: {
-    // 获取播放mv默认信息
     async getBaseInfo() {
       this.pageLoading = true;
-      this.simiMv = [];
-      // 分别是mv的详情，地址，评论，相似mv
-      await Promise.all([_getMvDetail({ mvid: this.id }), _getMvUrl({ id: this.id }), _getMvComment({ id: this.id, limit: this.limit }), _getSimiMv({ mvid: this.id })]).then(
-        res => {
-          this.pageLoading = false;
-          this.detail = res[0].data.data;
-          this.url = res[1].data.data.url;
-          this.recommends = res[2].data.comments;
-          this.simiMv = res[3].data.mvs.map(item => {
-            return {
-              id: item.id,
-              cover: item.cover || item.imgurl || item.picUrl,
-              name: item.name,
-              artist: item.artistName,
-              count: item.playCount
-            };
-          });
-        }
-      );
+      // 获取video的详情，播放地址，评论，推荐视频
+      await Promise.all([_getVideoDetail(this.id), _getVideoUrl(this.id), _getVideoComment(this.id, this.limit), _getRelatedVideo(this.id)]).then(res => {
+        this.pageLoading = false;
+        this.detail = res[0].data.data;
+        this.url = res[1].data.urls[0].url;
+        this.recommends = res[2].data.comments;
+        this.simiVideo = res[3].data.data.map(item => {
+          return {
+            id: item.vid,
+            cover: item.coverUrl,
+            title: item.title,
+            count: item.playTime,
+            user: item.creator
+          };
+        });
+      });
     },
-    // 判断是否有简介
-    isDescription(desc) {
-      return desc || 'MV暂无简介';
+    // 格式化时间
+    _formatDate(time) {
+      return formDate(new Date(time), 'ff:mm:yy');
+    },
+    // 判断是否有简历
+    isDescription(des) {
+      return des || '视频暂无简介';
     },
     enter() {
       this.$refs.scroll.disable();
@@ -117,14 +117,9 @@ export default {
     },
     // 获取mv评论内容
     async moreComments() {
-      const params = {
-        id: this.id,
-        limit: this.limit,
-        offset: this.recommends.length
-      };
       const {
         data: { comments }
-      } = await _getMvComment(params);
+      } = await _getVideoComment(this.id, this.limit, this.recommends.length);
       // 评论已经被请求完毕
       if (comments.length === 0) {
         this.$Message.info('评论已经加载完毕，暂无更多评论');
@@ -139,14 +134,14 @@ export default {
     getCommends() {
       // 清除评论数据
       this.recommends = [];
-      _getMvComment({ id: this.id, limit: this.limit }).then(res => {
+      _getVideoComment(this.id, this.limit, 0).then(res => {
         res.data.comments.forEach(item => this.recommends.push(item));
       });
     },
     // 视频播放完毕自动播放相似视频
     handleVideoEnd() {
-      this.$refs.simi_mv_item.playMV(this.simiMv[this.simiMvIndex].id);
-      if (this.simiMvIndex++ > 4) this.simiMvIndex = 0;
+      this.$refs.simi_video_item.playVideo(this.simiVideo[this.simiVideoIndex].id);
+      if (this.simiVideoIndex++ > 4) this.simiVideoIndex = 0;
     }
   }
 };

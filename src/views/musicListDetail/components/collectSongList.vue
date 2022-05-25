@@ -1,6 +1,6 @@
 <template>
   <div class="collect-song-list">
-    <div class="collect-list" v-if="collectSongList.length !== 0">
+    <div class="collect-list" v-if="collectSongList.length">
       <div class="collect-item" v-for="(item, index) in collectSongList" :key="index">
         <img src="" :data-src="item.avatarUrl + '?param=60y60'" alt="" v-imgLazy />
         <div>{{ item.nickname }}</div>
