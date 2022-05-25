@@ -257,7 +257,7 @@ const routes = [
       {
         // 播放视频
         path: '/playvideo/:id',
-        component: () => import('@/views/allVideo/childComps/PlayVideo'),
+        component: () => import('@/views/playVideo/index'),
         meta: {
           title: '视频播放',
           requireLogin: true
@@ -265,28 +265,9 @@ const routes = [
       },
       {
         // 所有视频
-        path: '/video',
+        path: '/allVideo',
         // 播放视频详情页面
-        component: () => import('@/views/allVideo/AllVideoDetail'),
-        children: [
-          {
-            // 所有视频
-            path: '/video/allvideo',
-            component: () => import('@/views/allVideo/childComps/AllVideo'),
-            meta: {
-              title: '所有视频',
-              requireLogin: true
-            }
-          },
-          {
-            // 所有mv
-            path: '/video/allmv',
-            component: () => import('@/views/allMv/index'),
-            meta: {
-              title: '所有MV'
-            }
-          }
-        ]
+        component: () => import('@/views/allVideo/alllVideoDetail')
       },
       {
         // 电台

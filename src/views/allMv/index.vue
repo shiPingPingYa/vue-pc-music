@@ -1,9 +1,7 @@
 <template>
   <div class="all-mv">
     <scroll ref="scroll" class="scroll">
-      <div class="title">
-        这是全部mv
-      </div>
+      <div class="title">这是全部mv</div>
       <div class="content">
         <mv-bar></mv-bar>
         <MvList class="mv_item" :mvList="mvList" />
