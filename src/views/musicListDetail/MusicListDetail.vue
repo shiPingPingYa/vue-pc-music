@@ -1,7 +1,7 @@
 <template>
   <div class="music-list-detail">
     <div class="musiclist-detail">
-      <MusicBaseInfo :baseInfo="baseInfo" />
+      <MusicBaseInfo :baseInfo="baseInfo" @playMusic="playMusic" />
       <div class="musiclsit-bar">
         <div class="item" v-for="(item, index) in bar" :key="index" :class="{ action: tabBarIndex == index }" @click="handleTabClick(index)">
           {{ item }}
