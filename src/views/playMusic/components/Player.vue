@@ -5,10 +5,10 @@
         <div class="player-content">
           <div class="left">
             <div class="play-bar-support">
-              <img src="../../../assets/img/playmusic/play-bar-support.png" alt />
+              <img src="@/assets/img/playmusic/play-bar-support.png" alt />
             </div>
             <div class="play-bar" :class="{ bar: !isPlayer }">
-              <img class="play-bar" src="../../../assets/img/playmusic/play-bar.png" alt />
+              <img class="play-bar" src="@/assets/img/playmusic/play-bar.png" alt />
             </div>
             <div class="music-pic" :class="{ rotate: isPlayer }">
               <div class="img-wrap">

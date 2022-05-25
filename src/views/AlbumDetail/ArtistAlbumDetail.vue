@@ -3,7 +3,7 @@
     <scroll class="artist_album_scroll">
       <album-info :albumInfo="albumInfo"></album-info>
       <album-bar :tabBarList="tabBarList" @albumClick="albumClick"></album-bar>
-      <music-item v-show="isShow === '歌曲列表'" :musicList="musicList" @musicItemClick="musicItemClick"></music-item>
+      <MusicItem v-show="isShow === '歌曲列表'" :musicList="musicList" @musicItemClick="musicItemClick" />
       <Recommend
         v-show="isShow === tabBarList[1]"
         :id="id"
@@ -23,7 +23,7 @@ import { _getAlbumComments, _getAlbumDeatil, _getAlbumDynamicDetail, AllSongDeta
 import { mixinsPlayMusic } from '../../mixins/mixinsPlayMusic';
 import AlbumBar from './childRouter/AlbumBar.vue';
 import AlbumInfo from './childRouter/AlbumInfo.vue';
-import MusicItem from '../musicListDetail/childComps/MusicItem.vue';
+import MusicItem from '@/components/musicItem.vue';
 import AlbumDetail from './childRouter/AlbumDetail.vue';
 import Recommend from '@/components/common/recommend/index';
 

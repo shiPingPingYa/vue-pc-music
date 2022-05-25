@@ -11,10 +11,10 @@
         <transition-group name="fade-in-linear">
           <MusicItem :key="0" v-show="tabBarIndex === 0" :musicList="musicList" @musicItemClick="musicItemClick" />
           <Recommend
+            ref="songList_recommends"
             :key="1"
             v-show="tabBarIndex === 1"
             :id="id"
-            ref="songList_recommends"
             :Type="2"
             :hotComments="hotComments"
             :recommends="recommends"
@@ -102,7 +102,10 @@ export default {
       this.bar = ['歌曲列表', `评论${commentCount}`, '收藏者'];
 
       // 拼接id ,获取歌曲，处理歌曲信息
-      const ids = trackIds.map(item => item.id).join(',');
+      const ids = trackIds
+        .slice(0, 100)
+        .map(item => item.id)
+        .join(',');
       const {
         data: { songs }
       } = await _getSongsDetail(ids);
