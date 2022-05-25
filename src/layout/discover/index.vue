@@ -2,11 +2,11 @@
   <div class="discover">
     <navBar ref="nav" />
     <div class="content">
-      <keep-alive>
-        <transition name="fade-in-linear">
+      <transition name="fade-in-linear">
+        <keep-alive>
           <router-view></router-view>
-        </transition>
-      </keep-alive>
+        </keep-alive>
+      </transition>
     </div>
   </div>
 </template>
@@ -14,23 +14,23 @@
 import navBar from './components/navBar';
 export default {
   name: 'discoverMusic',
-  components: { navBar },
+  components: { navBar }
 };
 </script>
 <style lang="less" scoped>
-  .discover {
-    width: 100%;
-    height: 100%;
-  }
+.discover {
+  width: 100%;
+  height: 100%;
+}
 
-  .content {
-    margin-top: 10px;
-    padding: 10px 20px;
-    width: 100%;
-    height: calc(100% - 49px);
-    overflow: hidden;
-    > p {
-      font-size: 20px;
-    }
+.content {
+  margin-top: 10px;
+  padding: 10px 20px;
+  width: 100%;
+  height: calc(100% - 49px);
+  overflow: hidden;
+  > p {
+    font-size: 20px;
   }
+}
 </style>
