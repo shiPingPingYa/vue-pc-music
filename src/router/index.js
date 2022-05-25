@@ -8,7 +8,7 @@ const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err);
 };
-
+// resolve => require([''], resolve);
 Vue.use(VueRouter);
 const routes = [
   {
@@ -29,7 +29,7 @@ const routes = [
           {
             // 发现音乐-个性推荐
             path: '/discover/individ',
-            component: () => import('@/views/individuation/index'),
+            component: resolve => require(['@/views/individuation/index'], resolve),
             meta: {
               title: '个性推荐',
               keepLive: true,
@@ -39,7 +39,7 @@ const routes = [
           {
             // 发现音乐-歌单
             path: '/discover/songList',
-            component: () => import('@/views/songListCategory/index'),
+            component: resolve => require(['@/views/songListCategory/index'], resolve),
             meta: {
               title: '歌单',
               keepLive: true,
@@ -49,7 +49,7 @@ const routes = [
           {
             // 发现音乐-排行榜
             path: '/discover/ranklist',
-            component: () => import('@/views/musicRankList/index'),
+            component: resolve => require(['@/views/musicRankList/index'], resolve),
             meta: {
               title: '排行榜',
               keepLive: true,
@@ -59,7 +59,7 @@ const routes = [
           {
             // 发现音乐-歌手
             path: '/discover/artist',
-            component: () => import('@/views/artistCategory/index'),
+            component: resolve => require(['@/views/artistCategory/index'], resolve),
             meta: {
               title: '歌手',
               keepLive: true,
@@ -69,7 +69,7 @@ const routes = [
           {
             // 发现音乐-最新音乐
             path: '/discover/newsongs',
-            component: () => import('@/views/newMusic/index'),
+            component: resolve => require(['@/views/newMusic/index'], resolve),
             meta: {
               title: '最新音乐',
               keepLive: true,
@@ -98,7 +98,7 @@ const routes = [
           {
             //朋友首页
             path: '/friend/frienddetail',
-            component: () => import('@/views/friend/friendDetail/index'),
+            component: resolve => require(['@/views/friend/friendDetail/index'], resolve),
             meta: { requireLogin: true }
           },
           {
@@ -220,7 +220,7 @@ const routes = [
       {
         // input输入框搜索信息，搜索内容
         path: '/search/:id',
-        component: () => import('@/views/searchMusicDeatil/index'),
+        component: resolve => require(['@/views/searchMusicDeatil/index'], resolve),
         meta: {
           title: '搜索内容',
           requireLogin: false
@@ -229,7 +229,7 @@ const routes = [
       {
         // 所有mv
         path: '/allmv',
-        component: () => import('@/views/allMv/index'),
+        component: resolve => require(['@/views/allMv/index'], resolve),
         meta: {
           title: '所有MV',
           keepLive: true,
@@ -239,7 +239,7 @@ const routes = [
       {
         // mv播放跳转,
         path: '/playmv',
-        component: () => import('@/views/playMv/index'),
+        component: resolve => require(['@/views/playMv/index'], resolve),
         meta: {
           title: 'MV播放',
           requireLogin: false
@@ -248,7 +248,7 @@ const routes = [
       {
         // 歌单详情页面
         path: '/musicListDetail/:id',
-        component: () => import('@/views/musicListDetail/MusicListDetail'),
+        component: resolve => require(['@/views/musicListDetail/MusicListDetail'], resolve),
         meta: {
           title: '歌单页面',
           requireLogin: false
@@ -257,7 +257,7 @@ const routes = [
       {
         // 播放视频
         path: '/playvideo/:id',
-        component: () => import('@/views/playVideo/index'),
+        component: resolve => require(['@/views/playVideo/index'], resolve),
         meta: {
           title: '视频播放',
           requireLogin: true
@@ -267,12 +267,12 @@ const routes = [
         // 所有视频
         path: '/allVideo',
         // 播放视频详情页面
-        component: () => import('@/views/allVideo/alllVideoDetail')
+        component: resolve => require(['@/views/allVideo/alllVideoDetail'], resolve)
       },
       {
         // 电台
         path: '/transceiver',
-        component: () => import('@/views/friend/index'),
+        component: resolve => require(['@/views/friend/index']),
         meta: {
           title: '电台',
           requireLogin: true,
@@ -281,7 +281,7 @@ const routes = [
       },
       {
         path: '/artist/albumDetail/:id',
-        component: () => import('@/views/AlbumDetail/ArtistAlbumDetail.vue'),
+        component: resolve => require(['@/views/AlbumDetail/ArtistAlbumDetail.vue'], resolve),
         meta: {
           title: '歌手专辑',
           requireLogin: false
