@@ -59,7 +59,7 @@ const routes = [
           {
             // 发现音乐-歌手
             path: '/discover/artist',
-            component: () => import('@/views/artistCategory/index'),
+            component: resolve => require(['@/views/artistCategory/index'], resolve),
             meta: {
               title: '歌手',
               keepLive: true,
