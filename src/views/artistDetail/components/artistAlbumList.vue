@@ -1,68 +1,61 @@
 <template>
-  <div class='album-list'>
-    <p class='top'>{{ album.name }}</p>
-    <div class='album'>
-      <div class='left'>
-        <div class='icon'>
-          <img v-imgLazy :data-src="album.picUrl + '?param=280y260'" alt='' src=''>
+  <div class="album-list">
+    <p class="top">{{ album.name }}</p>
+    <div class="album">
+      <div class="left">
+        <div class="icon">
+          <img v-imgLazy :data-src="album.picUrl + '?param=280y260'" alt="" src="" />
         </div>
       </div>
-      <div class='right'>
-        <div class='music'>
+      <div class="right">
+        <div class="music">
           <table>
             <tbody>
-            <tr v-for='(item,index) in musicList' :key='index' :class="{'backColor':setBackColor(index),'curMusicItem':playIndex == index}" @dblclick='albumClick(index)'>
-              <td :class="{'curFont':playIndex == index}">
-                {{ setSerial(index) }}
-                <div v-show='playIndex == index' class='curPlay'>
-                  <img alt='' src='../../../assets/img/playmusic/currentplay.svg'>
-                </div>
-              </td>
-              <td>
-                <img alt class='live' src='../../../assets/img/leftmenu/live.svg' />
-                <img alt class='download' src='../../../assets/img/leftmenu/xiazai.svg' />
-              </td>
-              <td>
-                {{ item.name }}
-              </td>
-              <td>
-                {{ item.time }}
-              </td>
-            </tr>
+              <tr v-for="(item, index) in musicList" :key="index" :class="{ backColor: setBackColor(index), curMusicItem: playIndex == index }" @dblclick="albumClick(index)">
+                <td :class="{ curFont: playIndex == index }">
+                  {{ setSerial(index) }}
+                  <div v-show="playIndex == index" class="curPlay">
+                    <img alt="" src="@/assets/img/playmusic/currentplay.svg" />
+                  </div>
+                </td>
+                <td>
+                  <img alt class="live" src="@/assets/img/leftmenu/live.svg" />
+                  <img alt class="download" src="@/assets/img/leftmenu/xiazai.svg" />
+                </td>
+                <td>
+                  {{ item.name }}
+                </td>
+                <td>
+                  {{ item.time }}
+                </td>
+              </tr>
             </tbody>
           </table>
-
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-// 处理列表隔行变色和id
-import { tableMixin } from '../../../mixins/tableMixin'
-// 导入获取专辑接口
-import { _getAlbum } from '../../../network/artist'
-// 导入获取歌曲信息接口
-import { _getSongsDetail, AllSongDetail, SongDetail } from '../../../network/detail'
-// 音乐混入
-import { mixinsPlayMusic } from '../../../mixins/mixinsPlayMusic'
-// 列表下标
-import { playMinxin } from '../../../mixins/mixinsBusOnPlaying'
+import { _getAlbum } from '@/network/artist';
+import { _getSongsDetail, AllSongDetail, SongDetail } from '@/network/detail';
+import { tableMixin } from '@/mixins/tableMixin';
+import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
+import { playMinxin } from '@/mixins/mixinsBusOnPlaying';
 
 export default {
   name: 'ArtistAlbumList',
   props: {
     album: {
       type: Object,
-      default: () => {
-      }
+      default: () => {}
     }
   },
   data() {
     return {
       musicList: [],
       fold: true
-    }
+    };
   },
   mixins: [tableMixin, mixinsPlayMusic, playMinxin],
   created() {
@@ -72,25 +65,25 @@ export default {
       _getAlbum(this.album.id).then(res => {
         if (res.data.songs.length === 1) {
           _getSongsDetail(res.data.songs[0].id).then(res => {
-            this.musicList.push(new SongDetail(res.data.songs))
-          })
+            this.musicList.push(new SongDetail(res.data.songs));
+          });
         } else {
-          const ids = res.data.songs.map(item => item.id).join(',')
+          const ids = res.data.songs.map(item => item.id).join(',');
           _getSongsDetail(ids).then(res => {
-            res.data.songs.forEach(item => this.musicList.push(new AllSongDetail(item)))
-          })
+            res.data.songs.forEach(item => this.musicList.push(new AllSongDetail(item)));
+          });
         }
-      })
+      });
     }
   },
   methods: {
     albumClick(i) {
-      this.playMusic(i)
+      this.playMusic(i);
     }
   }
-}
+};
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .album-list {
   margin-top: 50px;
   width: 100%;

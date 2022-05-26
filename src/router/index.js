@@ -185,37 +185,8 @@ const routes = [
         //歌手信息
         path: '/artist',
         // 歌手详细信息开始
-        component: resolve => require(['@/views/artistDetail/ArtistDetail'], resolve),
-        meta: {
-          title: '歌手信息',
-          requireLogin: false
-        },
-        children: [
-          {
-            path: '/',
-            redirect: '/artist/album'
-          },
-          // 歌手专辑
-          {
-            path: '/artist/album',
-            component: resolve => require(['@/views/artistDetail/childRouter/ArtistAlbum'], resolve)
-          },
-          // 歌手mv
-          {
-            path: '/artist/artistmv',
-            component: resolve => require(['@/views/artistDetail/childRouter/ArtistMv'], resolve)
-          },
-          // 歌手详情
-          {
-            path: '/artist/desc',
-            component: resolve => require(['@/views/artistDetail/childRouter/ArtistDescDetail'], resolve)
-          },
-          // 相似歌手
-          {
-            path: '/artist/similar',
-            component: resolve => require(['@/views/artistDetail/childRouter/ArtistSimilar'], resolve)
-          }
-        ]
+        component: resolve => require(['@/views/artistDetail/index'], resolve),
+        meta: { title: '歌手信息', requireLogin: false }
       },
       {
         // input输入框搜索信息，搜索内容

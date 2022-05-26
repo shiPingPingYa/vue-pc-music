@@ -47,7 +47,7 @@ export default {
       this.$emit('inputBlur');
     },
     goArtistDetail(item) {
-      this.$router.push({ path: '/artist/album', query: { id: item.id } });
+      this.$router.push({ path: '/artist', query: { id: item.id } });
       this.$emit('inputBlur');
     }
   }

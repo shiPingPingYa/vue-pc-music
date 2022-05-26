@@ -1,52 +1,56 @@
 <template>
-  <div v-if='musicList.length !== 0' class='artist-album'>
-    <p class='top'>热门50首</p>
-    <div class='hot50'>
+  <div v-if="musicList.length !== 0" class="artist-album">
+    <p class="top">热门50首</p>
+    <div class="hot50">
       <!-- 左边内容区域 -->
-      <div class='left'>
+      <div class="left">
         <!-- //专辑图片 -->
-        <div class='icon'>
-          <img v-imgLazy :data-src="musicList[0].pic  + '?param=280y260'" alt='' src=''>
+        <div class="icon">
+          <img v-imgLazy :data-src="musicList[0].pic + '?param=280y260'" alt="" src="" />
         </div>
       </div>
       <!-- 右边内容区域 -->
-      <div class='right'>
+      <div class="right">
         <!-- 通过下面toggle-fold来动态切换类名fold(flold写死了高320) -->
-        <div :class="{'fold':fold}" class='music'>
+        <div :class="{ fold: fold }" class="music">
           <table>
             <tbody>
-            <tr v-for='(item,index) in musicList' :key='index' :class="{'backColor':setBackColor(index),'curMusicItem':playIndex == index}" @dblclick='handleCurrentIndex(index)'>
-              <td :class="{'curFont':playIndex == index}">
-                {{ setSerial(index) }}
-                <div v-show='playIndex == index' class='curPlay'>
-                  <img alt='' src='../../../assets/img/playmusic/currentplay.svg'>
-                </div>
-              </td>
-              <td>
-                <img alt class='live' src='../../../assets/img/leftmenu/live.svg' />
-                <img alt class='download' src='../../../assets/img/leftmenu/xiazai.svg' />
-              </td>
-              <td>{{ item.name }}</td>
-              <td>{{ item.album }}</td>
-              <td>{{ item.time }}</td>
-            </tr>
+              <tr
+                v-for="(item, index) in musicList"
+                :key="index"
+                :class="{ backColor: setBackColor(index), curMusicItem: playIndex == index }"
+                @dblclick="handleCurrentIndex(index)"
+              >
+                <td :class="{ curFont: playIndex == index }">
+                  {{ setSerial(index) }}
+                  <div v-show="playIndex == index" class="curPlay">
+                    <img alt="" src="@/assets/img/playmusic/currentplay.svg" />
+                  </div>
+                </td>
+                <td>
+                  <img alt class="live" src="@/assets/img/leftmenu/live.svg" />
+                  <img alt class="download" src="@/assets/img/leftmenu/xiazai.svg" />
+                </td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.album }}</td>
+                <td>{{ item.time }}</td>
+              </tr>
             </tbody>
           </table>
         </div>
-        <div class='toggle-fold' @click='fold = !fold'>
-          <span v-if='fold'>查看全部</span>
+        <div class="toggle-fold" @click="fold = !fold">
+          <span v-if="fold">查看全部</span>
           <span v-else>收起</span>
         </div>
       </div>
-      <div class='clear'></div>
+      <div class="clear"></div>
     </div>
   </div>
 </template>
 <script>
-import { tableMixin } from '../../../mixins/tableMixin'
-import { playMinxin } from '../../../mixins/mixinsBusOnPlaying'
-import { mixinsPlayMusic } from '../../../mixins/mixinsPlayMusic'
-
+import { tableMixin } from '@/mixins/tableMixin';
+import { playMinxin } from '@/mixins/mixinsBusOnPlaying';
+import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
 export default {
   name: 'ArtistHot',
   mixins: [tableMixin, playMinxin, mixinsPlayMusic],
@@ -54,24 +58,24 @@ export default {
     musicList: {
       type: Array,
       default() {
-        return []
+        return [];
       }
     }
   },
   data() {
     return {
       fold: true
-    }
+    };
   },
   methods: {
     // 处理音乐小喇叭
     handleCurrentIndex(i) {
-      this.playMusic(i)
+      this.playMusic(i);
     }
   }
-}
+};
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .artist-album {
   width: 100%;
 
