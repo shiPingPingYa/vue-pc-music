@@ -252,7 +252,7 @@ const routes = [
       },
       {
         path: '/artist/albumDetail/:id',
-        component: resolve => require(['@/views/AlbumDetail/ArtistAlbumDetail.vue'], resolve),
+        component: resolve => require(['@/views/album/index'], resolve),
         meta: {
           title: '歌手专辑',
           requireLogin: false
