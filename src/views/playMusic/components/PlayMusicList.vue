@@ -1,15 +1,12 @@
 <template>
   <div class="play-music-list" v-if="musicList.length !== 0">
-    <!-- 头部区域 -->
     <div class="top">
       <div class="title">音乐播放列表</div>
       <div class="cancel" @click="cancel()">
         <img src="@/assets/img/content/x.svg" alt />
       </div>
-      <!-- 清除浮动 -->
       <div class="clear"></div>
     </div>
-    <!-- 音乐列表区域 -->
     <scroll ref="play_music_scroll" class="play-music-list-scroll">
       <MusicItem @musicItemClick="musicItemClick" :musicList="musicList" />
     </scroll>
