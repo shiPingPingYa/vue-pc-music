@@ -1,7 +1,7 @@
 <template>
   <div class="artist_album_detail">
     <scroll class="artist_album_scroll">
-      <album-info :albumInfo="albumInfo"></album-info>
+      <AlbumInfo :albumInfo="albumInfo" />
       <div class="album_bar">
         <div class="album_bar_item" :class="{ isAlbum_item: currentIndex === index }" v-for="(item, index) in tabBarList" :key="index" @click="albumClick(index)">
           {{ item }}
