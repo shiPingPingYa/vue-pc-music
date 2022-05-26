@@ -79,7 +79,7 @@ const routes = [
           {
             // 发现音乐-MV
             path: '/discover/mv',
-            component: () => import('@/views/discoverMv/index'),
+            component: resolve => require(['@/views/discoverMv/index'], resolve),
             meta: {
               title: 'MV首页',
               keepLive: true,
@@ -104,19 +104,19 @@ const routes = [
           {
             // 动态
             path: '/friend/userdynamic',
-            component: () => import('@/views/userDynamic/index'),
+            component: resolve => require(['@/views/userDynamic/index'], resolve),
             meta: { requireLogin: true }
           },
           {
             // 粉丝
             path: '/friend/userfolloweds',
-            component: () => import('@/views/userfolloweds/index'),
+            component: resolve => require(['@/views/userfolloweds/index'], resolve),
             meta: { requireLogin: true }
           },
           {
             // 关注
             path: '/friend/userAttention',
-            component: () => import('@/views/userAttention/index'),
+            component: resolve => require(['@/views/userAttention/index'], resolve),
             meta: { requireLogin: true }
           }
         ]
@@ -124,7 +124,7 @@ const routes = [
       {
         // 每日推荐
         path: '/daymusic',
-        component: () => import('@/views/dailyRecommendation/index'),
+        component: resolve => require(['@/views/dailyRecommendation/index'], resolve),
         meta: {
           title: '每日歌曲推荐',
           requireLogin: false
@@ -133,7 +133,7 @@ const routes = [
       {
         //用户详情页面
         path: '/userDetail',
-        component: () => import('@/views/userDetail/index'),
+        component: resolve => require(['@/views/userDetail/index'], resolve),
         meta: {
           title: '用户详情',
           keepLive: true,
@@ -143,7 +143,7 @@ const routes = [
       {
         //其他用户详情页面
         path: '/otherUserDetail',
-        component: () => import('@/views/userDetail/components/otherUserDetail'),
+        component: resolve => require(['@/views/userDetail/components/otherUserDetail'], resolve),
         meta: {
           title: '用户歌单',
           requireLogin: true,
@@ -153,7 +153,7 @@ const routes = [
       {
         //话题排行榜
         path: '/hotTopicRankList',
-        component: () => import('@/views/hotTopic/index'),
+        component: resolve => require(['@/views/hotTopic/index'], resolve),
         meta: {
           title: '热门话题',
           requireLogin: true
@@ -162,7 +162,7 @@ const routes = [
       {
         //话题详情页
         path: '/topicDetail/:id',
-        component: () => import('@/views/topicDetail/index'),
+        component: resolve => require(['@/views/topicDetail/index'], resolve),
         meta: {
           title: '话题详情',
           requireLogin: true
@@ -170,7 +170,7 @@ const routes = [
       },
       {
         path: '/noticesDetail/:id/:type',
-        component: () => import('@/views/noticeDetail/index'),
+        component: resolve => require(['@/views/noticeDetail/index'], resolve),
         meta: {
           title: '通知详情',
           requireLogin: true
@@ -179,13 +179,13 @@ const routes = [
       {
         //404页面
         path: '/404',
-        component: () => import('@/components/common/error/404.vue')
+        component: resolve => require(['@/components/common/error/404.vue'], resolve)
       },
       {
         //歌手信息
         path: '/artist',
         // 歌手详细信息开始
-        component: () => import('@/views/artistDetail/ArtistDetail'),
+        component: resolve => require(['@/views/artistDetail/ArtistDetail'], resolve),
         meta: {
           title: '歌手信息',
           requireLogin: false
@@ -198,22 +198,22 @@ const routes = [
           // 歌手专辑
           {
             path: '/artist/album',
-            component: () => import('@/views/artistDetail/childRouter/ArtistAlbum')
+            component: resolve => require(['@/views/artistDetail/childRouter/ArtistAlbum'], resolve)
           },
           // 歌手mv
           {
             path: '/artist/artistmv',
-            component: () => import('@/views/artistDetail/childRouter/ArtistMv')
+            component: resolve => require(['@/views/artistDetail/childRouter/ArtistMv'], resolve)
           },
           // 歌手详情
           {
             path: '/artist/desc',
-            component: () => import('@/views/artistDetail/childRouter/ArtistDescDetail')
+            component: resolve => require(['@/views/artistDetail/childRouter/ArtistDescDetail'], resolve)
           },
           // 相似歌手
           {
             path: '/artist/similar',
-            component: () => import('@/views/artistDetail/childRouter/ArtistSimilar')
+            component: resolve => require(['@/views/artistDetail/childRouter/ArtistSimilar'], resolve)
           }
         ]
       },
