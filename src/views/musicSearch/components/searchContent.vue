@@ -44,11 +44,11 @@ export default {
       searchList.push(v);
       oLocalStorage.set('searchList', JSON.stringify(searchList));
       this.$router.push('/search/' + v);
-      this.$parent.$parent.handiveInputBlur();
+      this.$emit('inputBlur');
     },
     goArtistDetail(item) {
       this.$router.push({ path: '/artist/album', query: { id: item.id } });
-      this.$parent.$parent.handiveInputBlur();
+      this.$emit('inputBlur');
     }
   }
 };
