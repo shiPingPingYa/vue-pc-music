@@ -79,23 +79,23 @@ export default {
       const {
         data: { comments }
       } = await _musicRecommend(this.music.id, this.limit, this.recommends.length);
-      // 评论已经被请求完毕
       if (comments.length === 0) {
-        this.$Message.info('评论已经加载完毕，暂无更多评论');
-        // 修改评论组件，评论提示消息
-        this.$refs.music_recommends.recommendTitle = '评论加载完毕，暂无更多.....';
-      } else {
-        // 遍历添加请求成功后的歌单评论
-        comments.forEach(item => this.recommends.push(item));
-      }
+        this.$message.info('评论已经加载完毕，暂无更多评论');
+        this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....';
+      } else comments.forEach(item => this.recommends.push(item));
     },
     // 发送评论后，重新获取评论
-    getCommends() {
-      // 清除评论数据
+    async getCommends() {
       this.recommends = [];
-      _musicRecommend(this.music.id, this.limit, 0).then(res => {
-        res.data.comments.forEach(item => this.recommends.push(item));
+      const {
+        data: { comments }
+      } = await _getRecommends({
+        id: this.id,
+        limit: this.limit,
+        offset: 0,
+        timestamp: Date.now()
       });
+      this.recommends = comments;
     }
   }
 };
