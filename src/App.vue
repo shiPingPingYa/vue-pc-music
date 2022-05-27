@@ -10,6 +10,7 @@ export default {
   name: 'App',
   mounted() {
     this.initUserSongList();
+    this.$router.push('/discover');
   },
   methods: {
     ...mapMutations(['showLogin', 'setIslogin']),
