@@ -33,7 +33,7 @@ export default {
       tabList: ['单曲', '歌手'],
       artistsList: [],
       musicList: [],
-      key: '',
+      key: "",
       newkey: ''
     };
   },
