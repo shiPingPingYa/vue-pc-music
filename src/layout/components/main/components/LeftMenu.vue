@@ -110,7 +110,7 @@ export default {
     handleSongItemClick(i) {
       this.songListIndex = i.toString();
       this.activeIndex = '';
-      this.$router.push('/musicListDetail/' + this.userSongList[i].id); // 跳转音乐详情页面
+      this.$router.push({ path: '/musicListDetail', query: { id: this.userSongList[i].id } });
     },
     handleMenuMouseEnter() {
       this.isCollapse = false;

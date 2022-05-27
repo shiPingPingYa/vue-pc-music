@@ -73,7 +73,7 @@ export default {
     },
     // 条状到音乐详情页
     goMusicListDetail(index) {
-      this.$router.push({ path: '/musiclistdetail/', query: { id: this.totalList[index].id } });
+      this.$router.push({ path: '/musicListDetail', query: { id: this.totalList[index].id } });
     },
     isGetDay(day) {
       return {
