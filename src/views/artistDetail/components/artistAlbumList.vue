@@ -8,29 +8,23 @@
         </div>
       </div>
       <div class="right">
-        <div class="music">
-          <table>
-            <tbody>
-              <tr v-for="(item, index) in musicList" :key="index" :class="{ backColor: setBackColor(index), curMusicItem: playIndex == index }" @dblclick="albumClick(index)">
-                <td :class="{ curFont: playIndex == index }">
-                  {{ setSerial(index) }}
-                  <div v-show="playIndex == index" class="curPlay">
-                    <img alt="" src="@/assets/img/playmusic/currentplay.svg" />
-                  </div>
-                </td>
-                <td>
-                  <img alt class="live" src="@/assets/img/leftmenu/live.svg" />
-                  <img alt class="download" src="@/assets/img/leftmenu/xiazai.svg" />
-                </td>
-                <td>
-                  {{ item.name }}
-                </td>
-                <td>
-                  {{ item.time }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="music-table">
+          <div :class="['music-table-tr', playIndex == index ? 'active-music' : '']" v-for="(item, index) in musicList" :key="index" @dblclick="musicItemClick(index)">
+            <div class="music-table-td">
+              {{ setSerial(index) }}
+              <div class="active-icon" v-show="playIndex == index">
+                <img src="@/assets/img/playmusic/currentplay.svg" alt="" />
+              </div>
+            </div>
+            <div class="music-table-td">
+              <img src="@/assets/img/leftmenu/live.svg" alt="" class="live" />
+              <img src="@/assets/img/leftmenu/xiazai.svg" alt="" class="download" />
+            </div>
+            <div class="music-table-td one-over-eclipse">{{ item.name }}</div>
+            <div class="music-table-td  one-over-eclipse">{{ item.song }}</div>
+            <div class="music-table-td  one-over-eclipse">{{ item.album }}</div>
+            <div class="music-table-td">{{ item.time }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -39,12 +33,12 @@
 <script>
 import { _getAlbum } from '@/network/artist';
 import { _getSongsDetail, AllSongDetail, SongDetail } from '@/network/detail';
-import { tableMixin } from '@/mixins/tableMixin';
 import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
 import { playMinxin } from '@/mixins/mixinsBusOnPlaying';
 
 export default {
   name: 'ArtistAlbumList',
+  mixins: [mixinsPlayMusic, playMinxin],
   props: {
     album: {
       type: Object,
@@ -57,7 +51,6 @@ export default {
       fold: true
     };
   },
-  mixins: [tableMixin, mixinsPlayMusic, playMinxin],
   created() {
     // 判断专辑信息是否为空
     if (this.album !== null) {
@@ -77,6 +70,9 @@ export default {
     }
   },
   methods: {
+    setSerial(i) {
+      return i + 1 <= 9 ? `0${i + 1}` : i + 1;
+    },
     albumClick(i) {
       this.playMusic(i);
     }
@@ -104,10 +100,8 @@ export default {
 
     > .left {
       width: 20%;
-
       > .icon {
         width: 100%;
-
         > img {
           padding: 0 0 0 20px;
           width: 100%;
@@ -115,99 +109,75 @@ export default {
         }
       }
     }
-
     > .right {
       margin-left: 40px;
       width: 75%;
     }
   }
 }
-
-.music tr td .live {
-  margin: auto;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 20px !important;
-  height: 26px !important;
-  vertical-align: -2px;
-}
-
-.music tr td .download {
-  margin-left: 26px;
-  width: 20px !important;
-  height: 26px !important;
-}
-
-.music > table {
-  margin-top: 4px;
+.music-table {
   width: 100%;
-  border: 1px solid #e6e7e9;
-}
-
-.music tbody {
-  color: #575757;
-}
-
-.music tbody tr td {
-  border: none;
-}
-
-.music tr td {
-  position: relative;
-  border: 1px solid #23262c;
-}
-
-.music tr {
-  height: 30px;
-  text-align: left;
-}
-
-.music tr:hover {
-  background-color: #c9c6c6;
-  cursor: pointer;
-}
-
-.music tr td:nth-child(1) {
-  width: 10%;
-  text-align: center;
-  color: rgb(36, 199, 240);
-}
-
-.music tr td:nth-child(2) {
-  width: 12%;
-
-  > img {
-    width: 20px;
-    opacity: 0.4;
+  & > .music-table-tr {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    cursor: pointer;
+    &:hover {
+      color: #0a0a0a;
+      background-color: #c9c6c6;
+    }
+    & > div {
+      padding: 6px;
+      text-align: center;
+      line-height: 28px;
+    }
+    & > .music-table-td:nth-child(1) {
+      position: relative;
+      width: 10%;
+      color: rgb(36, 199, 240);
+    }
+    & > .music-table-td:nth-child(2) {
+      width: 10%;
+      & > img {
+        width: 20px;
+      }
+    }
+    & > .music-table-td:nth-child(3) {
+      width: 26%;
+      max-width: 190px;
+    }
+    & > .music-table-td:nth-child(4) {
+      width: 18%;
+    }
+    & > .music-table-td:nth-child(5) {
+      width: 18%;
+      max-width: 162px;
+    }
+    & > .music-table-td:nth-child(6) {
+      width: 18%;
+    }
   }
-}
-
-.music tr td .live {
-  position: absolute;
-  margin: auto;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.music tr td .download {
-  margin-left: 26px;
-}
-
-.music tbody tr td:nth-child(3) {
-  width: 24%;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  color: #0a0a0a;
-}
-
-.music tr td:nth-child(4) {
-  width: 16%;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  & > .music-table-tr:nth-child(odd) {
+    background-color: #eeecec;
+  }
+  .active-icon {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    z-index: 1;
+  }
+  .active-music {
+    background-color: #c9c6c6 !important;
+    & > div:nth-child(1) {
+      color: transparent !important;
+    }
+  }
 }
 </style>
