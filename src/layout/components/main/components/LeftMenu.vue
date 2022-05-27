@@ -92,10 +92,14 @@ export default {
       return document.getElementsByClassName('left-menu-container ')[0];
     }
   },
-  watch: {
-    $route(route) {
-      this.initMenuIndex(route);
-    }
+  mounted() {
+    this.$bus.$on('handleMenuMouseLeave', () => {
+      this.isCollapse = true;
+      this.$nextTick(() => {
+        this.left_menu.style.width = '68px';
+      });
+    });
+    this.initMenuIndex(this.$route);
   },
   methods: {
     // 显示喜欢歌单
@@ -141,15 +145,6 @@ export default {
         }
       });
     }
-  },
-  mounted() {
-    this.$bus.$on('handleMenuMouseLeave', () => {
-      this.isCollapse = true;
-      this.$nextTick(() => {
-        this.left_menu.style.width = '68px';
-      });
-    });
-    this.initMusicListIndex();
   }
 };
 </script>
