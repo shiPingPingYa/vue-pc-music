@@ -75,11 +75,11 @@ export default {
   width: 100%;
 
   > .top {
-    padding-left: 26%;
     display: block;
-    height: 20px;
+    padding: 20px 0 8px 26%;
+    line-height: 20px;
     color: #0a0a0a;
-    font-size: 14px;
+    font-size: 18px;
   }
 
   > .hot50 {
