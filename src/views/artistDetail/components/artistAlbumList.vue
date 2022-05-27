@@ -87,10 +87,10 @@ export default {
 
   > .top {
     display: block;
-    padding-left: 26%;
-    height: 20px;
+    padding: 0 0 8px 26%;
+    line-height: 20px;
     color: #0a0a0a;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   > .album {
