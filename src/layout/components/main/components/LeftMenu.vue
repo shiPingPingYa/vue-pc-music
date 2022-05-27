@@ -58,7 +58,7 @@ export default {
           transform: false,
           children: [
             {
-              path: '/discover',
+              path: '/discover/individ',
               icon: 'el-icon-bell',
               label: '发现音乐',
               transform: false
@@ -93,23 +93,8 @@ export default {
     }
   },
   watch: {
-    // 网页刷新后设置左侧路由和音乐列表的选中
-    $route: {
-      handler(route) {
-        const pathList = route.path.split('/');
-        if (pathList.includes('musicListDetail')) {
-          this.initMusicListIndex();
-        } else {
-          const currtPanth = pathList[1];
-          this.list.some((item, index) => {
-            return item.children.some((itemChildren, indexChildren) => {
-              if (itemChildren.path.split('/')[1] === currtPanth) {
-                return (this.activeIndex = `${index.toString()}-${indexChildren.toString()}`), (this.songListIndex = '');
-              }
-            });
-          });
-        }
-      }
+    $route(route) {
+      this.initMenuIndex(route);
     }
   },
   methods: {
@@ -131,16 +116,30 @@ export default {
       this.isCollapse = false;
       this.left_menu.style.width = '188px';
     },
-    // 网页刷新后设置歌单列表的选中
-    initMusicListIndex() {
-      const pathList = location.href.split('#')[1].split('/');
+    initMenuIndex(route) {
+      const pathList = route.path.split('/');
       if (pathList.includes('musicListDetail')) {
-        this.userSongList.some((item, index) => {
-          if (item.id === Number(pathList[2])) {
-            return (this.songListIndex = index.toString()), (this.activeIndex = '');
+        this.initMusicListIndex(pathList[2]);
+      } else {
+        let path = pathList[1];
+        this.list[0].children.some((item, index) => {
+          if (item.path == path) {
+            this.activeIndex = `0-${index}`;
+            this.songListIndex = '';
+            return;
           }
         });
       }
+    },
+    // 网页刷新后设置歌单列表的选中
+    initMusicListIndex(id) {
+      this.userSongList.some((item, index) => {
+        if (item.id == id) {
+          this.songListIndex = index.toString();
+          this.activeIndex = '';
+          return;
+        }
+      });
     }
   },
   mounted() {
