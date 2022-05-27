@@ -92,11 +92,6 @@ export default {
       return document.getElementsByClassName('left-menu-container ')[0];
     }
   },
-  watch: {
-    $route(route) {
-      this.initMenuIndex(route);
-    }
-  },
   mounted() {
     this.$bus.$on('handleMenuMouseLeave', () => {
       this.isCollapse = true;
