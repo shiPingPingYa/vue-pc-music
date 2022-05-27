@@ -16,7 +16,7 @@
       </div>
     </div>
     <!-- 播放内容区域 -->
-    <player v-show="isPlayerShow" ref="player" :music="playList[currentIndex]" :lyric="lyric"></player>
+    <Player v-show="isPlayerShow" ref="player" :music="playList[currentIndex]" :lyric="lyric" />
     <!-- 播放条左边区域 -->
     <div class="play-music-left">
       <!-- 开始按钮 -->
@@ -44,7 +44,7 @@
       ></audio>
       <!-- 进度条 -->
       <div class="music-progress">
-        <music-progress ref="music_pro" class="music-progress-children" @childClickScale="setMusicProgress"></music-progress>
+        <MusicProgress ref="music_pro" class="music-progress-children" @childClickScale="setMusicProgress" />
         <div class="music-currtTime">{{ currentTime }}/{{ duration }}</div>
       </div>
       <!-- 音量 -->
@@ -52,7 +52,7 @@
         <div class="volumb-icon" @click="toggleVolumn">
           <img :src="!isVolumn ? volumnIcon : noVolumnIcon" alt="" />
         </div>
-        <music-progress ref="music_volumn" @childClickScale="setVolumn"></music-progress>
+        <MusicProgress ref="music_volumn" @childClickScale="setVolumn" />
       </div>
       <!-- 歌词,歌曲列表,播放顺序 -->
       <div class="music-icon">
@@ -76,8 +76,7 @@
         </div>
       </div>
     </div>
-    <!-- 播放音乐列表 -->
-    <play-music-list class="play-music-list" v-show="isMusicList" :musicList="musicList"></play-music-list>
+    <PlayMusicList class="play-music-list" v-show="isMusicList" :musicList="musicList" />
     <!-- 首页歌词 -->
     <Lyric ref="lyric" class="play-music-lyric" :lyric="lyric" v-show="isLyric"></Lyric>
   </div>

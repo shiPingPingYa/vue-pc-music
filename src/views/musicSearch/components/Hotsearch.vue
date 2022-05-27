@@ -67,8 +67,8 @@ export default {
       let searchList = (oLocalStorage.get('searchList') && JSON.parse(oLocalStorage.get('searchList'))) || [];
       searchList.push(v);
       oLocalStorage.set('searchList', JSON.stringify(searchList));
+      this.$emit('inputBlur');
       this.$router.push('/search/' + v);
-      this.$parent.$parent.handleInputBlur();
     }
   }
 };

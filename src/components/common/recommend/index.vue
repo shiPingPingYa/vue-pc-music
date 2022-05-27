@@ -38,8 +38,8 @@
             <div class="item_right" @mouseenter="showReport = index" @mouseleave="showReport = -1">
               <div :class="{ comments_report: showReport === index }">举报</div>
               <div class="like_count" @click="setCommentsLikedCount(item.commentId)">
-                <span v-if="likeCount !== item.commentId"><img src="../../../assets/img/clickLike.svg" alt="" />{{ item.likedCount }} </span>
-                <span v-else style="color: red"><img src="../../../assets/img/is_clickLike.svg" alt="" />{{ item.likedCount }} </span>
+                <span v-if="likeCount !== item.commentId"><img src="@/assets/img/clickLike.svg" alt="" />{{ item.likedCount }} </span>
+                <span v-else style="color: red"><img src="@/assets/img/is_clickLike.svg" alt="" />{{ item.likedCount }} </span>
               </div>
               <div class="comments_share">分享</div>
               <div class="reply" @click="replyComments(item.commentId, item.user.nickname)">回复</div>
