@@ -21,7 +21,7 @@ import { _Search } from '@/network/search';
 import { formDate } from '@/assets/common/tool';
 import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
 import MusicItem from '@/components/musicItem';
-import ArtistItem from './components/artistItem';
+import ArtistItem from './components/ArtistItem';
 
 export default {
   name: 'searchMusicDeatil',
@@ -33,7 +33,7 @@ export default {
       tabList: ['单曲', '歌手'],
       artistsList: [],
       musicList: [],
-      key: "",
+      key: '',
       newkey: ''
     };
   },
