@@ -22,8 +22,13 @@ export default {
       descDetail: null
     };
   },
-  created() {
-    this.initArtistDesc();
+  watch: {
+    '$route.query.id': {
+      handler() {
+        this.initArtistDesc();
+      },
+      immediate: true
+    }
   },
   methods: {
     async initArtistDesc() {

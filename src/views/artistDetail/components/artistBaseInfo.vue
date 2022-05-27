@@ -10,14 +10,8 @@
         <span class="right">收藏</span>
       </div>
       <div class="center">
-        <div class="play">
-          <img src="@/assets/img/leftmenu/music.svg" alt="" />
-          单曲数:{{ baseInfo.musicSize }}
-        </div>
-        <div class="album">
-          <img src="@/assets/img/artist/album.svg" alt="" />
-          专辑数:{{ baseInfo.albumSize }}
-        </div>
+        <div class="play"><img src="@/assets/img/leftmenu/music.svg" alt="" />单曲数:{{ baseInfo.musicSize }}</div>
+        <div class="album"><img src="@/assets/img/artist/album.svg" alt="" />专辑数:{{ baseInfo.albumSize }}</div>
       </div>
       <div class="describe">
         <div class="introduce">
@@ -35,37 +29,34 @@ export default {
   data() {
     return {
       baseInfo: null,
-      artistDes: ''
+      artistDes: '',
+      id: ''
     };
   },
   watch: {
     '$route.query.id': {
-      handler(oldId) {
-        this.id = oldId;
+      handler(id) {
+        this.id = id;
         this.initArtistInfo();
         this.initArtistDes();
-      }
+      },
+      immediate: true
     }
-  },
-  created() {
-    this.id = this.$route.query.id;
-    this.initArtistInfo();
-    this.initArtistDes();
   },
   methods: {
     async initArtistInfo() {
-      const {
-        data: {
-          data: { artist }
-        }
-      } = await _getArtistDetail({ id: this.id });
-      this.baseInfo = artist;
+      const { data } = await _getArtistDetail({ id: this.id });
+      if (data.code == 200) {
+        let { artist } = data.data;
+        this.baseInfo = artist;
+      }
     },
     async initArtistDes() {
-      const {
-        data: { briefDesc }
-      } = await _getArtistDesc({ id: this.id });
-      this.artistDes = briefDesc;
+      const { data } = await _getArtistDesc({ id: this.id });
+      if (data.code == 200) {
+        let { briefDesc } = data;
+        this.artistDes = briefDesc;
+      }
     }
   }
 };

@@ -7,23 +7,25 @@
 <script>
 import { _getArtistAlbum, _getArtistHot50 } from '@/network/artist';
 import { _getSongsDetail } from '@/network/detail';
+import { formDate } from '@/assets/common/tool';
 import ArtistHot50 from './artistHot50';
 import ArtistAlbumList from './artistAlbumList';
-import { formDate } from '@/assets/common/tool';
 export default {
   name: 'ArtistAlbum',
-  components: {
-    ArtistHot50,
-    ArtistAlbumList
-  },
+  components: { ArtistHot50, ArtistAlbumList },
   data() {
     return {
       musicList: [],
       albumList: []
     };
   },
-  created() {
-    this.initMusicListAndAlbum();
+  watch: {
+    '$route.query.id': {
+      handler() {
+        this.initMusicListAndAlbum();
+      },
+      immediate: true
+    }
   },
   methods: {
     async initMusicListAndAlbum() {
@@ -34,7 +36,6 @@ export default {
       } = await _getArtistHot50(id);
       // 拼接音乐id字符串
       const ids = songs.map(item => item.id).join(',');
-
       const {
         data: { songs: musicList }
       } = await _getSongsDetail(ids); // 获取用户歌曲详细信息

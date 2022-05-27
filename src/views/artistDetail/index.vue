@@ -26,7 +26,6 @@ export default {
   components: { ArtistBaseInfo, ArtistAlbum, ArtistDescDetail, ArtistMv, ArtistSimilar },
   data() {
     return {
-      id: '',
       currentIndex: 0,
       tabList: ['专辑', 'MV', '歌手详情', '相似歌手'],
       pageMap: {

@@ -1,15 +1,15 @@
 <template>
-  <div class="similar_artist">
-    <el-row type="flex" justify="space-around" style="flex-wrap: wrap; flex-direction: row">
-      <el-col :span="5" v-for="item in similarArtistList" :key="item.id">
+  <div class="similar-detail">
+    <div class="similar-list">
+      <div class="similar-item" v-for="item in similarArtistList" :key="item.id">
         <img src="" :data-src="item.img1v1Url + '?param=260y260'" alt="" @click="goArtistDetail(item)" v-imgLazy />
         <div class="artist_name">{{ item.name }}</div>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import { _getArtistSimilar } from '../../../network/artist';
+import { _getArtistSimilar } from '@/network/artist';
 export default {
   name: 'ArtistSimilar',
   data() {
@@ -17,8 +17,13 @@ export default {
       similarArtistList: ''
     };
   },
-  created() {
-    this.initSimilarArtist();
+  watch: {
+    '$route.query.id': {
+      handler() {
+        this.initSimilarArtist();
+      },
+      immediate: true
+    }
   },
   methods: {
     async initSimilarArtist() {
@@ -35,16 +40,30 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.similar_artist {
-  .artist_name {
-    text-align: center;
-    color: #2e6bbd;
-  }
-
-  img {
+.similar-detail {
+  width: 100%;
+  & > .similar-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
     width: 100%;
-    height: 260px;
-    cursor: pointer;
+    & > .similar-item {
+      width: 160px;
+      padding: 30px;
+      text-align: center;
+      font-size: 12px;
+      cursor: pointer;
+      &:hover {
+        transform: scale(1.2);
+        transition: all 0.6s ease-out;
+      }
+      & > img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+      }
+    }
   }
 }
 </style>
