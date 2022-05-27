@@ -66,7 +66,7 @@ export default {
     }
   },
   created() {
-    this.id = this.$route.params.id;
+    this.id = this.$route.query.id;
     localStorage.setItem('pid', this.id); // 存储歌单id，心动模式必需
     this.initMusicListDetail();
   },

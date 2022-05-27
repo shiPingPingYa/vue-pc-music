@@ -109,7 +109,7 @@ export default {
     },
     // 跳转到音乐排行榜单详情页面
     goMusicListDetail() {
-      this.$router.push('/musiclistdetail/' + this.rankId);
+      this.$router.push({ path: '/musiclistdetail/', query: { id: this.rankId } });
     },
     // 混入音乐
     handlePlayIconClick() {

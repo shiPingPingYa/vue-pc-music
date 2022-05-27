@@ -218,7 +218,7 @@ const routes = [
       },
       {
         // 歌单详情页面
-        path: '/musicListDetail/:id',
+        path: '/musicListDetail',
         component: resolve => require(['@/views/musicListDetail/MusicListDetail'], resolve),
         meta: {
           title: '歌单页面',

@@ -28,8 +28,8 @@ export default {
     //歌单数组
     totalList: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   data() {
     return {
@@ -41,8 +41,8 @@ export default {
         3: '星期三',
         4: '星期四',
         5: '星期五',
-        6: '星期六',
-      },
+        6: '星期六'
+      }
     };
   },
   computed: {
@@ -51,17 +51,17 @@ export default {
       let dateExample = new Date();
       return {
         date: dateExample.getDate(),
-        week: this.weekMap[dateExample.getDay()],
+        week: this.weekMap[dateExample.getDay()]
       };
-    },
+    }
   },
   watch: {
     '$route.path': {
       handler(path) {
         path === '/discover/individ' ? (this.isDayMusic = true) : (this.isDayMusic = false);
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
   methods: {
     // 跳转到推荐详情页
@@ -73,10 +73,7 @@ export default {
     },
     // 条状到音乐详情页
     goMusicListDetail(index) {
-      this.$router.push({
-        path: '/musiclistdetail/' + this.totalList[index].id,
-        query: { songId: this.totalList[index].id },
-      });
+      this.$router.push({ path: '/musiclistdetail/', query: { id: this.totalList[index].id } });
     },
     isGetDay(day) {
       return {
@@ -86,73 +83,73 @@ export default {
         3: '星期三',
         4: '星期四',
         5: '星期五',
-        6: '星期六',
+        6: '星期六'
       }[day];
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
-  .music-lsit {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    width: 100%;
-    padding-bottom: 60px;
+.music-lsit {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-bottom: 60px;
 
-    .day_music {
-      position: relative;
-      width: 230px;
-      height: 267px;
-      text-align: center;
-      cursor: pointer;
-      .day_music_back {
-        width: 229px;
-        height: 229px;
-        border: 1px solid #b8b6b6;
-      }
-      .day_music_time {
-        position: absolute;
-        top: 20%;
-        left: 50%;
-        transform: translateX(-50%);
-        .day_music_day {
-          font-size: 100px;
-          color: red;
-        }
-      }
+  .day_music {
+    position: relative;
+    width: 230px;
+    height: 267px;
+    text-align: center;
+    cursor: pointer;
+    .day_music_back {
+      width: 229px;
+      height: 229px;
+      border: 1px solid #b8b6b6;
     }
-
-    .song-item {
-      position: relative;
-      padding-bottom: 10px;
-      width: 24%;
-      max-width: 230px;
-      font-size: 13px;
-      color: #01060a;
-      cursor: pointer;
-      & > img {
-        width: 100%;
-        max-height: 250px;
-        min-height: 180px;
-      }
-      & > .count {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100%;
-        height: 20px;
-        line-height: 20px;
-        text-align: right;
-        color: #fafbf5;
-        background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
-        > img {
-          display: inline-block;
-          width: 10px;
-          height: 10px;
-          background-size: 100%, 100%;
-        }
+    .day_music_time {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      .day_music_day {
+        font-size: 100px;
+        color: red;
       }
     }
   }
+
+  .song-item {
+    position: relative;
+    padding-bottom: 10px;
+    width: 24%;
+    max-width: 230px;
+    font-size: 13px;
+    color: #01060a;
+    cursor: pointer;
+    & > img {
+      width: 100%;
+      max-height: 250px;
+      min-height: 180px;
+    }
+    & > .count {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 20px;
+      line-height: 20px;
+      text-align: right;
+      color: #fafbf5;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
+      > img {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background-size: 100%, 100%;
+      }
+    }
+  }
+}
 </style>
