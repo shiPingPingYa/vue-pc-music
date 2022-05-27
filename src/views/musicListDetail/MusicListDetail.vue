@@ -146,7 +146,6 @@ export default {
       });
       if (comments.length === 0) {
         this.$message.info('评论已经加载完毕，暂无更多评论');
-        // 修改评论组件，的评论提示消息
         this.$refs.songList_recommends.recommendTitle = '评论加载完毕，暂无更多.....';
       } else comments.forEach(item => this.recommends.push(item));
     },

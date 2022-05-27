@@ -8,8 +8,8 @@
       <img src="@/assets/img/search_svg.svg" @click="goMusicDetail" alt="" />
     </div>
     <transition-group name="fade-in-linear">
-      <SearchContent :key="0" v-show="musicSearchModal" :keywords="keywords" :searchMusic="searchMusic" :searchArtist="searchArtist" />
-      <HotSearch :key="1" v-if="musicHotModal" />
+      <SearchContent :key="0" v-show="musicSearchModal" :keywords="keywords" :searchMusic="searchMusic" :searchArtist="searchArtist" @inputBlur="handleInputBlur" />
+      <HotSearch :key="1" v-if="musicHotModal" @inputBlur="handleInputBlur" />
     </transition-group>
   </div>
 </template>
