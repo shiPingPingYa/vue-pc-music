@@ -14,10 +14,15 @@
         <!-- 通过下面toggle-fold来动态切换类名fold(flold写死了高320) -->
         <div :class="{ fold: fold }" class="music">
           <div class="music-table">
-            <div :class="['music-table-tr', playIndex == index ? 'active-music' : '']" v-for="(item, index) in musicList" :key="index" @dblclick="handleCurrentIndex(index)">
+            <div
+              :class="['music-table-tr', activeMusic && currentIndex == index ? 'active-music' : '']"
+              v-for="(item, index) in musicList"
+              :key="index"
+              @dblclick="handleCurrentIndex(index)"
+            >
               <div class="music-table-td">
                 {{ setSerial(index) }}
-                <div class="active-icon" v-show="playIndex == index">
+                <div class="active-icon" v-show="activeMusic && currentIndex == index">
                   <img src="@/assets/img/playmusic/currentplay.svg" alt="" />
                 </div>
               </div>
@@ -42,11 +47,11 @@
   </div>
 </template>
 <script>
-import { playMinxin } from '@/mixins/mixinsBusOnPlaying';
+import { mapState } from 'vuex';
 import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
 export default {
   name: 'ArtistHot',
-  mixins: [mixinsPlayMusic, playMinxin],
+  mixins: [mixinsPlayMusic],
   props: {
     musicList: {
       type: Array,
@@ -60,12 +65,19 @@ export default {
       fold: true
     };
   },
+  computed: {
+    ...mapState(['songListPath', 'currentIndex']),
+    activeMusic() {
+      return this.songListPath == location.hash;
+    }
+  },
   methods: {
     setSerial(i) {
       return i + 1 <= 9 ? `0${i + 1}` : i + 1;
     },
     handleCurrentIndex(i) {
-      this.playMusic(i);
+      if (location.hash === this.songListPath) this.$store.commit('setPlayMusicIndex', i);
+      else this.playMusic(i);
     }
   }
 };

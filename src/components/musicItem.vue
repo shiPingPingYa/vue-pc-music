@@ -56,7 +56,6 @@ export default {
       return this.songListPath == location.hash;
     }
   },
-
   methods: {
     setSerial(i) {
       return i + 1 <= 9 ? '0' + (i + 1) : i + 1;
