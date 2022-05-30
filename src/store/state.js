@@ -31,7 +31,17 @@ const state = {
   level: '', // 用户等级
   songListPath: '', // 播放音乐时存储的path，用于区分是否是在统一页面下面，是则不再请求接口修改音乐数据而是直接修改音乐播放列表的下标
   musicList: [], //音乐列表
-  playList: [] //播放音乐列表
+  playList: [
+    {
+      title: '南 海 花 痴（PLUS版） ',
+      artist: 'UmzBeatz',
+      index: 0,
+      id: 1430989428,
+      src: '',
+      pic: 'https://p2.music.126.net/VLgHixU0mvXYvnL8hi_l0A==/109951164804177794.jpg'
+    }
+  ], //播放音乐列表
+  currentIndex: 0 //播放音乐下标
 };
 
 export default state;

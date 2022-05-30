@@ -1,10 +1,10 @@
+import store from '@/store';
 import { _getMusicUrl } from '@/network/detail'; // 获取音乐播放地址
 export const mixinsPlayMusic = {
   methods: {
     async playMusic(index = 0) {
       // 创建路由，音乐列表(显示列表需要)，播放音乐列表
       let musicList = [];
-      const path = this.$route.path;
       let playMusicList;
       // 音乐只显示100条
       musicList = this.musicList.length >= 200 ? this.musicList.slice(0, 100) : this.musicList;
@@ -34,7 +34,9 @@ export const mixinsPlayMusic = {
       });
       // 排序(升序)
       playMusicList.sort((a, b) => a.index - b.index);
-      this.$bus.$emit('PlayMusic', index, path, musicList, playMusicList); // 触发播放音乐方法
+      store.commit('setSongListPath', location.hash);
+      store.commit('setPlayMusicIndex', index);
+      store.commit('addMusicListAndPlayList', [musicList, playMusicList]);
     }
   }
 };

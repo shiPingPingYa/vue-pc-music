@@ -9,10 +9,15 @@
         <div class="music-table-td  one-over-eclipse">专辑</div>
         <div class="music-table-td">时长</div>
       </div>
-      <div :class="['music-table-tr', activeMusicIndex == index ? 'active-music' : '']" v-for="(item, index) in musicList" :key="index" @dblclick="musicItemClick(index)">
+      <div
+        :class="['music-table-tr', activeMusic && currentIndex == index ? 'active-music' : '']"
+        v-for="(item, index) in musicList"
+        :key="index"
+        @dblclick="musicItemClick(index)"
+      >
         <div class="music-table-td">
           {{ setSerial(index) }}
-          <div class="active-icon" v-show="activeMusicIndex == index">
+          <div class="active-icon" v-show="activeMusic && currentIndex == index">
             <img src="@/assets/img/playmusic/currentplay.svg" alt="" />
           </div>
         </div>
@@ -29,7 +34,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 export default {
   name: 'musicItem',
   props: {
@@ -39,27 +44,26 @@ export default {
         return [];
       }
     }
+    //判断是否存储hash地址(hash用于判断是那个音乐列表播放的音乐),首页播放音乐列表不需要修改hash
+    // isHashStorage: {
+    //   type: Boolean,
+    //   default: () => true
+    // }
   },
   computed: {
-    ...mapGetters(['getSongListPath'])
+    ...mapState(['songListPath', 'currentIndex']),
+    activeMusic() {
+      return this.songListPath == location.hash;
+    }
   },
-  data() {
-    return {
-      activeMusicIndex: ''
-    };
-  },
-  mounted() {
-    this.$bus.$on('Playing', (path, index) => {
-      this.activeMusicIndex = index;
-    });
-  },
+
   methods: {
     setSerial(i) {
       return i + 1 <= 9 ? '0' + (i + 1) : i + 1;
     },
     // 判断是否在同一歌单下面，是则不重新获取音乐数据，而是修改音乐播放列表序号
     musicItemClick(index) {
-      if (this.$route.path === this.getSongListPath) this.$bus.$emit('playMusicListItem', index);
+      if (location.hash === this.songListPath) this.$store.commit('setPlayMusicIndex', index);
       else this.$emit('musicItemClick', index);
     }
   }

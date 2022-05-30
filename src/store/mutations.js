@@ -112,9 +112,18 @@ const mutations = {
   setIslogin(state, flag) {
     state.isLogin = flag;
   },
-  addMusicListAndPlayList(state, musicList, playList) {
-    state.musicList = musicList;
-    state.playList = playList;
+  //设置播放音乐下标
+  setPlayMusicIndex(state, index) {
+    state.currentIndex = index;
+  },
+  //保存歌单路由
+  setSongListPath(state, path) {
+    state.songListPath = path;
+  },
+  //添加播放音乐和音乐列表
+  addMusicListAndPlayList(state, list) {
+    state.musicList = list[0];
+    state.playList = list[1];
   }
 };
 
