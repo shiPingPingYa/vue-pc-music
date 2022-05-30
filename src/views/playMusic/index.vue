@@ -76,12 +76,13 @@
         </div>
       </div>
     </div>
-    <PlayMusicList class="play-music-list" v-show="isMusicList" :musicList="musicList" />
+    <PlayMusicList class="play-music-list" v-show="isMusicList" />
     <!-- 首页歌词 -->
     <Lyric ref="lyric" class="play-music-lyric" :lyric="lyric" v-show="isLyric"></Lyric>
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import { _getLyric, _getIntelligenceList, _getSongsDetail, AllSongDetail, _getMusicUrl } from '@/network/detail';
 import { formDate } from '@/assets/common/tool';
 import { PlayList } from './components/playList';
@@ -99,28 +100,17 @@ export default {
   },
   data() {
     return {
-      // 歌曲图片是否显示
-      isShade: false,
-      // 歌曲歌词组件是否显示
-      isPlayerShow: false,
+      isShade: false, // 歌曲图片是否显示
+      isPlayerShow: false, // 歌曲歌词组件是否显示
       isPlayer: false,
-      // 音量小图标是否显示
-      isVolumn: false,
-      // 是否显示歌词
-      isLyric: false,
-      // 是否显示音乐列表
-      isMusicList: false,
+      isVolumn: false, // 音量小图标是否显示
+      isLyric: false, // 是否显示歌词
+      isMusicList: false, // 是否显示音乐列表
       schemaIndex: 0,
-      currentIndex: 0,
-      // 剩余播放时间
-      currentTime: '00:00',
-      // 总时长
-      duration: '00:00',
+      currentTime: '00:00', // 剩余播放时间
+      duration: '00:00', // 总时长
       path: '',
-      // 歌词
-      lyric: '',
-      // 处理好的歌曲信息
-      musicList: [],
+      lyric: '', // 歌词
       lyricIcon: require('assets/img/playmusic/lyric.svg'),
       cLyricIcon: require('assets/img/playmusic/lyric-click.svg'),
       volumnIcon: require('assets/img/playmusic/volumn.svg'),
@@ -130,41 +120,17 @@ export default {
         1: { title: '随机播放', img: require('@/assets/img/playmusic/suijibofang.svg') },
         2: { title: '单曲循环', img: require('@/assets/img/playmusic/danquxunhuan.svg') },
         3: { title: '心动模式', img: require('@/assets/img/heart.svg') }
-      },
-      playList: [
-        {
-          title: '南 海 花 痴（PLUS版） ',
-          artist: 'UmzBeatz',
-          index: 0,
-          id: 1430989428,
-          src: '',
-          pic: 'https://p2.music.126.net/VLgHixU0mvXYvnL8hi_l0A==/109951164804177794.jpg'
-        }
-      ]
+      }
     };
   },
   computed: {
+    ...mapState(['musicList', 'playList', 'currentIndex']),
     currentPlayImg() {
       return this.mapPlayIconObj[this.schemaIndex];
     }
   },
   mounted() {
-    // 音乐数据
-    this.$bus.$on('PlayMusic', (index, path, musicList, playList) => {
-      // 存储歌单路由
-      this.$store.commit('addSongListPath', path);
-      if (this.playList.length !== 0) this.playList = [];
-      this.path = path;
-      this.musicList = musicList;
-      this.playList = playList;
-      // 设置index
-      this.setCurrentIndex(index);
-      this.$refs.music_volumn.setAudioProgress(0.8);
-    });
-    // 监听歌曲列表的点击,设置index,修改播放音乐
-    this.$bus.$on('playMusicListItem', index => {
-      this.setCurrentIndex(index);
-    });
+    this.$refs.music_volumn.setAudioProgress(0.8);
     // 播放视频的时候，停止音乐播放
     this.$bus.$on('stopMusic', flag => {
       this.stopMusic(flag);
@@ -244,24 +210,27 @@ export default {
     // 音乐因缓存停止,或停止后已就绪时触发。
     musicPlaying() {
       this.isPlayer = true;
-      // 触发播放方法，把下标传递过去
-      this.$bus.$emit('Playing', this.path, this.playList[this.currentIndex].index);
-      // 触发评论内容方法
-      // this.$bus.$emit('changeRecommends', this.playList[this.currentIndex].id)
+      this.$store.commit('setPlayMusicIndex', this.playList[this.currentIndex].index);
       if (this.$refs.player !== null) this.$refs.player.isPlayer = true;
     },
     // 音乐播放完毕
     musicEnded() {
       // 判断播放音乐是否存在
       if (this.currentIndex >= this.playList.length - 1) {
-        this.currentIndex = 0;
+        this.$store.commit('setPlayMusicIndex', 0);
       } else {
         switch (this.schemaIndex) {
           case 0:
-            this.currentIndex++;
+            {
+              let index = this.currentIndex++;
+              this.$store.commit('setPlayMusicIndex', index);
+            }
             break;
           case 1:
-            this.currentIndex = Math.floor(Math.random() * this.playList.length);
+            {
+              let index = Math.floor(Math.random() * this.playList.length);
+              this.$store.commit('setPlayMusicIndex', index);
+            }
             break;
           case 2:
             break;
@@ -320,14 +289,20 @@ export default {
     nextMusic() {
       // 判断播放音乐是否存在
       if (this.currentIndex >= this.playList.length - 1) {
-        this.currentIndex = 0;
+        this.$store.commit('setPlayMusicIndex', 0);
       } else {
         switch (this.schemaIndex) {
           case 0:
-            this.currentIndex++;
+            {
+              let index = this.currentIndex++;
+              this.$store.commit('setPlayMusicIndex', index);
+            }
             break;
           case 1:
-            this.currentIndex = Math.floor(Math.random() * this.playList.length);
+            {
+              let index = (this.currentIndex = Math.floor(Math.random() * this.playList.length));
+              this.$store.commit('setPlayMusicIndex', index);
+            }
             break;
           case 2:
             break;
@@ -352,12 +327,7 @@ export default {
         .slice(0, 60)
         .map(item => item.id)
         .join(',');
-      const mulistItem = this.musicList[this.currentIndex];
-      const playListItem = this.playList[this.currentIndex];
-      this.musicList = [];
-      this.playList = [];
-      this.playList.push(playListItem);
-      this.musicList.push(mulistItem);
+      this.$store.commit('addMusicListAndPlayList', [this.musicList, playListItem]);
       try {
         const {
           data: { data: musicUrlList }
@@ -376,7 +346,7 @@ export default {
       } catch (e) {
         console.log(e);
       }
-      this.currentIndex = 1;
+      this.$store.commit('setPlayMusicIndex', 1);
       this.schemaIndex = 0;
     }
   }

@@ -13,22 +13,20 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import MusicItem from '@/components/musicItem';
 export default {
   name: 'PlayMusicList',
   components: { MusicItem },
-  props: {
-    musicList: {
-      type: Array,
-      default: () => []
-    }
+  computed: {
+    ...mapState(['musicList'])
   },
   methods: {
     cancel() {
       this.$parent.isMusicList = false;
     },
     musicItemClick(index) {
-      this.$bus.$emit('playMusicListItem', index);
+      this.$store.commit('setPlayMusicIndex', index);
     }
   }
 };
