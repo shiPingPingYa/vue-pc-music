@@ -9,10 +9,10 @@
       </div>
       <div class="right">
         <div class="music-table">
-          <div :class="['music-table-tr', playIndex == index ? 'active-music' : '']" v-for="(item, index) in musicList" :key="index" @dblclick="musicItemClick(index)">
+          <div :class="['music-table-tr', activeMusic && currentIndex ? 'active-music' : '']" v-for="(item, index) in musicList" :key="index" @dblclick="musicItemClick(index)">
             <div class="music-table-td">
               {{ setSerial(index) }}
-              <div class="active-icon" v-show="playIndex == index">
+              <div class="active-icon" v-show="activeMusic && currentIndex">
                 <img src="@/assets/img/playmusic/currentplay.svg" alt="" />
               </div>
             </div>
@@ -31,14 +31,15 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import { _getAlbum } from '@/network/artist';
-import { _getSongsDetail, AllSongDetail, SongDetail } from '@/network/detail';
+import { _getSongsDetail } from '@/network/detail';
 import { mixinsPlayMusic } from '@/mixins/mixinsPlayMusic';
-import { playMinxin } from '@/mixins/mixinsBusOnPlaying';
+import { formDate } from '@/assets/common/tool';
 
 export default {
   name: 'ArtistAlbumList',
-  mixins: [mixinsPlayMusic, playMinxin],
+  mixins: [mixinsPlayMusic],
   props: {
     album: {
       type: Object,
@@ -51,30 +52,54 @@ export default {
       fold: true
     };
   },
-  created() {
-    // 判断专辑信息是否为空
-    if (this.album !== null) {
-      // 调用接口，根据专辑ID获取专辑
-      _getAlbum(this.album.id).then(res => {
-        if (res.data.songs.length === 1) {
-          _getSongsDetail(res.data.songs[0].id).then(res => {
-            this.musicList.push(new SongDetail(res.data.songs));
-          });
-        } else {
-          const ids = res.data.songs.map(item => item.id).join(',');
-          _getSongsDetail(ids).then(res => {
-            res.data.songs.forEach(item => this.musicList.push(new AllSongDetail(item)));
-          });
-        }
-      });
+  computed: {
+    ...mapState(['songListPath', 'currentIndex']),
+    activeMusic() {
+      return this.songListPath == location.hash;
     }
   },
+  created() {
+    this.initAblumList();
+  },
   methods: {
+    async initAblumList() {
+      if (this.album !== null) {
+        let { data } = await _getAlbum(this.album.id);
+        if (data.code == 200) {
+          let { songs } = data;
+          if (songs.length == 1) {
+            let { data } = await _getSongsDetail(songs[0].id);
+            this.musicList.push({
+              id: data.songs[0].id,
+              name: data.songs[0].name,
+              album: data.songs[0].al.name,
+              song: data.songs[0].ar[0].name,
+              pic: data.songs[0].al.picUrl,
+              time: formDate(new Date(data.songs[0].dt), 'mm:ss')
+            });
+          } else {
+            let ids = songs.map(item => item.id).join(',');
+            let { data } = await _getSongsDetail(ids);
+            data.songs.forEach(item => {
+              this.musicList.push({
+                id: item.id,
+                name: item.name,
+                album: item.al.name,
+                song: item.ar[0].name,
+                pic: item.al.picUrl,
+                time: formDate(new Date(item.dt), 'mm:ss')
+              });
+            });
+          }
+        }
+      }
+    },
     setSerial(i) {
       return i + 1 <= 9 ? `0${i + 1}` : i + 1;
     },
-    albumClick(i) {
-      this.playMusic(i);
+    musicItemClick(i) {
+      if (location.hash === this.songListPath) this.$store.commit('setPlayMusicIndex', i);
+      else this.playMusic(i);
     }
   }
 };

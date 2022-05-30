@@ -72,11 +72,7 @@ export default {
         'Content-Type': 'multipart/form-data'
       },
       droupMenuList: [
-        {
-          icon: 'el-icon-picture-outline-round',
-          value: 'editImg',
-          label: '修改头像'
-        },
+        { icon: 'el-icon-picture-outline-round', value: 'editImg', label: '修改头像' },
         { icon: 'el-icon-message', value: 'messageNotify', label: '消息通知' },
         { icon: 'el-icon-s-home', value: 'layout', label: '退出登录' }
       ],
