@@ -1,9 +1,9 @@
 // 导入compression-webpack-plugin
 // const CompressionPlugin = require('compression-webpack-plugin') //我通过iis开启的网址服务，暂时还不会开启gzip压缩，所以压缩没有暂时不使用
-const path = require('path')
+const path = require('path');
 
 function resolve(dir) {
-  return path.join(__dirname, dir)
+  return path.join(__dirname, dir);
 }
 
 module.exports = {
@@ -28,25 +28,25 @@ module.exports = {
     config.when(process.env.NODE_ENV === 'production', config => {
       config.optimization.minimizer('terser').tap(args => {
         // 注释console.*
-        args[0].terserOptions.compress.drop_console = true
+        args[0].terserOptions.compress.drop_console = true;
         // remove debugger
-        args[0].terserOptions.compress.drop_debugger = true
+        args[0].terserOptions.compress.drop_debugger = true;
         // 移除 console.log
-        args[0].terserOptions.compress.pure_funcs = ['console.log']
+        args[0].terserOptions.compress.pure_funcs = ['console.log'];
         // 去掉注释 如果需要看chunk-vendors公共部分插件，可以注释掉就可以看到注释了
         args[0].terserOptions.output = {
           comments: false
-        }
-        return args
-      })
-    })
+        };
+        return args;
+      });
+    });
     config.resolve.alias
       .set('common', resolve('src/components/common'))
       .set('js', resolve('src/assets/common'))
       .set('assets', resolve('src/assets'))
       .set('api', resolve('src/network'))
       .set('@', resolve('src/'))
-      .end()
+      .end();
   }
 
   // config.plugin('webpack-bundle-analyzer') //首页文件大小检测
@@ -66,4 +66,4 @@ module.exports = {
   //     config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
   //   }
   // },
-}
+};

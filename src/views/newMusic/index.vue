@@ -85,7 +85,7 @@ export default {
     },
     // 判断是否在同一歌单下面，是则不重新获取音乐数据，而是修改音乐播放列表序号
     playMusicItem(index) {
-      this.$bus.$emit('playMusicListItem', index);
+      this.$store.commit('setPlayMusicIndex', index);
     },
     setMusicItemIndex(i) {
       return i + 1 <= 9 ? `0${i + 1}` : i + 1;

@@ -1,117 +1,130 @@
 const mutations = {
   // 更新歌手
-  addArtist (state, artist) {
-    state.artist = artist
+  addArtist(state, artist) {
+    state.artist = artist;
   },
   // 显示登录页面
-  showLogin (state, isShowLogin) {
-    state.isShowLogin = isShowLogin
+  showLogin(state, isShowLogin) {
+    state.isShowLogin = isShowLogin;
   },
   // 隐藏登录页面
-  hiddenLogin (state) {
-    state.isShowLogin = false
+  hiddenLogin(state) {
+    state.isShowLogin = false;
   },
   // 显示注册页面
-  showRegister (state) {
-    state.isShowRegister = true
+  showRegister(state) {
+    state.isShowRegister = true;
   },
   // 隐藏注册组件
-  hiddenRegister (state) {
-    state.isShowRegister = false
+  hiddenRegister(state) {
+    state.isShowRegister = false;
   },
   // 显示验证码组件
-  showCaptcha (state) {
-    state.isCaptcha = true
+  showCaptcha(state) {
+    state.isCaptcha = true;
   },
   // 隐藏验证码组件
-  hiddenCaptcha (state) {
-    state.isCaptcha = false
+  hiddenCaptcha(state) {
+    state.isCaptcha = false;
   },
   // 显示昵称组件
-  showNickName (state) {
-    state.isNickName = true
+  showNickName(state) {
+    state.isNickName = true;
   },
   // 隐藏昵称组件
-  hiddenNickName (state) {
-    state.isNickName = false
+  hiddenNickName(state) {
+    state.isNickName = false;
   },
   // 显示二维码组件
-  showQrcode (state) {
-    state.isShowQrcode = true
+  showQrcode(state) {
+    state.isShowQrcode = true;
   },
   // 隐藏二维码组件
-  hiddenQrcode (state) {
-    state.isShowQrcode = false
+  hiddenQrcode(state) {
+    state.isShowQrcode = false;
   },
   // 添加用户注册手机号，密码，验证码，昵称
-  addPhone (state, phone) {
-    state.phone = phone
+  addPhone(state, phone) {
+    state.phone = phone;
   },
-  addPassword (state, password) {
-    state.password = password
+  addPassword(state, password) {
+    state.password = password;
   },
-  addCaptcha (state, captcha) {
-    state.captcha = captcha
+  addCaptcha(state, captcha) {
+    state.captcha = captcha;
   },
-  addNickName (state, nickname) {
-    state.nickname = nickname
+  addNickName(state, nickname) {
+    state.nickname = nickname;
   },
   // 添加cookie
-  addCookie (state, cookie) {
-    state.cookie = cookie
+  addCookie(state, cookie) {
+    state.cookie = cookie;
   },
   // 清除用户登录信息
-  clearUserRegisterInfo (state, flag) {
-    state.phone = flag
-    state.password = flag
-    state.nickname = flag
-    state.captcha = flag
+  clearUserRegisterInfo(state, flag) {
+    state.phone = flag;
+    state.password = flag;
+    state.nickname = flag;
+    state.captcha = flag;
   },
   // 添加用户信息，和cookie，uid
-  async addUser (state, obj) {
-    state.user = obj
+  async addUser(state, obj) {
+    state.user = obj;
     // 用户id
-    state.uid = obj.userId
+    state.uid = obj.userId;
     // 用户背景图
-    state.image = obj.avatarUrl
+    state.image = obj.avatarUrl;
     // 用户名字
-    state.userName = obj.nickname
+    state.userName = obj.nickname;
     // 添加用户粉丝
-    state.userFolloweds = obj.followeds
+    state.userFolloweds = obj.followeds;
     // 添加用户性别
-    state.userGender = obj.gender
+    state.userGender = obj.gender;
     // 添加用户动态
-    state.userEventCount = obj.eventCount
+    state.userEventCount = obj.eventCount;
     // 添加用户关注
-    state.userFollows = obj.follows
+    state.userFollows = obj.follows;
     // 添加用户等级
     if (obj.level) {
-      state.level = obj.level
+      state.level = obj.level;
     }
   },
   // 显示用户歌单
-  userSongList (state, isSongList) {
-    state.isSongList = isSongList
+  userSongList(state, isSongList) {
+    state.isSongList = isSongList;
   },
   // 添加歌单路由
-  addSongListPath (state, songListPath) {
-    state.songListPath = songListPath
+  addSongListPath(state, songListPath) {
+    state.songListPath = songListPath;
   },
-  async addSongList (state, playlist) {
+  async addSongList(state, playlist) {
     // 获取用户歌单
-    state.userSongList = playlist
+    state.userSongList = playlist;
   },
   // 设置分享内容图片的显示
-  setAsyncShareImag (state, flag) {
-    state.asyncShareImag = flag
+  setAsyncShareImag(state, flag) {
+    state.asyncShareImag = flag;
   },
   // 修改用户背景图片
-  setUserImage (state, img) {
-    state.image = img
+  setUserImage(state, img) {
+    state.image = img;
   },
-  setIslogin (state, flag) {
-    state.isLogin = flag
+  setIslogin(state, flag) {
+    state.isLogin = flag;
+  },
+  //设置播放音乐下标
+  setPlayMusicIndex(state, index) {
+    state.currentIndex = index;
+  },
+  //保存歌单路由
+  setSongListPath(state, path) {
+    state.songListPath = path;
+  },
+  //添加播放音乐和音乐列表
+  addMusicListAndPlayList(state, list) {
+    state.musicList = list[0];
+    state.playList = list[1];
   }
-}
+};
 
-export default mutations
+export default mutations;
