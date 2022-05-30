@@ -20,7 +20,7 @@ export default {
   components: { TabBar, appMain, playMusic },
   mounted() {
     const handleImgMessageMenuHide = () => {
-      this.$store.commit('setAsyncShareImag', false); // 隐藏朋友圈图片
+      this.asyncShareImag && this.$store.commit('setAsyncShareImag', false); // 隐藏朋友圈图片
       this.$refs.tabBar.isPrivate = false; // 隐藏消息通知
       this.$refs.tabBar.isisHistoryNewsPrivate = false;
       this.$bus.$emit('handleMenuMouseLeave'); // 收起左侧路由导航栏
