@@ -222,8 +222,8 @@ export default {
         switch (this.schemaIndex) {
           case 0:
             {
-              let index = this.currentIndex++;
-              this.$store.commit('setPlayMusicIndex', index);
+              let index = this.currentIndex;
+              this.$store.commit('setPlayMusicIndex', ++index);
             }
             break;
           case 1:
@@ -294,13 +294,13 @@ export default {
         switch (this.schemaIndex) {
           case 0:
             {
-              let index = this.currentIndex++;
-              this.$store.commit('setPlayMusicIndex', index);
+              let index = this.currentIndex;
+              this.$store.commit('setPlayMusicIndex', ++index);
             }
             break;
           case 1:
             {
-              let index = (this.currentIndex = Math.floor(Math.random() * this.playList.length));
+              let index = Math.floor(Math.random() * this.playList.length);
               this.$store.commit('setPlayMusicIndex', index);
             }
             break;
